@@ -30,12 +30,24 @@
     },
     "autoload": {
       "files": [
+        "src/module-lof-all/registration.php",
+        "src/module-lof-setup/registration.php",
+        "src/module-lof-marketplace/registration.php",
+        "src/module-lof-marketplace-graphql/registration.php",
+        "src/module-lof-marketplace-theme/registration.php",
         "src/module-lof-preorder/registration.php",
-        "src/module-lofmp-preorder/registration.php"
+        "src/module-lofmp-preorder/registration.php",
+        "src/module-lofmp-favorite-seller/registration.php"
       ],
       "psr-4": {
+        "Lof\\All\\": "src/module-lof-all",
+        "Lof\\Setup\\": "src/module-lof-setup",
+        "Lof\\MarketPlace\\": "src/module-lof-marketplace",
+        "Lof\\MarketplaceGraphQl\\": "src/module-lof-marketplace-graphql",
+        "Lof\\MarketTheme\\": "src/module-lof-marketplace-theme",
         "Lof\\PreOrder\\": "src/module-lof-preorder",
-        "Lofmp\\PreOrder\\": "src/module-lofmp-preorder"
+        "Lofmp\\PreOrder\\": "src/module-lofmp-preorder",
+        "Lofmp\\FavoriteSeller\\": "src/module-lofmp-favorite-seller"
       }
     }
 }
