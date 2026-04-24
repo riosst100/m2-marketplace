@@ -1,0 +1,9 @@
+# Copyright © Magento, Inc. All rights reserved.
+# See COPYING.txt for license details.
+
+type Query {
+    lofTrackMyOrder(
+        order_id: String
+        code: String 
+    ): CustomerOrder @resolver(class: "Lof\\TrackorderGraphQl\\Model\\Resolver\\TrackOrder") @deprecated(reason: "Track Order Info from customer instead") @cache(cacheable: false)
+}
