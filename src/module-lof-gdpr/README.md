@@ -33,9 +33,13 @@ The configuration for this module is available in 'Stores > Configuration > Cust
 
 ## Support
 
+## Compatible
+- The module can work with [Magento 2 Mautic Integrtion](https://github.com/landofcoder/module-magento2-mautic-integration)
+- Get Compatible module GDPR and Mautic at here: https://github.com/landofcoder/module-magento2-mautic-gdpr
 
 ## Authors
 
+[Landofcoder](https://landofcoder.com)
 
 ## License
 

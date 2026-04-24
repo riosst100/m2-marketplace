@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Lof_Gdpr::css/grid-lof.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Lof\Gdpr\Block\Address\Account" name="gdpr_customer_delete_info" after="-" template="Lof_Gdpr::account/edit/delete.phtml" ifconfig="gdpr/general/enabled"/>
+        </referenceContainer>
+    </body>
+</page>

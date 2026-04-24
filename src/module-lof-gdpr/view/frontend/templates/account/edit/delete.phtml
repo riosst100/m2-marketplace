@@ -1,0 +1,37 @@
+<?php
+/** @var \Lof\Gdpr\Block\Address\Account $block */
+if ($block->allowDeleteAccount()): ?>
+    <div class="lof-gdpr-delete-customer-account col-mp lof-12 lof-xs-12">
+       <fieldset class="fieldset info lof-gdpr-delete-account">
+           <legend class="legend">
+               <span><?= /** @noEscape */ __('Delete Account') ?></span>
+           </legend><br>
+           <div class="gdpr-delete-message col-mp lof-12 lof-xs-12">
+               <?= /** @noEscape */ __($block->getDeleteAccountMessage())?>
+           </div>
+
+           <?= /** @noEscape */ $block->getChildHtml('form_additional_info') ?>
+           <div class="actions-toolbar col-mp lof-12 lof-xs-12">
+               <div class="primary">
+                   <button type="submit" class="action save primary action-delete" role="delete-account" data-address="" title="<?= /** @noEscape */ __('Delete your account') ?>">
+                       <span><?= /** @noEscape */ __('Delete your account') ?></span>
+                   </button>
+               </div>
+           </div>
+       </fieldset>
+    </div>
+    <script type="text/x-magento-init">
+    {
+        ".page-main": {
+            "address": {
+                "deleteAddress": "button[role='delete-account']",
+                "deleteUrlPrefix": "<?= /** @noEscape */ $block->escapeUrl(rtrim($block->getDeleteAccountUrl(), '/')) ?>",
+                "deleteConfirmMessage": "<?= /** @noEscape */ __('Are you sure you want to delete your account?') ?>",
+                "extraData": <?= /** @noEscape */ $block->getExtraData() ?>
+            }
+        }
+    }
+    </script>
+<?php endif; ?>
+<?=  /** @noEscape */ $block->getChildHtml('gdpr_pro_customer_download_personal_data_info') ?>
+

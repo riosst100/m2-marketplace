@@ -11,7 +11,7 @@
     "require": {
         "php": ">=7.2",
         "ext-zip": "*",
-        "mikehaertl/phpwkhtmltopdf": "^2.3.1",
+        "landofcoder/module-marketplace": "^2.3.1",
         "magento/framework": "^102.0.0",
         "magento/module-backend": "^101.0.0",
         "magento/module-config": "^101.1.0",
