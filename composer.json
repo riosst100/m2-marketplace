@@ -30,10 +30,12 @@
     },
     "autoload": {
       "files": [
-        "src/module-lof-preorder/registration.php"
+        "src/module-lof-preorder/registration.php",
+        "src/module-lofmp-preorder/registration.php"
       ],
       "psr-4": {
-        "Lof\\PreOrder\\": "src/module-lof-preorder"
+        "Lof\\PreOrder\\": "src/module-lof-preorder",
+        "Lofmp\\PreOrder\\": "src/module-lofmp-preorder"
       }
     }
 }
