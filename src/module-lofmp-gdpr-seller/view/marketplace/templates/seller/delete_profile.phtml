@@ -1,0 +1,29 @@
+<?php
+/** @var \Lofmp\GdprSeller\Block\Seller\DeleteProfile $block */
+
+$deleteSellerUrl = $block->getDeleteSellerUrl();
+$deleteSellerProfileUrl = $block->getDeleteProfileUrl();
+?>
+<script>
+    require([
+        'jquery'
+    ], function ($){
+        $('.page-actions-buttons').prepend('<button type="button" class="action-default secondary" id="delete_seller" role="delete-seller"><?= /** @noEscape */ __('Delete seller') ?></button><button type="button" class="action-default secondary" id="delete_seller_profile"><?= /** @noEscape */ __('Delete Seller Profile') ?></button>')
+        $( "#delete_seller" ).on( "click", function() {
+            if (confirm('<?= /** @noEscape */ __('Are you sure you want to delete seller account?') ?>')) {
+                window.location.href = '<?= $deleteSellerUrl?>';
+            }
+        });
+        $( "#delete_seller_profile" ).on( "click", function() {
+            if (confirm('<?= /** @noEscape */ __('Are you sure you want to delete your seller profile?') ?>')) {
+                window.location.href = '<?= $deleteSellerProfileUrl?>';
+            }
+        });
+
+    })
+</script>
+<style>
+    .page-actions-buttons button {
+        margin-right: 5px !important;
+    }
+</style>

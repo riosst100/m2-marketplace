@@ -61,7 +61,8 @@
         "src/module-lofmp-split-cart-graphql/registration.php",
         "src/module-lofmp-table-rate-shipping/registration.php",
         "src/module-lofmp-store-locator/registration.php",
-        "src/module-lofmp-faq/registration.php"
+        "src/module-lofmp-faq/registration.php",
+        "src/module-lofmp-gdpr-seller/registration.php"
       ],
       "psr-4": {
         "Ves\\Trackorder\\": "src/module-ves-trackorder",
@@ -95,7 +96,8 @@
         "Lofmp\\SplitCartGraphQl\\": "src/module-lofmp-split-cart-graphql",
         "Lofmp\\TableRateShipping\\": "src/module-lofmp-table-rate-shipping",
         "Lofmp\\StoreLocator\\": "src/module-lofmp-store-locator",
-        "Lofmp\\Faq\\": "src/module-lofmp-faq"
+        "Lofmp\\Faq\\": "src/module-lofmp-faq",
+        "Lofmp\\GdprSeller\\": "src/module-lofmp-gdpr-seller"
       }
     }
 }
