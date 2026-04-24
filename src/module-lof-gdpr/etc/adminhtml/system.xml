@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Landofcoder, All rights reserved.
+ * See LICENSE bundled with this library for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="gdpr" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="200">
+            <class>separator-top</class>
+            <label>GDPR Compliance</label>
+            <tab>customer</tab>
+            <resource>Lof_Gdpr::config</resource>
+            <!-- Global Settings -->
+            <include path="Lof_Gdpr::system/general.xml"/>
+            <!-- Action Settings -->
+            <include path="Lof_Gdpr::system/action.xml"/>
+            <!-- Erasure Settings -->
+            <include path="Lof_Gdpr::system/erasure.xml"/>
+            <!-- Export Settings -->
+            <include path="Lof_Gdpr::system/export.xml"/>
+            <!-- Notification Settings -->
+            <include path="Lof_Gdpr::system/notification.xml"/>
+            <!-- Cookie Settings -->
+            <include path="Lof_Gdpr::system/cookie.xml"/>
+        </section>
+    </system>
+</config>

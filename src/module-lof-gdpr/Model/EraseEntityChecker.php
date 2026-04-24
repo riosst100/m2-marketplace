@@ -1,0 +1,79 @@
+<?php
+/**
+ * Copyright © Landofcoder, All rights reserved.
+ * See LICENSE bundled with this library for license details.
+ */
+declare(strict_types=1);
+
+namespace Lof\Gdpr\Model;
+
+use Magento\Framework\Exception\NoSuchEntityException;
+use Lof\Gdpr\Api\Data\EraseEntityInterface;
+use Lof\Gdpr\Api\EraseEntityCheckerInterface;
+use Lof\Gdpr\Api\EraseEntityRepositoryInterface;
+use Lof\Gdpr\Model\Entity\EntityCheckerFactory;
+
+final class EraseEntityChecker implements EraseEntityCheckerInterface
+{
+    /**
+     * @var EraseEntityRepositoryInterface
+     */
+    private $eraseEntityRepository;
+
+    /**
+     * @var EntityCheckerFactory
+     */
+    private $entityCheckerFactory;
+
+    public function __construct(
+        EraseEntityRepositoryInterface $eraseEntityRepository,
+        EntityCheckerFactory $entityCheckerFactory
+    ) {
+        $this->eraseEntityRepository = $eraseEntityRepository;
+        $this->entityCheckerFactory = $entityCheckerFactory;
+    }
+
+    public function exists(int $entityId, string $entityType): bool
+    {
+        try {
+            return (bool) $this->eraseEntityRepository->getByEntity($entityId, $entityType)->getEraseId();
+        } catch (NoSuchEntityException $e) {
+            return false;
+        }
+    }
+
+    public function canCreate(int $entityId, string $entityType): bool
+    {
+        $entityChecker = $this->entityCheckerFactory->get($entityType);
+
+        return !$this->exists($entityId, $entityType) && $entityChecker->canErase($entityId);
+    }
+
+    public function canCancel(int $entityId, string $entityType): bool
+    {
+        try {
+            $entity = $this->eraseEntityRepository->getByEntity($entityId, $entityType);
+        } catch (NoSuchEntityException $e) {
+            return false;
+        }
+
+        return $entity->getState() === EraseEntityInterface::STATE_PENDING
+            && $entity->getStatus() === EraseEntityInterface::STATUS_READY;
+    }
+
+    public function canProcess(int $entityId, string $entityType): bool
+    {
+        try {
+            $entity = $this->eraseEntityRepository->getByEntity($entityId, $entityType);
+        } catch (NoSuchEntityException $e) {
+            return false;
+        }
+        $entityChecker = $this->entityCheckerFactory->get($entityType);
+
+        return (($entity->getState() === EraseEntityInterface::STATE_PENDING
+                && $entity->getStatus() === EraseEntityInterface::STATUS_READY)
+            || ($entity->getState() === EraseEntityInterface::STATE_PROCESSING
+                && $entity->getStatus() === EraseEntityInterface::STATUS_FAILED))
+            && $entityChecker->canErase($entityId);
+    }
+}
