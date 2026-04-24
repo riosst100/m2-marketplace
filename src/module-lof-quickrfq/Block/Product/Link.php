@@ -57,8 +57,8 @@ class Link extends AbstractView
         Context $context,
         Data $helperConfig,
         Registry $registry,
-        array $data = [],
-        Session $session
+        Session $session,
+        array $data = []
     ) {
         parent::__construct($context, $registry, $helperConfig, $data);
         $this->_helperConfig    = $helperConfig;
