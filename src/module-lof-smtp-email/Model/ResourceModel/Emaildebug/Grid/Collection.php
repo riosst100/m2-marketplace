@@ -29,6 +29,9 @@ use Lof\SmtpEmail\Model\ResourceModel\Emaildebug\Collection as EmaildebugCollect
  */
 class Collection extends EmaildebugCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+    
     /**
      * @var AggregationInterface
      */

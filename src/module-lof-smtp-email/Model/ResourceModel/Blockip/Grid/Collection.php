@@ -30,6 +30,9 @@ use Lof\SmtpEmail\Model\ResourceModel\Blockip\Collection as BlockipCollection;
  */
 class Collection extends BlockipCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+    
     /**
      * @var AggregationInterface
      */

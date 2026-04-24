@@ -23,6 +23,8 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
 class Exportcsv extends \Lof\SmtpEmail\Controller\Adminhtml\Emaillog
 {
+    protected $directory;
+    protected $fileFactory;
     protected $_layout;
 
     /**

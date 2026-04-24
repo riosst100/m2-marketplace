@@ -21,12 +21,19 @@
 
 namespace Lof\SmtpEmail\Model;
 
-use Zend\Mail\Message;
-use Zend\Mail\Transport\Smtp as SmtpTransport;
-use Zend\Mail\Transport\SmtpOptions;
+use Laminas\Mail\Message;
+use Laminas\Mail\Transport\Smtp as SmtpTransport;
+use Laminas\Mail\Transport\SmtpOptions;
 
-class TransportPlugin extends \Zend_Mail_Transport_Smtp
+class TransportPlugin extends \Laminas\Mail\Transport\Smtp
 {
+    protected $_transport;
+    protected $_name;
+    protected $_port;
+    protected $_auth;
+    protected $_host;
+    protected $_config;
+    
     /**
      * @var \Magento\Framework\Mail\MessageInterface
      */
@@ -78,6 +85,9 @@ class TransportPlugin extends \Zend_Mail_Transport_Smtp
         $this->_emaildebug = $emaildebug;
         $this->_logger = $logger;
         $this->storeModel = $storeModel;
+
+        $options = new SmtpOptions();
+        $this->setOptions($options);
     }
 
     /**
@@ -226,7 +236,7 @@ class TransportPlugin extends \Zend_Mail_Transport_Smtp
             $options->setConnectionConfig($connectionConfig);
         }
 
-        $this->_logger->addDebug($this->_emaillog->isBlacklist($message));
+        $this->_logger->debug($this->_emaillog->isBlacklist($message));
 
         $this->_emaildebug->messageDebug(__('Ready to send email'));
         if($this->_helper->getConfig('general_settings/enable_smtp_email') == 1) {

@@ -33,6 +33,9 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
 
 class Emaillog extends AbstractModel implements EmaillogInterface
 {
+    protected $objectManager;
+    protected $coreDate;
+    
     /**
      * @var string
      */

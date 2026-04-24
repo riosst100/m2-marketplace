@@ -30,6 +30,9 @@ use Lof\SmtpEmail\Model\ResourceModel\Blacklist\Collection as BlacklistCollectio
  */
 class Collection extends BlacklistCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+    
     /**
      * @var AggregationInterface
      */
