@@ -29,6 +29,9 @@ use Lof\SmtpEmail\Model\ResourceModel\Spam\Collection as SpamCollection;
  */
 class Collection extends SpamCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+    
     /**
      * @var AggregationInterface
      */

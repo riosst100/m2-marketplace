@@ -29,6 +29,9 @@ use Lof\SmtpEmail\Model\ResourceModel\Emaillog\Collection as EmaillogCollection;
  */
 class Collection extends EmaillogCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+    
     /**
      * @var AggregationInterface
      */
