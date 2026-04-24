@@ -35,8 +35,10 @@
         "src/module-lof-marketplace/registration.php",
         "src/module-lof-marketplace-graphql/registration.php",
         "src/module-lof-marketplace-theme/registration.php",
+        "src/module-lof-marketplace-product-configurable/registration.php",
         "src/module-lof-preorder/registration.php",
         "src/module-lof-quickrfq/registration.php",
+        "src/module-lof-marketplace-permissions/registration.php",
         "src/module-lofmp-ui/registration.php",
         "src/module-lofmp-preorder/registration.php",
         "src/module-lofmp-quick-rfq/registration.php",
@@ -59,8 +61,10 @@
         "Lof\\MarketPlace\\": "src/module-lof-marketplace",
         "Lof\\MarketplaceGraphQl\\": "src/module-lof-marketplace-graphql",
         "Lof\\MarketTheme\\": "src/module-lof-marketplace-theme",
+        "Lof\\MarketProductConfigurable\\": "src/module-lof-marketplace-product-configurable",
         "Lof\\PreOrder\\": "src/module-lof-preorder",
         "Lof\\Quickrfq\\": "src/module-lof-quickrfq",
+        "Lof\\MarketPermissions\\": "src/module-lof-marketplace-permissions",
         "Lofmp\\Ui\\": "src/module-lofmp-ui",
         "Lofmp\\PreOrder\\": "src/module-lofmp-preorder",
         "Lofmp\\Quickrfq\\": "src/module-lofmp-quick-rfq",
@@ -75,7 +79,7 @@
         "Lofmp\\SplitCart\\": "src/module-lofmp-split-cart",
         "Lofmp\\SplitCartGraphQl\\": "src/module-lofmp-split-cart-graphql",
         "Lofmp\\TableRateShipping\\": "src/module-lofmp-table-rate-shipping",
-        "Lofmp\\StoreLocator\\": "src/module-lofmp-store-locator"
+        "Lofmp\\StoreLocator\\": "src/module-lofmp-store-locator",
       }
     }
 }
