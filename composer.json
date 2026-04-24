@@ -79,7 +79,7 @@
         "Lofmp\\SplitCart\\": "src/module-lofmp-split-cart",
         "Lofmp\\SplitCartGraphQl\\": "src/module-lofmp-split-cart-graphql",
         "Lofmp\\TableRateShipping\\": "src/module-lofmp-table-rate-shipping",
-        "Lofmp\\StoreLocator\\": "src/module-lofmp-store-locator",
+        "Lofmp\\StoreLocator\\": "src/module-lofmp-store-locator"
       }
     }
 }
