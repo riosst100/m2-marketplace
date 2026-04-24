@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Venustheme
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Venustheme.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.venustheme.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category   Venustheme
+ * @package    Ves_Trackorder
+ * @copyright  Copyright (c) 2014 Venustheme (http://www.venustheme.com/)
+ * @license    http://www.venustheme.com/LICENSE-1.0.html
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+	<default>
+		<vestrackorder>
+            <trackorder_general>
+                <enabled>1</enabled>
+                <enabled_guest_api>0</enabled_guest_api>
+                <route>trackorder</route>
+                <toplinks>1</toplinks>
+                <track_type>default</track_type>
+                <topmenu>1</topmenu>
+                <sendtrack_link>1</sendtrack_link>
+                <show_widget>1</show_widget>
+                <custom_message>Order Not Found. Please try again later</custom_message>
+                <use_longcode>0</use_longcode>
+                <secret_key>LOF</secret_key>
+                <chunks>1</chunks>
+                <letters>9</letters>
+                <separate_text>-</separate_text>
+                <allow_export_pdf>1</allow_export_pdf>
+            </trackorder_general>
+            <order_status_icon>
+                <canceled>fa fa-times-circle</canceled>
+                <closed>fa fa-ban</closed>
+                <complete>fa fa-check-circle</complete>
+                <fraud>fa fa-minus-square</fraud>
+                <holded>fa fa-leaf</holded>
+                <payment_review>fa fa-search</payment_review>
+                <paypal_canceled_reversal>fa fa-meh</paypal_canceled_reversal>
+                <paypal_reversed>fa fa-meh</paypal_reversed>
+                <pending>fa fa-arrow-alt-circle-left</pending>
+                <pending_payment>fa fa-arrow-alt-circle-left</pending_payment>
+                <pending_paypal>fa fa-arrow-alt-circle-left</pending_paypal>
+                <processing>fa fa-angle-double-up</processing>
+            </order_status_icon>
+            <email_settings>
+                <enable_sendmail>1</enable_sendmail>
+                <sender_email_identity>general</sender_email_identity>
+                <order_template>vestrackorder_email_settings_order_template</order_template>
+                <allow_attach_file>1</allow_attach_file>
+            </email_settings>
+            <generate_track_code>
+                <limit>50</limit>
+            </generate_track_code>
+        </vestrackorder>
+    </default>
+</config>

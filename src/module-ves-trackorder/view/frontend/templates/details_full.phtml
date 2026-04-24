@@ -1,0 +1,19 @@
+<?php
+$block_title = $this->getConfig("title");
+$block_title = $block_title?$block_title: '';
+?>
+<div class="ves-trackorder">
+<div id="orderinfo" class="order-info-message">
+<?php if($block_title): ?>
+	<div class="page-title-wrapper">
+		<h1 class="page-title"><span class="base"><?php echo $block_title; ?></span></h1>
+	</div>
+<?php endif; ?>
+<div class="actions-toolbar order-actions-toolbar">
+	<?php echo $this->getChildHtml('buttons'); ?>
+</div>
+<?php echo $this->getChildHtml('qrcode'); ?>
+<?php echo $this->getChildHtml('info'); ?>
+<?php echo $this->getChildHtml('tabs'); ?>
+</div>
+</div>

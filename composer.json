@@ -30,6 +30,7 @@
     },
     "autoload": {
       "files": [
+        "src/module-ves-trackorder/registration.php",
         "src/module-lof-all/registration.php",
         "src/module-lof-setup/registration.php",
         "src/module-lof-marketplace/registration.php",
@@ -42,6 +43,7 @@
         "src/module-lof-faq/registration.php",
         "src/module-lof-paymentfee/registration.php",
         "src/module-lof-formbuilder/registration.php",
+        "src/module-lof-age-verification/registration.php",
         "src/module-lofmp-ui/registration.php",
         "src/module-lofmp-preorder/registration.php",
         "src/module-lofmp-quick-rfq/registration.php",
@@ -60,6 +62,7 @@
         "src/module-lofmp-faq/registration.php"
       ],
       "psr-4": {
+        "Ves\\Trackorder\\": "src/module-ves-trackorder",
         "Lof\\All\\": "src/module-lof-all",
         "Lof\\Setup\\": "src/module-lof-setup",
         "Lof\\MarketPlace\\": "src/module-lof-marketplace",
@@ -72,6 +75,7 @@
         "Lof\\Faq\\": "src/module-lof-faq",
         "Lof\\Paymentfee\\": "src/module-lof-paymentfee",
         "Lof\\Formbuilder\\": "src/module-lof-formbuilder",
+        "Lof\\AgeVerification\\": "src/module-lof-age-verification",
         "Lofmp\\Ui\\": "src/module-lofmp-ui",
         "Lofmp\\PreOrder\\": "src/module-lofmp-preorder",
         "Lofmp\\Quickrfq\\": "src/module-lofmp-quick-rfq",

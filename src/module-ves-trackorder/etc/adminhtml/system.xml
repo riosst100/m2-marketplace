@@ -1,0 +1,237 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Venustheme
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Venustheme.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.venustheme.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category   Venustheme
+ * @package    Ves_Trackorder
+ * @copyright  Copyright (c) 2014 Venustheme (http://www.venustheme.com/)
+ * @license    http://www.venustheme.com/LICENSE-1.0.html
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
+	<system>
+		<section id="vestrackorder" translate="label" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+			<class>separator-top</class>
+			<label>Track Order</label>
+			<tab>vesalltab</tab>
+			<resource>Ves_Trackorder::config</resource>
+			<group id="trackorder_general" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+				<label>General Settings</label>
+				<field id="enabled" translate="label comment" type="select" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Enabled</label>
+					<comment>Select Yes to enable this feature.</comment>
+					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+				</field>
+				<field id="enabled_guest_api" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Allow Guest Access API Tracking Order</label>
+					<comment>Select Yes allow anonymous request REST API.</comment>
+					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+				</field>
+				<field id="route" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Tracking Page Url</label>
+					<depends><field id="enabled">1</field></depends>
+				</field>
+				<field id="track_type" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Tracking Type</label>
+					<comment>Type 1: use Order Id and Email. Type 2: use tracking code..</comment>
+					<source_model>Ves\Trackorder\Model\Config\Source\Tracktype</source_model>
+					<depends><field id="enabled">1</field></depends>
+				</field>
+				<field id="toplinks" translate="label comment" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Allowed For Top Links</label>
+					<comment>Select Yes to allow for Top Links.</comment>
+					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+					<depends><field id="enabled">1</field></depends>
+				</field>
+				<field id="sendtrack_link" translate="label comment" type="select" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Send TrackOrder Link</label>
+					<comment>Select Yes to send track order link in email.</comment>
+					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+					<depends><field id="enabled">1</field></depends>
+				</field>
+				<field id="allow_export_pdf" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow Download Invoice Pdf</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field> 
+				<field id="show_widget" translate="label comment" type="select" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Allowed TrackOrder Widget</label>
+					<comment>Choose column for widget to appear.</comment>
+					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+					<depends><field id="enabled">1</field></depends>
+				</field>
+				<field id="custom_message" type="textarea" translate="label comment" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Custom Message</label>
+					<comment>If your customers can not find their order information, you can show custom message for them</comment>
+					<depends><field id="enabled">1</field></depends>
+				</field>
+				<field id="use_longcode" translate="label comment" type="select" sortOrder="55" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Use long tracking code?</label>
+					<comment>Use short or long tracking code. The long tracking code use sha1 to encode.</comment>
+					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+					<depends><field id="enabled">1</field></depends>
+				</field>
+				<field id="secret_key" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Secret Key</label>
+					<comment>Input the key which you want to use to generate tracking code.</comment>
+					<depends><field id="use_longcode">1</field></depends>
+				</field>
+				<field id="chunks" translate="label comment" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Number Chunks</label>
+					<comment><![CDATA[is number of chunks, default = 1.<br/>If you just want to generate random string, set this to 1. It required at least number 1.<br/>Example: If number of chunk is 3. XXXXX-XXXXX-XXXXX]]></comment>
+					<depends><field id="use_longcode">0</field></depends>
+				</field>
+				<field id="letters" translate="label comment" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Number Letters Per Chunk</label>
+					<comment><![CDATA[is number of letters per chunk, default = 9.<br/>Example: If number of letters per chunk is 2 and number of chunk is 3. XX-XX-XX]]></comment>
+					<depends><field id="use_longcode">0</field></depends>
+				</field>
+				<field id="separate_text" translate="label comment" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Separate Chunk Text</label>
+					<comment><![CDATA[is separator text to separate chunks, default = -.<br/>Example: If separator is colon. XXXXX:XXXXX:XXXXX:XXXXX:XXXXX]]></comment>
+					<depends><field id="use_longcode">0</field></depends>
+				</field>
+			</group>
+			<group id="order_status" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+				<label>Order Status</label>
+				<field id="canceled" type="textarea" translate="label comment" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Canceled</label>
+					<comment>The comment will show while order getting Canceled Status</comment>
+				</field>
+				<field id="closed" type="textarea" translate="label comment" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Closed</label>
+					<comment>The comment will show while order getting Closed Status</comment>
+				</field>
+				<field id="complete" type="textarea" translate="label comment" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Complete</label>
+					<comment>The comment will show while order getting Complete Status</comment>
+				</field>
+				<field id="fraud" type="textarea" translate="label comment" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Suspected Fraud</label>
+					<comment>The comment will show while order getting Suspected Fraud Status</comment>
+				</field>
+				<field id="holded" type="textarea" translate="label comment" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>On Hold</label>
+					<comment>The comment will show while order getting On Hold Status</comment>
+				</field>
+				<field id="payment_review" type="textarea" translate="label comment" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Payment Review</label>
+					<comment>The comment will show while order getting Payment Review Status</comment>
+				</field>
+				<field id="paypal_canceled_reversal" type="textarea" translate="label comment" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>PayPal Canceled Reversal</label>
+					<comment>The comment will show while order getting PayPal Canceled Reversal Status</comment>
+				</field>
+				<field id="paypal_reversed" type="textarea" translate="label comment" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>PayPal Reversed</label>
+					<comment>The comment will show while order getting PayPal Reversed Status</comment>
+				</field>
+				<field id="pending" type="textarea" translate="label comment" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Pending</label>
+					<comment>The comment will show while order getting Pending Status</comment>
+				</field>
+				<field id="pending_payment" type="textarea" translate="label comment" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Pending Payment</label>
+					<comment>The comment will show while order getting Pending Payment Status</comment>
+				</field>
+				<field id="pending_paypal" type="textarea" translate="label comment" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Pending PayPal</label>
+					<comment>The comment will show while order getting Pending PayPal Status</comment>
+				</field>
+				<field id="processing" type="textarea" translate="label comment" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Processing</label>
+					<comment>The comment will show while order getting Processing Status</comment>
+				</field>
+			</group>
+			<group id="order_status_icon" translate="label" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
+				<label>Order Status Icon</label>
+				<field id="canceled" type="text" translate="label comment" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Canceled</label>
+					<comment><![CDATA[The icon tag will show while order getting Canceled Status. Input fontawesome font icon class. For example: <strong>fa fa-times-circle</strong>]]></comment>
+				</field>
+				<field id="closed" type="text" translate="label comment" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Closed</label>
+					<comment><![CDATA[The icon tag will show while order getting Closed Status. For example: <strong>fa fa-ban</strong>]]></comment>
+				</field>
+				<field id="complete" type="text" translate="label comment" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Complete</label>
+					<comment><![CDATA[The icon tag will show while order getting Complete Status. For example: <strong>fa fa-check-circle</strong>]]></comment>
+				</field>
+				<field id="fraud" type="text" translate="label comment" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Suspected Fraud</label>
+					<comment><![CDATA[The icon tag will show while order getting Suspected Fraud Status. For example: <strong>fa fa-minus-square</strong>]]></comment>
+				</field>
+				<field id="holded" type="text" translate="label comment" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>On Hold</label>
+					<comment><![CDATA[The comment will show while order getting On Hold Status. For example: <strong>fa fa-leaf</strong>]]></comment>
+				</field>
+				<field id="payment_review" type="text" translate="label comment" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Payment Review</label>
+					<comment><![CDATA[The icon tag will show while order getting Payment Review Status. For example: <strong>fa fa-search</strong>]]></comment>
+				</field>
+				<field id="paypal_canceled_reversal" type="text" translate="label comment" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>PayPal Canceled Reversal</label>
+					<comment><![CDATA[The icon tag will show while order getting PayPal Canceled Reversal Status. For example: <strong>fa fa-meh</strong>]]></comment>
+				</field>
+				<field id="paypal_reversed" type="text" translate="label comment" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>PayPal Reversed</label>
+					<comment><![CDATA[The icon tag will show while order getting PayPal Reversed Status. For example: <strong>fa fa-meh</strong>]]></comment>
+				</field>
+				<field id="pending" type="text" translate="label comment" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Pending</label>
+					<comment><![CDATA[The icon tag will show while order getting Pending Status. For example: <strong>fa fa-arrow-alt-circle-left</strong>]]></comment>
+				</field>
+				<field id="pending_payment" type="text" translate="label comment" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Pending Payment</label>
+					<comment><![CDATA[The icon tag will show while order getting Pending Payment Status. For example: <strong>fa fa-arrow-alt-circle-left</strong>]]></comment>
+				</field>
+				<field id="pending_paypal" type="text" translate="label comment" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Pending PayPal</label>
+					<comment><![CDATA[The icon tag will show while order getting Pending PayPal Status. For example: <strong>fa fa-arrow-alt-circle-left</strong>]]></comment>
+				</field>
+				<field id="processing" type="text" translate="label comment" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Processing</label>
+					<comment><![CDATA[The icon tag will show while order getting Processing Status. For example: <strong>fa fa-angle-double-up</strong>]]></comment>
+				</field>
+			</group>
+			<group id="email_settings" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Email Setting</label> 
+                <field id="enable_sendmail" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Send Mail</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field> 
+                <field id="sender_email_identity" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="order_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Ves\Trackorder\Model\Config\Source\EmailTemplate</source_model>
+                </field>
+                <field id="allow_attach_file" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow attach invoice pdf file</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+			<group id="generate_track_code" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Generate Tracking Code Setting</label>
+				<field id="limit" type="text" translate="label comment" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Limit Number Orders on Each Time Running</label>
+					<comment><![CDATA[Input limit number of orders on each time run generate tracking code command.]]></comment>
+				</field>
+			</group>
+		</section>
+	</system>
+</config>

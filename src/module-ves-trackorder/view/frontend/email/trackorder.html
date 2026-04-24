@@ -1,0 +1,49 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!--@subject {{trans "You received a tracking order info from %store_name" store_name=$store.getFrontendName()}} @-->
+<!--@vars {
+"var data":"Object of post data and order data",
+"var order":"Order Model Object",
+"var qrlink":"Qrcode image link",
+"var data.track_link":"Order tracking code"
+"var track_url":"Tracking Url"
+"var name":"Customer Name"
+"var email":"Email Address"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<p class="greeting">{{trans 'Hello, <span class="no-link">%guest_name</span>' guest_name=$name |raw}}</p>
+<table class="main">
+	<tr class="email-summary">
+		<td>
+			<h1>{{trans 'Your Order <span class="no-link">#%increment_id</span>' increment_id=$data.increment_id |raw}}</h1>
+			<p>{{trans 'Placed on <span class="no-link">%created_at</span>' created_at=$order.created_at |raw}}</p>
+			<p>{{trans 'Has a status: <strong>%order_status</strong>' order_status=$order.status |raw}}</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p>
+				{{trans '<img src="%qrlink" width="200" height="200" alt="qrcode"/>' qrlink=$qrlink |raw}}
+			</p>
+			<strong>{{trans "Track Code:"}}</strong> <em>{{var data.track_link}}</em>
+		</td>
+	</tr>
+	<tr>
+		<td class="email-tracklink">
+			{{trans 'You can check the status of your order at here: <a href="%track_url"> Track Order </a>.' track_url=$track_url |raw}}
+		</td>
+	</tr>
+	<tr class="email-information">
+		<td class="main-content">
+			<p><strong>{{trans "Order Detail: "}}</strong></p>
+			{{layout handle="sales_email_order_items" order_id=$order_id area="frontend"}}
+		</td>
+	</tr>
+</table>
+{{template config_path="design/email/footer_template"}}

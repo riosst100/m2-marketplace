@@ -1,0 +1,97 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var  $block \Magento\Shipping\Block\Items */ ?>
+<?php  $_order = $block->getOrder(); ?>
+<div class="actions-toolbar">
+    <?php if ($_order->getTracksCollection()->count()) : ?>
+        <?php echo $block->getChildHtml('track-all-link') ?>
+    <?php endif; ?>
+</div>
+<?php foreach ($_order->getShipmentsCollection() as $_shipment): ?>
+    <div class="order-title">
+        <strong><?php echo __('Shipment #') ?><?php echo $_shipment->getIncrementId(); ?></strong>
+        <a href="#" id="ves-trackshipment"
+        data-name="trackshipment"
+        data-url="<?php echo $this->helper('Magento\Shipping\Helper\Data')->getTrackingPopupUrlBySalesModel($_shipment) ?>"
+        class="ves-popupwindow action track">
+        <span><?php echo __('Track this shipment') ?></span>
+    </a>
+</div>
+<?php $tracks = $_shipment->getTracksCollection(); ?>
+<?php  if ($tracks->count()): ?>
+    <dl class="order-tracking" id="my-tracking-table-<?php echo $_shipment->getId(); ?>">
+        <dt class="tracking-title">
+            <?php echo __('Tracking Number(s):') ?>
+        </dt>
+        <dd class="tracking-content">
+            <?php
+            $i = 1;
+            $_size = $tracks->count();
+            foreach ($tracks as $track): ?>
+            <?php if ($track->isCustom()): ?><?php echo $block->escapeHtml($track->getNumber()) ?><?php else: ?><a
+                href="#"
+                class="ves-popupwindow action track" data-url="<?php echo $this->helper('Magento\Shipping\Helper\Data')->getTrackingPopupUrlBySalesModel($track) ?>" data-name="trackorder"><span><?php echo $block->escapeHtml($track->getNumber()) ?></span>
+            </a><?php endif; ?><?php if ($i != $_size): ?>, <?php endif; ?>
+            <?php $i++;
+            endforeach; ?>
+        </dd>
+    </dl>
+<?php  endif; ?>
+<div class="table-wrapper order-items-shipment">
+    <table class="data table table-order-items shipment" id="my-shipment-table-<?php echo $_shipment->getId(); ?>">
+        <caption class="table-caption"><?php echo __('Items Shipped') ?></caption>
+        <thead>
+            <tr>
+                <th class="col name"><?php echo __('Product Name') ?></th>
+                <th class="col sku"><?php echo __('SKU') ?></th>
+                <th class="col qty"><?php echo __('Qty Shipped') ?></th>
+            </tr>
+        </thead>
+        <?php $_items = $_shipment->getAllItems(); ?>
+        <?php $_count = count($_items) ?>
+        <?php foreach ($_items as $_item): ?>
+            <?php if ($_item->getOrderItem()->getParentItem()) {
+                continue;
+            } ?>
+            <tbody>
+                <?php echo $block->getItemHtml($_item) ?>
+            </tbody>
+        <?php endforeach; ?>
+    </table>
+</div>
+
+
+<script type="text/javascript">
+    require(['jquery', 'mage/popup-window'], function($){
+        jQuery(document).ready(function($) {
+            $('.ves-trackorder').find('.ves-popupwindow').each(function(index, el) {
+                var windowUrl = $(this).data('url');
+                var windowName = $(this).data('name');
+                var windowHeight = $(this).data('height');
+                if(!windowHeight) windowHeight = 800;
+                var windowwidth = $(this).data('width');
+                if(!windowwidth) windowwidth = 600;
+                $(this).popupWindow({
+                    "windowURL": windowUrl,
+                    "windowName": windowName,
+                    "width":windowHeight,
+                    "height":windowwidth,
+                    "top":0,
+                    "left":0,
+                    "resizable":1,
+                    "scrollbars":1
+                });
+            });
+        });
+    });
+</script>
+
+<?php echo $block->getCommentsHtml($_shipment)?>
+<?php endforeach; ?>

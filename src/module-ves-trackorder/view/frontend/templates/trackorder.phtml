@@ -1,0 +1,86 @@
+<?php echo $block->getChildHtml('form_fields_before')?>
+<?php /* Extensions placeholder */ ?>
+<?php
+$block_title = $this->getConfig("title");
+$block_title = $block_title?$block_title: '';
+?>
+<div class="ves-trackorder">
+    <div class="track-order block">
+        <div class="block-title">
+            <strong role="heading" aria-level="2"><?php echo __('Track your order'); ?></strong>
+        </div>
+        <div class="block-content">
+            <form name="track_order" id="track_order" class="form" action="" method="post" onsubmit="return false;" data-actionurl='<?php  echo $block->getTrackOrderUrl();?>' data-hasrequired="* Required Fields" novalidate="novalidate" enctype="multipart/form-data" autocomplete="off">
+                <fieldset class="fieldset create info" data-hasrequired="* Required Fields">
+                    <div class="field note"><?php echo __('Enter your email address and Order Id to track your order summary.'); ?></div>
+                    <div class="field order-id required">
+                        <label for="order_id" class="label"><span><?php echo __('Order Id') ?></span></label>
+                        <div class="control">
+                            <input type="text" name="order_id" id="order_id" value="<?php echo $default_order_id; ?>" title="<?php echo __('Order Id') ?>" class="input-text" data-validate="{required:true}">
+                        </div>
+                    </div>
+                    <div class="field email-address required">
+                        <label for="email_address" class="label"><span><?php echo __('Email Address') ?></span></label>
+                        <div class="control">
+                            <input type="email" name="email_address" id="email_address" value="<?php echo $default_email; ?>" title="<?php  echo __('Email Address') ?>" class="input-text" data-validate="{required:true, 'validate-email':true}">
+                        </div>
+                    </div>
+                    <div class="actions-toolbar">
+                        <div class="primary">
+                            <button type="submit" class="action submit primary" title="<?php  echo __('Track Order') ?>" name="track" id="track"><span><?php  echo __('Track Order') ?></span></button>
+                        </div>
+                    </div>
+                    <div class="hide">
+                        <input type="hidden" name="ajax" value="1"/>
+                    </div>
+                </fieldset>
+            </form>
+            <div id="loading-details" class="loading-details" style="display:none">
+                <div id="loading-mask" >
+                    <p class="loader" id="loading_mask_loader"><img src="<?php echo $this->getMediaUrl('trackorder/ajax-loader-tr.gif') ?>" alt="<?php echo __('Loading...') ?>"/><br/><?php echo __('Please wait...') ?></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="track-login block">
+        <?php echo $this->getChildHtml('login.form'); ?>
+    </div>
+    <div id="orderinfo" class="order-info-message"></div>
+    <script type="text/javascript">
+        require([
+            'jquery',
+            'mage/mage'
+            ], function($){
+                $(function() {
+                    var dataForm = $('#track_order');
+                    var ignore = 'null';
+                    dataForm.mage('validation', {
+                        ignore: ignore ? ':hidden:not(' + ignore + ')' : ':hidden'
+                    }).find('input:text').attr('autocomplete', 'off');
+                    var url = dataForm.data("actionurl");
+                    $('#track').click(function (event) {
+                        var data = dataForm.serialize();
+                        if ($('#track_order').valid()) {
+                            $.ajax({
+                                url: url,
+                                data: data,
+                                method: "POST",
+                                beforeSend: function(){
+                                    $(".loading-details").show();
+                                },
+                                success: function(result) {
+                                    $("#orderinfo").html(result);
+                                }, 
+                                complete: function (){
+                                    $(".loading-details").hide();
+                                    return false;
+                                }
+                            });
+                        }
+                        event.preventDefault();
+                        return false;
+                    });
+                });
+            });
+        </script>
+    </div>

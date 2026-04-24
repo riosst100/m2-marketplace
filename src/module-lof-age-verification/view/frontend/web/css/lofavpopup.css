@@ -1,0 +1,85 @@
+<!--
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_AgeVerification
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+-->
+.lofav-popup .modal-inner-wrap{
+    width: 500px !important;
+    margin-top: 8% !important;
+}
+
+.lofav-modal, .lofav-popup .modal-header{
+    display: none;
+}
+
+.lofav-modal{
+    margin-top: 2em;
+}
+
+.lofav-modal .lofav-modal__icon{
+    width: 150px;
+    height: 150px;
+}
+
+.lofav-modal .lofav-modal__content{
+    text-align: center;
+}
+
+.lofav-modal button{
+    font-size: 15px;
+    margin: 5px 33px;
+    border-radius: 0;
+    padding: 8px 15px;
+}
+.lofav-modal .lofav-dob{
+    margin: 2px;
+}
+
+.lofav-modal .lofav-month{
+    width: 110px;
+}
+
+.lofav-modal .lofav-day{
+    width: 65px;
+}
+
+.lofav-modal .lofav-year{
+    width: 75px;
+}
+
+.lofav-modal .dob-message{
+    color:#e02b27;
+}
+
+.lofav-modal .lofav-modal__description{
+    padding-top: 10px;
+}
+
+.lofav-modal .lofav-modal__verify--checkboxtype{
+    padding: 10px;
+    font-size: 16px;
+}
+
+.lofav-modal .lofav-modal__verify--dobtype{
+    padding: 10px;
+}
+
+select.lofav-dob.invalid {
+    border-color:#e02b27;
+}

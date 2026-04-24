@@ -1,0 +1,82 @@
+<?php
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var $block \Magento\Sales\Block\Order\Info */ ?>
+<?php
+$_helper = $this->helper("Ves\Trackorder\Helper\Data");
+$_order  = $this->getOrder();
+$status = $_order->getStatus();
+$message = $_helper->getConfig('order_status/' . strtolower($status));
+$order_status_icon = $_helper->getConfig('order_status_icon/' . strtolower($status));
+?>
+<div class="block-row">
+    <div class="box box-order-billing-address block block-left">
+        <div class="block-title">
+            <strong><?php echo __('Order Summary'); ?></strong>
+        </div>
+        <div class="box-content">
+            <ul>
+                <li><?php echo __('%1 Item(s)', $_order->getTotalItemCount()); ?></li>
+                <li><label><?php echo __('Order ID: '); ?></label>&nbsp;<span class="real-order-id"><?php echo $_order->getRealOrderId() ?></span></li>
+                <li><label><?php echo __('Date: '); ?></label>&nbsp;<span class="order-date"><?php echo $block->formatDate($_order->getCreatedAt(), \IntlDateFormatter::LONG); ?></span></li>
+                <?php if (!$_order->getIsVirtual()): ?>
+                    <li><label><?php echo __('Shipping Method: '); ?></label>
+                        <?php if ($_order->getShippingDescription()): ?>
+                            <span class="shipping-description">&nbsp;<?php echo $block->escapeHtml($_order->getShippingDescription()) ?></span>
+                        <?php else: ?>
+                            <span class="shipping-description">&nbsp;<?php echo __('No shipping information available'); ?></span>
+                        <?php endif; ?>
+                    </li>
+                <?php endif; ?>
+
+                <li><label><?php echo __('Total: '); ?></label>&nbsp;<span class="price"><?php echo $_order->formatPrice($_order->getGrandTotal()) ?></span>
+                </li>
+                <li>
+                    <div class="status status-<?php echo strtolower($_order->getStatus()); ?>">
+                       <?php if($order_status_icon) { ?>
+                       <i class="<?php echo $order_status_icon; ?>"></i>&nbsp;
+                       <?php } ?> 
+                        <b><?php echo $_order->getFrontendStatusLabel() ?></b>
+                    </div>
+                    <?php if($message){ ?>
+                        <p><?php echo $_helper->filter($message); ?></p>
+                        <?php } ?>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <?php if (!$_order->getIsVirtual()): ?>
+            <div class="box box-order-shipping-address block block-right">
+                <div class="block-title">
+                    <strong><?php echo __('Shipping Address'); ?></strong>
+                </div>
+                <div class="box-content">
+                    <address><?php echo $block->getFormattedAddress($_order->getShippingAddress()); ?></address>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+    <div class="block-row">
+        <div class="box box-order-billing-address block block-left">
+            <div class="block-title">
+                <strong><?php echo __('Billing Address'); ?></strong>
+            </div>
+            <div class="box-content">
+                <address><?php echo $block->getFormattedAddress($_order->getBillingAddress()); ?></address>
+            </div>
+        </div>
+        <div class="box box-order-billing-method block block-right">
+            <div class="block-title">
+                <strong><?php echo __('Payment Method'); ?></strong>
+            </div>
+            <div class="box-content">
+                <?php echo $block->getPaymentInfoHtml() ?>
+            </div>
+        </div>
+    </div>

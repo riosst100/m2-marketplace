@@ -1,0 +1,23 @@
+{
+    "name": "landofcoder/ageverification",
+    "description": "Age verification on the CMS page, category page, product page.",
+    "type": "magento2-module",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "landofcoder",
+            "homepage": "https://landofcoder.com",
+            "email": "landofcoder@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Lof\\AgeVerification\\": ""
+        }
+    }
+}

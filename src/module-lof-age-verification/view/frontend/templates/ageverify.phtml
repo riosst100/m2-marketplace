@@ -1,0 +1,59 @@
+<?php
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_AgeVerification
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+
+use Lof\AgeVerification\Model\Config\Source\PopupVerifyType;
+
+/**
+ * @var $block \Lof\AgeVerification\Block\Popup
+ * @var $helper \Lof\AgeVerification\Helper\Data
+ */
+$helper = $this->helper('Lof\AgeVerification\Helper\Data');
+?>
+<div class="lofav-modal" id="lofav-modal">
+    <div class="lofav-modal__content">
+        <img class="lofav-modal__icon" src="<?= $block->escapeHtmlAttr($block->getDefaultPopupIcon()) ?>"
+             alt="<?= $block->escapeHtmlAttr(__('icon')) ?>">
+        <h3 class="lofav-modal__title"><?= $block->escapeHtml($helper->getPopupTitle()) ?></h3>
+        <div class="lofav-modal__verify">
+            <?php if ($helper->getVerifyType() === PopupVerifyType::TYPE_DOB) : ?>
+                <div class="lofav-modal__verify--dobtype"></div>
+            <?php endif; ?>
+            <?php if ($helper->getVerifyType() === PopupVerifyType::TYPE_CHECKBOX) : ?>
+                <div class="lofav-modal__verify--checkboxtype">
+                    <input type="checkbox" id="lofav-checkbox" name="verifyage" value="1">
+                    <label for="lofav-checkbox">
+                        <?= $block->escapeHtml(sprintf(__('Yes, I am %s years old'), $helper->getVerifyAge())) ?>
+                    </label>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="lofav-modal__button">
+            <?php if ($helper->getVerifyType() != PopupVerifyType::TYPE_CHECKBOX) : ?>
+                <button class="lofav-btn-cancel"><?= $block->escapeHtml($helper->getButtonCancelText()) ?></button>
+            <?php endif; ?>
+            <button class="lofav-btn-confirm"><?= $block->escapeHtml($helper->getButtonConfirmText()) ?></button>
+        </div>
+        <div class="lofav-modal__description">
+            <p class="lofav-modal__description-text"><?= $block->escapeHtml($helper->getPopupDescription()) ?></p>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,13 @@
+<?php 
+  $track_url_orig = $block->getTrackLink();
+  $track_url = str_replace(array(" ",":","=","&","?"), array("+","%3A","%3D","%26","%3F"), $track_url_orig);
+  $code_width = $block->getConfig("code_width", 200);
+  $code_height = $block->getConfig("code_height", 200); 
+  $qrlink = "https://chart.googleapis.com/chart?chs=".(int)$code_width."x".(int)$code_height."&cht=qr&chl=".$track_url."&choe=UTF-8";
+  if($track_url_orig) {
+?>
+<div class="qrcode">
+<img style="float: left;" src="<?php echo $qrlink; ?>" width="<?php echo (int)$code_width; ?>" height="<?php echo (int)$code_height; ?>" alt=""/>
+<strong class="trackcode" style="float: left;margin-top: 100px;"><?php echo $block->getTrackCode(); ?></strong>
+</div>
+<?php } ?>

@@ -1,0 +1,123 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+$_order = $block->getOrder(); 
+$_helper = $this->helper("Ves\Trackorder\Helper\Data");
+$enable_sendmail = $_helper->getConfig('email_settings/enable_sendmail');
+$allow_attach_file = $_helper->getConfig('email_settings/allow_attach_file');
+?>
+<style>
+.modal-footer {
+    display: none;
+} 
+
+</style>
+
+<div class="actions ves-trackorder"> 
+    <?php if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($_order->getEntityId())) : ?>
+        <a href="#" data-post='<?php /* @escapeNotVerified */ echo
+        $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)
+        ->getPostData($block->getReorderUrl($_order))
+        ?>' class="action order">
+        <span><?php /* @escapeNotVerified */ echo __('Reorder') ?></span>
+    </a>
+<?php endif ?>
+<a class="action print"
+href="<?php /* @escapeNotVerified */ echo $block->getPrintUrl($_order) ?>"
+onclick="this.target='_blank';">
+<span><?php /* @escapeNotVerified */ echo __('Print Order') ?></span>
+</a>
+<?php if($enable_sendmail) { ?>
+<a href="#" class="action sendemail" id="trackorder-popup-modal">
+    <span><?php  /* @escapeNotVerified */ echo __('Send Email') ?></span>
+</a>
+<?php } ?>
+<?php echo $block->getChildHtml() ?>
+</div>
+<form  id="sendEmailTrackorder" class="form" style="display: none;" action="#" method="post" enctype="multipart/form-data" autocomplete="off">
+    <div class="loader2" style="display:none;" align="center"><i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i></div>
+    <div class="form-send-email">
+        <div class="form-group">
+            <label for="exampleInputName"><?php echo __("Name"); ?></label>
+            <input type="text" class="form-control" id="exampleInputName"  placeholder="Enter name" required> 
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmailFrom"><?php echo __("Email address");?></label>
+            <input type="email" class="form-control" id="exampleInputEmailFrom"  placeholder="Enter email" required> 
+        </div> 
+        <div class="form-group">
+          <label for="invoiceIdSendEmail"><?php echo __("Select Invoice:");?></label>
+          <select class="form-control" id="invoiceIdSendEmail">
+            <?php foreach($_order->getInvoiceCollection() as $_invoice): ?> 
+                <option value="<?php echo $_invoice->getId(); ?>"><?php echo __('Invoice #'). $_invoice->getIncrementId() ?></option>
+            <?php endforeach; ?> 
+          </select>
+        </div> 
+        <button id="sendEmailTrack" type="submit" class="btn btn-primary" style="margin-top: 20px;"><?php echo __("Submit");?></button>  
+    </div>
+</form> 
+<script>
+    require(
+        [
+        'jquery', 
+        'Magento_Ui/js/modal/modal',
+        'mage/translate' 
+        ],
+        function(
+            $,
+            modal
+            ) { 
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                title: '<?php echo __("Send Email"); ?>'
+            };  
+            var popup = modal(options, $('#sendEmailTrackorder')); 
+            $('#trackorder-popup-modal').click(function(){
+                $('#sendEmailTrackorder').modal('openModal');
+            });
+            
+            $('#sendEmailTrackorder').submit(function(e){   
+                e.preventDefault();   
+                $('.loader2').show();
+                $('.form-send-email').hide();
+                var url = '<?php echo $block->getPrintOrderUrl($_order); ?>';  
+                var name = $('#exampleInputName').val();
+                var email = $('#exampleInputEmailFrom').val();
+                var invoiceId = $('#invoiceIdSendEmail').val();
+                var data = {
+                    email_recipient: email,
+                    name: name,
+                    invoiceId: invoiceId
+                } 
+                <?php if($allow_attach_file) { ?>   
+                $.ajax({
+                    url: url, 
+                    method: "POST", 
+                    data: data,
+                    success: function(result1) { 
+                <?php } ?>
+                        $.ajax({
+                            url: '<?php echo $block->getSendEmailUrl($_order); ?>',
+                            data: data,
+                            method: "POST", 
+                            success: function(result2) {
+                                $('.action-close').click();
+                                $('.loader2').hide(); 
+                                $('.form-send-email').show();
+                            } 
+                        });
+                <?php if($allow_attach_file) { ?>    
+                    } 
+                });  
+                <?php } ?>
+                return false;
+            });
+            
+        }); 
+    </script>

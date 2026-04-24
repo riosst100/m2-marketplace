@@ -1,0 +1,214 @@
+<?xml version="1.0" ?>
+<!--
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_AgeVerification
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+	<system>
+        <tab id="landofcoder" translate="label" sortOrder="400">
+            <label>Landofcoder Extensions Setting</label>
+        </tab>
+        <section id="lofageverification" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+            <label>Age Verification</label>
+            <tab>landofcoder</tab>
+            <resource>Lof_AgeVerification::config</resource>
+            <group id="general_settings" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                <label>General Settings</label>
+                <field id="enable" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="select" canRestore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="required_login" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label" type="select" canRestore="1">
+                    <label>Required Login</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="login_notice" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="22" translate="label" type="textarea" canRestore="1">
+                    <label>Notice Login Request</label>
+                    <depends>
+                        <field id="required_login">1</field>
+                    </depends>
+                </field>
+                <field id="prevent_notice" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="25" translate="label" type="textarea" canRestore="1">
+                    <label>Notice not Suitable Content</label>
+                    <depends>
+                        <field id="required_login">1</field>
+                    </depends>
+                </field>
+                <field id="verify_type" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Verification Type</label>
+                    <source_model>Lof\AgeVerification\Model\Config\Source\PopupVerifyType</source_model>
+                    <depends>
+                        <field id="required_login">0</field>
+                    </depends>
+                </field>
+                <field id="verify_age" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="40" translate="label" type="text" canRestore="1">
+                    <label>Minimum Age Limit</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                </field>
+                <field id="store_view" translate="label" type="multiselect" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Store View</label>
+                    <source_model>Lof\AgeVerification\Model\Config\Source\Stores</source_model>
+                </field>
+                <field id="cookie_lifetime" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="60" translate="label comment" type="text" canRestore="1">
+                    <label>Cookie Lifetime (days)</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <comment><![CDATA[How long the cookie will be stored on the client's browser. Default: 365.]]></comment>
+                </field>
+            </group>
+            <group id="verification_configuration" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                <label>Verification Configuration</label>
+                <group id="cms_pages" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                    <label>For CMS Pages</label>
+                    <field id="enable_pages" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="select" canRestore="1">
+                        <label>Enable</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="apply_to_cms_pages" translate="label" type="multiselect" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Apply to CMS pages</label>
+                        <source_model>Magento\Cms\Model\Config\Source\Page</source_model>
+                        <depends>
+                            <field id="enable_pages">1</field>
+                        </depends>
+                    </field>
+                </group>
+                <group id="category_page" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                    <label>For Category Pages</label>
+                    <field id="enable_pages" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="select" canRestore="1">
+                        <label>Enable</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="apply_to_category" translate="label" type="multiselect" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Apply to Category</label>
+                        <source_model>Lof\AgeVerification\Model\Config\Source\Category</source_model>
+                        <depends>
+                            <field id="enable_pages">1</field>
+                        </depends>
+                    </field>
+                </group>
+                <group id="product_detail" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                    <label>For Product Detail Pages</label>
+                    <field id="enable_conditions" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="select" canRestore="1">
+                        <label>Enable</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="conditions" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Conditons</label>
+                        <frontend_model>Lof\AgeVerification\Block\Adminhtml\Form\Field\ProductDetailConditions</frontend_model>
+                        <depends>
+                            <field id="enable_conditions">1</field>
+                        </depends>
+                    </field>
+                </group>
+                <group id="product_purchase" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                    <label>For Product Purchase</label>
+                    <field id="enable_conditions" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="select" canRestore="1">
+                        <label>Enable</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="purchase_conditions" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Conditons</label>
+                        <frontend_model>Lof\AgeVerification\Block\Adminhtml\Form\Field\ProductPurchaseConditions</frontend_model>
+                        <depends>
+                            <field id="enable_conditions">1</field>
+                        </depends>
+                    </field>
+                    <field id="purchase_notice" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Purchase Notice</label>
+                        <depends>
+                            <field id="enable_conditions">1</field>
+                        </depends>
+                    </field>
+                    <field id="purchase_message" translate="label" type="textarea" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Purchase Message</label>
+                        <depends>
+                            <field id="enable_conditions">1</field>
+                        </depends>
+                    </field>
+                </group>
+            </group>
+            <group id="design" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                <label>Design</label>
+                <field id="popup_icon" translate="label comment" type="image" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Icon</label>
+                    <backend_model>Lof\AgeVerification\Model\Config\Backend\Image</backend_model>
+                    <base_url type="media" scope_info="1">lofageverification/design</base_url>
+                    <comment><![CDATA[Applies when the event does not upload thumbnail images <br/> [Allowed file types: jpg, jpeg, gif, png, svg]]]></comment>
+                </field>
+                <field id="popup_title" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Popup Title</label>
+                    <comment><![CDATA[Enter the popup title. <strong>{age}</strong> is Minimum Age Limit value.]]></comment>
+                </field>
+                <field id="popup_description" translate="label" type="textarea" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Description</label>
+                    <comment><![CDATA[Enter the popup description. <strong>{age}</strong> is Minimum Age Limit value.]]></comment>
+                </field>
+                <field id="button_cancel_text" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Cancel Button Text</label>
+                </field>
+                <field id="button_confirm_text" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Confirm Button Text</label>
+                </field>
+                <field id="redirect_url" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Redirect URL</label>
+                    <comment><![CDATA[Enter the redirect URL. <strong>{homepage}</strong> is the Homepage URL.]]></comment>
+                </field>
+                <field id="background_color" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Background Color</label>
+                    <frontend_model>Lof\AgeVerification\Block\Adminhtml\Color</frontend_model>
+                </field>
+                <field id="text_color" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Text Color</label>
+                    <frontend_model>Lof\AgeVerification\Block\Adminhtml\Color</frontend_model>
+                </field>
+                <field id="overlay_color" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Overlay Color</label>
+                    <frontend_model>Lof\AgeVerification\Block\Adminhtml\Color</frontend_model>
+                </field>
+                <field id="button_cancel_text_color" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Cancel Button Text Color</label>
+                    <frontend_model>Lof\AgeVerification\Block\Adminhtml\Color</frontend_model>
+                </field>
+                <field id="button_cancel_background_color" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Cancel Button Background Color</label>
+                    <frontend_model>Lof\AgeVerification\Block\Adminhtml\Color</frontend_model>
+                </field>
+                <field id="button_confirm_text_color" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Confirm Button Text Color</label>
+                    <frontend_model>Lof\AgeVerification\Block\Adminhtml\Color</frontend_model>
+                </field>
+                <field id="button_confirm_background_color" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Confirm Button Background Color</label>
+                    <frontend_model>Lof\AgeVerification\Block\Adminhtml\Color</frontend_model>
+                </field>
+            </group>
+            <group id="developer" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                <label>Developer</label>
+                <field id="product_item_selector" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Product Listing Item Selector</label>
+                    <comment><![CDATA[CSS selector for product items in Category or Listing page. We will find this CSS class to detect product items.]]></comment>
+                </field>
+                <field id="addtocart_selector" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>"Add to Cart" Selector</label>
+                    <comment><![CDATA[CSS selector for product items in Category or Listing page. We will find this CSS class to detect Add to Cart button.]]></comment>
+                </field>
+            </group>
+        </section>
+	</system>
+</config>

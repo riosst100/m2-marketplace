@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_AgeVerification
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="age_verification" sortOrder="0">
+        <settings>
+            <dataScope>data.product.age_verification</dataScope>
+            <label translate="true">Age Verification Settings</label>
+            <collapsible>true</collapsible>
+        </settings>
+        <field name="use_custom" formElement="checkbox" sortOrder="10">
+            <settings>
+                <label translate="true">Use Specific Settings?</label>
+                <tooltip>
+                    <description translate="true">Enable/Disable Use Config Settings Age Verification</description>
+                </tooltip>
+                <switcherConfig>
+                    <rules>
+                        <rule name="0">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>product_form.product_form.age_verification.prevent_view</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">true</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>product_form.product_form.age_verification.prevent_view</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="2">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>product_form.product_form.age_verification.prevent_purchase</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">true</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="3">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>product_form.product_form.age_verification.prevent_purchase</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="4">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>product_form.product_form.age_verification.verify_age</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">true</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="5">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>product_form.product_form.age_verification.verify_age</target>
+                                    <callback>visible</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                    <enabled>true</enabled>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="prevent_view" formElement="checkbox" sortOrder="20">
+            <settings>
+                <label translate="true">Prevent View Detail</label>
+                <tooltip>
+                    <description translate="true">Enable/Disable Use Popup Age Verification for this product details page</description>
+                </tooltip>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="prevent_purchase" formElement="checkbox" sortOrder="30">
+            <settings>
+                <label translate="true">Prevent Purchase</label>
+                <tooltip>
+                    <description translate="true">Enable/Disable Use Popup Age Verification when buying this product</description>
+                </tooltip>
+                <dataScope>prevent_purchase</dataScope>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="verify_age" formElement="input" sortOrder="60">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Minimum Age Limit</label>
+                <dataScope>verify_age</dataScope>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="validate-number-range" xsi:type="string">0-200</rule>
+                </validation>
+            </settings>
+        </field>
+    </fieldset>
+</form>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Venustheme
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Venustheme.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.venustheme.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category   Venustheme
+ * @package    Ves_Trackorder
+ * @copyright  Copyright (c) 2014 Venustheme (http://www.venustheme.com/)
+ * @license    http://www.venustheme.com/LICENSE-1.0.html
+ */
+-->
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+	<widget id="ves_trackorder_link" class="Ves\Trackorder\Block\Widget\Trackwidget">
+		<label translate="true">Ves Trackorder: Link</label>
+		<description translate="true">Enable Widget To Show Trackorder Link</description>
+		<parameters>
+			<parameter name="title" xsi:type="text" visible="true">
+				<label translate="true">Widget Title</label>
+				<description translate="true">This tile will be showed as header of widget block. Empty to disable.</description>
+			</parameter>
+			<parameter name="link_label" xsi:type="text" visible="true">
+				<label translate="true">Link Label</label>
+				<value>Track Order</value>
+			</parameter>
+		</parameters>
+	</widget>
+	<widget id="ves_trackorder_form" class="Ves\Trackorder\Block\Widget\Trackwidgetform">
+		<label translate="true">Ves Trackorder: Form</label>
+		<description translate="true">Enable Widget To Show Trackorder Form</description>
+		<parameters>
+			<parameter name="title" xsi:type="text" visible="true">
+				<label translate="true">Widget Title</label>
+				<description translate="true">This tile will be showed as header of widget block. Empty to disable.</description>
+			</parameter>
+		</parameters>
+	</widget>
+</widgets>

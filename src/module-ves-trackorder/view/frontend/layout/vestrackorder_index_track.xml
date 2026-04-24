@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Venustheme
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Venustheme.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.venustheme.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category   Venustheme
+ * @package    Ves_Trackorder
+ * @copyright  Copyright (c) 2014 Venustheme (http://www.venustheme.com/)
+ * @license    http://www.venustheme.com/LICENSE-1.0.html
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column"
+	xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	<update handle="sales_order_item_renderers"/>
+	<update handle="sales_order_invoice_renderers"/>
+	<update handle="sales_order_item_price"/>
+	<update handle="sales_order_info_links"/>
+	<update handle="sales_order_shipment_renderers"/>
+	<update handle="sales_order_creditmemo_renderers"/>
+	<head>
+		<meta name="robots" content="NOINDEX,NOFOLLOW"/>
+	</head>
+	<body>
+		<attribute name="class" value="sales-guest-view"/>
+		<referenceContainer name="content">
+			<block class="Ves\Trackorder\Block\Order\Detail" name="order.details" template="Ves_Trackorder::details.phtml">
+				<!-- <block class="Magento\Sales\Block\Order\Info\Buttons" as="buttons" name="sales.order.info.buttons" cacheable="false"/> -->
+
+				<block class="Ves\Trackorder\Block\Order\Buttons" as="buttons" name="ves.trackorder.buttons" cacheable="false"/>
+
+				<block class="Ves\Trackorder\Block\Order\Qrcode" as="qrcode" name="sales.order.info.qrcode" cacheable="false"  template="Ves_Trackorder::qrcode.phtml"/>
+				<block class="Magento\Sales\Block\Order\Info" as="info" name="sales.order.info" template="Ves_Trackorder::order/info.phtml"/>
+				<block class="Magento\Framework\View\Element\Template" as="tabs" name="order.tabs" template="Ves_Trackorder::tabs.phtml">
+					<block class="Magento\Sales\Block\Order\View" as="sales.order.items" name="sales.order.items">
+						<block class="Magento\Sales\Block\Order\Items" name="order_items" template="Magento_Sales::order/items.phtml">
+							<block class="Magento\Framework\View\Element\RendererList" name="sales.order.items.renderers" as="renderer.list"/>
+							<block class="Magento\Sales\Block\Order\Totals" name="order_totals" template="Magento_Sales::order/totals.phtml">
+								<arguments>
+									<argument name="label_properties" xsi:type="string">colspan="4" class="mark"</argument>
+									<argument name="value_properties" xsi:type="string">class="amount"</argument>
+								</arguments>
+								<block class="Magento\Tax\Block\Sales\Order\Tax" name="tax" template="Magento_Tax::order/tax.phtml"/>
+							</block>
+						</block>
+					</block>
+					<block class="Magento\Sales\Block\Order\Invoice" name="sales.order.invoice" as="sales.order.invoice" cacheable="false" after="sales.order.info.links">
+						<block class="Magento\Sales\Block\Order\Invoice\Items" name="invoice_items" template="Ves_Trackorder::order/invoice/items.phtml">
+							<block class="Magento\Framework\View\Element\RendererList" name="sales.order.invoice.renderers" as="renderer.list"/>
+							<block class="Magento\Sales\Block\Order\Invoice\Totals" name="invoice_totals" template="order/totals.phtml">
+								<arguments>
+									<argument name="label_properties" xsi:type="string">colspan="4" class="mark"</argument>
+									<argument name="value_properties" xsi:type="string">class="amount"</argument>
+								</arguments>
+								<block class="Magento\Tax\Block\Sales\Order\Tax" name="tax" template="order/tax.phtml"/>
+							</block>
+							<block class="Magento\Sales\Block\Order\Comments" name="invoice_comments" template="order/comments.phtml"/>
+						</block>
+					</block>
+					<block class="Magento\Shipping\Block\Order\Shipment" name="sales.order.shipment" as="sales.order.shipment" cacheable="false" after="sales.order.info.links">
+						<block class="Magento\Shipping\Block\Items" name="shipment_items" template="Ves_Trackorder::order/shipment/items.phtml">
+							<block class="Magento\Framework\View\Element\RendererList" name="sales.order.shipment.renderers" as="renderer.list"/>
+							<block class="Magento\Shipping\Block\Tracking\Link" name="track-all-link" template="Ves_Trackorder::tracking/link.phtml">
+								<arguments>
+									<argument name="label" xsi:type="string">Track All Shipments</argument>
+								</arguments>
+							</block>
+							<block class="Magento\Sales\Block\Order\Comments" name="shipment_comments" template="order/comments.phtml"/>
+						</block>
+					</block>
+					<block class="Magento\Sales\Block\Order\Creditmemo" name="sales.order.creditmemo" as="sales.order.creditmemo" cacheable="false" after="sales.order.info.links">
+						<block class="Magento\Sales\Block\Order\Creditmemo\Items" name="creditmemo_items" template="Ves_Trackorder::order/creditmemo/items.phtml">
+							<block class="Magento\Framework\View\Element\RendererList" name="sales.order.creditmemo.renderers" as="renderer.list"/>
+							<block class="Magento\Sales\Block\Order\Creditmemo\Totals" name="creditmemo_totals" template="order/totals.phtml">
+								<arguments>
+									<argument name="label_properties" xsi:type="string">colspan="6" class="mark"</argument>
+									<argument name="value_properties" xsi:type="string">class="amount"</argument>
+								</arguments>
+								<block class="Magento\Tax\Block\Sales\Order\Tax" name="tax" template="order/tax.phtml"/>
+							</block>
+							<block class="Magento\Sales\Block\Order\Comments" name="creditmemo_comments" template="order/comments.phtml"/>
+						</block>
+					</block>
+				</block>
+			</block>
+		</referenceContainer>
+	</body>
+</page>

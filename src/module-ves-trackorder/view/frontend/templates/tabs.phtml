@@ -1,0 +1,52 @@
+<?php
+$invoiceHtml = $this->getChildHtml('sales.order.invoice');
+$shipmentHtml = $this->getChildHtml('sales.order.shipment');
+$creditmemoHtml = $this->getChildHtml('sales.order.creditmemo');
+?>
+
+<div class="trackorder-tab">
+	<ul class="items order-links">
+		<li class="nav item current"><a href="#order-items"><?php echo __('Items Ordered'); ?></a></li>
+		<?php if(strpos($invoiceHtml, 'table-order-items') !== false){ ?>
+		<li class="nav item"><a href="#order-invoice"><?php echo __('Invoices'); ?></a></li>
+		<?php } ?>
+		<?php if(strpos($shipmentHtml, 'table-order-items') !== false){ ?>
+		<li class="nav item"><a href="#order-shipment"><?php echo __('Order Shipments'); ?></a></li>
+		<?php } ?>
+		<?php if(strpos($creditmemoHtml, 'table-order-items') !== false){ ?>
+		<li class="nav item"><a href="#order-creditmemo"><?php echo __('Refunds'); ?></a></li>
+		<?php } ?>
+	</ul>
+	<div class="vestrackorder-tab">
+		<div id="order-items" class="vestrackorder-item current">
+			<?php echo $this->getChildHtml('sales.order.items'); ?>
+		</div>
+		<?php if(strpos($invoiceHtml, 'table-order-items') !== false){ ?>
+		<div id="order-invoice" class="vestrackorder-item">
+			<?php echo $invoiceHtml; ?>
+		</div>
+		<?php } ?>
+		<?php if(strpos($shipmentHtml, 'table-order-items') !== false){ ?>
+		<div id="order-shipment" class="vestrackorder-item">
+			<?php echo $shipmentHtml; ?>
+		</div>
+		<?php } ?>
+		<?php if(strpos($creditmemoHtml, 'table-order-items') !== false){ ?>
+		<div id="order-creditmemo" class="vestrackorder-item">
+			<?php echo $creditmemoHtml; ?>
+		</div>
+		<?php } ?>
+	</div>
+	<script type="text/javascript">
+		require(['jquery'], function($){
+			$(document).on('click', '#orderinfo .order-links a', function(){
+				$('.vestrackorder-tab .vestrackorder-item').removeClass('current');
+				var target = $(this).attr('href');
+				$(target).addClass('current');
+				$('.ves-trackorder ul.order-links li').removeClass('current');
+				$(this).parents('li').addClass('current');
+				return false;
+			});
+		});
+	</script>
+</div>

@@ -1,0 +1,104 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php 
+$_order = $block->getOrder();
+$_helper = $this->helper("Ves\Trackorder\Helper\Data");
+$print_all_link = $block->getPrintAllInvoicesUrl($_order);
+$print_all_link = str_replace("vestrackorder/index", "sales/order",$print_all_link);
+$allow_export_pdf = $_helper->getConfig('trackorder_general/allow_export_pdf');
+?>
+<div class="actions-toolbar">
+    <a href="<?php /* @escapeNotVerified */ echo $print_all_link ?>"
+       target="_blank"
+       class="action print">
+        <span><?php /* @escapeNotVerified */ echo __('Print All Invoices') ?></span>
+    </a>
+</div>
+<?php foreach ($_order->getInvoiceCollection() as $_invoice): ?>
+    <div class="order-title">
+        <strong><?php /* @escapeNotVerified */ echo __('Invoice #') ?><?php /* @escapeNotVerified */ echo $_invoice->getIncrementId(); ?></strong>
+            <?php 
+            $print_link = $block->getPrintInvoiceUrl($_invoice);
+            $print_link = str_replace("vestrackorder/index", "sales/order",$print_link);
+            ?>
+            <a href="<?php /* @escapeNotVerified */ echo $print_link ?>"
+           onclick="this.target='_blank'"
+           class="action print">
+            <span><?php /* @escapeNotVerified */ echo __('Print Invoice') ?></span>
+        </a>
+        <?php if($allow_export_pdf) { ?>
+        &nbsp;|<a href="javascript:;"
+           class="action print export-pdf" data-invoice="<?php echo $_invoice->getId(); ?>" data-invoiceinc="<?php echo $_invoice->getIncrementId(); ?>">
+            <span><?php /* @escapeNotVerified */ echo __('Export Invoice Pdf') ?></span>
+        </a> <span class="export-pdf-loading" style="display: none;"><?php echo __("Getting...") ?></span>
+        <?php } ?>
+    </div>
+    <div class="table-wrapper table-order-items invoice">
+        <table class="data table table-order-items invoice" id="my-invoice-table-<?php /* @escapeNotVerified */ echo $_invoice->getId(); ?>">
+            <caption class="table-caption"><?php /* @escapeNotVerified */ echo __('Items Invoiced') ?></caption>
+            <thead>
+                <tr>
+                    <th class="col name"><?php /* @escapeNotVerified */ echo __('Product Name') ?></th>
+                    <th class="col sku"><?php /* @escapeNotVerified */ echo __('SKU') ?></th>
+                    <th class="col price"><?php /* @escapeNotVerified */ echo __('Price') ?></th>
+                    <th class="col qty"><?php /* @escapeNotVerified */ echo __('Qty Invoiced') ?></th>
+                    <th class="col subtotal"><?php /* @escapeNotVerified */ echo __('Subtotal') ?></th>
+                </tr>
+            </thead>
+            <?php $_items = $_invoice->getAllItems(); ?>
+            <?php $_count = count($_items) ?>
+            <?php foreach ($_items as $_item): ?>
+                <?php if ($_item->getOrderItem()->getParentItem()) {
+                    continue;
+                } ?>
+                <tbody>
+                    <?php echo $block->getItemHtml($_item) ?>
+                </tbody>
+            <?php endforeach; ?>
+            <tfoot>
+                <?php echo $block->getInvoiceTotalsHtml($_invoice)?>
+            </tfoot>
+        </table>
+    </div>
+    <?php echo $block->getInvoiceCommentsHtml($_invoice)?>
+<?php endforeach; ?>
+<?php if($allow_export_pdf) { ?>
+<script>
+    function setLocation(fileUrl, fileName) {
+        var a = document.createElement("a");
+        a.href = fileUrl;
+        a.setAttribute("download", fileName);
+        a.click();
+    }
+    require(
+        [
+        'jquery', 
+        'mage/translate' 
+        ],
+        function(
+            $
+            ) {
+            if($(".export-pdf").length > 0) {
+                $(".export-pdf").click(function(e){    
+                    e.preventDefault();   
+                    var url = '<?php echo $_helper->getPrintOrderUrl($_order); ?>';
+                    var invoiceId = $(this).data("invoice");
+                    var invoiceIncrement = $(this).data("invoiceinc");
+                    var data = {
+                        invoiceId: invoiceId
+                    }
+                    url +='&invoiceId='+invoiceId;
+                    setLocation(url, "#Invoice_" + invoiceIncrement + ".pdf"); 
+                    return false;
+                });
+            }
+        }); 
+    </script>
+ <?php } ?>

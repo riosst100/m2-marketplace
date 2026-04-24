@@ -1,0 +1,16 @@
+<?php
+$block_title = $this->getConfig("title");
+$block_title = $block_title?$block_title: '';
+$link_label = $this->getConfig("link_label");
+$link_label = $link_label?$link_label: __("Track Order");
+?>
+<div class = "block block-trackorder">
+    <?php if($block_title): ?>
+        <div class = "block-title">
+            <strong><span><?php echo $block_title; ?></span></strong>
+        </div>
+    <?php endif; ?>
+    <div class = "block-content">
+        <a target="_blank" href="<?php echo $this->getUrl('trackorder'); ?>"><?php echo $link_label;?></a>
+    </div>
+</div>

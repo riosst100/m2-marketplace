@@ -1,0 +1,274 @@
+.loading-details {
+    background: url("../images/main-bg.png") repeat scroll 0 0 transparent;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 99;
+    display: none;
+}
+.vestrackorder-item a.action.back {
+    display: none!important;
+}
+.ves-trackorder .box-order-billing-address .box-content li label {
+    margin-right: 5px;
+}
+.ves-trackorder .order-links .nav.item a {
+    padding: 10px;
+}
+.ves-trackorder .order-details-items .item-options dt,.ves-trackorder  .order-details-items .item-options dd {
+    font-size: 0.88em;
+    font-weight: 300;
+    margin: 0;
+}
+.ves-trackorder .order-details-items .item-options dt {
+    font-weight: 600;
+}
+#loading-details .update-popup {
+    position: fixed;
+    top: 45%;
+    left: 45%;
+    width: 300px;
+    margin-left: -105px;
+    padding: 15px 30px;
+    background: #fff;
+    color: #d85909;
+    font-weight: bold;
+    text-align: center;
+    z-index: 400;
+    webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+
+#loading-mask {
+    background: none repeat scroll 0 0 #F5F5F5;
+    border: 1px solid #F18200;
+    margin: 20% auto;
+    padding: 15px;
+    text-align: center;
+    width: 200px;
+}
+
+#loading-mask p {
+    margin-bottom: 0;
+}
+
+.track-data-table {
+    margin-bottom: 20px;
+}
+
+.order-info-message {
+    padding-top: 15px;
+}
+.ves-trackorder .block .block-title {
+    border-bottom: 1px solid #e8e8e8;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    padding-bottom: 12px
+}
+
+.ves-trackorder .block .block-title strong {
+    font-weight: 500
+}
+
+.ves-trackorder .track-order {
+    float: left;
+    width: 48%;
+}
+
+.ves-trackorder .track-login {
+    float: right;
+    width: 48%;
+}
+
+.ves-trackorder .form-login{
+    display: none;
+}
+
+.ves-trackorder #orderinfo{
+    width: 100%;
+    float: left
+}
+.ves-trackorder .block-left{
+    width: 48%;
+    float: left
+}
+.ves-trackorder .block-right{
+    width: 48%;
+    float: right
+}
+.ves-trackorder ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.ves-trackorder .block-row{
+    float: left;
+    width: 100%
+}
+.vestrackorder-tab .vestrackorder-item{
+    display: none;
+}
+.vestrackorder-tab .vestrackorder-item.current{
+    display: block;
+}
+.ves-trackorder ul.order-links{
+    float: left;
+    width: 100%;
+    position: absolute;
+}
+.vestrackorder-tab{
+    float: left;
+    width: 100%;
+    margin-top: 43px;
+}
+.order-links .item.current a {
+    background: #fff;
+    border: 1px solid #ccc;
+    display: block;
+    font-weight: 400;
+    border-bottom: 0;
+}
+.trackorder-tab{
+    position: relative;
+    float: left;
+    width: 100%;
+}
+.status{
+    position: relative;
+   
+}
+.status.status-completeold:before{
+    -webkit-font-smoothing: antialiased;
+    font-size: 24px;
+    line-height: 24px;
+    color: #5ac714;
+    content: '\e60e';
+    font-family: 'luma-icons';
+    margin: -12px 0 0;
+    vertical-align: middle;
+    display: inline-block;
+    font-weight: normal;
+    overflow: hidden;
+    speak: none;
+    left: 0;
+    top: 22px;
+    width: 25px;
+    position: absolute;
+    text-align: center;
+}
+.status i{
+    font-size: 25px;
+}
+.status.status-complete{
+    color: #5ac714;
+}
+.status.status-pending{
+    color: #c71414;
+}
+.status.status-closed{
+    color: #5ac714;
+}
+.status.status-fraud{
+    color: #5ac714;
+}
+.status.status-holded{
+    color: #5ac714;
+}
+.status.status-payment_review{
+    color: #5ac714;
+}
+.status.status-paypal_canceled_reversal{
+    color: #5ac714;
+}
+.status.status-paypal_reversed{
+    color: #5ac714;
+}
+.status.status-pending_payment{
+    color: #5ac714;
+}
+.status.status-pending_paypal{
+    color: #5ac714;
+}
+.status.status-processing{
+    color: #5ac714;
+}
+
+.vestrackorder-index-track .column.main > ul.items.order-links {
+    display: none;
+}
+
+@media all and (min-width: 768px), print {
+    .ves-trackorder .fieldset > .field > .control {
+        width: 55%;
+    }
+}
+
+@media all and (max-width: 767px){
+    .ves-trackorder .track-order,
+    .ves-trackorder .track-login,
+    .ves-trackorder .block-right,
+    .ves-trackorder .block-left{
+        width: 100%;
+    }
+    .ves-trackorder ul.order-links{
+        position: relative;
+    }
+    .vestrackorder-tab{
+        margin-top: 0
+    }
+}
+
+.ves-trackorder .sendemail{
+    display: block;
+    float: right;
+    padding-right: 15px;
+}
+
+.vestrackorder-tab .order-details-items {
+    border: 1px solid #ccc;
+    margin-bottom: 40px;
+    padding: 10px;
+}
+.vestrackorder-tab .order-links .item {
+    line-height: 40px;
+    margin: 0 0 -1px;
+}
+.vestrackorder-tab .order-links .item a {
+    background: #f6f6f6;
+    color: #6d6d6d;
+    border: 1px solid #ccc;
+    display: block;
+    font-weight: 400;
+    padding: 0 20px;
+}
+@media (min-width: 768px), print{
+.vestrackorder-tab .order-details-items {
+    margin-top: -1px;
+    padding: 25px;
+}
+.vestrackorder-tab .order-links:before,.vestrackorder-tab .order-links:after{
+    content: '';
+    display: table;
+}
+.vestrackorder-tab .order-links .item {
+    float: left;
+    margin: 0 -1px 0 0;
+}
+.vestrackorder-tab .order-links .item a {
+    padding: 1px 35px;
+}
+}
+
+.vestrackorder-tab .order-links .item.current a {
+    background: #fff;
+    border: 1px solid #ccc;
+    display: block;
+    font-weight: 400;
+    border-bottom: 0;
+}
+.vestrackorder-tab  .order-details-items .table-wrapper .data.table>thead>tr>td,.vestrackorder-tab  .order-details-items .table-wrapper .data.table>thead>tr>th{
+    border-bottom: 1px solid #ccc;
+}

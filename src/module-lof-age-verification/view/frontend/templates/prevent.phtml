@@ -1,0 +1,42 @@
+<?php
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_AgeVerification
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+
+/**
+ * @var $block \Lof\AgeVerification\Block\Popup
+ * @var $helper \Lof\AgeVerification\Helper\Data
+ */
+
+$helper = $this->helper('Lof\AgeVerification\Helper\Data');
+?>
+<div class="lofav-modal" id="lofav-modal">
+    <div class="lofav-modal__content">
+        <img class="lofav-modal__icon" src="<?= $block->escapeHtmlAttr($block->getDefaultPopupIcon()) ?>"
+             alt="<?= $block->escapeHtmlAttr(__('icon')) ?>">
+        <h3><?= $block->escapeHtml($helper->getPreventNotice()) ?></h3>
+        <div class="lofav-modal__button">
+            <button class="lofav-btn-confirm"><?= $block->escapeHtml($helper->getButtonConfirmText()) ?></button>
+        </div>
+        <div class="lofav-modal__description">
+            <p><?= $block->escapeHtml($helper->getPopupDescription()) ?></p>
+        </div>
+    </div>
+</div>
+

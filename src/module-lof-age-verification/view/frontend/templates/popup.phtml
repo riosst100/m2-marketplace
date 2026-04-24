@@ -1,0 +1,96 @@
+<?php
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_AgeVerification
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+
+
+/**
+ * Popup Age Verification
+ *
+ * @var $block \Lof\AgeVerification\Block\Popup
+ * @var $helper \Lof\AgeVerification\Helper\Data
+ */
+
+$helper = $this->helper('Lof\AgeVerification\Helper\Data');
+
+if ($currentProduct = $helper->getCurrentProduct()) {
+    if ($helper->isRequiredLogin() && $helper->getCustomerIsLoggedIn()) {
+        if ($helper->hasDobByCustomer()) {
+            if (!$helper->isRequiredLoginAndValidAge($currentProduct)) {
+                include($block->getTemplateFile('Lof_AgeVerification::prevent.phtml'));
+            }
+        }
+    }
+}
+
+if ($block->getCurrentPages()->getIdentifier() || $block->getCurrentCategory()) {
+    if ($helper->isRequiredLogin() && $helper->getCustomerIsLoggedIn()) {
+        if ($helper->hasDobByCustomer()) {
+            if (!$helper->isRequiredLoginAndValidAge()) {
+                include($block->getTemplateFile('Lof_AgeVerification::prevent.phtml'));
+            }
+        }
+    }
+}
+
+if ($helper->getVerifyType() === Lof\AgeVerification\Model\Config\Source\PopupVerifyType::TYPE_REQUIRE_LOGIN) {
+    include($block->getTemplateFile('Lof_AgeVerification::attention.phtml'));
+} else {
+    include($block->getTemplateFile('Lof_AgeVerification::ageverify.phtml'));
+}
+?>
+<style>
+
+    .lofav-popup .modal-inner-wrap {
+        background-color: <?= $helper->getBackgroundColor() ?>;
+    }
+
+    .lofav-btn-cancel {
+        background-color: <?= $helper->getBackgroundColor() ?>;
+    }
+
+    .lofav-modal__content {
+        color: <?= $helper->getTextColor() ?>;
+    }
+
+    .lofav-btn-cancel {
+        background-color: <?= $helper->getButtonCancelBackgroundColor() ?>;
+        color: <?= $helper->getButtonCancelTextColor() ?>;
+    }
+
+    .lofav-btn-confirm {
+        background-color: <?= $helper->getButtonConfirmBackgroundColor() ?>;
+        color: <?= $helper->getButtonConfirmTextColor() ?>;
+    }
+
+    .modals-overlay {
+        background-color: <?= $helper->getOverlayColor() ?>;
+    }
+</style>
+
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Lof_AgeVerification/js/lofavpopup-init": {
+            "popupConfigData" : <?= /* @noEscape */$block->getJsonConfig() ?>
+        }
+    }
+}
+</script>
+

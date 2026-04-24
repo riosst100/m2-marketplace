@@ -1,0 +1,30 @@
+{
+  "name": "landofcoder/module-trackorder-pro",
+  "description": "Tracking order info, shipment info, invoice info by tracking code",
+  "authors": [
+      {
+        "name": "Landofcoder",
+        "email": "landofcoder@gmail.com",
+        "homepage": "https://landofcoder.com",
+        "role": "Magento 2 extension Provider"
+      }
+  ],
+  "require": {
+    "venustheme/module-all":"1.*"
+  },
+  "type": "magento2-module",
+  "version": "2.0.2",
+  "license": "GPL-3.0",
+  "autoload": {
+      "files": [ "registration.php" ],
+      "psr-4": {
+          "Ves\\Trackorder\\": ""
+      }
+  },
+  "repositories": {
+      "module-trackorder-pro": {
+        "type": "git",
+        "url": "https://github.com/landofcoder/module-ves-trackorder-pro"
+      }
+  }
+}

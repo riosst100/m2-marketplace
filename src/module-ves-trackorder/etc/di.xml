@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<!--<preference for="\Magento\Framework\Mail\Template\TransportBuilder" type="Ves\Trackorder\Model\Mail\UploadTransportBuilder" />-->
+	<preference for="Ves\Trackorder\Api\TrackOrderRepositoryInterface" type="Ves\Trackorder\Model\TrackOrderRepository"/>
+	<type name="Magento\Framework\Console\CommandList">
+		<arguments>
+			<argument name="commands" xsi:type="array">
+				<item name="GenerateTrackCode" xsi:type="object">Ves\Trackorder\Console\Command\GenerateTrackCode</item>
+			</argument>
+		</arguments>
+	</type>
+</config>

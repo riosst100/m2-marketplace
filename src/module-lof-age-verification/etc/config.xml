@@ -1,0 +1,74 @@
+<?xml version="1.0" ?>
+<!--
+/**
+ * Landofcoder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Landofcoder.com license that is
+ * available through the world-wide-web at this URL:
+ * https://landofcoder.com/terms
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   Landofcoder
+ * @package    Lof_AgeVerification
+ * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
+ * @license    https://landofcoder.com/terms
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+	<default>
+		<lofageverification>
+			<general_settings>
+                <enable>1</enable>
+                <verify_age>18</verify_age>
+                <verify_type>1</verify_type>
+                <store_view>1</store_view>
+                <required_login>0</required_login>
+                <login_notice>Please login and confirm your age?</login_notice>
+                <prevent_notice>Your age is not suitable to access this content?</prevent_notice>
+                <cookie_lifetime>365</cookie_lifetime>
+			</general_settings>
+            <verification_configuration>
+                <cms_pages>
+                    <enable_pages>0</enable_pages>
+                </cms_pages>
+                <category_page>
+                    <enable_pages>0</enable_pages>
+                </category_page>
+                <product_detail>
+                    <enable_conditions>0</enable_conditions>
+                </product_detail>
+                <product_purchase>
+                    <enable_conditions>0</enable_conditions>
+                    <purchase_notice>Attention</purchase_notice>
+                    <purchase_message>Your age is not suitable to access this content?</purchase_message>
+                </product_purchase>
+            </verification_configuration>
+            <design>
+                <popup_title>You must be {age}+ to view this content?</popup_title>
+                <popup_description>This content is intended for use by people over the age of {age} only. Please authenticate to continue.</popup_description>
+                <button_cancel_text>Cancel</button_cancel_text>
+                <button_confirm_text>Confirm</button_confirm_text>
+                <redirect_url>{homepage}</redirect_url>
+                <background_color>#ffffff</background_color>
+                <text_color>#333333</text_color>
+                <overlay_color>rgba(51, 51, 51, 0.55)</overlay_color>
+                <button_cancel_text_color>#333333</button_cancel_text_color>
+                <button_cancel_background_color>#e1e1e1</button_cancel_background_color>
+                <button_confirm_text_color>#333333</button_confirm_text_color>
+                <button_confirm_background_color>#e1e1e1</button_confirm_background_color>
+            </design>
+            <developer>
+                <product_item_selector>.product-item, .item, td</product_item_selector>
+                <addtocart_selector>form[data-role="tocart-form"] button, button.tocart</addtocart_selector>
+            </developer>
+		</lofageverification>
+	</default>
+</config>
+
+
