@@ -36,8 +36,22 @@
         "src/module-lof-marketplace-graphql/registration.php",
         "src/module-lof-marketplace-theme/registration.php",
         "src/module-lof-preorder/registration.php",
+        "src/module-lof-quickrfq/registration.php",
+        "src/module-lofmp-ui/registration.php",
         "src/module-lofmp-preorder/registration.php",
-        "src/module-lofmp-favorite-seller/registration.php"
+        "src/module-lofmp-quick-rfq/registration.php",
+        "src/module-lofmp-rma/registration.php",
+        "src/module-lofmp-favorite-seller/registration.php",
+        "src/module-lofmp-coupon-code/registration.php",
+        "src/module-lofmp-coupon-code-graphql/registration.php",
+        "src/module-lofmp-flatrate-shipping/registration.php",
+        "src/module-lofmp-seller-membership/registration.php",
+        "src/module-lofmp-seller-membership-limit/registration.php",
+        "src/module-lofmp-seller-identification-approval/registration.php",
+        "src/module-lofmp-split-cart/registration.php",
+        "src/module-lofmp-split-cart-graphql/registration.php",
+        "src/module-lofmp-table-rate-shipping/registration.php",
+        "src/module-lofmp-store-locator/registration.php"
       ],
       "psr-4": {
         "Lof\\All\\": "src/module-lof-all",
@@ -46,8 +60,22 @@
         "Lof\\MarketplaceGraphQl\\": "src/module-lof-marketplace-graphql",
         "Lof\\MarketTheme\\": "src/module-lof-marketplace-theme",
         "Lof\\PreOrder\\": "src/module-lof-preorder",
+        "Lof\\Quickrfq\\": "src/module-lof-quickrfq",
+        "Lofmp\\Ui\\": "src/module-lofmp-ui",
         "Lofmp\\PreOrder\\": "src/module-lofmp-preorder",
-        "Lofmp\\FavoriteSeller\\": "src/module-lofmp-favorite-seller"
+        "Lofmp\\Quickrfq\\": "src/module-lofmp-quick-rfq",
+        "Lofmp\\FavoriteSeller\\": "src/module-lofmp-favorite-seller",
+        "Lofmp\\Rma\\": "src/module-lofmp-rma",
+        "Lofmp\\CouponCode\\": "src/module-lofmp-coupon-code",
+        "Lofmp\\CouponCodeGraphQl\\": "src/module-lofmp-coupon-code-graphql",
+        "Lofmp\\FlatRateShipping\\": "src/module-lofmp-flatrate-shipping",
+        "Lofmp\\SellerMembership\\": "src/module-lofmp-seller-membership",
+        "Lofmp\\SellerMembershipLimit\\": "src/module-lofmp-seller-membership-limit",
+        "Lofmp\\SellerIdentificationApproval\\": "src/module-lofmp-seller-identification-approval",
+        "Lofmp\\SplitCart\\": "src/module-lofmp-split-cart",
+        "Lofmp\\SplitCartGraphQl\\": "src/module-lofmp-split-cart-graphql",
+        "Lofmp\\TableRateShipping\\": "src/module-lofmp-table-rate-shipping",
+        "Lofmp\\StoreLocator\\": "src/module-lofmp-store-locator"
       }
     }
 }
