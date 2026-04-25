@@ -30,7 +30,7 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Commission
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::product_commission');
+        return $this->_authorization->isAllowed('TCGCollective_MarketPlace::product_commission');
     }
 
     /**
@@ -43,7 +43,7 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Commission
         /**
          * Set active menu item
          */
-        $resultPage->setActiveMenu("CoreMarketplace_MarketPlace::product_commission");
+        $resultPage->setActiveMenu("TCGCollective_MarketPlace::product_commission");
         $resultPage->getConfig()->getTitle()->prepend(__('Manage Commissions / Fee'));
 
         /**

@@ -264,7 +264,7 @@
         </column>
         <!-- <column name="seller_type">
             <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">CoreMarketplace\MarketPlace\Model\Config\Source\SellerType</item>
+                <item name="options" xsi:type="object">TCGCollective\MarketPlace\Model\Config\Source\SellerType</item>
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">select</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>

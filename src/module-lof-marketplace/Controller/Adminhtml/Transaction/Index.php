@@ -35,7 +35,7 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Transaction
         /**
          * Set active menu item
          */
-        $resultPage->setActiveMenu("CoreMarketplace_MarketPlace::seller_transaction");
+        $resultPage->setActiveMenu("TCGCollective_MarketPlace::seller_transaction");
         $resultPage->getConfig()->getTitle()->prepend(__('Seller | Transactions'));
 
         /**
@@ -52,6 +52,6 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Transaction
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::seller_transaction');
+        return $this->_authorization->isAllowed('TCGCollective_MarketPlace::seller_transaction');
     }
 }

@@ -48,7 +48,7 @@ abstract class Rma extends \Magento\Backend\App\Action
      */
     protected function initPage($resultPage)
     {
-        $resultPage->setActiveMenu('CoreMarketplace_MarketPlace::manage_seller_rma');
+        $resultPage->setActiveMenu('TCGCollective_MarketPlace::manage_seller_rma');
         // $resultPage->getConfig()->getTitle()->prepend(__('RMA'));
 
         return $resultPage;
@@ -59,6 +59,6 @@ abstract class Rma extends \Magento\Backend\App\Action
      */
     protected function _isAllowed()
     {
-        return $this->context->getAuthorization()->isAllowed('CoreMarketplace_MarketPlace::manage_seller_rma');
+        return $this->context->getAuthorization()->isAllowed('TCGCollective_MarketPlace::manage_seller_rma');
     }
 }

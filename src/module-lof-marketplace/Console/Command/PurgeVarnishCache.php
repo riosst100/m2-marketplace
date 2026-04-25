@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreMarketplace\MarketPlace\Console\Command;
+namespace TCGCollective\MarketPlace\Console\Command;
 
 use Magento\Framework\App\State;
 use Symfony\Component\Console\Command\Command;

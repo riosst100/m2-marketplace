@@ -91,7 +91,7 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
         /**
          * Checking if user have permission to save information
          */
-        if ($this->_isAllowedAction('CoreMarketplace_MarketPlace::product_commission')) {
+        if ($this->_isAllowedAction('TCGCollective_MarketPlace::product_commission')) {
             $isElementDisabled = false;
         } else {
             $isElementDisabled = true;

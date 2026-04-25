@@ -23,7 +23,7 @@ namespace Lof\Quickrfq\Model\ResourceModel\Quickrfq\Grid;
 use Magento\Framework\Api\Search\SearchResultInterface;
 use Magento\Framework\Search\AggregationInterface;
 use Lof\Quickrfq\Model\ResourceModel\Quickrfq\Collection as QuoteCollection;
-use CoreMarketplace\MarketPlace\Helper\AdminWebsite;
+use TCGCollective\MarketPlace\Helper\AdminWebsite;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\ObjectManager;
 
@@ -76,7 +76,7 @@ class Collection extends QuoteCollection implements SearchResultInterface
         
         $objectManager = ObjectManager::getInstance();
         $this->adminWebsite = $objectManager->get(
-            \CoreMarketplace\MarketPlace\Helper\AdminWebsite::class
+            \TCGCollective\MarketPlace\Helper\AdminWebsite::class
         );
 
         /** @var \Magento\Framework\App\RequestInterface $request */

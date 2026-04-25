@@ -372,12 +372,12 @@
             </argument>
         </column>
 
-        <column name="store_id" class="CoreMarketplace\SellerMembership\Ui\Component\Listing\Column\Website">
+        <column name="store_id" class="TCGCollective\SellerMembership\Ui\Component\Listing\Column\Website">
             <settings>
                 <label translate="true">Countries/Regions</label>
                 <filter>select</filter>
                 <dataType>select</dataType>
-                <options class="CoreMarketplace\SellerMembership\Ui\Component\Listing\Column\WebsiteOptions"/>
+                <options class="TCGCollective\SellerMembership\Ui\Component\Listing\Column\WebsiteOptions"/>
             </settings>            
         </column>
 

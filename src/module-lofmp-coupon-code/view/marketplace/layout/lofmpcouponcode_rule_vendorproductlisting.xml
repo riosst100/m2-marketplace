@@ -31,7 +31,7 @@
             </action>
         </referenceBlock>
 		<referenceContainer name="content">
-            <block class="CoreMarketplace\MarketPlace\Block\Catalog\Tabs" template="CoreMarketplace_MarketPlace::catalog/product_type_tabs.phtml" name="product.type.tabs"/>
+            <block class="TCGCollective\MarketPlace\Block\Catalog\Tabs" template="TCGCollective_MarketPlace::catalog/product_type_tabs.phtml" name="product.type.tabs"/>
         	<uiComponent name="vendor_catalog_cardgame_singles_listing"/>
         </referenceContainer>
 	</body>

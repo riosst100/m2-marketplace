@@ -25,7 +25,7 @@
     </head>
     <body>
       <referenceContainer name="content">
-            <block class="Lof\MarketPlace\Block\Message\Tabs" template="CoreMarketplace_ProductAttributesLink::platform_database/product_type_tabs.phtml" name="product.type.tabs"/>
+            <block class="Lof\MarketPlace\Block\Message\Tabs" template="TCGCollective_ProductAttributesLink::platform_database/product_type_tabs.phtml" name="product.type.tabs"/>
               <!-- <block class="Lof\MarketPlace\Block\Seller\MessageAdmin" name="message.admin" template="Lof_MarketPlace::seller/message_admin.phtml">
               </block> -->
             <uiComponent name="seller_message_admin_listing"/>

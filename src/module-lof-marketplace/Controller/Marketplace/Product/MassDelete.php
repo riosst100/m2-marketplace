@@ -71,7 +71,7 @@ class MassDelete extends \Magento\Framework\App\Action\Action
     {
         // dd($this->getRequest()->getParams());
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->mappingHelper = $objectManager->create(\CoreMarketplace\ProductAttributesLink\Helper\Data::class);
+        $this->mappingHelper = $objectManager->create(\TCGCollective\ProductAttributesLink\Helper\Data::class);
         $this->helper = $objectManager->get(\Lof\MarketPlace\Helper\Data::class);
 
         if ($this->getRequest()->getParam('selected')) {
