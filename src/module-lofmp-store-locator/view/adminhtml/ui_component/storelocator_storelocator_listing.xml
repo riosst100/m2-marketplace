@@ -27,14 +27,6 @@
             <item name="deps" xsi:type="string">storelocator_storelocator_listing.storelocator_storelocator_listing_data_source</item>
         </item>
         <item name="spinner" xsi:type="string">storelocator_storelocator_columns</item>
-        <item name="buttons" xsi:type="array">
-            <item name="add" xsi:type="array">
-                <item name="name" xsi:type="string">add</item>
-                <item name="label" xsi:type="string" translate="true">Add New StoreLocator</item>
-                <item name="class" xsi:type="string">primary</item>
-                <item name="url" xsi:type="string">*/*/new</item>
-            </item>
-        </item>
     </argument>
     <dataSource name="storelocator_storelocator_listing_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
@@ -220,6 +212,8 @@
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">textRange</item>
                     <item name="sorting" xsi:type="string">desc</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
                     <item name="label" xsi:type="string" translate="true">ID</item>
                 </item>
             </argument>
@@ -229,8 +223,9 @@
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="editor" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
                     <item name="label" xsi:type="string" translate="true">Seller ID</item>
-                    <item name="visible" xsi:type="boolean">true</item>
                 </item>
             </argument>
         </column>
@@ -244,7 +239,7 @@
                             <item name="required-entry" xsi:type="boolean">true</item>
                         </item>
                     </item>
-                    <item name="label" xsi:type="string" translate="true">StoreName</item>
+                    <item name="label" xsi:type="string" translate="true">Store Name</item>
                 </item>
             </argument>
         </column>
@@ -377,14 +372,13 @@
             </argument>
         </column>
 
-        <column name="store_id" class="Magento\Store\Ui\Component\Listing\Column\Store">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
-                    <item name="sortable" xsi:type="boolean">false</item>
-                    <item name="label" xsi:type="string" translate="true">Store View</item>
-                </item>
-            </argument>
+        <column name="store_id" class="CoreMarketplace\SellerMembership\Ui\Component\Listing\Column\Website">
+            <settings>
+                <label translate="true">Countries/Regions</label>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <options class="CoreMarketplace\SellerMembership\Ui\Component\Listing\Column\WebsiteOptions"/>
+            </settings>            
         </column>
 
         <column name="image" class="Lofmp\StoreLocator\Ui\Component\Listing\Column\Image">

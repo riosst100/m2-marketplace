@@ -27,6 +27,9 @@ use Lofmp\Rma\Model\Rma;
 
 class View extends \Magento\Framework\App\Action\Action
 {
+    protected $_storeManager;
+
+
 
     protected $_resultPageFactory;
 

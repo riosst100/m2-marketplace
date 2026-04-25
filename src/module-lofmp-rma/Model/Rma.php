@@ -27,6 +27,10 @@ use Magento\Framework\DataObject\IdentityInterface;
 
 class Rma extends \Magento\Framework\Model\AbstractModel implements \Lofmp\Rma\Api\Data\RmaInterface, IdentityInterface
 {
+    protected $orderFactory;
+    protected $datahelper;
+
+
     const CACHE_TAG = 'rma_rma';
 
     /**

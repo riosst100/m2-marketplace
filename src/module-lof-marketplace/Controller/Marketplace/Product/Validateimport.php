@@ -26,6 +26,8 @@ use Magento\ImportExport\Block\Adminhtml\Import\Frame\Result as ImportResultBloc
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\ImportExport\Model\Import\Adapter as ImportAdapter;
+use Magento\ImportExport\Model\Import\ErrorProcessing\ProcessingErrorAggregatorInterface;
+use Magento\ImportExport\Model\History as ModelHistory;
 
 class Validateimport extends ImportResultController
 {
@@ -33,6 +35,8 @@ class Validateimport extends ImportResultController
      * @var Import
      */
     private $import;
+
+    private $historyFactory;
 
     /**
      * Validate uploaded files action
@@ -42,6 +46,11 @@ class Validateimport extends ImportResultController
      */
     public function execute()
     {
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/import.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);            
+        // $logger->info('ValidateImport: Execute started');
+
         $data = $this->getRequest()->getPostValue();
         /** @var \Magento\Framework\View\Result\Layout $resultLayout */
         $resultLayout = $this->resultFactory->create(ResultFactory::TYPE_LAYOUT);
@@ -51,7 +60,7 @@ class Validateimport extends ImportResultController
             $resultBlock->addAction(
                 'show',
                 'import_validation_container'
-            );
+            );            
 
             /** @var $import \Magento\ImportExport\Model\Import */
             $import = $this->getImport()->setData($data);
@@ -66,8 +75,10 @@ class Validateimport extends ImportResultController
             } catch (\Magento\Framework\Exception\LocalizedException $e) {
                 $resultBlock->addError($e->getMessage());
             } catch (\Exception $e) {
-                $resultBlock->addError(__('Sorry, but the data is invalid or the file is not uploaded.'));
+                $resultBlock->addError($e->getMessage());
+                // $resultBlock->addError(__('Sorry, but the data is invalid or the file is not uploaded.'));
             }
+            // $logger->info('ValidateImport: Execute finished');
             return $resultLayout;
             // phpcs:disable Magento2.Security.Superglobal.SuperglobalUsageError
         } elseif ($this->getRequest()->isPost() && empty($_FILES)) {
@@ -99,7 +110,16 @@ class Validateimport extends ImportResultController
                 }
             }
         } else {
+
+            // CUSTOM: Handle invalid row
             $errorAggregator = $import->getErrorAggregator();
+            if ($errorAggregator->getErrorsCount()) {
+                foreach ($errorAggregator->getAllErrors() as $error) {
+                    $resultBlock->addError($error->getErrorMessage());
+                }
+            }
+            // END CUSTOM
+            
             if (!$validationResult) {
                 $resultBlock->addError(
                     __('Data validation failed. Please fix the following errors and upload the file again.')
@@ -116,16 +136,41 @@ class Validateimport extends ImportResultController
                 }
             }
 
-            $resultBlock->addNotice(
-                __(
-                    'Checked rows: %1, checked entities: %2, invalid rows: %3, total errors: %4',
+            $resultMsg = __('Checked rows: %1, checked entities: %2, invalid rows: %3, total errors: %4',
                     $import->getProcessedRowsCount(),
                     $import->getProcessedEntitiesCount(),
                     $errorAggregator->getInvalidRowsCount(),
-                    $errorAggregator->getErrorsCount()
-                )
-            );
+                    $errorAggregator->getErrorsCount());
+
+            $resultBlock->addNotice($resultMsg);
+
+            $this->createErrorReport($errorAggregator);
+
+            $this->historyFactory = $this->_objectManager->get(\Magento\ImportExport\Model\HistoryFactory::class);
+            $history = $this->historyFactory->create()->loadLastInsertItem();
+            if ($history) {
+                // dd($history->getId());
+                $history->setValidationSummary(__('Error: %1', $errorAggregator->getErrorsCount()));
+                $history->save();
+            }
         }
+    }
+
+    protected function createErrorReport(ProcessingErrorAggregatorInterface $errorAggregator)
+    {
+        $this->historyModel = $this->_objectManager->get(\Magento\ImportExport\Model\History::class);
+        $this->reportHelper = $this->_objectManager->get(\Magento\ImportExport\Helper\Report::class);
+        $this->reportProcessor = $this->_objectManager->get(\Magento\ImportExport\Model\Report\ReportProcessorInterface::class);
+
+        $this->historyModel->loadLastInsertItem();
+        $sourceFile = $this->reportHelper->getReportAbsolutePath($this->historyModel->getImportedFile());
+        $writeOnlyErrorItems = true;
+        if ($this->historyModel->getData('execution_time') == ModelHistory::IMPORT_VALIDATION) {
+            $writeOnlyErrorItems = false;
+        }
+        $fileName = $this->reportProcessor->createReport($sourceFile, $errorAggregator, $writeOnlyErrorItems);
+        $this->historyModel->addErrorReportFile($fileName);
+        return $fileName;
     }
 
     /**

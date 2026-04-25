@@ -30,6 +30,9 @@ use Magento\Framework\Exception\NoSuchEntityException;
  */
 class Register extends \Magento\Directory\Block\Data
 {
+    protected $_isScopePrivate;
+
+
     /**
      * @var \Lof\MarketPlace\Model\Group
      */

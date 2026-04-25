@@ -128,6 +128,20 @@ if ($tracking != "") {
     }
     $item_cancel_status = $is_canceled;
     $invoiceId = $tracking->getInvoiceId();
+
+    /** PREORDER DATA */
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+    /** @var \Lofmp\PreOrder\Model\PreOrder $preorderModel */
+    $preorderModel = $objectManager->get(\Lofmp\PreOrder\Model\PreOrder::class);
+
+    /** Load preorder by order_id */
+    $preorderCollection = $preorderModel->getCollection()
+        ->addFieldToFilter('order_id', $order_id);
+
+    $isPreorder = $preorderCollection->getSize() > 0;
+    $preorderData = $isPreorder ? $preorderCollection->getFirstItem() : null;
+    // dd($preorderData);
 }
 
 ?>
@@ -138,8 +152,17 @@ if ($tracking != "") {
                 <h2><?= $block->escapeHtml(__('Order #%1', $this->getOrder()->getRealOrderId())) ?></h2>
                 <div class="page-actions-buttons">
                     <div class="actions-split save primary">
+                        <!-- this row will not appear when printing -->
+                        <!-- <div class="row no-print">
+                            <div class="col-xs-12"> -->
+                                <?= $block->getChildHtml('order.invoice.print'); ?>
+                                <button class="btn btn-default print-button" onclick="window.print();">
+                                    <i class="fa fa-print"></i> <?= $block->escapeHtml(__('Print')) ?>
+                                </button>
+                            <!-- </div>
+                        </div> -->
                         <?php if ($item_cancel_status != "1" && !$tracking->isCanceled() && $item_invoice_status != "Invoiced" && $can_cancel): ?>
-                            <button type="button" class="btn btn-primary lof_cancel_order">
+                            <button type="button" class="btn primary lof_cancel_order">
                                 <?= $block->escapeHtml(__('Cancel Order')) ?>
                             </button>
                             <div id="lof_cancel_order">
@@ -147,20 +170,14 @@ if ($tracking != "") {
                             </div>
                         <?php endif; ?>
                         <?php if ($item_cancel_status != "1" && !$tracking->isCanceled() && $can_send_email): ?>
-                            <button type="button" class="btn btn-primary lof_send_email">
+                            <button type="button" class="btn primary lof_send_email">
                                 <?= $block->escapeHtml(__('Send Email')) ?>
                             </button>
-                            <div id="lof_send_email">
-                                <div><?= $block->escapeHtml(__('Are you sure you want to send an order email to customer?')) ?></div>
-                            </div>
                         <?php endif; ?>
                         <?php if ($item_invoice_status != "Invoiced" && $tracking->canInvoice() && $item_cancel_status != "1" && $can_invoice): ?>
-                            <button type="button" class="btn btn-primary lof_invoice"><?= __('Invoice'); ?></button>
-                            <div id="lof_invoice">
-                                <div><?= $block->escapeHtml(__('Are you sure you want to create invoice?')) ?></div>
-                            </div>
+                            <button type="button" class="btn primary lof_invoice"><?= __('Invoice'); ?></button>
                         <?php elseif ($item_invoice_status == "Invoiced" && $item_refund_status != "Refunded" && $canCreditmemo && $item_cancel_status != "1" && $can_refund): ?>
-                            <button type="button" class="btn btn-primary lof_creditmemo">
+                            <button type="button" class="btn primary lof_creditmemo">
                                 <?= $block->escapeHtml(__('Credit Memo')) ?>
                             </button>
                             <div id="lof_creditmemo">
@@ -168,7 +185,7 @@ if ($tracking != "") {
                             </div>
                         <?php endif; ?>
                         <?php if ($item_ship_status != "Shipped" && $item_refund_status != "Refunded" && $item_cancel_status != "1" && $tracking->canShip() && $can_ship && $this->getTheSellerOrder()->getIsInvoiced()): ?>
-                            <button type="button" class="btn btn-primary lof_ship">
+                            <button type="button" class="btn primary lof_ship">
                                 <?= $block->escapeHtml(__('Ship')) ?>
                             </button>
                             <div id="lof_ship">
@@ -184,10 +201,9 @@ if ($tracking != "") {
                     <div class="row">
                         <div class="col-xs-12 invoice-header">
                             <h1>
-                                <i class="fa fa-globe"></i> <?= $block->escapeHtml(__('Order')) ?>
+                                <!-- <i class="fa fa-globe"></i>  -->                                    
                                 <small class="pull-right">
-                                    <?= $block->escapeHtml(__('Created At')) ?>
-                                    : <?= $block->escapeHtml($this->getOrderDate()) ?>
+                                 
                                 </small>
                             </h1>
                         </div>
@@ -210,7 +226,7 @@ if ($tracking != "") {
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-3 invoice-col">
-                            <?= __('<b>Order:</b> #%1', $this->getOrder()->getRealOrderId()) ?>
+                            <?= __('<b>Order Number:</b> %1', $this->getOrder()->getRealOrderId()) ?>
                             <br>
                             <b><?= $block->escapeHtml(__('Order Date')) ?>
                                 :</b> <?= $block->escapeHtml($this->getOrderDate()) ?>
@@ -219,20 +235,23 @@ if ($tracking != "") {
                                 :</b> <?= $block->escapeHtml($tracking->getStatus()) ?>
                             <br>
                             <b><?= $block->escapeHtml(__('Purchased From')) ?>
-                                :</b> <?= $block->escapeHtml($this->getOrderStoreName(), ['br']) ?>
+                            <?php 
+                                $storeName = $this->getOrderStoreName();
+                                $storeLabel = trim(explode("<br/>", $storeName)[0]);                                
+                            ?>
+                                :</b> <?= $block->escapeHtml($storeLabel, ['br']) ?>
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-3 invoice-col customer-info">
-                            <b><?= $block->escapeHtml(__('Account Information ')) ?></b>
+                            <b><?= $block->escapeHtml(__('Customer Information ')) ?></b>
                             <br>
                             <b><?= $block->escapeHtml(__('Customer Name')) ?>
                                 :</b> <?= $block->escapeHtml($this->getOrder()->getCustomerName()) ?>
                             <br>
-                            <b><?= $block->escapeHtml(__('Email')) ?>
+                            <b><?= $block->escapeHtml(__('Customer Email')) ?>
                                 :</b> <?= $block->escapeHtml($this->getOrder()->getCustomerEmail()) ?>
                             <br>
-                            <b><?= $block->escapeHtml(__('Customer Group')) ?>
-                                :</b> <?= $block->escapeHtml($this->getCustomerGroupName()) ?>
+                            
                         </div>
                     </div>
                     <div class="row order-info">
@@ -244,14 +263,11 @@ if ($tracking != "") {
                                     <th><?= $block->escapeHtml(__('Item Status')) ?></th>
                                     <th><?= $block->escapeHtml(__('Qty')) ?></th>
                                     <th><?= $block->escapeHtml(__('Price')) ?></th>
-                                    <th><?= $block->escapeHtml(__('Subtotal')) ?></th>
-                                    <th><?= $block->escapeHtml(__('Tax Amount')) ?></th>
-                                    <th><?= $block->escapeHtml(__('Tax Percent')) ?></th>
+                                    <th><?= $block->escapeHtml(__('Subtotal')) ?></th>                                    
                                     <th><?= $block->escapeHtml(__('Discount Amount')) ?></th>
                                     <th><?= $block->escapeHtml(__('Row Total')) ?></th>
                                     <th><?= $block->escapeHtml(__('Admin Commission Amount')) ?></th>
-                                    <th><?= $block->escapeHtml(__('Seller Amount')) ?></th>
-                                    <th><?= $block->escapeHtml(__('Seller')) ?></th>
+                                    <th><?= $block->escapeHtml(__('Seller Amount')) ?></th>                                    
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -366,8 +382,7 @@ if ($tracking != "") {
                                                         ->getPriceFomat($item->getData('price'), $orderCurrencyCode, 2); ?>
                                                 </td>
                                                 <td><?= $helper->getPriceFomat($total, $orderCurrencyCode, 2); ?></td>
-                                                <td><?= $helper->getPriceFomat($tax_amount, $orderCurrencyCode, 2); ?></td>
-                                                <td><?= $item->getData('tax_percent') . '%'; ?></td>
+                                                
                                                 <td>
                                                     <?= $helper
                                                         ->getPriceFomat($discount_amount, $orderCurrencyCode, 2); ?>
@@ -380,8 +395,7 @@ if ($tracking != "") {
                                                 <td>
                                                     <?= $helper
                                                         ->getPriceFomat($sellerCommission, $orderCurrencyCode, 2); ?>
-                                                </td>
-                                                <td><?= $block->escapeHtml($seller_name) ?></td>
+                                                </td>                                                
                                             </tr>
                                         <?php endif;
                                     endif;
@@ -393,38 +407,30 @@ if ($tracking != "") {
                     </div>
                     <div class="row payment-info">
                         <!-- accepted payments column -->
-                        <div class="col-xs-5">
-                            <p class="lead"><?= __('Payment Methods'); ?>:</p>
-                            <img src="<?= $block->getViewFileUrl('Lof_MarketPlace::images/visa.png') ?>" alt="Visa">
-                            <img src="<?= $block->getViewFileUrl('Lof_MarketPlace::images/mastercard.png') ?>"
-                                 alt="Mastercard">
-                            <img src="<?= $block->getViewFileUrl('Lof_MarketPlace::images/american_express.png') ?>"
-                                 alt="American Express">
-                            <img src="<?= $block->getViewFileUrl('Lof_MarketPlace::images/paypal.png') ?>" alt="Paypal">
-                            <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                        <div class="col-xs-3">
+                            <p class="lead"><?= __('Payment Methods'); ?></p>
+                            
+                            <div class="text-muted well well-sm no-shadow">
                                 <?= $this->getOrder()->getPayment()->getMethodInstance()->getTitle(); ?>
-                            </p>
+                            </div>
                             <p><?= $block->escapeHtml(__('The order was placed using')) ?> <?= $this->getOrder()->getData('order_currency_code'); ?>
                                 .</p>
                         </div>
                         <!-- shipments column -->
                         <div class="col-xs-3">
-                            <strong class="box-title">
-                                <span><?= $block->escapeHtml(__('Shipping Method')) ?></span>
-                            </strong>
-                            <div class="box-content">
+                            <p class="lead"><?= $block->escapeHtml(__('Shipping Method')) ?></p>
+                            <div class="box-content well well-sm no-shadow">
                                 <?php if ($order->getShippingDescription()): ?>
-                                    <p><?= $block->escapeHtml($order->getShippingDescription()) ?></p>
+                                    <?= $block->escapeHtml($order->getShippingDescription()) ?>
                                     <?php if ($sellerShipping && isset($sellerShipping['carrier_title']) && $sellerShipping['method_title']): ?>
-                                        <p><?= $sellerShipping['carrier_title'] ?>
-                                            - <?= $sellerShipping['method_title'] ?></p>
+                                        <?= $sellerShipping['carrier_title'] ?>
+                                            - <?= $sellerShipping['method_title'] ?>
                                     <?php endif; ?>
-                                    </br>
-                                    <p><strong><?= $block->escapeHtml(__('Track information')) ?></strong></p>
-                                    <?php
 
+                                    <?php
                                     $shipment = $order->getTracksCollection();
                                     if (count($shipment->getData()) > 0): ?>
+                                    <p><strong><?= $block->escapeHtml(__('Track information')) ?></strong></p>
                                         <table class="shipment-track col-md-12">
                                             <thead>
                                             <tr>
@@ -467,7 +473,7 @@ if ($tracking != "") {
                                                name="carrier" placeholder="<?= __('Carrier') ?>"/>
                                     </div>
                                     <div class="admin__field">
-                                        <input class="required-entry input-text admin__control-text"
+                                        <input class="tracking-number required-entry input-text admin__control-text"
                                                value="<?= $block->escapeHtmlAttr($tracking->getTrackingNumber()) ?>" <?= $disabled; ?>
                                                type="text" name="tracking_id"
                                                placeholder="<?= $block->escapeHtml(__('Tracking Number')) ?>"/>
@@ -475,10 +481,61 @@ if ($tracking != "") {
                                 </form>
                             <?php endif; ?>
                         </div>
+                        
+                        <?php if ($isPreorder && $preorderData->getId()): ?>
+                        <div class="col-xs-3 preorder-info">
+                            <p class="lead"><?= $block->escapeHtml(__('Preorder Information')) ?></p>
+
+                            <div class="box-content well well-sm no-shadow">                                
+
+                                <p>
+                                    <strong><?= __('Preorder Type') ?>:</strong>
+                                    <?php $preorderType = $preorderData->getType() == 1 ? 'Deposit' : 'Full'; ?>
+                                    <?= $block->escapeHtml($preorderType) ?>
+                                </p>
+
+                                <p>
+                                    <strong><?= __('Preorder Quantity') ?>:</strong>
+                                    <?= (int)$preorderData->getQty() ?>
+                                </p>
+
+                                <p>
+                                    <strong><?= __('Preorder Percent') ?>:</strong>
+                                    <?= (float)$preorderData->getPreorderPercent() ?>%
+                                </p>
+
+                                <p>
+                                    <strong><?= __('Paid Amount') ?>:</strong>
+                                    <?= $helper->getPriceFomat(
+                                        $preorderData->getPaidAmount(),
+                                        $orderCurrencyCode,
+                                        2
+                                    ) ?>
+                                </p>
+
+                                <p>
+                                    <strong><?= __('Remaining Amount') ?>:</strong>
+                                    <?= $helper->getPriceFomat(
+                                        $preorderData->getRemainingAmount(),
+                                        $orderCurrencyCode,
+                                        2
+                                    ) ?>
+                                </p>
+
+                                <p style="margin:0">
+                                    <strong><?= __('Preorder Date') ?>:</strong>
+                                    <?= $block->escapeHtml(
+                                        $block->formatDate($preorderData->getCreatedAt(), \IntlDateFormatter::MEDIUM)
+                                    ) ?>
+                                </p>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+
                         <!-- /.col -->
-                        <div class="col-xs-4">
+                        <div class="col-xs-3 order-totals">
                             <p class="lead"><?= $block->escapeHtml(__('Order Totals')) ?></p>
-                            <div class="table-responsive">
+                            <div class="table-responsive well well-sm no-shadow">
                                 <table class="table">
                                     <tbody>
                                     <tr>
@@ -486,14 +543,10 @@ if ($tracking != "") {
                                         <td><?= $helper->getPriceFomat($subtotal, $orderCurrencyCode, 2); ?></td>
                                     </tr>
                                     <tr>
-                                        <th><?= $block->escapeHtml(__('Shipping & Handling')) ?></th>
+                                        <th><?= $block->escapeHtml(__('Shipping Cost')) ?></th>
                                         <td>
                                             <?= $helper->getPriceFomat($shippingHandling, $orderCurrencyCode, 2) ?>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <th><?= $block->escapeHtml(__('Tax')) ?></th>
-                                        <td><?= $helper->getPriceFomat($tax, $orderCurrencyCode, 2); ?></td>
                                     </tr>
                                     <tr>
                                         <th><?= $block->escapeHtml(__('Discount')) ?></th>
@@ -535,22 +588,13 @@ if ($tracking != "") {
                         </div>
                         <!-- /.col -->
                     </div>
-                    <!-- this row will not appear when printing -->
-                    <div class="row no-print">
-                        <div class="col-xs-12">
-                            <?= $block->getChildHtml('order.invoice.print'); ?>
-                            <button class="btn btn-default print-button" onclick="window.print();">
-                                <i class="fa fa-print"></i> <?= $block->escapeHtml(__('Print')) ?>
-                            </button>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
         <?= $block->getChildHtml('order.extra.info'); ?>
     </div>
 </div>
-
 <script>
     require(
         [

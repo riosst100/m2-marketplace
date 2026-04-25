@@ -29,6 +29,9 @@ use Magento\Eav\Setup\EavSetupFactory;
 
 class UpgradeData implements UpgradeDataInterface
 {
+    protected $eavSetupFactory;
+
+
 	/**
 	 * @param GroupFactory $groupFactory 
 	 */

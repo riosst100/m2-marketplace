@@ -1,0 +1,30 @@
+{
+  "name": "landofcoder/module-trackorder-graph-ql",
+  "description": "Tracking order info, shipment info, invoice info by tracking code Graph Ql",
+  "authors": [
+      {
+        "name": "Landofcoder",
+        "email": "landofcoder@gmail.com",
+        "homepage": "https://landofcoder.com",
+        "role": "Magento 2 extension Provider"
+      }
+  ],
+  "require": {
+    "venustheme/module-trackorder-pro":"*"
+  },
+  "type": "magento2-module",
+  "version": "1.0.0",
+  "license": "GPL-3.0",
+  "autoload": {
+      "files": [ "registration.php" ],
+      "psr-4": {
+          "Lof\\TrackorderGraphQl\\": ""
+      }
+  },
+  "repositories": {
+      "module-trackorder-pro": {
+        "type": "git",
+        "url": "https://github.com/landofcoder/module-track-order-graph-ql"
+      }
+  }
+}

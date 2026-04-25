@@ -20,7 +20,7 @@
   -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
 	<menu>
-		<add id="Lofmp_SplitCart::split_cart" title="Split Cart" module="Lofmp_SplitCart" sortOrder="170" resource="Lofmp_SplitCart::split_cart" parent="Lof_MarketPlace::marketplace" />
-		<add id="Lofmp_SplitCart::configuration" title="Configuration" module="Lofmp_SplitCart" sortOrder="10" parent="Lofmp_SplitCart::split_cart" action="adminhtml/system_config/edit/section/split_cart_config" resource="Lofmp_SplitCart::configuration"/>
+		<!-- <add id="Lofmp_SplitCart::split_cart" title="Split Cart" module="Lofmp_SplitCart" sortOrder="170" resource="Lofmp_SplitCart::split_cart" parent="Lof_MarketPlace::marketplace" />
+		<add id="Lofmp_SplitCart::configuration" title="Configuration" module="Lofmp_SplitCart" sortOrder="10" parent="Lofmp_SplitCart::split_cart" action="adminhtml/system_config/edit/section/split_cart_config" resource="Lofmp_SplitCart::configuration"/> -->
 	</menu>
 </config>

@@ -41,6 +41,9 @@ use Lof\MarketPlace\Model\ResourceModel\Group\Collection;
  */
 class Saveseller extends \Magento\Framework\App\Action\Action
 {
+    protected $_request;
+
+
     /**
      * Form code for data extractor
      */

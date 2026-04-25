@@ -23,6 +23,11 @@ namespace Lofmp\Rma\Block\Adminhtml\Rma\Edit\Tab;
 
 class Field extends \Magento\Backend\Block\Widget\Form
 {
+    protected $formFactory;
+    protected $rmaHelper;
+    protected $registry;
+
+
     /**
      * Field constructor.
      * @param \Magento\Framework\Data\FormFactory $formFactory

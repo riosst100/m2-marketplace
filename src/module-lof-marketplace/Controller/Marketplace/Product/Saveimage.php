@@ -129,24 +129,39 @@ class Saveimage extends \Magento\Framework\App\Action\Action
         $data = $this->getRequest()->getPostValue();
         $storeId = $this->storeManager->getStore()->getId();
 
+        // dd($this->getRequest()->getParams());
+
         if ($data) {
             try {
+                $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/imageupload.log');
+                $logger = new \Zend_Log();
+                $logger->addWriter($writer);
+                // $logger->info('data '.print_r($this->getRequest()->getParams(), true));
+                $upload = ['status' => 'success'];
                 if (isset($data['product']['media_gallery'])) {
                     foreach ($data['product']['media_gallery']['images'] as $file) {
-                        $this->uploadimage->moveImageFromTmp($file['file']);
+                        $upload = $this->uploadimage->moveImageFromTmp($file['file'], $this->getRequest()->getParam('upload_image_categories'), $this->getRequest()->getParam('selected_folder'));
                     }
                 }
-                $this->messageManager->addSuccessMessage('Import Image Product Success');
+                if ($upload['status'] == 'failed') {
+                    $this->messageManager->addErrorMessage('Image not uploaded, You cannot upload with the same name as an existing file.');
+                    // $logger->info('Selected folder '. urlencode($this->getRequest()->getParam('selected_folder')));
+                    return $this->_redirect('catalog/product/uploadimage?folder='.urlencode($this->getRequest()->getParam('selected_folder')));
+                } else {
+                    $this->messageManager->addSuccessMessage(__('Images Uploaded Successfully!'));
+                    return $this->_redirect('catalog/product/mediagallery');
+                }
+                
             } catch (\Magento\Framework\Exception\LocalizedException $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
             } catch (\Exception $e) {
                 $this->_objectManager->get(\Psr\Log\LoggerInterface::class)->critical($e);
                 $this->messageManager->addErrorMessage($e->getMessage());
             }
-        } else {
-            $this->_redirect('catalog/product/index', ['store' => $storeId]);
-            $this->messageManager->addErrorMessage('No data to save');
         }
-        $this->_redirect('catalog/product/uploadimage');
+
+        $this->messageManager->addErrorMessage('No image to upload');
+
+        return $this->_redirect('catalog/product/uploadimage?folder='.$this->getRequest()->getParam('selected_folder'));
     }
 }

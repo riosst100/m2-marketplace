@@ -22,7 +22,7 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Backend/etc/menu.xsd">
 	<menu>
-		<add id="Lofmp_SellerIdentificationApproval::identificationapproval" sortOrder="100" title="Identification Approval" module="Lofmp_SellerIdentificationApproval" resource="Magento_Backend::identificationapproval_elements" parent="Lof_MarketPlace::marketplace"/>
-		<add id="Lofmp_SellerIdentificationApproval::settings" title="Configuration" module="Lofmp_SellerIdentificationApproval" sortOrder="110" action="adminhtml/system_config/edit/section/seller_identification_approval" resource="Lofmp_ChatSystem::config_chatsystem" parent="Lofmp_SellerIdentificationApproval::identificationapproval"/>
+		<!-- <add id="Lofmp_SellerIdentificationApproval::identificationapproval" sortOrder="100" title="Identification Approval" module="Lofmp_SellerIdentificationApproval" resource="Magento_Backend::identificationapproval_elements" parent="Lof_MarketPlace::marketplace"/>
+		<add id="Lofmp_SellerIdentificationApproval::settings" title="Configuration" module="Lofmp_SellerIdentificationApproval" sortOrder="110" action="adminhtml/system_config/edit/section/seller_identification_approval" resource="Lofmp_ChatSystem::config_chatsystem" parent="Lofmp_SellerIdentificationApproval::identificationapproval"/> -->
 	</menu>
 </config>

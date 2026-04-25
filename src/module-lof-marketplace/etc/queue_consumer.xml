@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/consumer.xsd">
+    <consumer name="lof.marketplace.product_import"
+          queue="lof.marketplace.product_import.queue"
+          connection="amqp"
+          consumerInstance="Magento\Framework\MessageQueue\Consumer"
+          handler="Lof\MarketPlace\Model\Queue\ProductImportConsumer::process"/>
+    <consumer name="lof.marketplace.product_import_db"
+          queue="lof.marketplace.product_import_db.queue"
+          connection="amqp"
+          consumerInstance="Magento\Framework\MessageQueue\Consumer"
+          handler="Lof\MarketPlace\Model\Queue\ProductImportDbConsumer::process"/>
+</config>

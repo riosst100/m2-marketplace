@@ -33,6 +33,9 @@ namespace Lofmp\CouponCode\Model\ResourceModel\AbstractReport;
 use Magento\Framework\DB\Select;
 class Ordercollection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
 {
+    protected $_useAnalyticFunction;
+
+
     protected $_main_table_id        = 'main_table.entity_id';
     protected $_status_field         = 'main_table.status';
     /**

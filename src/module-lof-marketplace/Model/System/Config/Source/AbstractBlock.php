@@ -23,6 +23,10 @@ namespace Lof\MarketPlace\Model\System\Config\Source;
 
 class AbstractBlock extends \Magento\Eav\Model\Entity\Attribute\Source\Table
 {
+    protected $_options;
+    protected $_optionsDefault;
+
+
     /**
      * @var \Magento\Framework\ObjectManagerInterface
      */

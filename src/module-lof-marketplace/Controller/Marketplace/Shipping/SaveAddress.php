@@ -51,6 +51,7 @@ class SaveAddress extends \Magento\Framework\App\Action\Action
      * @var \Magento\Framework\App\ActionFlag
      */
     protected $_actionFlag;
+    protected $marketplaceHelper;
 
     /**
      * Save constructor.
@@ -66,7 +67,8 @@ class SaveAddress extends \Magento\Framework\App\Action\Action
         \Magento\Customer\Model\Session $customerSession,
         \Lof\MarketPlace\Model\SellerFactory $sellerFactory,
         \Magento\Framework\Url $frontendUrl,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory
+        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
+        \CoreMarketplace\MarketPlace\Helper\Data $marketplaceHelper
     ) {
         parent::__construct($context);
 
@@ -74,6 +76,7 @@ class SaveAddress extends \Magento\Framework\App\Action\Action
         $this->_actionFlag = $context->getActionFlag();
         $this->sellerFactory = $sellerFactory;
         $this->session = $customerSession;
+        $this->marketplaceHelper = $marketplaceHelper;
         $this->resultPageFactory = $resultPageFactory;
     }
 
@@ -101,6 +104,26 @@ class SaveAddress extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
+        $this->shipFrom = $this->_objectManager->get(\CoreMarketplace\MarketPlace\Model\Config\Source\ShipFrom::class);
+
+        // $this->countryCollectionFactory = $this->_objectManager->get(\Magento\Directory\Model\ResourceModel\Country\CollectionFactory::class);
+        // $collection = $this->countryCollectionFactory->create();
+        // // $collection->addFieldToSelect(['country_id', 'iso2_code', 'iso3_code'])->load();
+        // $countries = $collection->toOptionArray();
+
+        // // $result = [];
+
+        // // foreach ($countries as $index => $item) {
+        // //     if (!empty($item['value'])) {
+        // //         $result[] = [$index => $item['label']];
+        // //     }
+        // // }
+
+        // // // var_export($result);
+
+        // // dd($countries);
+        // // dd($this->ship)
+
         $customerSession = $this->session;
         $helper = $this->_objectManager->get(\Lof\MarketPlace\Helper\Data::class);
         if (!$customerSession->isLoggedIn()) {
@@ -113,10 +136,36 @@ class SaveAddress extends \Magento\Framework\App\Action\Action
         if (strlen($section) > 0 && count($groups) > 0) {
             $sellerId = (int)$helper->getSellerId();
             try {
+                $customerId = $customerSession->getId();
+                $status = $this->sellerFactory->create()->load($customerId, 'customer_id')->getStatus();
                 $this->_objectManager->get(\Lof\MarketPlace\Helper\Data::class)
                     ->saveShippingData($section, $groups, $sellerId);
-                $this->messageManager->addSuccessMessage(__('The Shipping Methods has been saved.'));
-                $this->_redirect('*/*/address');
+                if ($section == "shipping") {
+                    $countryId = $groups['address']['country_id'] ?? null;
+
+                    // $_directoryHelper->getCountriesWithOptionalZip(true)
+
+
+                    // $_directoryHelper = $this->_objectManager->get(\Magento\Directory\Helper\Data::class);
+
+                    // dd($_directoryHelper->getCountriesWithOptionalZip(true));
+                    
+                    $shipFromCountryId = $this->shipFrom->getOptionIdByCode($countryId);
+
+                    // dd($shipFromCountryId);
+
+                    // CUSTOM: Update seller products ship from
+                    $this->marketplaceHelper->updateSellerProductsShipFrom($shipFromCountryId);
+                    
+                    $this->messageManager->addSuccessMessage(__('Ship From/Origin Address has been saved.'));
+                } else {
+                    $this->messageManager->addSuccessMessage(__('The Shipping Methods has been saved.'));
+                }
+                if ($status == 0) {
+                    $this->_redirect('catalog/shipping/methods');    
+                } else {
+                    $this->_redirect('*/*/address');
+                }                
                 return;
             } catch (\Exception $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());

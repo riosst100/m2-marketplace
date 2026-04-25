@@ -24,9 +24,13 @@
     <update handle="editor"/>
     <update handle="styles"/>
     <update handle="seller_store_switcher"/>
+    <head>
+        <css src="Lofmp_CouponCode::css/edit-rule.css" />
+    </head>
     <body>
         <referenceContainer name="content">
 			<uiComponent name="sellercouponcode_rule_form"/>
+            <!-- <uiComponent name="add_products_modal"/> -->
 		</referenceContainer>
     </body>
 </page>

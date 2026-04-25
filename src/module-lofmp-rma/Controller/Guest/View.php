@@ -27,6 +27,10 @@ use Magento\Framework\Controller\ResultFactory;
 
 class View extends \Lofmp\Rma\Controller\Guest
 {
+    protected $rmaRepository;
+    protected $registry;
+
+
     public function __construct(
         \Lofmp\Rma\Api\Repository\RmaRepositoryInterface $rmaRepository,
         \Magento\Framework\Registry $registry,

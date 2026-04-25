@@ -99,6 +99,7 @@ class View extends \Magento\Framework\App\Action\Action
         if($page_layout = $cat->getPageLayout()){
             $page->getConfig()->setPageLayout($page_layout);
         }
+        $page->getConfig()->getTitle()->set($cat->getTitle());
         return $page;
     }
 }

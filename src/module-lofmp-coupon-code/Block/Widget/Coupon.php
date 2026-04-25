@@ -5,6 +5,9 @@ namespace Lofmp\CouponCode\Block\Widget;
 use Magento\Framework\App\Http\Context;
 class Coupon extends \Magento\Framework\View\Element\Template implements \Magento\Widget\Block\BlockInterface
 {
+    protected $_layout;
+
+
 	protected $_blockModel;
 	protected $_dataFilterHelper;
 	protected $_dataGenerator;

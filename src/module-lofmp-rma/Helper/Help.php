@@ -25,6 +25,13 @@ use Magento\Framework\App\ObjectManager;
 
 class Help extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    protected $orderCollectionFactory;
+    protected $storeCollectionFactory;
+    protected $storeManager;
+    protected $backendUrlManager;
+    protected $context;
+
+
     protected $serializer;
 
     /**

@@ -112,7 +112,7 @@ function myFunction() {
                         $product_id = $item->getData('product_id');
                         if ($sellerid):
                             $seller_id = $block->getSellerIdByProductId($product_id);
-                            if ($seller_id != $sellerid) : continue; endif;
+                            // if ($seller_id != $sellerid) : continue; endif;
                         endif;
                         ?>
                         <?php if ($item->getData('product_type') == 'bundle'): ?>

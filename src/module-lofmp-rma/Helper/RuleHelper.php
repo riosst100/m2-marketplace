@@ -22,6 +22,18 @@ namespace Lofmp\Rma\Helper;
 
 class RuleHelper extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    protected $productFactory;
+    protected $entityAttributeFactory;
+    protected $objectManager;
+    protected $sortOrderBuilder;
+    protected $ruleRepository;
+    protected $searchCriteriaBuilder;
+    protected $rmaMail;
+    protected $customerFactory;
+    protected $userFactory;
+    protected $context;
+
+
     public function __construct(
         \Magento\Catalog\Model\ProductFactory $productFactory,
         \Magento\Eav\Model\Entity\AttributeFactory $entityAttributeFactory,

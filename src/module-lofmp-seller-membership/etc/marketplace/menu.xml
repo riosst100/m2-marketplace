@@ -21,6 +21,6 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-    	<add id="Lofmp_SellerMembership::membership" title="Membership" module="Lofmp_SellerMembership" sortOrder="15" icon="fa fa-users" resource="Lofmp_SellerMembership::membership" action="lofmpsellermembership/membership/index" />
+    	<add id="Lofmp_SellerMembership::membership" title="Membership" module="Lofmp_SellerMembership" sortOrder="15" icon="fa fa-diamond" resource="Lofmp_SellerMembership::membership" action="lofmpsellermembership/membership/index" />
     </menu>
 </config>

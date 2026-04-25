@@ -25,6 +25,14 @@ namespace Lofmp\Rma\Controller\Adminhtml;
 
 abstract class Rule extends \Magento\Backend\App\Action
 {
+    protected $ruleFactory;
+    protected $localeDate;
+    protected $registry;
+    protected $context;
+    protected $backendSession;
+    protected $resultFactory;
+
+
     public function __construct(
         \Lofmp\Rma\Model\RuleFactory $ruleFactory,
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate,

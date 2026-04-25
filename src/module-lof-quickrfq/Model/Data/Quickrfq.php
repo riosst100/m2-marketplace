@@ -378,6 +378,22 @@ class Quickrfq extends \Magento\Framework\Api\AbstractExtensibleObject implement
     /**
      * {@inheritdoc}
      */
+    public function getWebsiteId()
+    {
+        return $this->_get(self::WEBSITE_ID);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setWebsiteId($website_id)
+    {
+        return $this->setData(self::WEBSITE_ID, $website_id);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getStoreCurrencyCode()
     {
         return $this->_get(self::STORE_CURRENCY_CODE);

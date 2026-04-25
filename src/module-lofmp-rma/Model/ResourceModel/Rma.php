@@ -24,6 +24,12 @@ namespace Lofmp\Rma\Model\ResourceModel;
 
 class Rma extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
+    protected $productUrl;
+    protected $context;
+    protected $resourcePrefix;
+    protected $helper;
+
+
     public function __construct(
         \Lofmp\Rma\Helper\Help                                $Helper,
         \Magento\Catalog\Model\Product\Url $productUrl,

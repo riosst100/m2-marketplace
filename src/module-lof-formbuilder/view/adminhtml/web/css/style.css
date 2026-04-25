@@ -210,19 +210,6 @@ tr:hover label{font-weight:bold;}
 #edit_form .edit-response-field .lof-fieldset .option-label-input{
   width: 70%;
 }
-
-.page-main-actions button.primary {
-  background:#1abc9c;
-  border-color: #1abc9c;
-}
-.page-main-actions .actions-split.active .action-toggle.primary,
-.page-main-actions button.primary:hover {
-  background: #12876f;
-  border-color: #1abc9c;
-}
-.page-main-actions .actions-split .action-toggle {
-  border-left-color: #12876f
-}
 .fb-field-wrapper .dm-uploader {
     cursor: default;
     -webkit-touch-callout: none;

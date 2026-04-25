@@ -26,6 +26,28 @@ $id         = rand() . time();
 					return false;
 				});
 
+
+				$('.category_open').on('click', function(e) {
+					e.preventDefault();
+					
+					var id = $(this).data('id');
+
+					$('.category_open').parent().removeClass('active');
+
+					$(this).parent().addClass('active');
+
+					var $all = $('[id^="faqcat-"]').filter(function () {
+						return /^faqcat-\d+$/.test(this.id);
+					});
+
+					var $target = $('#faqcat-' + id);
+
+					if ($target.length === 0) return;
+
+					$all.hide();
+					$target.show();
+				});
+
 			});
 		});
 	</script>

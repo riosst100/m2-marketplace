@@ -24,11 +24,12 @@
         <css src="Lofmp_SellerIdentificationApproval::css/lof-seller-create-form.css"/>
     </head>
     <referenceBlock name="seller_edit_tabs">
-        <action method="addTab">
+        <!-- <action method="addTab">
             <argument name="name" xsi:type="string">verification</argument>
             <argument name="block" xsi:type="string">
                 Lofmp\SellerIdentificationApproval\Block\Adminhtml\Seller\Edit\Tab\IdentificationVerification
             </argument>
-        </action>
+            <argument name="sort_order" xsi:type="number">2</argument>
+        </action> -->
     </referenceBlock>
 </page>

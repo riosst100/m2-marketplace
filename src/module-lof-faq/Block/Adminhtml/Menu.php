@@ -63,7 +63,7 @@ class Menu extends \Magento\Backend\Block\Template
                                     ],
                                     ],
                        'category' => [
-                                     'title'    => __('Manage Categories'),
+                                     'title'    => __('Manage Category'),
                                      'url'      => $this->getUrl('*/category/index'),
                                      'resource' => 'Lof_Faq::category',
                                      'child'    => [
@@ -74,7 +74,7 @@ class Menu extends \Magento\Backend\Block\Template
                                                        ]
                                                    ]
                                     ],
-                        'category' => [
+                        'tag' => [
                             'title'    => __('Manage Tags'),
                             'url'      => $this->getUrl('*/tag/index'),
                             'resource' => 'Lof_Faq::tag',
@@ -83,6 +83,42 @@ class Menu extends \Magento\Backend\Block\Template
                                                 'title'    => __('New Tag'),
                                                 'url'      => $this->getUrl('*/tag/newAction'),
                                                 'resource' => 'Lof_Faq::tag_edit',
+                                                ]
+                                            ]
+                            ],
+                        'questionuser'    => [
+                                     'title'    => __('Manage User Questions'),
+                                     'url'      => $this->getUrl('*/questionuser/index'),
+                                     'resource' => 'Lof_Faq::question_user',
+                                     'child'    => [
+                                            'newAction' => [
+                                                            'title'    => __('New Question'),
+                                                            'url'      => $this->getUrl('*/questionuser/new'),
+                                                            'resource' => 'Lof_Faq::question_edit',
+                                                           ],
+                                    ],
+                                    ],
+                       'categoryuser' => [
+                                     'title'    => __('Manage User Category'),
+                                     'url'      => $this->getUrl('*/categoryuser/index'),
+                                     'resource' => 'Lof_Faq::category_user',
+                                     'child'    => [
+                                                    'newAction' => [
+                                                        'title'    => __('New Category'),
+                                                        'url'      => $this->getUrl('*/categoryuser/newAction'),
+                                                        'resource' => 'Lof_Faq::category_edit_user',
+                                                       ]
+                                                   ]
+                                    ],
+                        'taguser' => [
+                            'title'    => __('Manage User Tags'),
+                            'url'      => $this->getUrl('*/taguser/index'),
+                            'resource' => 'Lof_Faq::tag_user',
+                            'child'    => [
+                                            'newAction' => [
+                                                'title'    => __('New Tag'),
+                                                'url'      => $this->getUrl('*/taguser/newAction'),
+                                                'resource' => 'Lof_Faq::tag_edit_user',
                                                 ]
                                             ]
                             ],
@@ -129,8 +165,8 @@ class Menu extends \Magento\Backend\Block\Template
         if (array_key_exists($controllerName, $items)) {
             return $items[$controllerName];
         }
-
-        return $items['page'];
+        $page = $items['page'] ?? $page = ['title' => 'Manage Tags'];
+        return $page;
 
     }//end getCurrentItem()
 

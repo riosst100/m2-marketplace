@@ -29,6 +29,9 @@ class Reason extends \Magento\Framework\Model\AbstractModel implements
     IdentityInterface,
     \Lofmp\Rma\Api\Data\ReasonInterface
 {
+    protected $helper;
+
+
     const CACHE_TAG = 'rma_reason';
 
     /**

@@ -57,7 +57,7 @@ class Index extends \Magento\Backend\App\Action
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Lofmp_StoreLocator::storelocator');
+        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::manage_seller_storelocator');
     }
 
     public function execute()
@@ -68,8 +68,8 @@ class Index extends \Magento\Backend\App\Action
         /**
          * Set active menu item
          */
-        $resultPage->setActiveMenu("Lofmp_StoreLocator::storelocator");
-        $resultPage->getConfig()->getTitle()->prepend(__('StoreLocators'));
+        $resultPage->setActiveMenu("CoreMarketplace_MarketPlace::manage_seller_storelocator");
+        $resultPage->getConfig()->getTitle()->prepend(__('Seller | Physical Store'));
 
         /**
          * Add breadcrumb item

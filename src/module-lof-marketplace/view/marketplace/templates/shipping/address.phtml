@@ -36,13 +36,6 @@ $helper = $this->helper(\Magento\Directory\Helper\Data::class);
                 <div class="col-md-6 panel_product_heading" style="line-height:31px;font-size:17px;padding-left:0;">
                     <?= $block->escapeHtml(__('Shipping Settings')) ?>
                 </div>
-                <div class="buttons-set col-md-6 buttons_scb" style="text-align:right;padding-right:0;">
-                    <button class="btn btn-success uptransform product-button" title="Save" type="submit"
-                            onClick="document.getElementById('form-validate').submit();" id="save_butn"
-                            style="float: none;">
-                        <span><?= $block->escapeHtml(__('Save')) ?></span>
-                    </button>
-                </div>
             </div>
             <br/>
             <br/>
@@ -50,6 +43,12 @@ $helper = $this->helper(\Magento\Directory\Helper\Data::class);
                 <?= $block->getFormHtml(); ?>
                 <div class="buttons-set">
                     <p class="required"><?= $block->escapeHtml(__('* Required Fields')) ?></p>
+                </div>
+                <div class="buttons-set col-md-6 buttons_scb" style="float:right;text-align:right;padding-right:0;">
+                    <button class="btn btn-success uptransform product-button" title="Save" type="submit"
+                            onClick="document.getElementById('form-validate').submit();" id="save_butn">
+                        <span><?= $block->escapeHtml(__('Save Configurations')) ?></span>
+                    </button>
                 </div>
             </div>
         </div>

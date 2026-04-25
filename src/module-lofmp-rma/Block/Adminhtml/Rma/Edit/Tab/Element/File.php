@@ -36,6 +36,7 @@ class File extends \Magento\Framework\Data\Form\Element\AbstractElement
      * @var
      */
     protected $fileCollectionFactory;
+    protected $urlBuilder;
 
     /**
      * File constructor.
@@ -48,11 +49,13 @@ class File extends \Magento\Framework\Data\Form\Element\AbstractElement
         Factory $factoryElement,
         CollectionFactory $factoryCollection,
         Escaper $escaper,
+        \Magento\Framework\UrlInterface $urlBuilder,
         $data = []
     ) {
         parent::__construct($factoryElement, $factoryCollection, $escaper, $data);
         $this->setType('file');
         $this->setExtType('file');
+        $this->urlBuilder = $urlBuilder;
     }
 
     public function removeClass($class)
@@ -90,8 +93,9 @@ class File extends \Magento\Framework\Data\Form\Element\AbstractElement
     {
         $html = '';
         if ($this->getAttachment()) {
-
-            $html .= '<nobr><a href="' . $this->getAttachment()->getUrl() . '">' . $this->getAttachment()->getName() . '</a> <small>[' . $this->getAttachment()->getSize() . ']</small></nobr><br>';
+            $url = $this->urlBuilder->getUrl('rma/attachment/download', ['uid' => $this->getAttachment()->getUid()]);
+            $html .= '<nobr><a href="' . $url . '">' . $this->getAttachment()->getName() . '</a></nobr><br>';
+            
 
         }
         return $html;

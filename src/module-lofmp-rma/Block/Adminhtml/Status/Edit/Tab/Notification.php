@@ -31,6 +31,11 @@ use Lofmp\Rma\Api\Repository\StatusRepositoryInterface;
 
 class Notification extends Form
 {
+    protected $statusRepository;
+    protected $formFactory;
+    protected $registry;
+
+
     public function __construct(
         StatusRepositoryInterface $statusRepository,
         FormFactory $formFactory,

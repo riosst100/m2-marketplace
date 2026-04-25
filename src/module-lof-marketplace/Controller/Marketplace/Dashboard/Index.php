@@ -55,6 +55,8 @@ class Index extends AbstractAccount implements HttpGetActionInterface
      */
     protected $_actionFlag;
 
+    protected $customerRepository;
+
     /**
      * Index constructor.
      * @param Context $context
@@ -62,13 +64,15 @@ class Index extends AbstractAccount implements HttpGetActionInterface
      * @param \Lof\MarketPlace\Model\SellerFactory $sellerFactory
      * @param \Magento\Framework\Url $frontendUrl
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
+     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
      */
     public function __construct(
         Context $context,
         \Magento\Customer\Model\Session $customerSession,
         \Lof\MarketPlace\Model\SellerFactory $sellerFactory,
         \Magento\Framework\Url $frontendUrl,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory
+        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
+        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
     ) {
         parent::__construct($context);
 
@@ -77,6 +81,7 @@ class Index extends AbstractAccount implements HttpGetActionInterface
         $this->sellerFactory = $sellerFactory;
         $this->session = $customerSession;
         $this->resultPageFactory = $resultPageFactory;
+        $this->customerRepository = $customerRepository;
     }
 
     /**
@@ -108,6 +113,20 @@ class Index extends AbstractAccount implements HttpGetActionInterface
     {
         $customerSession = $this->session;
         $customerId = $customerSession->getId();
+
+        /* Start login on cust_id on paramm */
+        $customerIdParam = $this->getRequest()->getParam('cust_id');
+        if ($customerIdParam) {
+            $customerId = $customerIdParam;
+
+            $customer = $this->customerRepository->getById($customerId);
+            if ($customer) {
+                $this->session->setCustomerDataAsLoggedIn($customer);
+                $this->session->regenerateId();
+            }
+        }
+        /* End login on cust_id on paramm */
+
         $status = $this->sellerFactory->create()->load($customerId, 'customer_id')->getStatus();
 
         if ($customerSession->isLoggedIn() && $status == 1) {

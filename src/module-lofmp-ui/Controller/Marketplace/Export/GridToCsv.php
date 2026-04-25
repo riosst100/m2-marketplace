@@ -18,6 +18,7 @@ use Magento\Framework\Url;
 use Lof\MarketPlace\Model\SellerFactory;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
+use CoreMarketplace\ProductAttributesLink\Helper\SetsReleaseHelper;
 
 /**
  * Class Render
@@ -28,6 +29,8 @@ class GridToCsv extends AbstractUiAction
      * @var ConvertToCsv
      */
     protected $converter;
+
+    protected $platformDatabaseHelper;
 
     /**
      * @var FileFactory
@@ -70,6 +73,7 @@ class GridToCsv extends AbstractUiAction
     public function __construct(
         Context $context,
         ConvertToCsv $converter,
+        SetsReleaseHelper $platformDatabaseHelper,
         FileFactory $fileFactory,
         Session $customerSession,
         CustomerUrl $customerUrl,
@@ -89,6 +93,7 @@ class GridToCsv extends AbstractUiAction
         $this->logger = $logger ?: ObjectManager::getInstance()->get(LoggerInterface::class);
         $this->resultPageFactory = $resultPageFactory;
         $this->coreRegistry = $registry;
+        $this->platformDatabaseHelper = $platformDatabaseHelper;
     }
 
     /**
@@ -99,6 +104,17 @@ class GridToCsv extends AbstractUiAction
      */
     public function execute()
     {
+        $namespace = $this->_request->getParam('namespace');
+        if (str_contains($namespace, "vendor_catalog_")) {
+            $result = $this->platformDatabaseHelper->downloadMyProductsAsCsv();
+            if ($result['success']) {
+                return $this->fileFactory->create($result['name'], $result['file'], 'var');
+            }
+            
+            // $resultRedirect = $this->resultRedirectFactory->create();
+            // return $resultRedirect->setPath($result['refererUrl']);
+        }
+
         return $this->fileFactory->create('export.csv', $this->converter->getCsvFile(), 'var');
     }
 

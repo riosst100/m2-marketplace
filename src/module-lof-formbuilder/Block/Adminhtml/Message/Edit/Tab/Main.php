@@ -134,7 +134,7 @@ class Main extends Generic implements TabInterface
         $track_url = $this->helperData->getTrackUrl($model);
 
         $html = $this->helperData->xssClean($model->getMessage());
-        $html .= __('<div style="font-weight: bold;padding: 20px 0;">Create At: %1</div>', $model->getCreationTime());
+        // $html .= __('<div style="font-weight: bold;padding: 20px 0;">Create At: %1</div>', $model->getCreationTime());
         if ($qrcode) {
             $barcode_html = "";
             if ($barcode_link) {
@@ -148,30 +148,30 @@ class Main extends Generic implements TabInterface
                 </p>
                 ';
             }
-            $html .= '<div class="qrcode">';
-            $html .= '<table class="main">
-            <tr>
-              <td>
-                <p>
-                    <img src="' . $qrcode_tracking_link . '" width="200" height="200" alt="qrcode"/>
-                </p>
-                <p><strong>' . __("QR Code:") . '</strong> <em>' . $qrcode . '</em></p>
-                ' . $barcode_html . '
-              </td>
-            </tr>
-            <tr>
-              <td class="email-tracklink">
-                ' . __("You can view the submitted form message at here:") . ' <a href="' . $track_url . '">' . __("View Message") . '</a>.
-              </td>
-            </tr>
-            </table>';
-            $html .= '</div>';
+            // $html .= '<div class="qrcode">';
+            // $html .= '<table class="main">
+            // <tr>
+            //   <td>
+            //     <p>
+            //         <img src="' . $qrcode_tracking_link . '" width="200" height="200" alt="qrcode"/>
+            //     </p>
+            //     <p><strong>' . __("QR Code:") . '</strong> <em>' . $qrcode . '</em></p>
+            //     ' . $barcode_html . '
+            //   </td>
+            // </tr>
+            // <tr>
+            //   <td class="email-tracklink">
+            //     ' . __("You can view the submitted form message at here:") . ' <a href="' . $track_url . '">' . __("View Message") . '</a>.
+            //   </td>
+            // </tr>
+            // </table>';
+            // $html .= '</div>';
         }
-        if ($model->getId()) {
-            $html .= '<div class="blacklist-wrapper" style="font-weight: bold;padding: 20px 0;">' . $this->getLayout()
-                    ->createBlock(\Lof\Formbuilder\Block\Adminhtml\Blacklist\Edit\Tab\Detail::class)
-                    ->setMessageModel($model)->toHtml() . '</div>';
-        }
+        // if ($model->getId()) {
+        //     $html .= '<div class="blacklist-wrapper" style="font-weight: bold;padding: 20px 0;">' . $this->getLayout()
+        //             ->createBlock(\Lof\Formbuilder\Block\Adminhtml\Blacklist\Edit\Tab\Detail::class)
+        //             ->setMessageModel($model)->toHtml() . '</div>';
+        // }
         return $html;
     }
 

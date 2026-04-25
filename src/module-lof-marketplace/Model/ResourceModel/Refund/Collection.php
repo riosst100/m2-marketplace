@@ -36,6 +36,7 @@ class Collection extends AbstractCollection
     protected function _construct()
     {
         $this->_init(\Lof\MarketPlace\Model\Refund::class, \Lof\MarketPlace\Model\ResourceModel\Refund::class);
+        $this->_map['fields']['store'] = 'so.store_id';
     }
 
     /**

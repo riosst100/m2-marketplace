@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/publisher.xsd">
+    <publisher topic="lof.marketplace.product_import">
+        <connection name="amqp" exchange="lof.marketplace.exchange"/>
+    </publisher>
+    <publisher topic="lof.marketplace.product_import_db">
+        <connection name="amqp" exchange="lof.marketplace.db_exchange"/>
+    </publisher>
+</config>

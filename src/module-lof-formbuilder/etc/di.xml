@@ -113,7 +113,7 @@
     <preference for="Lof\Formbuilder\Api\Data\FormbuilderSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
     <preference for="Lof\Formbuilder\Api\Data\FormbuilderMessageInterface" type="Lof\Formbuilder\Model\Message"/>
     <preference for="Lof\Formbuilder\Api\Data\FormbuilderMessageSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
-    <preference for="Lof\Formbuilder\Api\FormbuilderManagementInterface" type="Lof\Formbuilder\Model\FormbuilderManagement"/>
+    <!-- <preference for="Lof\Formbuilder\Api\FormbuilderManagementInterface" type="Lof\Formbuilder\Model\FormbuilderManagement"/> -->
     <preference for="Lof\Formbuilder\Api\FormbuilderRepositoryInterface" type="Lof\Formbuilder\Model\FormbuilderRepository"/>
     <preference for="Lof\Formbuilder\Api\SubmitFormRepositoryInterface" type="Lof\Formbuilder\Model\SubmitFormRepository"/>
 </config>

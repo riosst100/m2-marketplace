@@ -28,6 +28,9 @@ use Magento\Framework\UrlInterface;
 
 class SubEmail extends Column
 {
+    protected $_customerRepositoryInterface;
+
+
     /**
      * @var UrlInterface
      */

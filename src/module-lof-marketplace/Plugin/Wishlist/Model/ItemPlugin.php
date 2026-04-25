@@ -8,6 +8,9 @@ use Magento\Wishlist\Model\Item;
 
 class ItemPlugin
 {
+    protected $sellerHelper;
+
+
     /**
      * @param Seller $sellerHelper
      */

@@ -22,6 +22,9 @@ namespace Lofmp\StoreLocator\Block\Adminhtml\StoreLocator\Edit\Tab;
 
 class Tags extends \Magento\Backend\Block\Widget\Grid\Extended
 {
+    protected $dataHelper;
+
+
     /**
      * Core registry
      *

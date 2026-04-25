@@ -54,7 +54,7 @@ class Index extends \Lofmp\SellerMembership\Controller\Adminhtml\Product
         $resultPage = $this->resultPageFactory->create();
 
         $resultPage->setActiveMenu("Lofmp_SellerMembership::Product");
-        $resultPage->getConfig()->getTitle()->prepend(__('Product'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Membership Product'));
         $resultPage->addBreadcrumb(__('Product'), __('Product'));
 
         return $resultPage;

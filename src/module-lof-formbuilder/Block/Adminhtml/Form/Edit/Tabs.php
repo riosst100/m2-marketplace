@@ -66,29 +66,29 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
             ]
         );
 
-        $this->addTab(
-            'meta_section',
-            [
-                'label' => __('SEO'),
-                'content' => $this->getLayout()->createBlock(Meta::class)->toHtml()
-            ]
-        );
+        // $this->addTab(
+        //     'meta_section',
+        //     [
+        //         'label' => __('SEO'),
+        //         'content' => $this->getLayout()->createBlock(Meta::class)->toHtml()
+        //     ]
+        // );
 
-        $this->addTab(
-            'design_section',
-            [
-                'label' => __('Design'),
-                'content' => $this->getLayout()->createBlock(Design::class)->toHtml()
-            ]
-        );
+        // $this->addTab(
+        //     'design_section',
+        //     [
+        //         'label' => __('Design'),
+        //         'content' => $this->getLayout()->createBlock(Design::class)->toHtml()
+        //     ]
+        // );
 
-        $this->addTab(
-            'messages',
-            [
-                'label' => __('Messages'),
-                'url' => $this->getUrl('formbuilder/*/messages', ['_current' => true]),
-                'class' => 'ajax'
-            ]
-        );
+        // $this->addTab(
+        //     'messages',
+        //     [
+        //         'label' => __('Messages'),
+        //         'url' => $this->getUrl('formbuilder/*/messages', ['_current' => true]),
+        //         'class' => 'ajax'
+        //     ]
+        // );
     }
 }

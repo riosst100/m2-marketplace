@@ -27,6 +27,12 @@ use Magento\Framework\DataObject\IdentityInterface;
 
 class Field extends \Magento\Framework\Model\AbstractModel implements \Lofmp\Rma\Api\Data\FieldInterface, IdentityInterface
 {
+    protected $resource;
+    protected $context;
+    protected $registry;
+    protected $resourceCollection;
+
+
     public function __construct(
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,

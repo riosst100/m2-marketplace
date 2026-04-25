@@ -62,6 +62,9 @@ define(['jquery'], function ($) {
             this.options.delElement.remove();
             this.options.parentElement.remove();
             $(this.element.closest('[data-role="send-files"]')).trigger('clear');
+            if ($(this.element).length == 1) {
+                $('#no_files_uploaded').show();
+            }
         }
 
     });

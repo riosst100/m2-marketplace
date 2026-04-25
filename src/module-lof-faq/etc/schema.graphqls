@@ -1,0 +1,78 @@
+type Query {
+    faqCategories: [FaqCategory]
+        @resolver(class: "Lof\\Faq\\Model\\Resolver\\CategoryList")
+
+    faqQuestions(
+        category_id: Int,        
+        tag: String,
+        search: String,
+        pageSize: Int = 20,
+        currentPage: Int = 1
+    ): FaqQuestionOutput
+        @resolver(class: "Lof\\Faq\\Model\\Resolver\\QuestionList")
+
+    faqTags: [FaqTag]
+        @resolver(class: "Lof\\Faq\\Model\\Resolver\\TagList")
+}
+
+type FaqCategory {
+    category_id: Int
+    title: String
+    description: String
+    position: Int
+    is_active: Int
+}
+
+type FaqQuestionOutput {
+  total_count: Int @doc(description: "The number of seller rates returned")
+  page_info: SearchResultPageInfo
+    @doc(description: "Metadata for pagination rendering")
+  items: [FaqQuestion] @doc(description: "An array of seller rates")
+}
+
+type FaqQuestion {
+    question_id: Int
+    title: String
+    answer: String
+    tags: [String]
+    author_email: String
+    author_name: String
+    creation_time: String
+    update_time: String
+    is_featured: String
+    is_active: String
+    page_title: String
+    meta_keywords: String
+    meta_description: String
+    question_position: String
+    like: String
+    disklike: String
+    title_size: String
+    title_color: String
+    title_color_active: String
+    title_bg: String
+    title_bg_active: String
+    border_width: String
+    title_border_color: String
+    title_border_radius: String
+    body_size: String
+    body_color: String
+    body_bg: String
+    question_margin: String
+    question_icon: String
+    question_active_icon: String
+    animation_class: String
+    animation_speed: String
+    question_url: String
+    question_type: String
+    _first_store_id: String
+    store_code: String
+    store_id: [String]
+}
+
+type FaqTag {    
+    tag_id: Int
+    question_id: Int
+    name: String
+    alias: String
+}

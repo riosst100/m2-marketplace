@@ -28,6 +28,9 @@ use Lofmp\Rma\Model\ConditionFactory;
 
 class Grid extends GridExtended
 {
+    protected $conditionFactory;
+
+
     public function __construct(
         ConditionFactory $conditionFactory,
         Context $context,

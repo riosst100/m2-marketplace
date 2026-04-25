@@ -124,7 +124,7 @@ class Delete extends \Magento\Framework\App\Action\Action
                 $this->messageManager->addNotice(__('Cannot delete this item'));
             }
             $this->messageManager->addSuccess(__('Delete quote success'));
-            $this->_redirectUrl($this->getFrontendUrl('marketplace/catalog/quickrfq'));
+            $this->_redirectUrl($this->getFrontendUrl('marketplace/quickrfq/quickrfq'));
         } elseif ($customerSession->isLoggedIn() && $status == 0) {
             $this->_redirectUrl($this->getFrontendUrl('lofmarketplace/seller/becomeseller'));
         } else {

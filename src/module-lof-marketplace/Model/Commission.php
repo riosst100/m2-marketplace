@@ -26,6 +26,11 @@ namespace Lof\MarketPlace\Model;
  */
 class Commission extends \Magento\Rule\Model\AbstractModel
 {
+    protected $_resource;
+    protected $_formFactory;
+    protected $_localeDate;
+
+
 
     const STATUS_ENABLED = 1;
     const STATUS_DISABLED = 0;

@@ -30,7 +30,7 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Commission
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Lof_MarketPlace::commission');
+        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::product_commission');
     }
 
     /**
@@ -43,14 +43,14 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Commission
         /**
          * Set active menu item
          */
-        $resultPage->setActiveMenu("Lof_MarketPlace::commission");
-        $resultPage->getConfig()->getTitle()->prepend(__('Product Commissions'));
+        $resultPage->setActiveMenu("CoreMarketplace_MarketPlace::product_commission");
+        $resultPage->getConfig()->getTitle()->prepend(__('Manage Commissions / Fee'));
 
         /**
          * Add breadcrumb item
          */
-        $resultPage->addBreadcrumb(__('Product Commissions'), __('Product Commissions'));
-        $resultPage->addBreadcrumb(__('Manage Product Commissions'), __('Manage Product Commissions'));
+        $resultPage->addBreadcrumb(__('Manage Commissions / Fee'), __('Manage Commissions / Fee'));
+        $resultPage->addBreadcrumb(__('Manage Manage Commissions / Fee'), __('Manage Manage Commissions / Fee'));
 
         return $resultPage;
     }

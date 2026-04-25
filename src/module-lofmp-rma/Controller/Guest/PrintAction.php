@@ -27,6 +27,10 @@ use Magento\Framework\Controller\ResultFactory;
 
 class PrintAction extends \Lofmp\Rma\Controller\Rma
 {
+    protected $rmaRepository;
+    protected $registry;
+
+
     public function __construct(
         \Lofmp\Rma\Api\Repository\RmaRepositoryInterface $rmaRepository,
         \Magento\Framework\Registry $registry

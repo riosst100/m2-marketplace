@@ -96,7 +96,8 @@ class Save extends \Lof\Faq\Controller\Adminhtml\Category
             }
 
             // init model and set data
-
+            $data['category_type'] = 'supplier';
+            // dd($data);
             $model->setData($data);
 
             // try to save it

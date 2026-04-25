@@ -30,6 +30,12 @@ use Magento\Catalog\Helper\Image;
  */
 class Uploadimage extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    protected $mappingHelper;
+    protected $sellerHelper;
+    protected $sellerImagesFactory;
+    protected $fileDriver;
+
+
     /**
      * Swatch area inside media folder
      *
@@ -128,33 +134,104 @@ class Uploadimage extends \Magento\Framework\App\Helper\AbstractHelper
      * @return string|string[]
      * @throws \Magento\Framework\Exception\FileSystemException
      */
-    public function moveImageFromTmp($file)
+    public function moveImageFromTmp($file, $categories = null, $folder = null)
     {
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/imageupload.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        // $logger->info('moveImageFromTmp called with file: ' . $file);
+
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->mappingHelper = $objectManager->create(\CoreMarketplace\ProductAttributesLink\Helper\Data::class);
+        $this->sellerHelper = $objectManager->create(\Lof\MarketPlace\Helper\Data::class);
+        $this->sellerImagesFactory = $objectManager->create(\CoreMarketplace\MarketplaceProductImportExport\Model\SellerImagesFactory::class);
+        $this->fileDriver = $objectManager->create(\Magento\Framework\Filesystem\Driver\File::class);
+
         if (strrpos($file, '.tmp') == strlen($file) - 4) {
             $file = substr($file, 0, strlen($file) - 4);
         }
 
-        $destinationFile = $this->getUniqueFileName($file);
+        $sellerId = $this->sellerHelper->getSellerId();
 
-        /** @var $storageHelper \Magento\MediaStorage\Helper\File\Storage\Database */
-        $storageHelper = $this->fileStorageDb;
+        $title = basename($file);
 
-        if ($storageHelper->checkDbUsage()) {
-            $storageHelper->renameFile(
-                $this->mediaConfig->getTmpMediaShortUrl($file),
-                $this->mediaConfig->getMediaShortUrl($destinationFile)
-            );
+        $mediaPath = $this->sellerHelper->getMediaPath();
+        
+        $newDestinationFile = 'seller/' . $sellerId . '/' . $folder . '/' . $title;
+        $newDestinationFile = preg_replace('#/+#', '/', $newDestinationFile);
+        // $logger->info('New destination file: ' . $newDestinationFile);
+        $destination = $mediaPath . $newDestinationFile;
+        // Check if the image path already exists in the database
+        $existing = $this->sellerImagesFactory->create()->getCollection()
+            ->addFieldToFilter('path', $newDestinationFile)
+            ->getSize();
 
-            $this->mediaDirectory->delete($this->mediaConfig->getTmpMediaPath($file));
-            $this->mediaDirectory->delete($this->getAttributeSwatchPath($destinationFile));
-        } else {
-            $this->mediaDirectory->renameFile(
-                $this->mediaConfig->getTmpMediaPath($file),
-                $this->getAttributeSwatchPath($destinationFile)
-            );
+        if ($existing > 0) {
+            // Return the existing file path and status if image already exists
+            return [
+                'status' => 'failed',
+                'file' => $title
+            ];
+        }
+        // dd($mediaPath . 'catalog/product' . $file);
+
+        $model = $this->sellerImagesFactory->create();
+        $model->setTitle($title);
+        $model->setSellerId($sellerId);
+        $model->setCategories($categories);
+        $model->setPath($newDestinationFile);
+        $model->save();
+        
+        
+        // $this->_fileDriver->rename(, $fullDestinationFile);
+        $source = $mediaPath . 'tmp/catalog/product' . $file;
+        try {
+            if ($this->fileDriver->isExists($source)) {
+                $this->fileDriver->rename($source, $destination);
+            } else {
+                // dd('Source file does not exist: ' . $source);
+            }
+        } catch (\Exception $e) {
+            // dd('Error moving file: ' . $e->getMessage());
+            // Fallback to copy and delete
+            try {
+                $this->fileDriver->copy($source, $destination);
+                $this->fileDriver->deleteFile($source);
+            } catch (\Exception $fallbackException) {
+                // dd('Fallback failed: ' . $fallbackException->getMessage());
+                throw $fallbackException;
+            }
         }
 
-        return str_replace('\\', '/', $destinationFile);
+        $destinationFile = $this->getUniqueFileName($file);
+        
+        $this->mediaDirectory->delete($this->mediaConfig->getTmpMediaPath($file));
+        $this->mediaDirectory->delete($this->getAttributeSwatchPath($destinationFile));
+
+        /** @var $storageHelper \Magento\MediaStorage\Helper\File\Storage\Database */
+        // $storageHelper = $this->fileStorageDb;
+
+        // if ($storageHelper->checkDbUsage()) {
+        //     $storageHelper->renameFile(
+        //         $this->mediaConfig->getTmpMediaShortUrl($file),
+        //         $this->mediaConfig->getMediaShortUrl($destinationFile)
+        //     );
+
+        //     $this->mediaDirectory->delete($this->mediaConfig->getTmpMediaPath($file));
+        //     $this->mediaDirectory->delete($this->getAttributeSwatchPath($destinationFile));
+        // } else {
+        //     $this->mediaDirectory->renameFile(
+        //         $this->mediaConfig->getTmpMediaPath($file),
+        //         $this->getAttributeSwatchPath($destinationFile)
+        //     );
+        // }
+
+        // dd($destinationFile);
+        return [
+                'status' => 'success',
+                'file' => $title
+            ];
+        // return str_replace('\\', '/', $destinationFile);
     }
 
     /**

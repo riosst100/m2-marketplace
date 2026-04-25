@@ -40,6 +40,9 @@ use Magento\Framework\UrlInterface;
  */
 class Send extends \Magento\Framework\App\Action\Action
 {
+    protected $_actionFlag;
+
+
     const FLAG_IS_URLS_CHECKED = 'check_url_settings';
     /**
      * @var Session

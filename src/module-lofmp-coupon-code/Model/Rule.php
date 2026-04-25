@@ -27,6 +27,14 @@ use Magento\Framework\Api\DataObjectHelper;
 
 class Rule extends \Magento\Rule\Model\AbstractModel
 {
+    protected $_resource;
+    protected $_formFactory;
+    protected $_localeDate;
+    protected $_combineFactory1;
+    protected $_condProdCombineF1;
+    protected $_hasDataChanges;
+
+
     /**
      * Rule Statues
      */
@@ -252,6 +260,131 @@ class Rule extends \Magento\Rule\Model\AbstractModel
         );
         
         return $modelDataObject;
+    }
+    
+    public function beforeSave()
+    {
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/coupon.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        $logger->info('Before Save Rule');
+        $logger->info('Model Data: ' . print_r($this->getData(), true));
+
+        parent::beforeSave();
+
+        $selectedProducts = $this->getData('selected_product_ids');
+
+        if (is_string($selectedProducts)) {
+            $decoded = json_decode($selectedProducts, true);
+            $selectedProducts = is_array($decoded) ? $decoded : explode(',', $selectedProducts);
+        }
+
+        $logger->info('Selected Products: ' . print_r($selectedProducts, true));
+
+        if (!empty($selectedProducts) && is_array($selectedProducts)) {
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $productRepository = $objectManager->get(\Magento\Catalog\Api\ProductRepositoryInterface::class);
+
+            // Outer "Combine" structure
+            $conditions = [
+                'type' => 'Magento\\SalesRule\\Model\\Rule\\Condition\\Combine',
+                'attribute' => null,
+                'operator' => null,
+                'value' => '1',
+                'is_value_processed' => null,
+                'aggregator' => 'all',
+                'conditions' => []
+            ];
+
+            // Middle "Product\\Found" wrapper
+            $productFound = [
+                'type' => 'Magento\\SalesRule\\Model\\Rule\\Condition\\Product\\Found',
+                'attribute' => null,
+                'operator' => null,
+                'value' => '1',
+                'is_value_processed' => null,
+                'aggregator' => 'any',
+                'conditions' => []
+            ];
+
+            foreach ($selectedProducts as $productId) {
+                try {
+                    $product = $productRepository->getById($productId);
+                    $supplierSku = $product->getData('supplier_sku');
+
+                    if (!$supplierSku) {
+                        $logger->info("Product ID {$productId} has no supplier_sku, skipped.");
+                        continue;
+                    }
+
+                    $productFound['conditions'][] = [
+                        'type' => 'Magento\\SalesRule\\Model\\Rule\\Condition\\Product',
+                        'attribute' => 'supplier_sku',
+                        'operator' => '==',
+                        'value' => $supplierSku,
+                        'is_value_processed' => false,
+                        'attribute_scope' => ''
+                    ];
+
+                    $logger->info("Added condition for product ID {$productId} (supplier_sku={$supplierSku})");
+
+                } catch (\Exception $e) {
+                    $logger->err("Error loading product ID {$productId}: " . $e->getMessage());
+                }
+            }
+
+            if (!empty($productFound['conditions'])) {
+                // Nest the ProductFound inside the main Combine
+                $conditions['conditions'][] = $productFound;
+
+                $serialized = json_encode($conditions);
+                $this->setData('conditions_serialized', $serialized);
+
+                // Persist into salesrule table
+                $connection = $objectManager->get('Magento\Framework\App\ResourceConnection')
+                                            ->getConnection();
+                $connection->update(
+                    $connection->getTableName('salesrule'),
+                    ['conditions_serialized' => $serialized],
+                    ['rule_id = ?' => $this->getCouponRuleId()]
+                );
+
+                $logger->info('Serialized Nested Conditions (supplier_sku): ' . $serialized);
+            }
+        }
+
+        return $this;
+    }
+
+    public function afterLoad()
+    {
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/coupon.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        $logger->info('After Load Rule');
+
+        parent::afterLoad();
+
+        $serialized = $this->getData('conditions_serialized');
+        if ($serialized) {
+            try {
+                $data = $this->jsonSerializer->unserialize($serialized);
+                if (isset($data['conditions'])) {
+                    $selected = [];
+                    foreach ($data['conditions'] as $cond) {
+                        if (isset($cond['value'])) {
+                            $selected[] = $cond['value'];
+                        }
+                    }
+                    $this->setData('selected_product_ids', $selected);
+                }
+                $logger->info('Deserialized Conditions: ' . print_r($data, true));
+            } catch (\Exception $e) {
+                // prevent crash on corrupted JSON
+            }
+        }
+
+        return $this;
     }
 }
 

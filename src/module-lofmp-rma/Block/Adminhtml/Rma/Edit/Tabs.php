@@ -47,13 +47,13 @@ class Tabs extends WidgetTabs
                 '\Lofmp\Rma\Block\Adminhtml\Rma\Edit\Tab\GeneralInfo'
             )->toHtml(),
         ]);
-        $this->addTab('fields', [
-            'label' => __('More Information'),
-            'title' => __('Field'),
-            'content' => $this->getLayout()->createBlock(
-                '\Lofmp\Rma\Block\Adminhtml\Rma\Edit\Tab\Field'
-            )->toHtml(),
-        ]);
+        // $this->addTab('fields', [
+        //     'label' => __('More Information'),
+        //     'title' => __('Field'),
+        //     'content' => $this->getLayout()->createBlock(
+        //         '\Lofmp\Rma\Block\Adminhtml\Rma\Edit\Tab\Field'
+        //     )->toHtml(),
+        // ]);
 
         $this->addTab('items', [
             'label' => __('Items'),

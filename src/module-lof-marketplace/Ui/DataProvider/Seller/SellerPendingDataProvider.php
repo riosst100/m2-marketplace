@@ -25,6 +25,9 @@ use Lof\MarketPlace\Model\ResourceModel\Seller\CollectionFactory;
 
 class SellerPendingDataProvider extends \Lof\MarketPlace\Ui\DataProvider\Seller\SellerDataProvider
 {
+    protected $collection;
+
+
     /**
      * SellerPendingDataProvider constructor.
      * @param string $name
@@ -57,5 +60,15 @@ class SellerPendingDataProvider extends \Lof\MarketPlace\Ui\DataProvider\Seller\
             $data
         );
         $this->collection = $collectionFactory->create()->addFieldToFilter('status', 2);
+        $this->collection = $collectionFactory->create()->addFieldToFilter('documents_verify_status', ['in' => [2,3]]);
+
+        /** Join customer_entity */
+        $this->collection->getSelect()->joinLeft(
+            ['ce' => $this->collection->getTable('customer_entity')],
+            'main_table.customer_id = ce.entity_id',
+            ['seller_type' => 'ce.group_id']
+        );
+
+        $this->collection->addFilterToMap('seller_type', 'ce.group_id');
     }
 }

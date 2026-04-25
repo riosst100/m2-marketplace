@@ -158,6 +158,8 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">textRange</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
                     <item name="sorting" xsi:type="string">desc</item>
                     <item name="label" xsi:type="string" translate="true">ID</item>
                 </item>
@@ -168,7 +170,7 @@
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="sorting" xsi:type="string">desc</item>
-                    <item name="label" xsi:type="string" translate="true">Invoice #</item>
+                    <item name="label" xsi:type="string" translate="true">Invoice Number</item>
                 </item>
             </argument>
         </column>
@@ -176,7 +178,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Order #</item>
+                    <item name="label" xsi:type="string" translate="true">Order Number</item>
                 </item>
             </argument>
         </column>
@@ -185,7 +187,7 @@
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Lof_MarketPlace/js/grid/columns/link</item>
-                    <item name="label" xsi:type="string" translate="true">Seller</item>
+                    <item name="label" xsi:type="string" translate="true">Store</item>
                 </item>
             </argument>
         </column>
@@ -193,7 +195,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Seller Total Amount</item>
+                    <item name="label" xsi:type="string" translate="true">Total Amount</item>
                 </item>
             </argument>
         </column>
@@ -206,6 +208,14 @@
                     <item name="label" xsi:type="string" translate="true">Invoice Date</item>
                 </item>
             </argument>
+        </column>
+        <column name="store_id" class="CoreMarketplace\SellerMembership\Ui\Component\Listing\Column\Website">
+            <settings>
+                <label translate="true">Countries/Regions</label>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <options class="CoreMarketplace\SellerMembership\Ui\Component\Listing\Column\WebsiteOptions"/>
+            </settings>            
         </column>
         <!-- <column name="order_created_at" class="Magento\Ui\Component\Listing\Columns\Date">
             <argument name="data" xsi:type="array">

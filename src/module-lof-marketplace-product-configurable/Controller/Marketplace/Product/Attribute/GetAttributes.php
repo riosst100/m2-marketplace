@@ -27,6 +27,9 @@ use Magento\Framework\App\Action\Context;
 
 class GetAttributes extends Action
 {
+    protected $attributesList;
+
+
     /**
      * Authorization level of a basic admin session
      *

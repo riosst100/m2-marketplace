@@ -1,0 +1,247 @@
+"""
+RMA types for Lofmp_Rma
+"""
+type RmaItem {
+  item_id: ID
+  product_name: String
+  sku: String
+  qty: Float
+  reason_id: Int
+  resolution_id: Int
+  status: String
+}
+
+type RmaMessage {
+  message_id: ID
+  rma_id: ID
+  customer_id: Int
+  sender: String
+  content: String
+  created_at: String
+}
+
+type Rma {
+  rma_id: ID
+  increment_id: String
+  order_id: Int
+  order_increment_id: String  
+  status_label: String
+  created_at: String
+  updated_at: String
+  items: [RmaItem]
+  messages: [RmaMessage]
+  customer_comment: String
+}
+
+type RmaSearchResult {
+  items: [Rma]
+  total_count: Int
+}
+
+input RmaItemInput {
+  item_id: ID
+  qty: Float
+  reason_id: Int
+  resolution_id: Int
+}
+
+input SendMessageInput {
+  rma_id: ID!
+  text: String!
+  attachments: [AttachmentInput]
+}
+
+input AttachmentInput {
+  name: String!
+  type: String!
+  content: String! # base64 encoded file content
+  size: Int!
+}
+
+type CreateRmaOutput {
+  success: Boolean!
+  rma: Rma
+  message: String
+}
+
+type SendMessageOutput {
+  success: Boolean!
+  message: String
+  created_message: RmaMessage
+}
+
+type Rma {
+  rma_id: ID!
+  increment_id: String
+  order_increment_id: String
+  status: String
+  status_label: String
+  order: RmaOrder
+  seller: RmaSeller
+  items: [RmaItem]
+  shipping_address: ShippingAddress
+  rma_date: String
+  created_at: String
+  messages: [RmaMessage]
+}
+
+type RmaOrder {
+  id: ID!
+  increment_id: String
+  created_at: String
+  status: String
+  status_label: String
+}
+
+type ShippingAddress {    
+    entity_id: ID
+    parent_id: String
+    customer_address_id: String
+    quote_address_id: String
+    region_id: String
+    customer_id: String
+    fax: String
+    region: String
+    postcode: String
+    lastname: String
+    street: [String]
+    city: String
+    email: String
+    telephone: String
+    country_id: String
+    firstname: String
+    address_type: String
+    prefix: String
+    middlename: String
+    suffix: String
+    company: String
+    vat_id: String
+    vat_is_valid: String
+    vat_request_id: String
+    vat_request_date: String
+    vat_request_success: String
+    cash_on_delivery: String
+    base_cash_on_delivery: String
+}
+
+type RmaSeller {
+  id: ID
+  name: String
+  url: String
+}
+
+type RmaItem {
+  id: ID!
+  name: String
+  sku: String
+  price: Money
+  price_incl_tax: Money
+  amount_refunded: Money
+  discount_amount: Money
+  qty_requested: Float
+  reason: String
+  condition: String
+  resolution: String
+  image_url: String
+  product_options: [RmaItemOption]
+  seller_name: String
+}
+
+type RmaItemOption {
+  label: String
+  value: String
+}
+
+type RmaMessage {
+  id: ID!
+  sender_name: String
+  sender_email: String
+  text: String
+  created_at: String
+  attachments: [RmaAttachment]
+}
+
+type RmaAttachment {
+  id: ID!
+  name: String
+  url: String
+}
+
+type CreateRmaResponse {
+    success: Boolean!
+    message: String
+    rma_id: Int
+    status_id: Int
+}
+
+input RmaItemInput {
+    order_item_id: String!
+    qty_requested: Float
+    reason_id: Int
+    resolution_id: Int
+    condition_id: Int
+}
+
+input CreateRmaInput {
+    order_number: String!
+    items: [RmaItemInput!]!
+    reply: String
+    street: String
+    street2: String
+    city: String
+    postcode: String
+    region: String
+    country_id: String
+}
+
+input RmaFilterInput {
+  order_number: String
+}
+
+type RmaConfiguration {
+  reasons: [RmaReason]
+  conditions: [RmaCondition]
+  resolutions: [RmaResolution]
+}
+
+type RmaReason {
+  id: Int
+  name: String
+  is_active: Int
+}
+
+type RmaCondition {
+  id: Int
+  name: String
+  is_active: Int
+}
+
+type RmaResolution {
+  id: Int
+  name: String
+  is_active: Int
+}
+
+type RmaShippingConfirmOutput {
+  success: Boolean!
+  message: String
+}
+
+type Query {
+  lofmpRmas(pageSize: Int = 20, currentPage: Int = 1, filter: RmaFilterInput): RmaSearchResult
+    @resolver(class: "Lofmp\\Rma\\Model\\Resolver\\RmaList")
+  lofmpRmaDetail(rmaId: ID!): Rma
+    @resolver(class: "Lofmp\\Rma\\Model\\Resolver\\RmaDetail")
+  lofmpRmaConfigurations: RmaConfiguration @resolver(class: "Lofmp\\Rma\\Model\\Resolver\\RmaConfigurations") 
+    @doc(description: "Get RMA available configurations such as reasons, conditions, and resolutions.")
+}
+
+type Mutation {
+  lofmpCreateRma(input: CreateRmaInput!): CreateRmaResponse 
+    @resolver(class: "Lofmp\\Rma\\Model\\Resolver\\CreateRma")
+  lofmpSendRmaMessage(input: SendMessageInput!): SendMessageOutput
+    @resolver(class: "Lofmp\\Rma\\Model\\Resolver\\SendMessage")
+  lofmpRmaShippingConfirm(rma_id: Int!): RmaShippingConfirmOutput
+    @resolver(class: "Lofmp\\Rma\\Model\\Resolver\\RmaShippingConfirm")
+    @doc(description: "Confirm shipping for RMA request")
+}

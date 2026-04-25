@@ -25,6 +25,15 @@ namespace Lofmp\Rma\Model\Rule\Condition;
 
 class Rma extends \Magento\Rule\Model\Condition\AbstractCondition
 {
+    protected $fieldCollectionFactory;
+    protected $fieldRepository;
+    protected $statusCollectionFactory;
+    protected $rmaHelper;
+    protected $helper;
+    protected $searchCriteriaBuilder;
+    protected $context;
+
+
     public function __construct(
         \Lofmp\Rma\Model\ResourceModel\Field\CollectionFactory $fieldCollectionFactory,
         \Lofmp\Rma\Api\Repository\FieldRepositoryInterface $fieldRepository,

@@ -85,12 +85,14 @@ class ProductName extends Column
                     $product = $this->_productloader->create()->load($item['product_id']);
                     $url = $this->_urlBuilder->getUrl('catalog/product/edit', ['id' => $item['product_id']]);
                     $title = __('View Product');
-                    $item[$fieldName] = "<a href='" . $url . "'
-                    target='blank'
-                    title='" . $title . "'>" . $product->getName() . '</a>';
+                    // $item[$fieldName] = "<a href='" . $url . "'
+                    // target='blank'
+                    // title='" . $title . "'>" . $product->getName() . '</a>';
+                    $item[$fieldName] = $product->getname();
                 }
             }
         }
+    
         return $dataSource;
     }
 }

@@ -27,6 +27,11 @@ use Magento\Framework\Controller\ResultFactory;
 
 class PrintLabel extends \Lofmp\Rma\Controller\Guest
 {
+    protected $rmaRepository;
+    protected $registry;
+    protected $datahelper;
+
+
     public function __construct(
         \Lofmp\Rma\Api\Repository\RmaRepositoryInterface $rmaRepository,
         \Lofmp\Rma\Helper\Data                            $datahelper,

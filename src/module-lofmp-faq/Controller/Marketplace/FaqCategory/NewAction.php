@@ -23,6 +23,10 @@ namespace Lofmp\Faq\Controller\Marketplace\FaqCategory;
 
 class NewAction extends \Magento\Framework\App\Action\Action
 {
+    protected $_session;
+    protected $_sellerFactory;
+
+
     /**
      * @var \Magento\Backend\Model\View\Result\ForwardFactory
      */

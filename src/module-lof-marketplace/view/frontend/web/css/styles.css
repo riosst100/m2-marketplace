@@ -55,7 +55,7 @@
 	margin-top: -12px;
 }
 .seller-widget .carousel-controls .carousel-control{
-	color:#1979c3 !important;
+	color:#f76b1c !important;
 }
 .seller-widget .carousel-controls .carousel-control.left {
 	left: -10px;
@@ -131,7 +131,7 @@ input.form-input-checkbox {
     margin-left: 10px;
 }
 .box-reviews span.is-verified {
-    color: #1979c3;
+    color: #f76b1c;
     font-size: 13px;
     text-transform: initial;
 }

@@ -23,6 +23,11 @@ namespace Lof\MarketPlace\Block\Adminhtml\Withdrawal;
 
 class Edit extends \Magento\Backend\Block\Widget\Form\Container
 {
+    protected $_objectId;
+    protected $_blockGroup;
+    protected $_controller;
+
+
     /**
      * Core registry
      *

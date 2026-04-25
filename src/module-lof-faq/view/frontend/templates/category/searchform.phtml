@@ -7,8 +7,8 @@ $cat = $coreRegistry->registry('current_faq_category');
 	<div class="loffaq-search">
 		<form method="get" id="faq-search" action="<?php echo $block->getUrl('loffaq/category/search') ?>" data-mage-init='{"validation":{}}'>
 			<div class="main-form">
-				<input type="text" data-validate="{required:true}" name="s" class="faqkeyword" size="50" maxlength="50">
-				<input type="hidden" name="category_id" value"<?php echo $cat->getId() ?>"/>
+				<input type="text" data-validate="{required:true}" name="s" class="faqkeyword" size="50" maxlength="50" placeholder="Search help articles...">
+				<input type="hidden" name="category_id" value="<?php echo $cat->getId() ?>"/>
 			</div>
 			<input type="submit" class="btn-submit" value="<?php echo __('Search'); ?>">
 			<img class="lofsearch-loader" src="<?php echo $this->getViewFileUrl('Lof_Faq/images/loading.svg'); ?>" alt="<?php echo __("Loading...") ?>"/>

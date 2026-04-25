@@ -22,7 +22,7 @@ $total 				= $collection->count();
 <?php } ?>
 <?php if($collection->count()){ ?>
 <?php if($isSearch && $total){ ?>
-<span id="faqsearch-result"><?php echo __('%1 keywords matches', $total); ?></span>
+<span id="faqsearch-result"><?php echo __('%1 articles found', $total); ?></span>
 <?php } ?>
 
 <?php if(!$isSearch){ ?>

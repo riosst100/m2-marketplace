@@ -34,17 +34,21 @@ class Index extends \Magento\Framework\App\Action\Action
 
     protected $_actionFlag;
 
+    protected $resultPageFactory;
+
 
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\Registry $coreRegistry,
         \Magento\Customer\Model\Session $customerSession,
-        \Magento\Framework\Url $frontendUrl
+        \Magento\Framework\Url $frontendUrl,
+        \Magento\Framework\View\Result\PageFactory $resultPageFactory
     ) {
         $this->_actionFlag      = $context->getActionFlag();
         $this->_coreRegistry    = $coreRegistry;
         $this->_session         = $customerSession;
         $this->_frontendUrl     = $frontendUrl;
+        $this->resultPageFactory = $resultPageFactory;
         parent::__construct($context);
     }
 
@@ -70,7 +74,11 @@ class Index extends \Magento\Framework\App\Action\Action
             $this->messageManager->addNotice(__( 'You must have a seller account to access' ) );
             $this->_redirectUrl($this->getFrontendUrl('lofmarketplace/seller/login'));
         }
-        $this->_view->loadLayout();
-        $this->_view->renderLayout();
+        
+        $resultPage = $this->resultPageFactory->create();
+        // $resultPage->setActiveMenu('Lofmp_Faq::faq');
+        $resultPage->getConfig()->getTitle()->set(__('Manage Product FAQ'));
+
+        return $resultPage;
     }
 }

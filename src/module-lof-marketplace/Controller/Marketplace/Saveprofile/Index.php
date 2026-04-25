@@ -33,6 +33,9 @@ use Magento\Customer\Model\CustomerFactory;
  */
 class Index extends \Magento\Customer\Controller\AbstractAccount
 {
+    protected $storeManager;
+
+
     /**
      * @var \Magento\Customer\Model\Session
      */
@@ -199,7 +202,8 @@ class Index extends \Magento\Customer\Controller\AbstractAccount
                 }
 
                 $sellerStores = $sellerModel->getStoreId();
-                $data['store_id'] = is_array($sellerStores) ? $sellerStores[0] : (int)$sellerStores;
+                $this->storeManager = $objectManager->get(\Magento\Store\Model\StoreManagerInterface::class);
+                $data['store_id'] = $sellerStores ? (is_array($sellerStores) ? $sellerStores[0] : (int)$sellerStores) : $this->storeManager->getStore()->getId();
                 if ($this->_sellerHelper->getConfig('general_settings/enable_all_store')) {
                     $newStores = $this->websiteStoreHelper->getWebsteStoreIds();
                     if ($newStores && count($newStores) > 0) {

@@ -35,7 +35,8 @@ class Emaillog extends AbstractModel implements EmaillogInterface
 {
     protected $objectManager;
     protected $coreDate;
-    
+
+
     /**
      * @var string
      */

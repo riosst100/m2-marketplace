@@ -52,7 +52,7 @@
 .field-attachment label {
     display: inline-block;
     text-decoration: none;
-    color: #1979c3;
+    color: #f76b1c;
     cursor: pointer;
     font-size: 1.4rem;
     margin-left: 2rem;
@@ -78,7 +78,7 @@
     -moz-osx-font-smoothing: grayscale;
     font-size: 1.4rem;
     line-height: 1.4;
-    color: #1979c3;
+    color: #f76b1c;
     content: '\e900';
     font-family: 'magento-icons';
     vertical-align: middle;

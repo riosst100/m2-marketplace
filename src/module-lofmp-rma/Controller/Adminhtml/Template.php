@@ -25,6 +25,14 @@ namespace Lofmp\Rma\Controller\Adminhtml;
 
 abstract class Template extends \Magento\Backend\App\Action
 {
+    protected $templateFactory;
+    protected $localeDate;
+    protected $registry;
+    protected $context;
+    protected $backendSession;
+    protected $resultFactory;
+
+
     public function __construct(
         \Lofmp\Rma\Model\QuickResponseFactory $templateFactory,
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate,

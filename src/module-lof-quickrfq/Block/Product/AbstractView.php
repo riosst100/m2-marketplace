@@ -32,6 +32,9 @@ use Magento\Framework\View\Element\Template\Context;
  */
 abstract class AbstractView extends \Magento\Framework\View\Element\Template
 {
+    protected $_helperConfig;
+
+
 
     /**
      * @var Registry

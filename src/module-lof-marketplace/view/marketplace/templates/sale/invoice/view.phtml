@@ -65,17 +65,6 @@ $currentSellerId = $helper->getSellerId();
             </div>
             <div class="x_content" id="invoice_content">
                 <div class="content invoice">
-                    <div class="row">
-                        <div class="col-xs-12 invoice-header">
-                            <h1>
-                                <i class="fa fa-globe"></i> <?= $block->escapeHtml(__('Invoice')) ?>
-                                <small class="pull-right">
-                                    <?= $block->escapeHtml(__('Created At')) ?>
-                                    : <?= $block->escapeHtml($this->getInvoice()->getData('created_at')) ?>
-                                </small>
-                            </h1>
-                        </div>
-                    </div>
                     <div class="row invoice-info">
                         <div class="col-sm-3 invoice-col">
                             <b><?= $block->escapeHtml(__('Billing Address')) ?></b>
@@ -94,10 +83,10 @@ $currentSellerId = $helper->getSellerId();
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-3 invoice-col">
-                            <?= __('<b>Invoice</b> #%1', $this->getInvoice()->getData('increment_id')) ?>
+                            <?= __('<b>Invoice Number</b>: %1', $this->getInvoice()->getData('increment_id')) ?>
                             <br>
 
-                            <?= __('<b>Order:</b> #%1', $this->getOrder()->getRealOrderId()) ?>
+                            <?= __('<b>Order Number</b>: %1', $this->getOrder()->getRealOrderId()) ?>
                             <br>
                             <b><?= $block->escapeHtml(__('Order Date')) ?>
                                 :</b> <?= $block->escapeHtml($this->getOrderDate()) ?>
@@ -109,17 +98,14 @@ $currentSellerId = $helper->getSellerId();
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-3 invoice-col">
-                            <b><?= $block->escapeHtml(__('Account Information ')) ?></b>
+                            <b><?= $block->escapeHtml(__('Customer Information ')) ?></b>
                             <br>
 
                             <b><?= $block->escapeHtml(__('Customer Name')) ?>
                                 :</b> <?= $block->getOrder()->getCustomerName(); ?>
                             <br>
-                            <b><?= $block->escapeHtml(__('Email')) ?>
+                            <b><?= $block->escapeHtml(__('Customer Email')) ?>
                                 :</b> <?= $block->getOrder()->getCustomerEmail(); ?>
-                            <br>
-                            <b><?= $block->escapeHtml(__('Customer Group')) ?>
-                                :</b> <?= $block->getCustomerGroupName(); ?>
                         </div>
                     </div>
                     <div class="row">
@@ -136,7 +122,6 @@ $currentSellerId = $helper->getSellerId();
                                     <th><?= $block->escapeHtml(__('Row Total')) ?></th>
                                     <th><?= $block->escapeHtml(__('Admin Commission Amount')) ?></th>
                                     <th><?= $block->escapeHtml(__('Seller Amount')) ?></th>
-                                    <th><?= $block->escapeHtml(__('Seller')) ?></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -219,7 +204,6 @@ $currentSellerId = $helper->getSellerId();
                                                             2
                                                         ); ?>
                                                 </td>
-                                                <td><?= $block->escapeHtml($seller_name) ?></td>
                                             </tr>
                                         <?php endif;
                                     endif;
@@ -233,12 +217,6 @@ $currentSellerId = $helper->getSellerId();
                         <!-- accepted payments column -->
                         <div class="col-xs-6">
                             <p class="lead"><?= $block->escapeHtml(__('Payment Methods')) ?>:</p>
-                            <img src="<?= $block->getViewFileUrl('Lof_MarketPlace::images/visa.png') ?>" alt="Visa">
-                            <img src="<?= $block->getViewFileUrl('Lof_MarketPlace::images/mastercard.png') ?>"
-                                 alt="Mastercard">
-                            <img src="<?= $block->getViewFileUrl('Lof_MarketPlace::images/american_express.png') ?>"
-                                 alt="American Express">
-                            <img src="<?= $block->getViewFileUrl('Lof_MarketPlace::images/paypal.png') ?>" alt="Paypal">
                             <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
                                 <?= $block->getOrder()->getPayment()->getMethodInstance()->getTitle(); ?>
                             </p>

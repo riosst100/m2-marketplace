@@ -23,6 +23,11 @@ namespace Lofmp\CouponCode\Model;
 
 class Action extends \Magento\Rule\Model\AbstractModel
 {
+    protected $_resource;
+    protected $_formFactory;
+    protected $_localeDate;
+
+
     /**
      * Rule Statues
      */

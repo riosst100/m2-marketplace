@@ -37,6 +37,12 @@ use Magento\Framework\Exception\CouldNotSaveException;
  */
 class MessageRepository implements MessageRepositoryInterface, CustomerMessageRepositoryInterface, SellerMessageRepositoryInterface
 {
+    protected $dataObjectProcessor;
+    protected $storeManager;
+    protected $collectionProcessor;
+    protected $searchResultsFactory;
+
+
 
     /**
      * @var SellerFactory
@@ -290,6 +296,7 @@ class MessageRepository implements MessageRepositoryInterface, CustomerMessageRe
     /**
      * @inheritdoc
      */
+    /**
     public function sendMessage(int $customerId, string $sellerUrl, string $subject, string $message)
     {
         $seller = $this->getSellerByUrl($sellerUrl);
@@ -312,14 +319,76 @@ class MessageRepository implements MessageRepositoryInterface, CustomerMessageRe
             throw new NoSuchEntityException(__('Seller with url "%1" does not exist.', $sellerUrl));
         }
     }
+    */
+
+    // Fixing save customer message
+    public function sendMessage(int $customerId, string $sellerUrl, string $subject, string $message)
+    {
+        $seller = $this->getSellerByUrl($sellerUrl);
+        if ($seller && $seller->getId()) {
+            $customer = $this->customerRepository->getById($customerId);
+            $messageModel = $this->messageFactory->create();
+            $messageModel->setSenderId($customerId)
+                ->setSenderEmail($customer->getEmail())
+                ->setSenderName($customer->getFirstname())
+                ->setSellerSend($seller->getId())
+                ->setSubject($subject)
+                ->setDescription($message)
+                ->setReceiverId($seller->getId())
+                ->setOwnerId($seller->getId())
+                ->setStatus(1)
+                ->setIsRead(0);
+            return $this->save($messageModel);
+        } else {
+            throw new NoSuchEntityException(__('Seller with url "%1" does not exist.', $sellerUrl));
+        }
+    }
 
     /**
      * @inheritdoc
      */
+    // public function replyMessage(int $customerId, int $messageId, string $message)
+    // {
+    //     $messageModel = $this->get($messageId);
+    //     $sellerId = $messageModel->getReceiverId();
+    //     $seller = $this->getSellerById($sellerId);
+
+    //     if ($seller && $seller->getId()) {
+    //         /** save message Detail */
+    //         $customer = $this->customerRepository->getById($customerId);
+    //         $messageDetail = $this->messageDetailFactory->create();
+    //         $messageDetail->setMessageAdmin(0)
+    //             ->setSenderId($customerId)
+    //             ->setMessageId($messageId)
+    //             ->setSenderEmail($customer->getEmail())
+    //             ->setSenderName($customer->getFirstname())
+    //             ->setSellerSend($seller->getId())
+    //             ->setReceiverId($seller->getId())
+    //             ->setReceiverEmail($seller->getEmail())
+    //             ->setReceiverName($seller->getName())
+    //             ->setContent($message)
+    //             ->setIsRead(1);
+
+    //         $messageDetail = $this->saveDetail($messageDetail);
+
+    //         $data = $messageDetail->getData();
+    //         $data['seller_send'] = 0;
+    //         $data['namestore'] = $customer->getFirstname() . ' ' . $customer->getLastname();
+    //         $data['sender_name'] = $this->helper->getStoreName();
+    //         $data['receiver_email'] = $seller->getEmail();
+    //         $data['urllogin'] = $this->helper->getBaseStoreUrl().'customer/account/login';
+    //         if ($this->helper->getConfig('email_settings/enable_send_email')) {
+    //             $this->sender->replyMessage($data);
+    //         }
+    //         return $messageDetail;
+    //     } else {
+    //         throw new NoSuchEntityException(__('Seller does not exist.'));
+    //     }
+    // }
     public function replyMessage(int $customerId, int $messageId, string $message)
     {
         $messageModel = $this->get($messageId);
-        $sellerId = $messageModel->getReceiverId();
+        $sellerId = (int) $messageModel->getReceiverId();
         $seller = $this->getSellerById($sellerId);
 
         if ($seller && $seller->getId()) {
@@ -331,22 +400,24 @@ class MessageRepository implements MessageRepositoryInterface, CustomerMessageRe
                 ->setMessageId($messageId)
                 ->setSenderEmail($customer->getEmail())
                 ->setSenderName($customer->getFirstname())
-                ->setSellerSend($seller->getId())
+                ->setSellerSend(0)
                 ->setReceiverId($seller->getId())
                 ->setReceiverEmail($seller->getEmail())
                 ->setReceiverName($seller->getName())
                 ->setContent($message)
-                ->setIsRead(1);
+                ->setIsRead(0);
 
             $messageDetail = $this->saveDetail($messageDetail);
+            $messageModel->setIsRead(0);
+            $this->save($messageModel);
 
             $data = $messageDetail->getData();
             $data['seller_send'] = 0;
             $data['namestore'] = $customer->getFirstname() . ' ' . $customer->getLastname();
-            $data['sender_name'] = $this->helper->getStoreName();
+            $data['sender_name'] = $this->helperData->getStoreName();
             $data['receiver_email'] = $seller->getEmail();
-            $data['urllogin'] = $this->helper->getBaseStoreUrl().'customer/account/login';
-            if ($this->helper->getConfig('email_settings/enable_send_email')) {
+            $data['urllogin'] = $this->helperData->getBaseStoreUrl().'customer/account/login';
+            if ($this->helperData->getConfig('email_settings/enable_send_email')) {
                 $this->sender->replyMessage($data);
             }
             return $messageDetail;
@@ -358,11 +429,23 @@ class MessageRepository implements MessageRepositoryInterface, CustomerMessageRe
     /**
      * @inheritdoc
      */
+    /**
     public function deleteMessage(int $customerId, int $messageId)
     {
         $message = $this->get($messageId);
 
         if ($customerId && $message && $message->getMessageId() && ($message->getOwnerId() == $customerId)) {
+            return $this->deleteById($messageId);
+        } else {
+            throw new NoSuchEntityException(__('Message Id %1 is not exists.', $messageId));
+        }
+    }
+    */
+    public function deleteMessage(int $customerId, int $messageId)
+    {
+        $message = $this->get($messageId);
+
+        if ($customerId && $message && $message->getMessageId() && ($message->getSenderId() == $customerId)) {
             return $this->deleteById($messageId);
         } else {
             throw new NoSuchEntityException(__('Message Id %1 is not exists.', $messageId));
@@ -464,7 +547,7 @@ class MessageRepository implements MessageRepositoryInterface, CustomerMessageRe
     {
         try {
             $collection = $this->messageDetailCollectionFactory->create();
-            $collection->addFieldToFilter("message_id", $message->getMessageId);
+            $collection->addFieldToFilter("message_id", $message->getMessageId());
             $collection->addFieldToFilter("message_admin", 0);
 
             /** @var \Lof\MarketPlace\Model\Message $messageModel */

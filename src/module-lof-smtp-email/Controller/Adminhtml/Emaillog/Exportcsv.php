@@ -25,6 +25,8 @@ class Exportcsv extends \Lof\SmtpEmail\Controller\Adminhtml\Emaillog
 {
     protected $directory;
     protected $fileFactory;
+
+
     protected $_layout;
 
     /**

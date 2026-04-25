@@ -104,10 +104,11 @@ class Methods extends \Magento\Framework\App\Action\Action
         $customerSession = $this->session;
         $customerId = $customerSession->getId();
         $status = $this->sellerFactory->create()->load($customerId, 'customer_id')->getStatus();
-
-        if ($customerSession->isLoggedIn() && $status == 1) {
-            $this->_view->loadLayout();
-            $this->_view->renderLayout();
+        
+        if ($customerSession->isLoggedIn()) {
+            $resultPage = $this->resultPageFactory->create();
+            $resultPage->getConfig()->getTitle()->set(__('Shipping Methods'));
+            return $resultPage;
         } elseif ($customerSession->isLoggedIn() && $status == 0) {
             $this->_redirectUrl($this->getFrontendUrl('lofmarketplace/seller/becomeseller'));
         } else {

@@ -1,0 +1,19 @@
+<?php
+$remainingDays = $block->getDeleteWarning();
+if ($remainingDays === false) {
+    return;
+}
+?>
+
+<div class="page messages">
+    <div class="messages">
+    <div class="alert alert-warning notice alert-dismissable" style="margin-bottom:20px;">
+        <span class="custom-message-warning" style="font-size:14px;">
+            <i class="fa fa-exclamation-triangle"></i>
+            <strong>Warning:</strong>
+            Your seller account is scheduled for permanent deletion in
+            <strong><?= $remainingDays ?> day<?= $remainingDays > 1 ? 's' : '' ?></strong>.
+        </span>
+    </div>
+    </div>
+</div>

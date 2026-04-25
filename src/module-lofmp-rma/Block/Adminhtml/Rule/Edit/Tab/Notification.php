@@ -30,6 +30,10 @@ use Magento\Framework\Registry;
 
 class Notification extends Form
 {
+    protected $formFactory;
+    protected $registry;
+
+
     public function __construct(
         FormFactory $formFactory,
         Registry $registry,

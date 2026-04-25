@@ -23,6 +23,11 @@ namespace Lofmp\Rma\Block\Adminhtml\Rma\Edit\Tab;
 
 class Items extends \Magento\Backend\Block\Template
 {
+    protected $registry;
+    protected $request;
+    protected $dataHelper;
+
+
     /**
      * Items constructor.
      * @param \Lofmp\Rma\Helper\Data $dataHelper

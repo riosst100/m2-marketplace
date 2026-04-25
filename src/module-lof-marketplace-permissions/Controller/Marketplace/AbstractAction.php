@@ -31,6 +31,9 @@ use Magento\Framework\Exception\NotFoundException;
  */
 abstract class AbstractAction extends \Magento\Framework\App\Action\Action
 {
+    protected $_actionFlag;
+
+
     /**
      * Authorization level of a seller session.
      */

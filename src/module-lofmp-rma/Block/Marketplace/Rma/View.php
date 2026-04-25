@@ -25,6 +25,17 @@ namespace Lofmp\Rma\Block\Marketplace\Rma;
 
 class View extends \Magento\Framework\View\Element\Template
 {
+    protected $addressRenderer;
+    protected $groupRepository;
+    protected $rmaHelper;
+    protected $orderitems;
+    protected $orders;
+    protected $request;
+    protected $registry;
+    protected $status;
+    protected $context;
+
+
     protected $sellerFactory;
     protected $orderFactory;
     protected $productFactory;

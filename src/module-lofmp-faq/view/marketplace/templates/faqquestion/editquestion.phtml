@@ -39,6 +39,35 @@
         $animationSet .= "</optgroup>";
     }
 
+    $addProductCategories = [
+        ['label' => __('Please Select'), 'value' => ''],
+        ['label' => __('Action Toys'), 'value' => 'actiontoys'],
+        ['label' => __('Action Toys Model Kits'), 'value' => 'actiontoysmodelkits'],
+        ['label' => __('Anime Toys'), 'value' => 'animetoys'],
+        ['label' => __('Anime Model Kits'), 'value' => 'animemodelkits'],
+        ['label' => __('Gundam'), 'value' => 'gundam'],
+        ['label' => __('Fun Goods'), 'value' => 'fungoods'],
+        ['label' => __('Fashion Dolls'), 'value' => 'fashiondolls'],
+        ['label' => __('Doll Accessories'), 'value' => 'dollsaccessories'],
+        ['label' => __('Collectible Card Games'), 'value' => 'cardgame'],
+        ['label' => __('Living Card Games'), 'value' => 'livingcardgames'],
+        ['label' => __('Miniature Games'), 'value' => 'miniaturegames'],
+        ['label' => __('Games Workshop'), 'value' => 'gamesworkshop'],
+        ['label' => __('Sport Cards'), 'value' => 'sportcards'],
+        ['label' => __('Non Sports Cards'), 'value' => 'nonsportcards'],
+        ['label' => __('Bricks'), 'value' => 'bricks'],
+        ['label' => __('Diecast Vehicles'), 'value' => 'diecastvehicles'],
+        ['label' => __('Diecast Aircrafts'), 'value' => 'diecastaircrafts'],
+        ['label' => __('Diecast Military'), 'value' => 'diecastmilitary'],
+        ['label' => __('Diecast Accessories'), 'value' => 'diecastaccessories'],
+        ['label' => __('Model Kits Vehicles'), 'value' => 'modelkitsvehicles'],
+        ['label' => __('Model Kits Aircrafts'), 'value' => 'modelkitsaircrafts'],
+        ['label' => __('Model Kits Military'), 'value' => 'modelkitsmilitary'],
+        ['label' => __('Trains'), 'value' => 'railway'],
+        ['label' => __('Trains Accessories'), 'value' => 'railwayaccessories'],
+        ['label' => __('Hobby Supplies'), 'value' => 'hobbysupplies'],
+        ['label' => __('Cards & Games'), 'value' => 'hobbysuppliescardsgames'],        
+    ];
 ?>
 <form class="entry-edit form-inline" action="<?php echo $block->getUrl('catalog/faqquestion/save', ["_secure" => $this->getRequest()->isSecure()]) ?>" method="post" data-role="form-profile-validate" data-mage-init='{"validation":{}}'>
     <div class="lof-mp-page-title page-title">
@@ -55,20 +84,20 @@
     <div class="fieldset-wrapper admin__collapsible-block-wrapper">
         <div class="fieldset-wrapper-title" data-toggle="collapse" data-target="#general_infomation" aria-expanded="true">
             <strong class="admin__collapsible-title">
-                <?php echo __("General Information"); ?>
+                <?php echo __("Question & Answer"); ?>
             </strong>
         </div>
         <div id="general_infomation" class="admin__fieldset-wrapper-content admin__collapsible-content collapse in" aria-expanded="true">
             <fieldset class="admin__fieldset">
                 <div class="admin__field">
                     <label class="admin__field-label">
-                        <?php echo __("Title"); ?>
+                        <?php echo __("Question"); ?>
                     </label>
                     <div class="admin__field-control">
                         <input type="text" name="title" class="admin__control-text required-entry _required" value="<?php echo $question->getTitle(); ?>"/>
                     </div>
                 </div>
-                <div class="admin__field">
+                <!-- <div class="admin__field">
                     <label class="admin__field-label">
                         <?php echo __("Category"); ?>
                     </label>
@@ -79,7 +108,7 @@
                             </select>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="admin__field">
                     <label class="admin__field-label">
                         <?php echo __("Answer"); ?>
@@ -109,7 +138,8 @@
                         <input type="text" name="position" class="admin__control-text" value="<?php echo $question->getPosition(); ?>"/>
                     </div>
                 </div>
-                <div class="row">
+                
+                <!-- <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="x_panel">
                             <div class="x_title">
@@ -148,11 +178,97 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </fieldset>
         </div>
+        <div class="fieldset-wrapper admin__collapsible-block-wrapper">
+            <div class="fieldset-wrapper-title"
+                data-toggle="collapse"
+                data-target="#add_products"
+                aria-expanded="false">
+                <strong class="admin__collapsible-title">
+                    <?php echo __("Add Products"); ?>
+                </strong>
+            </div>
+
+            <div id="add_products"
+                class="admin__fieldset-wrapper-content admin__collapsible-content collapse"
+                aria-expanded="false">
+
+                <fieldset class="admin__fieldset">
+                    <div class="admin__field">
+                        <label class="admin__field-label">
+                            <span><?php echo __('Category'); ?></span>
+                        </label>
+                        <div class="admin__field-control">
+                            <select id="add_products_category"
+                                    name="add_products_category"
+                                    class="admin__control-select">
+                                <?php foreach ($addProductCategories as $option): ?>
+                                    <option value="<?php echo $option['value']; ?>">
+                                        <?php echo $option['label']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <div class="page-actions-buttons" style="margin-bottom: 15px;">
+                        <div class="actions-split save primary">
+                            <button type="button"
+                                    class="action-default primary add-products-btn"
+                                    title="<?php echo __('Add Products') ?>">
+                                <span><?php echo __('Add Products') ?></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Hidden field -->
+                    <input type="hidden" name="selected_product_ids" />
+
+                    <!-- Product Grid -->
+                    <div class="admin__table-wrapper">
+                        <table class="data-grid">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th><?php echo __('ID'); ?></th>
+                                <th><?php echo __('Name'); ?></th>
+                                <th><?php echo __('SKU'); ?></th>
+                                <th><?php echo __('Price'); ?></th>
+                                <th><?php echo __('Status'); ?></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($block->_productList as $item): ?>
+                                <?php $productId = $item->getEntityId(); ?>
+                                <?php if (!in_array($productId, $productIds)) continue; ?>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox"
+                                            name="productIds[]"
+                                            value="<?php echo $productId; ?>"
+                                            <?php if (in_array($productId, $productIds)) echo 'checked'; ?>>
+                                    </td>
+                                    <td><?php echo $productId; ?></td>
+                                    <td><?php echo $item->getName(); ?></td>
+                                    <td><?php echo $item->getSku(); ?></td>
+                                    <td><?php echo $item->getPrice(); ?></td>
+                                    <td>
+                                        <?php echo $item->getStatus() == 1 ? __('Enabled') : __('Disabled'); ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </fieldset>
+            </div>
+        </div>
     </div>
-    <div class="fieldset-wrapper admin__collapsible-block-wrapper">
+    <!-- <div class="fieldset-wrapper admin__collapsible-block-wrapper">
         <div class="fieldset-wrapper-title" data-toggle="collapse" data-target="#design">
             <strong class="admin__collapsible-title">
                 <?php echo __("Design"); ?>
@@ -273,7 +389,7 @@
                 </div>
             </fieldset>
         </div>
-    </div>
+    </div> -->
 </form>
 <script type="text/javascript">
     require([
@@ -310,5 +426,19 @@
         'Lofmp_Faq/js/jquery.minicolors.min'
     ], function ($) {
         $('input.minicolors').minicolors();
+    });
+</script>
+<script>
+    require(['jquery'], function ($) {
+        $(document).on('change', '#add_products_category', function () {
+            const categoryId = $(this).val();
+            const $btn = $('.add-products-btn');
+
+            if (categoryId) {
+                $btn.prop('disabled', false).removeClass('disabled');
+            } else {
+                $btn.prop('disabled', true).addClass('disabled');
+            }
+        });
     });
 </script>

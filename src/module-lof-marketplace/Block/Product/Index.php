@@ -23,6 +23,10 @@ namespace Lof\MarketPlace\Block\Product;
 
 class Index extends \Magento\Backend\Block\Widget\Container
 {
+    protected $_controller;
+    protected $_headerText;
+
+
     /**
      * @var \Magento\Catalog\Model\Product\TypeFactory
      */

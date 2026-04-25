@@ -75,6 +75,13 @@ class Collection extends TagCollection implements SearchResultInterface
         $this->setMainTable($mainTable);
     }
 
+    protected function _initSelect()
+    {
+        parent::_initSelect();
+        $this->addFieldToFilter('main_table.tag_type', 'supplier');
+        return $this;
+    }
+
     /**
      * @return AggregationInterface
      */

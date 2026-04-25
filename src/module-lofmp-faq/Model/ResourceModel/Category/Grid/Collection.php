@@ -17,6 +17,11 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
  */
 class Collection extends CategoryGridCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+    protected $aggregations;
+
+
     /**
      * Resource initialization
      * @param EntityFactoryInterface   $entityFactory,

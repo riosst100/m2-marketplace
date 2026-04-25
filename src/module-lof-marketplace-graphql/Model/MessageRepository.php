@@ -28,6 +28,17 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class MessageRepository implements MessageRepositoryInterface
 {
+    protected $messageDetailCollectionFactory;
+    protected $messageCollectionFactory;
+    protected $searchResultsFactory;
+    protected $dataObjectProcessor;
+    protected $storeManager;
+    protected $collectionProcessor;
+    protected $extensionAttributesJoinProcessor;
+    protected $extensibleDataObjectConverter;
+    protected $dataMessageFactory;
+
+
 
     /**
      * @var DataObjectHelper
@@ -144,6 +155,9 @@ class MessageRepository implements MessageRepositoryInterface
         $this->collectionProcessor->process($searchCriteria, $collection);
 
         $collection->addFieldToFilter("sender_id", $customerId);
+        $collection->getSelect()->order("created_at DESC");
+
+        // dd($collection->getSelect()->__toString());
 
         $searchResults = $this->searchResultsFactory->create();
         $searchResults->setSearchCriteria($searchCriteria);

@@ -75,9 +75,10 @@ class AbstractActionPlugin
      */
     public function aroundDispatch(AbstractAction $subject, \Closure $proceed, RequestInterface $request)
     {
-        if ($request->isPost() && $this->customerLoginChecker->isLoginAllowed()) {
-            return $this->getLogoutResult($subject, $request);
-        }
+        // dd('p');
+        // if ($request->isPost() && $this->customerLoginChecker->isLoginAllowed()) {
+            // return $this->getLogoutResult($subject, $request);
+        // }
 
         return $proceed($request);
     }

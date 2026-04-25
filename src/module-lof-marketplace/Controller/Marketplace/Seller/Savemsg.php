@@ -172,7 +172,7 @@ class Savemsg extends \Magento\Framework\App\Action\Action
                     if ($this->helper->getConfig('email_settings/enable_send_email')) {
                         $this->sender->sellerNewMessage($data);
                     }
-                    $this->messageManager->addSuccessMessage('send contact success');
+                    $this->messageManager->addSuccessMessage('Message sent sucessfully.');
 
                     $this->_redirect($data['currUrl']);
                 } catch (\Magento\Framework\Exception\LocalizedException $e) {

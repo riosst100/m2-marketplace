@@ -33,6 +33,9 @@ use Magento\Framework\App\Action\Context;
  */
 class Save extends \Magento\Framework\App\Action\Action
 {
+    protected $quickrfq;
+
+
     /**
      * @var Data
      */

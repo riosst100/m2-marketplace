@@ -721,6 +721,22 @@ class Question extends \Magento\Framework\Model\AbstractModel implements Questio
         return $this->setData(self::STORES,$stores);
     }
 
+    /**
+     * Get websites
+     * @return string[]|null
+     */
+    public function getWebsites(){
+        return $this->getData(self::WEBSITES);
+    }
+    /**
+     * Set websites
+     * @param string[] $websites
+     * @return \Lof\Faq\Api\Data\QuestionInterface
+     */
+    public function setWebsites($websites){
+        return $this->setData(self::WEBSITES,$websites);
+    }
+
     public function beforeSave()
     {
        return parent::beforeSave();

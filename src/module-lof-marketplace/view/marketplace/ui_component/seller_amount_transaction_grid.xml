@@ -121,6 +121,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">ID</item>
                     <item name="sortOrder" xsi:type="number">10</item>
+                    <item name="visible" xsi:type="boolean">false</item>
                 </item>
             </argument>
         </column>
@@ -137,7 +138,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Seller Balance</item>
+                    <item name="label" xsi:type="string" translate="true">Balance</item>
                     <item name="sortOrder" xsi:type="number">35</item>
                 </item>
             </argument>
@@ -164,7 +165,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Created At</item>
+                    <item name="label" xsi:type="string" translate="true">Transaction Date</item>
                     <item name="sortOrder" xsi:type="number">60</item>
                 </item>
             </argument>

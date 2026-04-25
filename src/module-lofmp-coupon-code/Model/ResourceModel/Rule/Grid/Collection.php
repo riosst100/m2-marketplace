@@ -26,6 +26,10 @@ use Lofmp\CouponCode\Model\ResourceModel\Rule\Collection as RuleCollection;
 
 class Collection extends RuleCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var AggregationInterface
      */

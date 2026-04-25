@@ -31,6 +31,9 @@ use Magento\Ui\Component\Listing\Columns\Column;
  */
 class Order extends Column
 {
+    protected $helper;
+
+
     /**
      * @var UrlInterface
      */

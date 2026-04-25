@@ -30,6 +30,9 @@ use Lofmp\Rma\Model\RuleFactory;
 
 class Grid extends GridExtended
 {
+    protected $ruleFactory;
+
+
     public function __construct(
         RuleFactory $ruleFactory,
         Context $context,

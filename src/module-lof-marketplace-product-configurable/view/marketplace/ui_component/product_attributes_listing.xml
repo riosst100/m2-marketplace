@@ -45,7 +45,7 @@
         </argument>
     </dataSource>
     <listingToolbar name="listing_top">
-        <filters name="listing_filters">
+        <!-- <filters name="listing_filters">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="statefull" xsi:type="array">
@@ -59,8 +59,8 @@
                     </item>
                 </item>
             </argument>
-        </filters>
-        <paging name="listing_paging"/>
+        </filters> -->
+        <!-- <paging name="listing_paging"/> -->
     </listingToolbar>
     <columns name="product_attributes_columns">
         <selectionsColumn name="ids">
@@ -71,7 +71,7 @@
                 </item>
             </argument>
         </selectionsColumn>
-        <column name="attribute_code">
+        <!-- <column name="attribute_code">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -79,16 +79,24 @@
                     <item name="label" xsi:type="string" translate="true">Attribute Code</item>
                 </item>
             </argument>
-        </column>
+        </column> -->
         <column name="frontend_label">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Attribute Label</item>
+                    <item name="label" xsi:type="string" translate="true">Variation</item>
                 </item>
             </argument>
         </column>
-        <column name="is_required">
+        <!-- <column name="options">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Options</item>
+                </item>
+            </argument>
+        </column> -->
+        <!-- <column name="is_required">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Magento\Config\Model\Config\Source\Yesno</item>
                 <item name="config" xsi:type="array">
@@ -153,6 +161,6 @@
                     <item name="label" xsi:type="string" translate="true">Comparable</item>
                 </item>
             </argument>
-        </column>
+        </column> -->
     </columns>
 </listing>

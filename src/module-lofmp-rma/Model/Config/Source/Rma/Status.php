@@ -24,6 +24,9 @@ namespace Lofmp\Rma\Model\Config\Source\Rma;
 
 class Status implements \Magento\Framework\Option\ArrayInterface
 {
+    protected $rmaHelper;
+
+
     public function __construct(
         \Lofmp\Rma\Helper\Data $rmaHelper
     ) {

@@ -23,6 +23,11 @@ namespace Lofmp\Rma\Block\Adminhtml\Resolution\Edit;
 
 class Form extends \Magento\Backend\Block\Widget\Form
 {
+    protected $formFactory;
+    protected $registry;
+    protected $context;
+
+
     /**
      * Form constructor.
      *

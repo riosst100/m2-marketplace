@@ -176,7 +176,7 @@ class Save extends Action
         $status = $seller ? $seller->getStatus() : 0;
         $partnerId = $seller ? $seller->getId() : 0;
         // phpcs:disable Generic.Metrics.NestingLevel.TooHigh
-        if ($this->_customerSession->isLoggedIn() && $status == 1) {
+        if ($this->_customerSession->isLoggedIn()) {
             if (!$partnerId) {
                 $this->_redirectUrl($this->getFrontendUrl('lofmarketplace/seller/becomeseller'));
                 return;
@@ -239,6 +239,10 @@ class Save extends Action
 
                         $shippingModel->setData($temp);
                         $shippingModel->save();
+
+                        $seller->setRegistrationStep('finish');
+                        $seller->setStatus(1);
+                        $seller->save();
 
                         $this->messageManager->addSuccessMessage(
                             __('Your shipping detail has been successfully saved!')
@@ -320,6 +324,10 @@ class Save extends Action
                 $this->messageManager->addNoticeMessage(__('Some rows are not valid!'));
             }
             if (($count - 1) <= 1) {
+                $seller->setRegistrationStep('finish');
+                $seller->setStatus(1);
+                $seller->save();
+                
                 $this->messageManager
                     ->addSuccessMessage(
                         __('Your shipping detail has been successfully saved')

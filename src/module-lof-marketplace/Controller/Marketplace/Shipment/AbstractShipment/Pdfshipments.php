@@ -22,6 +22,9 @@ use Lof\MarketPlace\Model\SellerFactory;
 
 abstract class Pdfshipments extends \Lof\MarketPlace\Controller\Marketplace\AbstractMarketplaceAction
 {
+    protected $collectionFactory;
+
+
     /**
      * @var FileFactory
      */

@@ -166,11 +166,11 @@ class NewAction extends \Magento\Framework\App\Action\Action
     protected function checkAvailableType($typeId = "simple")
     {
         $allowBundle = $this->helper->getConfig("seller_settings/allow_add_bundle");
-        $allowConfigurable = $this->helper->getConfig("seller_settings/allow_add_configurable");
+        $allowVariations = $this->helper->getConfig("seller_settings/allow_add_configurable");
         $allowDownloadable = $this->helper->getConfig("seller_settings/allow_add_downloadable");
         $allowVirtual = $this->helper->getConfig("seller_settings/allow_add_virtual");
 
-        if ($typeId == "configurable" && !$allowConfigurable) {
+        if ($typeId == "configurable" && !$allowVariations) {
             return false;
         }
 
@@ -205,6 +205,29 @@ class NewAction extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
+        $isCreateFromDb = $this->getRequest()->getParam('source') == "database" ? true : false;
+        $isVariations = $this->getRequest()->getParam('type') == "configurable" ? true : false;
+        if ($isCreateFromDb) {
+            $this->messageManager->addComplexNoticeMessage(
+                'databaseProductCreationMessage',
+                [
+                    'url' => 'ddd/ddd/dd',
+                ]
+            );
+            // $this->messageManager->addComplexNoticeMessage(
+            //     'productCreationMessage'
+            // );
+        }
+
+        if ($isVariations) {
+            $this->messageManager->addComplexNoticeMessage(
+                'configurableProductCreationMessage',
+                [
+                    'url' => 'ddd/ddd/dd',
+                ]
+            );
+        }
+
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $localeInterface = $objectManager->create(\Magento\Framework\Locale\ResolverInterface::class);
         $localeInterface->setLocale('en_US');
@@ -257,6 +280,19 @@ class NewAction extends \Magento\Framework\App\Action\Action
             $this->registry->register('current_store', $store);
             $this->_eventManager->dispatch('catalog_product_new_action', ['product' => $product]);
             $resultPage = $this->resultPageFactory->create();
+            if ($isCreateFromDb) {
+                if ($isVariations) {
+                    $resultPage->getConfig()->getTitle()->set(__('Add Variations Product'));
+                } else {
+                    $resultPage->getConfig()->getTitle()->set(__('Add Product From Database'));
+                }
+            } else {
+                if ($isVariations) {
+                    $resultPage->getConfig()->getTitle()->set(__('Add Variations Product'));
+                } else {
+                    $resultPage->getConfig()->getTitle()->set(__('Add Product'));
+                }
+            }
             return $resultPage;
         } elseif ($customerSession->isLoggedIn() && $status == 0) {
             $this->_redirectUrl($this->getFrontendUrl('lofmarketplace/seller/becomeseller'));

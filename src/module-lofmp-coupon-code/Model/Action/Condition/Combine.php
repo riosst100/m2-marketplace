@@ -13,6 +13,11 @@ namespace Lofmp\CouponCode\Model\Action\Condition;
 
 class Combine extends \Magento\Rule\Model\Condition\Combine
 {
+    protected $_ruleConditionProd;
+    protected $_customerFactory;
+    protected $_behaviorFactory;
+
+
     /**
      * Core event manager proxy
      *

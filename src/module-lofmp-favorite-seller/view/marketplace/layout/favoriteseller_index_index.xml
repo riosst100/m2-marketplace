@@ -21,10 +21,18 @@
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="vendor-1column"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <!-- Include your JS file -->
+        <script src="Lofmp_FavoriteSeller::js/send-mail-modal.js"/>
+        <css src="Lofmp_FavoriteSeller::css/manage-seller.css"/>
+    </head>
     <body>
         <referenceContainer name="content">
             <uiComponent name="subscription_customers_listing"/>
             <block class="Lofmp\FavoriteSeller\Block\Marketplace\Index\Index" name="subscription_customers_list"/>
-        </referenceContainer>
+            <block class="Magento\Framework\View\Element\Template" 
+                   name="send_mail_modal_block" 
+                   template="Lofmp_FavoriteSeller::list_subscription_customers_modal.phtml"/>
+        </referenceContainer>        
     </body>
 </page>

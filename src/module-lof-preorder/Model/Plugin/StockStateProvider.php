@@ -23,6 +23,7 @@ namespace Lof\PreOrder\Model\Plugin;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\CatalogInventory\Api\Data\StockItemInterface;
 use Magento\CatalogInventory\Model\Spi\StockStateProviderInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DataObject\Factory as ObjectFactory;
 use Magento\Framework\Locale\FormatInterface;
 use Magento\Framework\Math\Division as MathDivision;
@@ -32,29 +33,69 @@ use Magento\Framework\Math\Division as MathDivision;
  */
 class StockStateProvider extends \Magento\CatalogInventory\Model\StockStateProvider
 {
-      /**
-       * @var \Lof\Preorder\Helper\Preorder
-       */
+    protected $getNumber;
+    protected $checkQtyIncrements;
+    protected $checkQty;
+    protected $scopeConfig;
+
+    /**
+     * @var MathDivision
+     */
+    protected $mathDivision;
+
+    /**
+     * @var FormatInterface
+     */
+    protected $localeFormat;
+
+    /**
+     * @var ObjectFactory
+     */
+    protected $objectFactory;
+
+    /**
+     * @var ProductFactory
+     */
+    protected $productFactory;
+
+    /**
+     * @var bool
+     */
+    protected $qtyCheckApplicable;
+
     protected $helper;
 
     /**
      * @param MathDivision $mathDivision
      * @param FormatInterface $localeFormat
      * @param ObjectFactory $objectFactory
-     * @param \Lof\PreOrder\Helper\Preorder $helper,
      * @param ProductFactory $productFactory
+     * @param ScopeConfigInterface $scopeConfig
+     * @param \Lof\PreOrder\Helper\Preorder $helper
      * @param bool $qtyCheckApplicable
      */
     public function __construct(
         MathDivision $mathDivision,
         FormatInterface $localeFormat,
         ObjectFactory $objectFactory,
-        \Lof\PreOrder\Helper\Preorder $helper,
         ProductFactory $productFactory,
+        ScopeConfigInterface $scopeConfig,
+        \Lof\PreOrder\Helper\Preorder $helper,
         $qtyCheckApplicable = true
     ) {
+        $this->mathDivision = $mathDivision;
+        $this->localeFormat = $localeFormat;
+        $this->objectFactory = $objectFactory;
+        $this->productFactory = $productFactory;
+        $this->qtyCheckApplicable = $qtyCheckApplicable;
         $this->helper = $helper;
-        parent::__construct($mathDivision, $localeFormat, $objectFactory, $productFactory, $qtyCheckApplicable);
+        parent::__construct(
+            $mathDivision,
+            $localeFormat,
+            $objectFactory,
+            $productFactory,
+            $qtyCheckApplicable
+        );
     }
 
     /**
@@ -68,47 +109,46 @@ class StockStateProvider extends \Magento\CatalogInventory\Model\StockStateProvi
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function checkQuoteItemQty(StockItemInterface $stockItem, $qty, $summaryQty, $origQty = 0)
     {
         $result = $this->objectFactory->create();
         $result->setHasError(false);
-
         $qty = $this->getNumber($qty);
-
-        /**
-         * Check quantity type
-         */
-        $result->setItemIsQtyDecimal($stockItem->getIsQtyDecimal());
-        if (!$stockItem->getIsQtyDecimal()) {
-            $result->setHasQtyOptionUpdate(true);
-            $qty = (int) $qty ?: 1;
-            /**
-             * Adding stock data to quote item
-             */
-            $result->setItemQty($qty);
-            $result->setOrigQty((int)$this->getNumber($origQty) ?: 1);
-        }
+        $quoteMessage = __('Please correct the quantity for some products.');
 
         if ($stockItem->getMinSaleQty() && $qty < $stockItem->getMinSaleQty()) {
             $result->setHasError(true)
                 ->setMessage(__('The fewest you may purchase is %1.', $stockItem->getMinSaleQty() * 1))
                 ->setErrorCode('qty_min')
-                ->setQuoteMessage(__('Please correct the quantity for some products.'))
+                ->setQuoteMessage($quoteMessage)
                 ->setQuoteMessageIndex('qty');
             return $result;
         }
 
         if ($stockItem->getMaxSaleQty() && $qty > $stockItem->getMaxSaleQty()) {
             $result->setHasError(true)
-                ->setMessage(__('The most you may purchase is %1.', $stockItem->getMaxSaleQty() * 1))
+                ->setMessage(__('The requested qty exceeds the maximum qty allowed in shopping cart'))
                 ->setErrorCode('qty_max')
-                ->setQuoteMessage(__('Please correct the quantity for some products.'))
+                ->setQuoteMessage($quoteMessage)
                 ->setQuoteMessageIndex('qty');
             return $result;
         }
 
         $result->addData($this->checkQtyIncrements($stockItem, $qty)->getData());
+
+        $result->setItemIsQtyDecimal($stockItem->getIsQtyDecimal());
+        if (!$stockItem->getIsQtyDecimal() && (floor($qty) !== (float) $qty)) {
+            $result->setHasError(true)
+                ->setMessage(__('You cannot use decimal quantity for this product.'))
+                ->setErrorCode('qty_decimal')
+                ->setQuoteMessage($quoteMessage)
+                ->setQuoteMessageIndex('qty');
+
+            return $result;
+        }
+
         if ($result->getHasError()) {
             return $result;
         }
@@ -120,21 +160,31 @@ class StockStateProvider extends \Magento\CatalogInventory\Model\StockStateProvi
         if (!$this->helper->isPreorder($stockItem->getProductId())) {
             if (!$stockItem->getIsInStock()) {
                 $result->setHasError(true)
-                    ->setMessage(__('This product is out of stock.'))
+                    ->setErrorCode('out_stock')
+                    ->setMessage(__('Product %name is out of stock.', ['name' => $stockItem->getProductName()]))
                     ->setQuoteMessage(__('Some of the products are out of stock.'))
                     ->setQuoteMessageIndex('stock');
                 $result->setItemUseOldQty(true);
                 return $result;
             }
         }
-        if ((!$this->checkQty($stockItem, $summaryQty) || !$this->checkQty($stockItem, $qty)) && !$this->helper->isPreorder($stockItem->getProductId())) {
-            $message = __('We don\'t have as many "%1" as you requested.', $stockItem->getProductName());
-            $result->setHasError(true)->setMessage($message)->setQuoteMessage($message)->setQuoteMessageIndex('qty');
-            return $result;
-        }
+
         if (!$this->checkQty($stockItem, $summaryQty) || !$this->checkQty($stockItem, $qty)) {
-            $message = __('The requested qty is not available');
-            $result->setHasError(true)->setMessage($message)->setQuoteMessage($message)->setQuoteMessageIndex('qty');
+            $message = __('The requested qty. is not available');
+            if ((int) $this->scopeConfig->getValue('cataloginventory/options/not_available_message') === 1) {
+                $itemMessage = (__(sprintf(
+                    'Only %s of %s available',
+                    $stockItem->getQty() - $stockItem->getMinQty(),
+                    $this->localeFormat->getNumber($qty)
+                )));
+            } else {
+                $itemMessage = (__('Not enough items for sale'));
+            }
+            $result->setHasError(true)
+                ->setErrorCode('qty_available')
+                ->setMessage($itemMessage)
+                ->setQuoteMessage($message)
+                ->setQuoteMessageIndex('qty');
             return $result;
         } else {
             if ($stockItem->getQty() - $summaryQty < 0) {
@@ -185,7 +235,7 @@ class StockStateProvider extends \Magento\CatalogInventory\Model\StockStateProvi
                         }
                     } elseif ($stockItem->getShowDefaultNotificationMessage()) {
                         $result->setMessage(
-                            __('The requested qty is not available')
+                            __('The requested qty. is not available')
                         );
                     }
                 }

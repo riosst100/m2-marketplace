@@ -43,7 +43,7 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\ShippingCommission
         /**
          * Set active menu item
          */
-        $resultPage->setActiveMenu("Lof_MarketPlace::commission");
+        $resultPage->setActiveMenu("CoreMarketplace_MarketPlace::product_commission");
         $resultPage->getConfig()->getTitle()->prepend(__('Shipping Commissions'));
 
         /**

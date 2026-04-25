@@ -110,11 +110,11 @@ class Save extends \Magento\Framework\App\Action\Action
 
         if ($data) {
             if (!isset($data['question_id'])) {
-                if (!isset($data['category_id']) || !$data['category_id']) {
-                    $this->messageManager->addError(__('Please choose or create a new catetory.'));
-                    $this->_objectManager->get('Magento\Backend\Model\Session')->setFormData($data);
-                    return $this->_redirect('catalog/faqquestion/new');
-                }
+                // if (!isset($data['category_id']) || !$data['category_id']) {
+                //     $this->messageManager->addError(__('Please choose or create a new catetory.'));
+                //     $this->_objectManager->get('Magento\Backend\Model\Session')->setFormData($data);
+                //     return $this->_redirect('catalog/faqquestion/new');
+                // }
                 $model = $this->_objectManager->create('Lofmp\Faq\Model\Question');
                 $store_id = $this->_storeManager->getStore()->getStoreId();
                 $seller_id = $this->_helper->getSellerId();
@@ -124,11 +124,11 @@ class Save extends \Magento\Framework\App\Action\Action
                 $model->setData($data);
             } else {
                 $id = $data['question_id'];
-                if (!isset($data['category_id']) || !$data['category_id']) {
-                    $this->messageManager->addError(__('Please choose or create a new catetory.'));
-                    $this->_objectManager->get('Magento\Backend\Model\Session')->setFormData($data);
-                    return $this->_redirect('catalog/faqquestion/edit', ['id' => $id]);
-                }
+                // if (!isset($data['category_id']) || !$data['category_id']) {
+                //     $this->messageManager->addError(__('Please choose or create a new catetory.'));
+                //     $this->_objectManager->get('Magento\Backend\Model\Session')->setFormData($data);
+                //     return $this->_redirect('catalog/faqquestion/edit', ['id' => $id]);
+                // }
                 $model = $this->_objectManager->create('Lofmp\Faq\Model\Question')->load($id);
                 $sellerId = $this->_helper->getSellerId();
                 if (!$model->getId() || $model->getSellerId() != $sellerId) {

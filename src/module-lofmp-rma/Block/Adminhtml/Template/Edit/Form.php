@@ -31,6 +31,11 @@ use \Magento\Store\Model\System\Store as systemStore;
 
 class Form extends WidgetForm
 {
+    protected $_systemStore;
+    protected $formFactory;
+    protected $registry;
+
+
     public function __construct(
         systemStore $systemStore,
         FormFactory $formFactory,

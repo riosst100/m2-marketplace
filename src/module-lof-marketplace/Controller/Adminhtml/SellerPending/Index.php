@@ -34,14 +34,14 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\SellerPending
         /**
          * Set active menu item
          */
-        $resultPage->setActiveMenu("Lof_MarketPlace::seller_manage_pending");
-        $resultPage->getConfig()->getTitle()->prepend(__('Manage Pending Sellers'));
+        $resultPage->setActiveMenu("CoreMarketplace_MarketPlace::seller_verification");
+        $resultPage->getConfig()->getTitle()->prepend(__('Seller Verification'));
 
         /**
          * Add breadcrumb item
          */
-        $resultPage->addBreadcrumb(__('Manage Pending Sellers'), __('Manage Pending Sellers'));
-        $resultPage->addBreadcrumb(__('Manage Pending Sellers'), __('Manage Pending Sellers'));
+        $resultPage->addBreadcrumb(__('Seller Verification'), __('Seller Verification'));
+        $resultPage->addBreadcrumb(__('Seller Verification'), __('Seller Verification'));
 
         return $resultPage;
     }
@@ -51,6 +51,6 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\SellerPending
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Lof_MarketPlace::pending_seller');
+        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::seller_verification');
     }
 }

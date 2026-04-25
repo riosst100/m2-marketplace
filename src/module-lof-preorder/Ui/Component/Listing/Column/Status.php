@@ -31,6 +31,9 @@ use Magento\Ui\Component\Listing\Columns\Column;
  */
 class Status extends Column
 {
+    protected $helper;
+
+
     /**
      * @var UrlInterface
      */

@@ -4,6 +4,9 @@ namespace Lofmp\StoreLocator\Block\StoreLocator\Tag;
 
 class TagBuild extends \Magento\Framework\View\Element\Template
 {
+    protected $_resource;
+
+
     /**
      * Construct
      *

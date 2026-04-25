@@ -36,7 +36,7 @@ class Index extends Rma
         /** @var \Magento\Backend\Model\View\Result\Page\Interceptor $resultPage */
         $resultPage = $this->resultFactory->create(ResultFactory::TYPE_PAGE);
 
-        $this->initPage($resultPage)->getConfig()->getTitle()->prepend(__('RMA'));
+        $this->initPage($resultPage)->getConfig()->getTitle()->prepend(__('Seller | Return / RMA'));
 
         $this->_addContent($resultPage->getLayout()
             ->createBlock('\Lofmp\Rma\Block\Adminhtml\Rma'));

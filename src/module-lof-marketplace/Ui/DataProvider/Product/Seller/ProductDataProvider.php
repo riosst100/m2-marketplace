@@ -25,6 +25,10 @@ use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 
 class ProductDataProvider extends \Magento\Catalog\Ui\DataProvider\Product\ProductDataProvider
 {
+    protected $request;
+    protected $mappingHelper;
+
+
     /**
      * Construct
      *
@@ -64,6 +68,19 @@ class ProductDataProvider extends \Magento\Catalog\Ui\DataProvider\Product\Produ
         } else {
             $this->collection->addAttributeToFilter('seller_id', 0);
         }
+
+        $objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
+        $this->request = $objectManager->get('\Magento\Framework\App\RequestInterface');
+        $this->mappingHelper = $objectManager->get('\CoreMarketplace\ProductAttributesLink\Helper\Data');
+
+        $filters_modifier = $this->request->getParam('filters_modifier');
+        if (isset($filters_modifier['card_set'])) {
+            $cardSet = $this->mappingHelper->getOptionId('mtg_card_set', $filters_modifier['card_set']['value'], false);
+            $this->collection->addAttributeToFilter('mtg_card_set', $cardSet);
+        }
+
+        // dd($this->collection->getSelect()->__toString());
+        
         /*Join with vendor table.*/
     }
 }

@@ -20,8 +20,8 @@
   -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="Lof_Quickrfq::quickrfq_management" title="Request For Quote" module="Lof_Quickrfq" sortOrder="112" resource="Lof_Quickrfq::quickrfq" parent="Lof_All::lof_all"/>
-        <add id="Lof_Quickrfq::quickrfq" title="Quick RFQ" module="Lof_Quickrfq" sortOrder="50" parent="Lof_Quickrfq::quickrfq_management" action="quickrfq/index" resource="Lof_Quickrfq::quickrfq"/>
-        <add id="Lof_Quickrfq::systemsetting" title="Configuration" module="Lof_Quickrfq" sortOrder="60" parent="Lof_Quickrfq::quickrfq" action="adminhtml/system_config/edit/section/quickrfq" resource="Lof_Quickrfq::quickrfq"/>
+        <add id="Lof_Quickrfq::quickrfq_management" title="Seller Offers (RFQ)" module="Lof_Quickrfq" sortOrder="112" resource="Lof_Quickrfq::quickrfq" parent="Lof_All::lof_all"/>
+        <add id="Lof_Quickrfq::quickrfq" title="Manage Offers" module="Lof_Quickrfq" sortOrder="50" parent="Lof_Quickrfq::quickrfq_management" action="quickrfq/index" resource="Lof_Quickrfq::quickrfq"/>
+        <!-- <add id="Lof_Quickrfq::systemsetting" title="Configuration" module="Lof_Quickrfq" sortOrder="60" parent="Lof_Quickrfq::quickrfq" action="adminhtml/system_config/edit/section/quickrfq" resource="Lof_Quickrfq::quickrfq"/> -->
     </menu>
 </config>

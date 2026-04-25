@@ -7,6 +7,7 @@
             </module>
             <general>
                 <allow_delete_seller>1</allow_delete_seller>
+                <delete_days>30</delete_days>
             </general>
         </gdpr>
     </default>

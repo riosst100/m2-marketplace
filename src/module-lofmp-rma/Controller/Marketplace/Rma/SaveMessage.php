@@ -25,6 +25,10 @@ use Magento\Framework\Controller\ResultFactory;
 
 class SaveMessage extends \Magento\Framework\App\Action\Action
 {
+    protected $helper;
+    protected $resultFactory;
+
+
     /**
      * @var \Lof\MarketPlace\Model\SellerFactory
      */

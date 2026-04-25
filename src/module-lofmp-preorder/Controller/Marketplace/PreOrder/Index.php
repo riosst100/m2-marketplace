@@ -141,6 +141,11 @@ class Index extends Action implements HttpGetActionInterface, HttpPostActionInte
 
         if ($customerSession->isLoggedIn() && $status == 1) {
             $this->_view->loadLayout();
+            $this->_view->getPage()
+                ->getConfig()
+                ->getTitle()
+                ->set(__('Manage Pre Orders'));
+
             $this->_view->renderLayout();
         } elseif ($customerSession->isLoggedIn() && $status == 0) {
             $this->_redirectUrl($this->getFrontendUrl('lofmarketplace/seller/becomeseller'));

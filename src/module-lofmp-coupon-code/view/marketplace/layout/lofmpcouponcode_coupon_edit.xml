@@ -23,6 +23,9 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="vendor-1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <update handle="styles"/>
     <update handle="seller_store_switcher"/>
+     <head>
+        <css src="Lofmp_CouponCode::css/edit-rule.css" />
+    </head>
     <body>
         <referenceContainer name="content">
 			<uiComponent name="sellercouponcode_coupon_form"/>

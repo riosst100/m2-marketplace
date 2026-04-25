@@ -274,4 +274,65 @@ class Methods extends \Lof\MarketPlace\Block\Seller\AbstractBlock
     {
         return '';
     }
+    
+    public function getShippingMethods() {
+        $methods = $this->_objectManager->get(\Lof\MarketPlace\Model\Source\Shipping\Methods::class)->getMethods();
+        return $methods;
+    }
+
+    public function getShippingMethodStatus($code) {
+        $value = 0;
+        
+        $id = 'active';
+        $key_tmp = $this->_objectManager->get(\Lof\MarketPlace\Helper\Data::class)->getTableKey('key');
+        $seller_id_tmp = $this->_objectManager->get(\Lof\MarketPlace\Helper\Data::class)
+        ->getTableKey('seller_id');
+
+        $seller = $this->getSeller();
+
+        $key = strtolower(AbstractModel::SHIPPING_SECTION . '/' . $code . '/' . $id);
+        $setting = $this->_objectManager->create(\Lof\MarketPlace\Model\Config::class)
+            ->loadByField([$key_tmp, $seller_id_tmp], [$key, (int)$seller->getId()]);
+        $settingValue = null;
+        if ($setting) {
+            $settingValue = $setting->getValue();
+        }
+        if($settingValue){
+            $value = $settingValue;
+        }
+
+        return $value;
+    }
+
+    public function getShippingMethodName($code) {
+        if ($code == "lofmpflatrateshipping") {
+            return "Flat Rate";
+        }
+
+        if ($code == "rajaongkir") {
+            return "Raja Ongkir";
+        }
+
+        if ($code == "lofmptablerateshipping") {
+            return 'Table rate';
+        }
+
+        return "";
+    }
+
+    public function getShippingMethodDesc($code) {
+        if ($code == "lofmpflatrateshipping") {
+            return "Flat Rate Shipping Method allows you to charge a fixed shipping rate for all orders or based on conditions like weight, price, or destination.";
+        }
+
+        if ($code == "rajaongkir") {
+            return "Raja Ongkir Shipping allows you to define multiple shipping rates based on conditions like destination, weight, price, or number of items in the cart.";
+        }
+
+        if ($code == "lofmptablerateshipping") {
+            return 'Table Rate Shipping allows you to define multiple shipping rates based on conditions like destination, weight, price, or number of items in the cart.';
+        }
+
+        return "";
+    }
 }

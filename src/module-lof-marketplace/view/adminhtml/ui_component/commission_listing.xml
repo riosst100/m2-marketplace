@@ -45,7 +45,7 @@
                     <item name="update_url" xsi:type="url" path="mui/index/render"/>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="indexField" xsi:type="string">ticket_id</item>
+                        <item name="indexField" xsi:type="string">commission_id</item>
                     </item>
                 </item>
             </argument>
@@ -216,6 +216,8 @@
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="add_field" xsi:type="boolean">true</item>
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                    <item name="visible" xsi:type="boolean">false</item>
                     <item name="label" xsi:type="string" translate="true">ID</item>
                     <item name="sortOrder" xsi:type="number">20</item>
                 </item>
@@ -237,7 +239,7 @@
                 </item>
             </argument>
         </column>
-        <column name="from_date" class="Magento\Ui\Component\Listing\Columns\Date">
+        <!-- <column name="from_date" class="Magento\Ui\Component\Listing\Columns\Date">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">dateRange</item>
@@ -260,7 +262,7 @@
                     <item name="sortOrder" xsi:type="number">40</item>
                 </item>
             </argument>
-        </column>
+        </column> -->
          <column name="commission_by">
              <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="array">
@@ -270,7 +272,7 @@
                     </item>
                     <item name="by_percent" xsi:type="array">
                         <item name="value" xsi:type="string">by_percent</item>
-                        <item name="label" xsi:type="string" translate="true">Percent Of Product Price</item>
+                        <item name="label" xsi:type="string" translate="true">Percent of Total Paid</item>
                     </item>
                 </item>
                 <item name="config" xsi:type="array">
@@ -284,7 +286,7 @@
                 </item>
             </argument>
         </column>
-        <column name="commission_action">
+        <!-- <column name="commission_action">
              <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="array">
                     <item name="by_price_incl_tax" xsi:type="array">
@@ -314,8 +316,8 @@
                     <item name="sortOrder" xsi:type="number">60</item>
                 </item>
             </argument>
-        </column>
-        <column name="commission_amount">
+        </column> -->
+        <column name="commission_amount" class="Lof\MarketPlace\Ui\Component\Listing\Columns\ComissionAmount">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -325,7 +327,7 @@
                 </item>
             </argument>
         </column>
-        <column name="priority">
+        <!-- <column name="priority">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -334,7 +336,7 @@
                     <item name="sortOrder" xsi:type="number">80</item>
                 </item>
             </argument>
-        </column>
+        </column> -->
         <column name="store_id" class="Magento\Store\Ui\Component\Listing\Column\Store">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -362,7 +364,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
                     <item name="editor" xsi:type="string">select</item>
                     <item name="dataType" xsi:type="string">select</item>
-                    <item name="label" xsi:type="string" translate="true">Active</item>
+                    <item name="label" xsi:type="string" translate="true">Status</item>
                     <item name="add_field" xsi:type="boolean">true</item>
                     <item name="sortOrder" xsi:type="number">100</item>
                 </item>

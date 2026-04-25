@@ -1,0 +1,248 @@
+<?php
+/** @var $block \Lof\MarketPlace\Block\Seller\Notification\Detail */
+$details = $block->getDetails();
+?>
+<div class="row">
+    <div class="col-md-12" style="margin-top:10px;">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h2>Products In Queue</h2>
+                <p>This is the list of products waiting in the queue. Processing time depends on the number of items in the queue. You will receive a notification once the process is in progress or completed.</p>
+                <div id="upload_history" style="display: block;">
+                    <table class="data-grid">
+                        <thead>
+                            <tr>
+                                <th class="data-grid-th"><?= __('Date') ?></th>
+                                <th class="data-grid-th"><?= __('Categories') ?></th>
+                                <th class="data-grid-th"><?= __('Product Details') ?></th>
+                                <th class="data-grid-th"><?= __('Total Products') ?></th>
+                                <th class="data-grid-th"><?= __('Status') ?></th>
+                            </tr>
+                        </thead>
+                        <tbody id="upload_history_content">
+                            <?php
+                            $currentPage = $this->getRequest()->getParam('page') ?? 1;
+                            $pageSize = $this->getRequest()->getParam('size') ?? 5;
+                            $totalCount = count($details);
+                            $totalPages = ceil($totalCount / $pageSize);
+                            // $importHistory = $block->getImportHistory($currentPage, $pageSize);
+                            ?>
+                            <?php if ($details): ?>
+                                <?php foreach ($details as $detail): ?>
+                                    <?php
+                                    $categoryName = $block->getCategoryNameById($detail->getCategoryId());
+
+                                    $urlPath = null;
+                                    if ($categoryName = "Collectible Card Games") {
+                                        $urlPath = 'catalog/cardgame/sealedproducts';
+                                    }
+
+                                    $linkToDetail = $urlPath ? $block->getUrl($urlPath) : '#';
+                                    ?>
+                                    <tr onclick="window.location='<?= $linkToDetail ?>';">
+                                        <td><?= $block->escapeHtml($detail->getCreatedAt()) ?></td>
+                                        <td><?= $categoryName ?></td>
+                                        <td>
+                                            <?php
+                                            $payload = $detail->getPayload();
+                                            ?>
+                                            <?php if ($payload) : ?>
+                                                <?php
+                                                $payloadArr = json_decode($payload,true);
+                                                // dd($payloadArr);
+                                                ?>
+                                                <?php foreach($payloadArr as $attrCode => $data) :?>
+                                                    <div style="padding-bottom:5px">
+                                                        <?= $block->getAttributeLabel($attrCode)?>: <?= $data ?>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <div>-</div>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td><?= (int)$detail->getTotalProducts() ?></td>
+                                        <td>
+                                            <span class="status-badge <?= strtolower($detail->getStatus()) ?>">
+                                                <?= $block->getQueueStatusLabel($detail->getStatus()) ?>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="8">
+                                        <div class="empty-state">
+                                            <p><?= __('No queues found.') ?></p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                    <div class="paginator">
+                        <span class="total"><?= __('Total %1', count($details)) ?></span>
+                        <select class="page-size" onchange="MST.changePageSize(this.value)">
+                            <option value="5" <?= $pageSize == 5 ? 'selected' : '' ?>>5</option>
+                            <option value="10" <?= $pageSize == 10 ? 'selected' : '' ?>>10</option>
+                            <option value="20" <?= $pageSize == 20 ? 'selected' : '' ?>>20</option>
+                            <option value="50" <?= $pageSize == 50 ? 'selected' : '' ?>>50</option>
+                        </select>
+                        <div class="pagination">
+                            <button class="prev-page" type="button" onclick="MST.changePage(<?= $currentPage - 1 ?>)" <?= $currentPage == 1 ? 'disabled' : '' ?>><span class="fa fa-chevron-left" style="margin-right: 5px;"></span><?= __('Previous') ?></button>
+                            <span class="current-page"><?= $currentPage ?></span>
+                            <button class="next-page" type="button" onclick="MST.changePage(<?= $currentPage + 1 ?>)" <?= $currentPage == $totalPages ? 'disabled' : '' ?>><?= __('Next') ?><span class="fa fa-chevron-right" style="margin-left: 5px;"></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .empty-state {
+            text-align: center;
+    padding-top: 10px;
+    }
+    h2.legend.lof_shipping {
+        margin-left: 0;
+    }
+    .admin__control-select, .ui-datepicker .ui-datepicker-title select {
+        -moz-appearance: meterchunk !important;
+    }
+
+    .box-header .fa.fa-bars{
+        display: none;
+    }
+</style>
+
+<style>
+    .admin__field-error, label.mage-error {
+        text-align: left !important;
+    }
+    .required > .admin__field-label > span::after {
+        content: "";
+    }
+
+    #upload_button {
+        float: left;
+    }
+
+    .admin__fieldset > .admin__field {
+        clear: both;
+    }
+
+    .label {
+        color: #303030;
+        text-align: left;
+    }
+    
+    .data-grid {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 0;
+    }
+
+    .data-grid th, .data-grid td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #e3e3e3;
+    }
+
+    .file-icon::before {
+        content: '';
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2 2v12h12V2H2zm11 11H3V3h10v10z"/></svg>');
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+
+    .success-icon::before {
+        content: '✓';
+        color: #1ab394;
+        margin-right: 5px;
+    }
+
+    .error-icon::before {
+        content: '✕';
+        color: #ed5565;
+        margin-right: 5px;
+    }
+
+    .info-icon {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background: #f0f0f0;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 16px;
+        margin-left: 5px;
+        cursor: help;
+    }
+
+    .info-icon::before {
+        content: 'i';
+        font-style: italic;
+        font-size: 12px;
+        color: #666;
+    }
+
+    .paginator {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        /* margin-top: 15px; */
+    }
+
+    .page-size {
+        border-color: #d6d6d6;
+        padding: 5px;
+        margin: 0 10px;
+    }
+
+    .pagination {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .pagination button {
+        padding: 5px 10px;
+        background: #f0f0f0;
+        border: 1px solid #ddd;
+        cursor: pointer;
+    }
+
+    .current-page {
+        padding: 5px 10px;
+        background: #f76b1c;
+        color: white;
+    }
+    #progress-container {
+        width: 100%; /* Full width */
+        /* No background color */
+        border-radius: 10px; /* Rounded corners for the container */
+        overflow: hidden; /* Hide overflow to ensure rounded corners are visible */
+        margin-top: 5px; /* Space above the progress bar */
+        margin-bottom: 10px;
+    }
+
+#progress-bar {
+    margin-top: 5px;
+    height: 5px; /* Height of the progress bar */
+    background: linear-gradient(to right, #4caf50, #81c784); /* Gradient color */
+    transition: width 0.5s ease, background-color 0.5s ease; /* Smooth transition for width and color */
+    border-radius: 35px; /* Rounded corners for the progress bar */
+    position: relative; /* Positioning for text */
+}
+
+#progress-text {
+    color: black; /* Text color */
+    font-weight: bold; /* Bold text */
+    text-align: center; /* Center the text */
+    margin-bottom: 5px; /* Space between text and progress bar */
+    font-size: 14px; /* Font size */
+}
+</style>

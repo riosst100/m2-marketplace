@@ -25,6 +25,12 @@ namespace Lofmp\Rma\Controller\Adminhtml;
 
 abstract class Rma extends \Magento\Backend\App\Action
 {
+    protected $context;
+    protected $backendSession;
+    protected $resultFactory;
+    protected $adminhtmlData;
+
+
     public function __construct(
         \Magento\Backend\App\Action\Context $context
     ) {
@@ -42,8 +48,8 @@ abstract class Rma extends \Magento\Backend\App\Action
      */
     protected function initPage($resultPage)
     {
-        $resultPage->setActiveMenu('Lofmp_Rma::rma_rma');
-        $resultPage->getConfig()->getTitle()->prepend(__('RMA'));
+        $resultPage->setActiveMenu('CoreMarketplace_MarketPlace::manage_seller_rma');
+        // $resultPage->getConfig()->getTitle()->prepend(__('RMA'));
 
         return $resultPage;
     }
@@ -53,6 +59,6 @@ abstract class Rma extends \Magento\Backend\App\Action
      */
     protected function _isAllowed()
     {
-        return $this->context->getAuthorization()->isAllowed('Lofmp_Rma::rma_rma');
+        return $this->context->getAuthorization()->isAllowed('CoreMarketplace_MarketPlace::manage_seller_rma');
     }
 }

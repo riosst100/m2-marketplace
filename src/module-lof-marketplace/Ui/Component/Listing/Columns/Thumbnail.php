@@ -95,18 +95,30 @@ class Thumbnail extends \Magento\Ui\Component\Listing\Columns\Column
     {
         $path = $this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
 
+        /** @var \Magento\Catalog\Helper\Image $imageHelper */
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $imageHelper = $objectManager->create('Magento\Catalog\Helper\Image');
+
+        $defaultThumbnailUrl = $imageHelper->getDefaultPlaceholderUrl('thumbnail');
+
+
         if (isset($dataSource['data']['items'])) {
             $fieldName = $this->getData('name');
             foreach ($dataSource['data']['items'] as &$item) {
-                if (!isset($item['thumbnail'])) {
-                    continue;
-                }
-                if ($item['thumbnail']) {
-                    if ($this->isHttpUrl($item['thumbnail'])) {
-                        $thumbnailUrl = $item['thumbnail'];
+                // if (!isset($item['thumbnail'])) {
+                //     continue;
+                // }
+                // if ($item['thumbnail']) {
+                    if (isset($item['thumbnail']) && $item['thumbnail']) {
+                        if ($this->isHttpUrl($item['thumbnail'])) {
+                            $thumbnailUrl = $item['thumbnail'];
+                        } else {
+                            $thumbnailUrl = $path . $item['thumbnail'];
+                        }
                     } else {
-                        $thumbnailUrl = $path . $item['thumbnail'];
+                        $thumbnailUrl = $defaultThumbnailUrl;
                     }
+
                     $item[$fieldName . '_src'] = $thumbnailUrl;
                     $item[$fieldName . '_alt'] = $item['name'];
                     $item[$fieldName . '_link'] = $this->urlBuilder->getUrl(
@@ -114,7 +126,7 @@ class Thumbnail extends \Magento\Ui\Component\Listing\Columns\Column
                         ['seller_id' => $item['seller_id'], 'store' => $this->context->getRequestParam('store')]
                     );
                     $item[$fieldName . '_orig_src'] = $thumbnailUrl;
-                }
+                // }
             }
         }
 

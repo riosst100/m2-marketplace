@@ -23,6 +23,12 @@ namespace Lofmp\Rma\Block\Rma;
 
 class SellectOrder extends \Magento\Framework\View\Element\Html\Link
 {
+    protected $searchCriteriaBuilder;
+    protected $orderRepository;
+    protected $context;
+    protected $_orderList;
+
+
     protected $customerSession;
     protected $sortOrderBuilder;
     protected $orderCollectionFactory;

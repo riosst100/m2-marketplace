@@ -23,6 +23,11 @@ namespace Lofmp\Rma\Block\Adminhtml\Resolution;
 
 class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 {
+    protected $resolutionFactory;
+    protected $context;
+    protected $backendHelper;
+
+
     /**
      * Grid constructor.
      *

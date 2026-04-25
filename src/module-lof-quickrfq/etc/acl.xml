@@ -33,6 +33,9 @@
                         <resource id="Lof_Quickrfq::quickrfq_view" sortOrder="40" title="View Quote"/>
                         <resource id="Lof_Quickrfq::send" sortOrder="50" title="Send Message"/>
                     </resource>
+                    <resource id="Lof_Quickrfq::systemsetting"
+                                  title="Configuration"
+                                  sortOrder="100"/>                    
                 </resource>
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">

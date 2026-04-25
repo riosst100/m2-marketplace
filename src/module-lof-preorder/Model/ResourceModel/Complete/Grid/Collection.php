@@ -31,6 +31,10 @@ use Magento\Framework\Search\AggregationInterface;
  */
 class Collection extends CompleteCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var AggregationInterface
      */

@@ -32,7 +32,8 @@ class Collection extends BlockipCollection implements SearchResultInterface
 {
     protected $_eventPrefix;
     protected $_eventObject;
-    
+
+
     /**
      * @var AggregationInterface
      */

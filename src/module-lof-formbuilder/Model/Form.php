@@ -44,6 +44,10 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class Form extends AbstractModel implements FormbuilderInterface
 {
+    protected $_hasDataChanges;
+    protected $storedData;
+
+
     public const CACHE_BLOCK_TAG = 'lof_formbuilder_block';
     public const CACHE_PAGE_TAG = 'lof_formbuilder_page';
     public const CACHE_MEDIA_TAG = 'lof_formbuilder_media';

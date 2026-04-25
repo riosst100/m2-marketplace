@@ -23,6 +23,20 @@ namespace Lof\MarketPlace\Model\Menu;
 
 class Item extends \Magento\Backend\Model\Menu\Item
 {
+    protected $_parentId;
+    protected $_moduleName;
+    protected $_sortIndex;
+    protected $_dependsOnConfig;
+    protected $_id;
+    protected $_resource;
+    protected $_path;
+    protected $_action;
+    protected $_dependsOnModule;
+    protected $_tooltip;
+    protected $_title;
+    protected $_submenu;
+
+
     /**
      * @var mixed|null
      */

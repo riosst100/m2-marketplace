@@ -35,6 +35,11 @@ use Lof\MarketPlace\Model\Source\CalculateType;
  */
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    protected $mappingHelper;
+    protected $sellerHelper;
+    protected $sellerImagesFactory;
+
+
     const XML_CATALOG_PRODUCT_TYPE_RESTRICTION = 'vendors/catalog/product_type_restriction';
     const XML_CATALOG_ATTRIBUTE_SET_RESTRICTION = 'vendors/catalog/attribute_set_restriction';
 
@@ -333,12 +338,18 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return array
      */
-    public function uploadZip($strtotime)
+    public function uploadZip($strtotime, $categories = null, $folder = null)
     {
-        $profileId = $strtotime;
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->mappingHelper = $objectManager->create(\CoreMarketplace\ProductAttributesLink\Helper\Data::class);
+        $this->sellerHelper = $objectManager->create(\Lof\MarketPlace\Helper\Data::class);
+        $this->sellerImagesFactory = $objectManager->create(\CoreMarketplace\MarketplaceProductImportExport\Model\SellerImagesFactory::class);
+
+        $sellerId = $this->sellerHelper->getSellerId();
+
         try {
             $zipModel = $this->_zip;
-            $basePath = $this->getBasePath($profileId);
+            $basePath = $this->getBasePath($sellerId);
             $imageUploadPath = $basePath . 'zip/';
             $imageUploader = $this->_fileUploader->create(['fileId' => 'massupload_image']);
             $imageUploader->validateFile();
@@ -348,15 +359,61 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             $imageUploader->save($imageUploadPath);
             $fileName = $imageUploader->getUploadedFileName();
             $source = $imageUploadPath . $fileName;
-            $destination = $basePath . 'images';
+            $destination = $basePath . $folder;
+            $destinationTmp = $basePath . 'images/tmp_upload';
 
-            $zipModel->unzipImages($source, $destination);
-            $this->arrangeFiles($destination);
+            $zipModel->unzipImages($source, $destinationTmp);
 
-            $this->flushFilesCache($destination);
+            $mediaPath = $this->getMediaPath();
+
+            $path = str_replace($mediaPath, "", $destination);
             $result = ['error' => false];
+
+            if ($this->_fileDriver->isDirectory($destinationTmp)) {
+                $entries = $this->_fileDriver->readDirectory($destinationTmp);
+                foreach ($entries as $entry) {
+                    if ($this->_fileDriver->isFile($entry)) {
+                        $title = basename($entry);
+                        $destinationPath = str_replace($destinationTmp, $destination, $entry);
+                        // Check if image path already exists for this seller
+                        $existing = $this->sellerImagesFactory->create()
+                            ->getCollection()
+                            ->addFieldToFilter('seller_id', $sellerId)
+                            ->addFieldToFilter('path', $path . '/' . $title)
+                            ->getFirstItem();
+                        if ($existing && $existing->getId()) {
+                            // Image already exists, skip upload for this file
+                            // Collect duplicate image titles
+                            if (!isset($duplicateTitles)) {
+                                $duplicateTitles = [];
+                            }
+                            $duplicateTitles[] = $title;
+                            $result = ['error' => true, 'msg' => 'Duplicate images found: ' . implode(', ', $duplicateTitles)];
+                            continue;
+                        }
+                        $model = $this->sellerImagesFactory->create();
+                        $model->setTitle($title);
+                        $model->setSellerId($sellerId);
+                        $model->setCategories($categories);
+                        $model->setPath($path . '/' . $title);
+                        $model->save();
+                        
+                        $this->_fileDriver->rename($entry, $destinationPath);
+                    }
+                }
+            }
+
+            if ($this->_fileDriver->isDirectory($imageUploadPath)) {
+                $this->removeDir($imageUploadPath);
+            }
+            // $this->arrangeFiles($destination);
+
+            // $this->flushFilesCache($destination);
+            if (!$result['error']) {
+                $result = ['error' => false];
+            }            
         } catch (\Exception $e) {
-            $this->flushData($profileId);
+            // $this->flushData($profileId);
             $msg = 'There is some problem in uploading image zip file.';
             $result = ['error' => true, 'msg' => $msg];
         }
@@ -416,10 +473,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @param $profileId
      * @return string
      */
-    public function getBasePath($profileId)
+    public function getBasePath($sellerId)
     {
         $mediaPath = $this->getMediaPath();
-        $basePath = $mediaPath . 'marketplace/massupload/' . $profileId . "/";
+        $basePath = $mediaPath . 'seller/' . $sellerId . '/';
         return $basePath;
     }
 
@@ -1584,7 +1641,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $validator = new EmailAddress();
         $validator->setMessage(
             __('"%1" invalid type entered.', $value),
-            \Zend_Validate_EmailAddress::INVALID
+            \Laminas\Validator\EmailAddress::INVALID
         );
         $phpValidateEmail = filter_var($value, FILTER_VALIDATE_EMAIL);
         $coreValidateEmail = true;

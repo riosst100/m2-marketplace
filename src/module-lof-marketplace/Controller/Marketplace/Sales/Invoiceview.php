@@ -168,6 +168,10 @@ class Invoiceview extends \Magento\Framework\App\Action\Action
             $this->_coreRegistry->register('mp_current_order', $order);
             $this->_coreRegistry->register('mp_current_seller_order', $sellerOrder);
             $this->_view->loadLayout();
+            $this->_view->getPage()
+                ->getConfig()
+                ->getTitle()
+                ->set(__('View Invoice'));
             $this->_view->renderLayout();
         } elseif ($customerSession->isLoggedIn() && $status == 0) {
             $this->_redirectUrl($this->getFrontendUrl('lofmarketplace/seller/becomeseller'));

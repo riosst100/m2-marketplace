@@ -35,8 +35,8 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Transaction
         /**
          * Set active menu item
          */
-        $resultPage->setActiveMenu("Lof_MarketPlace::transaction");
-        $resultPage->getConfig()->getTitle()->prepend(__('Order Transactions'));
+        $resultPage->setActiveMenu("CoreMarketplace_MarketPlace::seller_transaction");
+        $resultPage->getConfig()->getTitle()->prepend(__('Seller | Transactions'));
 
         /**
          * Add breadcrumb item
@@ -52,6 +52,6 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Transaction
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Lof_MarketPlace::transaction');
+        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::seller_transaction');
     }
 }

@@ -23,6 +23,16 @@ namespace Lofmp\Rma\Block\Adminhtml\Rma\Create\Order;
 
 class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 {
+    protected $addressRenderer;
+    protected $context;
+    protected $helper;
+    protected $rmaHelper;
+    protected $seller;
+    protected $orders;
+    protected $customerRepository;
+    protected $orderitems;
+
+
     /**
      * @var \Magento\Framework\App\RequestInterface
      */

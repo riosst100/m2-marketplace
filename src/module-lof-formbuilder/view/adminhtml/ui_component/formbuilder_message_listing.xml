@@ -172,23 +172,6 @@
                 </item>
             </argument>
         </selectionsColumn>
-        <column name="message_id">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">textRange</item>
-                    <item name="sorting" xsi:type="string">desc</item>
-                    <item name="label" xsi:type="string" translate="true">ID</item>
-                </item>
-            </argument>
-        </column>
-        <column name="qrcode">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string" translate="true">Tracking Code</item>
-                    <item name="filter" xsi:type="string">text</item>
-                </item>
-            </argument>
-        </column>
         <column name="form_name" class="Lof\Formbuilder\Ui\Component\Listing\Column\FormName">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -207,7 +190,7 @@
                     <item name="filter" xsi:type="string">dateRange</item>
 <!--                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>-->
                     <item name="dataType" xsi:type="string">date</item>
-                    <item name="label" xsi:type="string" translate="true">Created At</item>
+                    <item name="label" xsi:type="string" translate="true">Date Submitted</item>
                 </item>
             </argument>
         </column>
@@ -222,22 +205,10 @@
                 <visible>false</visible>
             </settings>
         </column>
-        <column name="form_id">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string" translate="true">Form Id</item>
-                    <item name="visible" xsi:type="boolean">false</item>
-                    <item name="filter" xsi:type="string">textRange</item>
-                </item>
-            </argument>
-            <settings>
-                <visible>false</visible>
-            </settings>
-        </column>
         <column name="message">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string" translate="true">Message</item>
+                    <item name="label" xsi:type="string" translate="true">Request Messages</item>
                     <item name="visible" xsi:type="boolean">false</item>
                 </item>
             </argument>
@@ -308,20 +279,6 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="label" xsi:type="string" translate="true">Customer Id</item>
-                    <item name="visible" xsi:type="boolean">false</item>
-                    <item name="filter" xsi:type="string">textRange</item>
-                </item>
-            </argument>
-            <settings>
-                <visible>false</visible>
-            </settings>
-        </column>
-
-
-        <column name="product_id">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string" translate="true">Product Id</item>
                     <item name="visible" xsi:type="boolean">false</item>
                     <item name="filter" xsi:type="string">textRange</item>
                 </item>

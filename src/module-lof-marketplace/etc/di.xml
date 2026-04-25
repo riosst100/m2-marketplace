@@ -473,4 +473,11 @@
     <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
         <plugin name="seller_id_to_order_item" type="Lof\MarketPlace\Plugin\Quote\SellerIdToOrderItem"/>
     </type>
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="bulk_import_product" xsi:type="object">Lof\MarketPlace\Console\Command\BulkProductImportCommand</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

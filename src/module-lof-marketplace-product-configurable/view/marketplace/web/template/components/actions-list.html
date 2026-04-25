@@ -14,7 +14,7 @@
         <span data-bind="i18n: 'Select'"></span>
     </button>
     <ul class="action-menu _active" data-bind="css: {'_active': $parent.actionsListOpened() === $record().index}">
-        <li>
+        <!-- <li>
             <a class="action-menu-item" data-bind="
                 click: function(){
                     $parent.openModalWithGrid($record().index);
@@ -30,14 +30,14 @@
                     $parent.closeList($record().index);
                 }
             "></a>
-        </li>
+        </li> -->
         <li>
             <a class="action-menu-item" data-bind="
                 click: function(){
                     $parent.closeList($record().index);
                     $parent.processingDeleteRecord($record().index, $record().recordId);
                 },
-                text: $t('Remove Product')
+                text: $t('Remove This Variation')
             "></a>
         </li>
     </ul>

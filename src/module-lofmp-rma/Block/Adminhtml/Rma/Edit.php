@@ -23,6 +23,16 @@ namespace Lofmp\Rma\Block\Adminhtml\Rma;
 
 class Edit extends \Magento\Backend\Block\Widget\Form\Container
 {
+    protected $statusRepository;
+    protected $orderInvoiceCollectionFactory;
+    protected $wysiwygConfig;
+    protected $registry;
+    protected $context;
+    protected $_objectId;
+    protected $_controller;
+    protected $_blockGroup;
+
+
     /**
      * Edit constructor.
      * @param \Lofmp\Rma\Api\Repository\StatusRepositoryInterface $statusRepository
@@ -61,6 +71,7 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
         $this->_blockGroup = 'Lofmp_Rma';
 
         $this->buttonList->remove('save');
+        $this->buttonList->remove('reset');
 
         $this->getToolbar()->addChild(
             'update-split-button',
@@ -114,11 +125,11 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
             );
             $printUrl = str_replace('/admin/', '/', $printUrl);
 
-            $this->buttonList->add('print', [
-                'label' => __('Print'),
-                'onclick' => 'var win = window.open(\'' .
-                    $printUrl . '\', \'_blank\');win.focus();',
-            ]);
+            // $this->buttonList->add('print', [
+            //     'label' => __('Print'),
+            //     'onclick' => 'var win = window.open(\'' .
+            //         $printUrl . '\', \'_blank\');win.focus();',
+            // ]);
 
             $child_rma_list = $rma->getListChildRma($rma->getId());
             if ($child_rma_list) {

@@ -42,6 +42,7 @@ interface QuestionInterface extends \Magento\Framework\Api\ExtensibleDataInterfa
     const CATEGORIES = 'categories';
     const LIMIT = 'limit';
     const STORES = 'stores';
+    const WEBSITES = 'websites';
 
     /**
      * Get question_id
@@ -492,4 +493,16 @@ interface QuestionInterface extends \Magento\Framework\Api\ExtensibleDataInterfa
      * @return \Lof\Faq\Api\Data\QuestionInterface
      */
     public function setStores($stores);
+
+    /**
+     * Get websites
+     * @return string[]|null
+     */
+    public function getWebsites();
+    /**
+     * Set websites
+     * @param string[] $websites
+     * @return \Lof\Faq\Api\Data\QuestionInterface
+     */
+    public function setWebsites($websites);
 }

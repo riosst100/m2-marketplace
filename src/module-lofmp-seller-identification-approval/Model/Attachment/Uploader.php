@@ -30,6 +30,9 @@ use Lofmp\SellerIdentificationApproval\Helper\Data as HelperConfig;
  */
 class Uploader extends \Magento\Framework\Api\Uploader
 {
+    protected $_allowedExtensions;
+
+
 
     /**
      * @var HelperConfig

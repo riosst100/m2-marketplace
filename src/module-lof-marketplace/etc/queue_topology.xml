@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+    <exchange name="lof.marketplace.exchange" type="topic" connection="amqp">
+    <binding id="lof_marketplace_product_import_binding"
+         topic="lof.marketplace.product_import"
+         destinationType="queue"
+         destination="lof.marketplace.product_import.queue"/>
+    </exchange>
+    <exchange name="lof.marketplace.db_exchange" type="topic" connection="amqp">
+    <binding id="lof_marketplace_product_import_db_binding"
+         topic="lof.marketplace.product_import_db"
+         destinationType="queue"
+         destination="lof.marketplace.product_import_db.queue"/>
+    </exchange>
+</config>

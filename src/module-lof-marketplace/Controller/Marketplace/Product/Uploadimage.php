@@ -121,8 +121,11 @@ class Uploadimage extends \Magento\Framework\App\Action\Action
                 $this->messageManager->addErrorMessage(__('Permission denied.'));
                 return $this->_redirect('catalog/dashboard');
             }
-            $this->_view->loadLayout();
-            $this->_view->renderLayout();
+            // $this->_view->loadLayout();
+            // $this->_view->renderLayout();
+            $resultPage = $this->resultPageFactory->create();
+            $resultPage->getConfig()->getTitle()->set(__('Upload Images'));
+            return $resultPage;
         } elseif ($customerSession->isLoggedIn() && $status == 0) {
             $this->_redirectUrl($this->getFrontendUrl('lofmarketplace/seller/becomeseller'));
         } else {

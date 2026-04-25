@@ -25,6 +25,10 @@ use Magento\Framework\Convert\DataObject as ObjectConverter;
 
 class CodeFormat extends \Magento\Backend\Block\Widget\Form\Generic implements \Magento\Backend\Block\Widget\Tab\TabInterface
 {
+    protected $_templatesFactory;
+    protected $_emailConfig;
+
+
     /**
      * @var \Magento\Store\Model\System\Store
      */

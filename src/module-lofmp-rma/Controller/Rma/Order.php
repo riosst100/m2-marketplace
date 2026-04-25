@@ -26,6 +26,11 @@ use Magento\Framework\Controller\ResultFactory;
 
 class Order extends \Lofmp\Rma\Controller\Rma
 {
+    protected $orderFactory;
+    protected $registry;
+    protected $customerSession;
+
+
     public function __construct(
         \Magento\Sales\Model\OrderFactory $orderFactory,
         \Magento\Framework\Registry $registry,

@@ -22,6 +22,9 @@ namespace Lofmp\StoreLocator\Block\Adminhtml\System\Config\Form\Field;
 
 class Gmap extends \Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray
 {
+    protected $storeHelper;
+
+
 
     /**
      * @param \Magento\Backend\Block\Template\Context $context

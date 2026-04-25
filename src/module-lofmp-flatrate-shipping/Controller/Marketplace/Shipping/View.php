@@ -110,7 +110,7 @@ class View extends Action
         $customerId = $customerSession->getId();
         $status = $this->sellerFactory->create()->load($customerId, 'customer_id')->getStatus();
 
-        if ($customerSession->isLoggedIn() && $status == 1) {
+        if ($customerSession->isLoggedIn()) {
             $resultPage = $this->resultPageFactory->create();
             $resultPage->getConfig()->getTitle()->set(__('Marketplace Flat Rate Shipping'));
             return $resultPage;

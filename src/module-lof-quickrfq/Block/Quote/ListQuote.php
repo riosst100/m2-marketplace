@@ -31,6 +31,9 @@ use Magento\Framework\UrlInterface;
  */
 class ListQuote extends \Magento\Framework\View\Element\Template
 {
+    protected $url;
+
+
     /**
      * @var \Magento\Customer\Model\Session
      */

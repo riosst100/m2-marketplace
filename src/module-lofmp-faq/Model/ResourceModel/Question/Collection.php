@@ -54,11 +54,13 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
     {
         parent::_initSelect();
 
-        $this->getSelect()->join(
-            ['category' => $this->getTable('lofmp_faq_category')],
-            'main_table.category_id = category.category_id',
-            ['category_title' => 'title']
-        )->join(
+        $this->getSelect()
+        // ->join(
+        //     ['category' => $this->getTable('lofmp_faq_category')],
+        //     'main_table.category_id = category.category_id',
+        //     ['category_title' => 'title']
+        // )
+        ->join(
             ['seller_table' => $this->getTable('lof_marketplace_seller')],
             'main_table.seller_id = seller_table.seller_id',
             ['seller_name' => 'seller_table.name']

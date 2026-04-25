@@ -29,6 +29,9 @@ class Resolution extends \Magento\Framework\Model\AbstractModel implements
     IdentityInterface,
     \Lofmp\Rma\Api\Data\ResolutionInterface
 {
+    protected $helper;
+
+
     const CACHE_TAG = 'rma_resolution';
 
     /**

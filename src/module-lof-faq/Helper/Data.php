@@ -153,6 +153,15 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return $this->_getUrl('', array('_direct'=>$link));
     }
 
+    public function getCategoryIdentifier($cat)
+    {
+        if(is_array($cat)){
+            return $cat['identifier'];
+        }
+        
+        return $cat->getIdentifier();
+    }
+
     public function getQuestionUrl($_question){
         $link = '';
         $route = $this->getConfig('general_settings/route');
@@ -166,6 +175,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             $link .= $question_route.'/id';
             return $this->_getUrl($link) . $_question->getId();
         }
+    }
+
+    public function getDocsUrl(){
+        $route = $this->getConfig('general_settings/route');
+        return $this->_getUrl($route . '/');
     }
 
     public function getTagUrl($alias){

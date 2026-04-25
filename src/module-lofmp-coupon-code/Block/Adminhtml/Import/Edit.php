@@ -25,6 +25,10 @@ namespace Lofmp\CouponCode\Block\Adminhtml\Import;
  */
 class Edit extends \Magento\Backend\Block\Widget\Form\Container
 {
+    protected $_blockGroup;
+    protected $_controller;
+
+
 	/**
 	 * Core registry
 	 *

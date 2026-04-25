@@ -108,10 +108,69 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
             $fieldset->addField('category_id', 'hidden', ['name' => 'category_id']);
         }
 
+        
+
+        $fieldset->addField(
+            'is_active',
+            'select',
+            [
+                'label' => __('Status'),
+                'title' => __('Status'),
+                'name' => 'is_active',
+                'options' => [
+                    '1' => __('Enabled'),
+                    '0' => __('Disabled')
+                ],
+                'disabled' => $isElementDisabled
+            ]
+        );
+
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->storesHelper = $objectManager->create(\CoreMarketplace\MarketPlace\Helper\Stores::class);
+
+        $field = $fieldset->addField(
+            'websites',
+            'multiselect',
+            [
+                'name'   => 'websites[]',
+                'label'  => __('Countries/Regions'),
+                'title'  => __('Countries/Regions'),
+                'values' => $this->storesHelper->getStoresOptionsArray(),
+                'required' => true,
+                'note'   => __('Select one or multiple countries.'),
+            ]
+        );
+
         $fieldset->addField(
             'title',
             'text',
-            ['name' => 'title', 'label' => __('Title'), 'title' => __('Title'), 'required' => true, 'disabled' => $isElementDisabled]
+            [
+                'name' => 'title',
+                'label' => __('Name'),
+                'title' => __('Name'),
+                'required' => true,
+                'disabled' => $isElementDisabled,
+                'after_element_html' => '
+                <script>
+                require(["jquery"], function($){
+                    function slugify(text){
+                        return text.toString().toLowerCase()
+                            .replace(/\s+/g,"-")
+                            .replace(/[^\w\-]+/g,"")
+                            .replace(/\-\-+/g,"-")
+                            .replace(/^-+/,"")
+                            .replace(/-+$/,"");
+                    }
+
+                    $("#question_title").on("keyup change", function(){
+                        var name = $(this).val();
+                        var slug = slugify(name);
+                        $("#question_identifier").val(slug);
+                    });
+                });
+                </script>
+                '
+            ]
         );
 
         $fieldset->addField(
@@ -128,55 +187,70 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
             ]
         );
 
-        $categories[] = ['label' => __('Please select'), 'value' => 0];
+        // $categories[] = ['label' => __('Please select'), 'value' => 0];
 
-        $this->_drawLevel = $categories;
+        // $this->_drawLevel = $categories;
+        
+        // $collection = $this->getCatCollection();
+        // $cats = [];
 
-        $collection = $this->getCatCollection();
-        $cats = [];
-        foreach ($collection as $_cat) {
-            if(!$_cat->getParentId()){
-                $cat = [
-                    'label' => $_cat->getTitle(),
-                    'value' => $_cat->getId(),
-                    'id' => $_cat->getId(),
-                    'parent_id' => $_cat->getParentId(),
-                    'level' => 0,
-                    'postion' => $_cat->getCatPosition()
-                ];
-                $cats[] = $this->drawItems($collection, $cat);
-            }
-        }
-        $this->drawSpaces($cats);
-
-        if (count($this->_drawLevel)) {
-            $fieldset->addField(
-                'parent_id',
-                'select',
-                [
-                    'name' => 'parent_id',
-                    'label' => __('Parent Category'),
-                    'title' => __('Parent Category'),
-                    'values' => $this->_drawLevel,
-                    'disabled' => $isElementDisabled
-                ]
-            );
-        }
+        // $controllerName = $this->getRequest()->getControllerName();
+        // foreach ($collection as $_cat) {
+        //     // dd($_cat);
+        //     if(!$_cat->getParentId()){
+        //         if ($controllerName == 'category' && $_cat->getCategoryType() == 'supplier') {
+        //             $cat = [
+        //                 'label' => $_cat->getTitle(),
+        //                 'value' => $_cat->getId(),
+        //                 'id' => $_cat->getId(),
+        //                 'parent_id' => $_cat->getParentId(),
+        //                 'level' => 0,
+        //                 'postion' => $_cat->getCatPosition()
+        //             ];
+        //             $cats[] = $this->drawItems($collection, $cat);
+        //         } else if ($controllerName !== 'category' && $_cat->getCategoryType() !== 'supplier') {
+        //             $cat = [
+        //                 'label' => $_cat->getTitle(),
+        //                 'value' => $_cat->getId(),
+        //                 'id' => $_cat->getId(),
+        //                 'parent_id' => $_cat->getParentId(),
+        //                 'level' => 0,
+        //                 'postion' => $_cat->getCatPosition()
+        //             ];
+        //             $cats[] = $this->drawItems($collection, $cat);
+        //         }
+        //     }
+        // }
+        // $this->drawSpaces($cats);
+        
+        // if (count($this->_drawLevel)) {
+        //     $fieldset->addField(
+        //         'parent_id',
+        //         'select',
+        //         [
+        //             'name' => 'parent_id',
+        //             'label' => __('Parent Category'),
+        //             'title' => __('Parent Category'),
+        //             'values' => $this->_drawLevel,
+        //             'disabled' => $isElementDisabled
+        //         ]
+        //     );
+        // }
 
         $fieldset->addField(
             'page_layout',
-            'select',
+            'hidden',
             [
                 'name' => 'page_layout',
                 'label' => __('Layout'),
                 'values' => $this->pageLayoutBuilder->getPageLayoutsConfig()->toOptionArray(),
-                'disabled' => $isElementDisabled
+                'visible' => false
             ]
             );
 
         $fieldset->addField(
             'layout_type',
-            'select',
+            'hidden',
             [
                 'name' => 'layout_type',
                 'label' => __('Template'),
@@ -190,7 +264,7 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
 
         $fieldset->addField(
             'grid_column',
-            'select',
+            'hidden',
             [
                 'name' => 'grid_column',
                 'label' => __('Grid Column'),
@@ -222,7 +296,7 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
 
         $fieldset->addField(
             'image',
-            'image',
+            'hidden',
             [
                 'name' => 'image',
                 'label' => __('Image'),
@@ -233,7 +307,7 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
 
         $fieldset->addField(
             'description',
-            'editor',
+            'hidden',
             [
                 'name'     => 'description',
                 'label'    => __('Description'),
@@ -244,51 +318,9 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
             ]
         );
 
-        /* Check is single store mode */
-        if (!$this->_storeManager->isSingleStoreMode()) {
-            $field = $fieldset->addField(
-                'store_id',
-                'multiselect',
-                [
-                    'name' => 'stores[]',
-                    'label' => __('Store View'),
-                    'title' => __('Store View'),
-                    'required' => true,
-                    'values' => $this->_systemStore->getStoreValuesForForm(false, true),
-                    'disabled' => $isElementDisabled
-                ]
-            );
-            $renderer = $this->getLayout()->createBlock(
-                'Magento\Backend\Block\Store\Switcher\Form\Renderer\Fieldset\Element'
-            );
-            $field->setRenderer($renderer);
-        } else {
-            $fieldset->addField(
-                'store_id',
-                'hidden',
-                ['name' => 'stores[]', 'value' => $this->_storeManager->getStore(true)->getId()]
-            );
-            $model->setStoreId($this->_storeManager->getStore(true)->getId());
-        }
-
-        $fieldset->addField(
-            'is_active',
-            'select',
-            [
-                'label' => __('Status'),
-                'title' => __('Status'),
-                'name' => 'is_active',
-                'options' => [
-                    '1' => __('Enabled'),
-                    '0' => __('Disabled')
-                ],
-                'disabled' => $isElementDisabled
-            ]
-        );
-
         $fieldset->addField(
             'include_in_sidebar',
-            'select',
+            'hidden',
             [
                 'label' => __('Include the block FAQ Category on Sidebar'),
                 'title' => __('Include the block FAQ Category on Sidebar'),
@@ -316,6 +348,43 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'disabled' => $isElementDisabled
             ]
         );
+
+        
+
+        /* Check is single store mode */
+        // if (!$this->_storeManager->isSingleStoreMode()) {
+        //     $field = $fieldset->addField(
+        //         'store_id',
+        //         'multiselect',
+        //         [
+        //             'name' => 'stores[]',
+        //             'label' => __('Store View'),
+        //             'title' => __('Store View'),
+        //             'required' => true,
+        //             'values' => $this->_systemStore->getStoreValuesForForm(false, true),
+        //             'disabled' => $isElementDisabled
+        //         ]
+        //     );
+        //     $renderer = $this->getLayout()->createBlock(
+        //         'Magento\Backend\Block\Store\Switcher\Form\Renderer\Fieldset\Element'
+        //     );
+        //     $field->setRenderer($renderer);
+        // } else {
+        //     $fieldset->addField(
+        //         'store_id',
+        //         'hidden',
+        //         ['name' => 'stores[]', 'value' => $this->_storeManager->getStore(true)->getId()]
+        //     );
+            
+        // }
+
+        
+
+
+        // $renderer = $this->getLayout()->createBlock(
+        //     'Magento\Backend\Block\Store\Switcher\Form\Renderer\Fieldset\Element'
+        // );
+        // $field->setRenderer($renderer);
 
         $form->setValues($model->getData());
         $this->setForm($form);

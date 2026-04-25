@@ -173,6 +173,15 @@
                     </item>
                 </argument>
             </action>
+            <!-- <action name="suspend">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">suspend</item>
+                        <item name="label" xsi:type="string" translate="true">Suspend / Deactivated</item>
+                        <item name="url" xsi:type="url" path="lofmarketplace/seller/massSuspend"/>
+                    </item>
+                </argument>
+            </action> -->
         </massaction>
         <paging name="listing_paging">
             <argument name="data" xsi:type="array">
@@ -229,13 +238,53 @@
                 </item>
             </argument>
         </selectionsColumn>
+        <column name="thumbnail" class="Lof\MarketPlace\Ui\Component\Listing\Columns\Thumbnail">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/thumbnail</item>
+                    <item name="add_field" xsi:type="boolean">true</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="altField" xsi:type="string">name</item>
+                    <item name="has_preview" xsi:type="string">1</item>
+                    <item name="label" xsi:type="string" translate="true">Thumbnail</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                </item>
+            </argument>
+        </column>
         <column name="seller_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
                     <item name="add_field" xsi:type="boolean">true</item>
                     <item name="label" xsi:type="string" translate="true">ID</item>
                     <item name="sortOrder" xsi:type="number">20</item>
+                </item>
+            </argument>
+        </column>
+        <!-- <column name="seller_type">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">CoreMarketplace\MarketPlace\Model\Config\Source\SellerType</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="add_field" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Group</item>
+                    <item name="sortOrder" xsi:type="number">21</item>
+                </item>
+            </argument>
+        </column> -->
+        <column name="group_id">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Lof\MarketPlace\Model\Source\Sellergrouplist</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="add_field" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Plan</item>
+                    <item name="sortOrder" xsi:type="number">21</item>
                 </item>
             </argument>
         </column>
@@ -245,20 +294,21 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="add_field" xsi:type="boolean">true</item>
                     <item name="label" xsi:type="string" translate="true">Email</item>
-                    <item name="sortOrder" xsi:type="number">21</item>
+                    <item name="sortOrder" xsi:type="number">24</item>
                 </item>
             </argument>
         </column>
-        <column name="address">
+        <!-- <column name="address">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="add_field" xsi:type="boolean">true</item>
+                    <item name="visible" xsi:type="boolean">false</item>
                     <item name="label" xsi:type="string" translate="true">Address</item>
                     <item name="sortOrder" xsi:type="number">70</item>
                 </item>
             </argument>
-        </column>
+        </column> -->
         <column name="country">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -269,27 +319,28 @@
                 </item>
             </argument>
         </column>
-        <column name="postcode">
+        <!-- <column name="postcode">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="add_field" xsi:type="boolean">true</item>
+                    <item name="visible" xsi:type="boolean">false</item>
                     <item name="label" xsi:type="string" translate="true">Postcode</item>
                     <item name="sortOrder" xsi:type="number">90</item>
                 </item>
             </argument>
-        </column>
+        </column> -->
         <column name="city">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="add_field" xsi:type="boolean">true</item>
                     <item name="label" xsi:type="string" translate="true">City</item>
-                    <item name="sortOrder" xsi:type="number">100</item>
+                    <item name="sortOrder" xsi:type="number">90</item>
                 </item>
             </argument>
         </column>
-        <column name="contact_number">
+        <!-- <column name="contact_number">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -298,30 +349,7 @@
                     <item name="sortOrder" xsi:type="number">110</item>
                 </item>
             </argument>
-        </column>
-        <column name="group_id">
-            <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">Lof\MarketPlace\Model\Source\Sellergrouplist</item>
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">select</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
-                    <item name="add_field" xsi:type="boolean">true</item>
-                    <item name="dataType" xsi:type="string">select</item>
-                    <item name="label" xsi:type="string" translate="true">Seller Group</item>
-                    <item name="sortOrder" xsi:type="number">120</item>
-                </item>
-            </argument>
-        </column>
-        <column name="city">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="add_field" xsi:type="boolean">true</item>
-                    <item name="label" xsi:type="string" translate="true">City</item>
-                    <item name="sortOrder" xsi:type="number">100</item>
-                </item>
-            </argument>
-        </column>
+        </column> -->
         <column name="name">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -338,42 +366,32 @@
                 </item>
             </argument>
         </column>
-        <column name="thumbnail" class="Lof\MarketPlace\Ui\Component\Listing\Columns\Thumbnail">
+        
+        <!-- <column name="image" class="Lof\MarketPlace\Ui\Component\Listing\Columns\Image">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/thumbnail</item>
                     <item name="add_field" xsi:type="boolean">true</item>
                     <item name="sortable" xsi:type="boolean">false</item>
-                    <item name="altField" xsi:type="string">name</item>
-                    <item name="has_preview" xsi:type="string">1</item>
-                    <item name="label" xsi:type="string" translate="true">Thumbnail</item>
-                    <item name="sortOrder" xsi:type="number">30</item>
-                </item>
-            </argument>
-        </column>
-        <column name="image" class="Lof\MarketPlace\Ui\Component\Listing\Columns\Image">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/thumbnail</item>
-                    <item name="add_field" xsi:type="boolean">true</item>
-                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="visible" xsi:type="boolean">false</item>
                     <item name="altField" xsi:type="string">name</item>
                     <item name="has_preview" xsi:type="string">1</item>
                     <item name="label" xsi:type="string" translate="true">Image</item>
                     <item name="sortOrder" xsi:type="number">40</item>
                 </item>
             </argument>
-        </column>
-        <column name="url_key">
+        </column> -->
+        <!-- <column name="url_key">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="add_field" xsi:type="boolean">true</item>
+                    <item name="visible" xsi:type="boolean">false</item>
                     <item name="label" xsi:type="string" translate="true">Shop URL Key</item>
                     <item name="sortOrder" xsi:type="number">50</item>
                 </item>
             </argument>
-        </column>
+        </column> -->
 <!--        <column name="company_description" class="Lof\MarketPlace\Ui\Component\Listing\Columns\SellerDescription">-->
 <!--            <argument name="data" xsi:type="array">-->
 <!--                <item name="config" xsi:type="array">-->
@@ -399,19 +417,20 @@
                 </item>
             </argument>
         </column>
-        <column name="verify_status">
+        <!-- <column name="verify_status">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Lof\MarketPlace\Model\Source\IsVerify</item>
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">select</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
                     <item name="add_field" xsi:type="boolean">true</item>
+                    <item name="visible" xsi:type="boolean">false</item>
                     <item name="dataType" xsi:type="string">select</item>
                     <item name="label" xsi:type="string" translate="true">Is verify</item>
                     <item name="sortOrder" xsi:type="number">100</item>
                 </item>
             </argument>
-        </column>
+        </column> -->
         <actionsColumn name="actions" class="Lof\MarketPlace\Ui\Component\Listing\Columns\SellerActions">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">

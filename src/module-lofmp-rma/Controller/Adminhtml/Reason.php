@@ -25,6 +25,14 @@ namespace Lofmp\Rma\Controller\Adminhtml;
 
 abstract class Reason extends \Magento\Backend\App\Action
 {
+    protected $reasonFactory;
+    protected $localeDate;
+    protected $registry;
+    protected $context;
+    protected $backendSession;
+    protected $resultFactory;
+
+
     public function __construct(
         \Lofmp\Rma\Model\ReasonFactory $reasonFactory,
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate,

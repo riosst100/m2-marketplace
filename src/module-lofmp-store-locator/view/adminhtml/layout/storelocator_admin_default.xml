@@ -4,8 +4,8 @@
         <css src="Lofmp_StoreLocator::css/style.css"/>
     </head>
     <body>
-        <referenceContainer name="page.main.actions">
+        <!-- <referenceContainer name="page.main.actions">
             <block class="Lofmp\StoreLocator\Block\Adminhtml\Menu" name="lof_storelocator_menu" />
-        </referenceContainer>
+        </referenceContainer> -->
     </body>
 </page>

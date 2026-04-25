@@ -1,0 +1,42 @@
+.admin__fieldset .admin__field .admin__field-control .admin__control-select {
+  width: 100%;
+}
+.admin__fieldset [data-index="add_products_button"] {
+  position: relative;
+  left: 90rem;
+  border-radius: 5px;
+}
+.admin__fieldset [data-index="add_products_button"]:active,
+.admin__fieldset [data-index="add_products_button"]:focus,
+.admin__fieldset [data-index="add_products_button"]:hover {
+  background-color: #ba4000;
+  border-color: #b84002;
+  box-shadow: 0 0 0 1px #b84002;
+  color: #fff;
+  text-decoration: none;
+}
+.lofmpcouponcode-rule-edit
+  .modal-slide
+  .modal-inner-wrap
+  .modal-header
+  .page-main-actions
+  .page-actions-button
+  .action-secondary {
+  background-color: #dbdbdb;
+  color: #626262;
+  border: 1px solid #d6d6d6;
+}
+.lofmpcouponcode-rule-edit
+  .modal-slide
+  .modal-inner-wrap
+  .modal-header
+  .page-main-actions
+  .page-actions-button
+  .action-secondary:hover {
+  background-color: #514943;
+  color: #fff;
+  border: 1px solid #d6d6d6;
+}
+iframe#add-products-modal .action-select-wrap {
+  display: none !important;
+}

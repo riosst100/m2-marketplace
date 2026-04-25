@@ -27,7 +27,7 @@
                         <resource id="Lof_MarketPlace::seller_edit" title="Edit Seller" sortOrder="10" />
                         <resource id="Lof_MarketPlace::seller_save" title="Save Seller" sortOrder="20" />
                         <resource id="Lof_MarketPlace::seller_delete" title="Delete Seller" sortOrder="30" />
-                        <resource id="Lof_MarketPlace::pending_seller" title="Manage Pending Sellers" sortOrder="40" />
+                        <resource id="Lof_MarketPlace::pending_seller" title="Seller Verification" sortOrder="40" />
                         <resource id="Lof_MarketPlace::seller_message" title="Messages" sortOrder="50" />
                     </resource>
                     <resource id="Lof_MarketPlace::commission" title="Product Commissions" sortOrder="20">
@@ -49,7 +49,7 @@
                         <resource id="Lof_MarketPlace::sellerproduct" title="Manage Products" sortOrder="10" />
                         <resource id="Lof_MarketPlace::sellerproduct_pending" title="Manage Pending Products" sortOrder="20" />
                     </resource>
-                    <resource id="Lof_MarketPlace::sales" title="Sales" sortOrder="50">
+                    <resource id="Lof_MarketPlace::sales" title="Seller Sales" sortOrder="50">
                         <resource id="Lof_MarketPlace::order" title="Orders" sortOrder="50"/>
                         <resource id="Lof_MarketPlace::transaction" title="Orders Transaction" sortOrder="60"/>
                         <resource id="Lof_MarketPlace::invoice" title="Invoices" sortOrder="70" />

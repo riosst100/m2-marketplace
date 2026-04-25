@@ -26,6 +26,9 @@ use Magento\SalesRule\Api\RuleRepositoryInterface;
 
 class Coupon extends \Magento\Framework\Model\AbstractModel implements CouponInterface
 {
+    protected $_hasDataChanges;
+
+
     /**
      * Blog's Statuses
      */

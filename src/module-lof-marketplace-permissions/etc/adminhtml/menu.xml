@@ -20,7 +20,7 @@
   -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="Lof_MarketPermissions::permissions" title="Permissions" module="Lof_MarketPermissions" sortOrder="60" parent="Lof_MarketPlace::marketplace" resource="Lof_MarketPlace::marketplace"/>
-        <add id="Lof_MarketPermissions::config" title="Configuration" module="Lof_MarketPermissions" sortOrder="60" parent="Lof_MarketPermissions::permissions" action="adminhtml/system_config/edit/section/lof_marketpermissions" resource="Lof_MarketPermissions::config"/>
+        <!-- <add id="Lof_MarketPermissions::permissions" title="Permissions" module="Lof_MarketPermissions" sortOrder="60" parent="Lof_MarketPlace::marketplace" resource="Lof_MarketPlace::marketplace"/>
+        <add id="Lof_MarketPermissions::config" title="Configuration" module="Lof_MarketPermissions" sortOrder="60" parent="Lof_MarketPermissions::permissions" action="adminhtml/system_config/edit/section/lof_marketpermissions" resource="Lof_MarketPermissions::config"/> -->
     </menu>
 </config>

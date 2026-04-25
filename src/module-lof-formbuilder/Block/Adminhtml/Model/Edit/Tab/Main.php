@@ -39,6 +39,9 @@ use Magento\Store\Model\System\Store;
 
 class Main extends Generic implements TabInterface
 {
+    protected $_model;
+
+
     /**
      * @var Store
      */

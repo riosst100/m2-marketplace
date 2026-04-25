@@ -29,6 +29,11 @@ use Magento\Framework\App\Action\Context;
 
 abstract class Rma extends Action
 {
+    protected $customerSession;
+    protected $context;
+    protected $resultFactory;
+
+
     /**
      * List of actions that are allowed for not authorized users.
      *

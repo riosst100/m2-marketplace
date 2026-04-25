@@ -161,20 +161,20 @@ class Main extends Generic implements TabInterface
             ]
         );
 
-        $fieldset->addField(
-            'tags',
-            'text',
-            [
-                'name'     => 'tags',
-                'label'    => __('Input the tags'),
-                'title'    => __('Input the tags'),
-                'disabled' => $isElementDisabled,
-                'note'     => __(
-                    'If you use multiple separate by comma. The tags key will been show on
-                    email content at footer. Example: #your_tag_code1 #your_tag_code2 ...'
-                )
-            ]
-        );
+        // $fieldset->addField(
+        //     'tags',
+        //     'text',
+        //     [
+        //         'name'     => 'tags',
+        //         'label'    => __('Input the tags'),
+        //         'title'    => __('Input the tags'),
+        //         'disabled' => $isElementDisabled,
+        //         'note'     => __(
+        //             'If you use multiple separate by comma. The tags key will been show on
+        //             email content at footer. Example: #your_tag_code1 #your_tag_code2 ...'
+        //         )
+        //     ]
+        // );
 
         $collection = $this->templatesFactory->create();
         $collection->load();
@@ -302,27 +302,27 @@ class Main extends Generic implements TabInterface
             ]
         );
 
-        $fieldset->addField(
-            'submit_button_text',
-            'text',
-            [
-                'name'     => 'submit_button_text',
-                'label'    => __('Submit Button Text'),
-                'title'    => __('Submit Button Text'),
-                'disabled' => $isElementDisabled
-            ]
-        );
+        // $fieldset->addField(
+        //     'submit_button_text',
+        //     'text',
+        //     [
+        //         'name'     => 'submit_button_text',
+        //         'label'    => __('Submit Button Text'),
+        //         'title'    => __('Submit Button Text'),
+        //         'disabled' => $isElementDisabled
+        //     ]
+        // );
 
-        $fieldset->addField(
-            'redirect_link',
-            'text',
-            [
-                'name' => 'redirect_link',
-                'label' => __('Redirect Link'),
-                'title' => __('Redirect Link'),
-                'disabled' => $isElementDisabled
-            ]
-        );
+        // $fieldset->addField(
+        //     'redirect_link',
+        //     'text',
+        //     [
+        //         'name' => 'redirect_link',
+        //         'label' => __('Redirect Link'),
+        //         'title' => __('Redirect Link'),
+        //         'disabled' => $isElementDisabled
+        //     ]
+        // );
 
         $fieldset->addField(
             'show_captcha',
@@ -336,32 +336,32 @@ class Main extends Generic implements TabInterface
             ]
         );
 
-        $fieldset->addField(
-            'enable_tracklink',
-            'select',
-            [
-                'label'    => __('Allow Tracking Link With QR code'),
-                'title'    => __('Allow Tracking Link With QR code'),
-                'note'     => __(
-                    'Enabled option to support view message by QR code scan. Empty to use default module setting.'
-                ),
-                'name'     => 'enable_tracklink',
-                'options'  => $model->getEnabledDisabled(),
-                'disabled' => $isElementDisabled
-            ]
-        );
+        // $fieldset->addField(
+        //     'enable_tracklink',
+        //     'select',
+        //     [
+        //         'label'    => __('Allow Tracking Link With QR code'),
+        //         'title'    => __('Allow Tracking Link With QR code'),
+        //         'note'     => __(
+        //             'Enabled option to support view message by QR code scan. Empty to use default module setting.'
+        //         ),
+        //         'name'     => 'enable_tracklink',
+        //         'options'  => $model->getEnabledDisabled(),
+        //         'disabled' => $isElementDisabled
+        //     ]
+        // );
 
-        $fieldset->addField(
-            'show_toplink',
-            'select',
-            [
-                'label'    => __('Show on TopLink'),
-                'title'    => __('Show on TopLink'),
-                'name'     => 'show_toplink',
-                'options'  => $model->getYesno(),
-                'disabled' => $isElementDisabled
-            ]
-        );
+        // $fieldset->addField(
+        //     'show_toplink',
+        //     'select',
+        //     [
+        //         'label'    => __('Show on TopLink'),
+        //         'title'    => __('Show on TopLink'),
+        //         'name'     => 'show_toplink',
+        //         'options'  => $model->getYesno(),
+        //         'disabled' => $isElementDisabled
+        //     ]
+        // );
 
         $groups = $this->groupRepository->getList($this->searchCriteriaBuilder->create())
             ->getItems();
@@ -419,17 +419,17 @@ class Main extends Generic implements TabInterface
             ]
         );
 
-        $fieldset->addField(
-            'custom_template',
-            'text',
-            [
-                'name'     => 'custom_template',
-                'label'    => __('Custom Template'),
-                'title'    => __('Custom Template'),
-                'disabled' => $isElementDisabled,
-                'note'     => __('Example: form/view.phtml, form/view2.phtml')
-            ]
-        );
+        // $fieldset->addField(
+        //     'custom_template',
+        //     'text',
+        //     [
+        //         'name'     => 'custom_template',
+        //         'label'    => __('Custom Template'),
+        //         'title'    => __('Custom Template'),
+        //         'disabled' => $isElementDisabled,
+        //         'note'     => __('Example: form/view.phtml, form/view2.phtml')
+        //     ]
+        // );
         if (!$model->getId()) {
             $model->setData('submit_button_text', __('Click here'));
             $model->setData('status', $isElementDisabled ? '0' : '1');

@@ -85,7 +85,7 @@ class SellerPendingActions extends Column
                 if (isset($item['seller_id'])) {
                     $item[$name]['edit'] = [
                         'href' => $this->urlBuilder->getUrl($this->editUrl, ['seller_id' => $item['seller_id']]),
-                        'label' => __('Edit')
+                        'label' => __('View')
                     ];
                 }
             }

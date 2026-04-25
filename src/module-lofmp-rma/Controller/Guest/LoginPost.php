@@ -28,6 +28,14 @@ use Magento\Framework\App\Action\Context;
 
 class LoginPost extends \Lofmp\Rma\Controller\Guest
 {
+    protected $customerSession;
+    protected $datahelper;
+    protected $helper;
+    protected $orderFactory;
+    protected $eventManager;
+    protected $registry;
+
+
     public function __construct(
         \Lofmp\Rma\Helper\Data                                    $datahelper,
         \Lofmp\Rma\Helper\Help                                    $helper,

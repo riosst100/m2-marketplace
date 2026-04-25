@@ -96,6 +96,11 @@ class Validate extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/import.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);            
+        // $logger->info('Validate: Execute');
+
         $response = new \Magento\Framework\DataObject();
         $response->setError(false);
 
@@ -114,7 +119,7 @@ class Validate extends \Magento\Framework\App\Action\Action
             if ($storeId) {
                 $product->setStoreId($storeId);
             }
-            $setId = $this->getRequest()->getPost('set') ?: $this->getRequest()->getParam('set');
+            $setId = $productData['attribute_set_id'];
             if ($setId) {
                 $product->setAttributeSetId($setId);
             }
@@ -149,7 +154,7 @@ class Validate extends \Magento\Framework\App\Action\Action
             $response->setError(true);
             $response->setHtmlMessage($layout->getMessagesBlock()->getGroupedHtml());
         }
-
+        // $logger->info('Validate: End');
         return $this->resultJsonFactory->create()->setData($response);
     }
 

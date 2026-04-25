@@ -22,7 +22,7 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
 	<menu>
-		<add id="Lofmp_FavoriteSeller::favorite_seller" title="Favorite Sellers" module="Lofmp_FavoriteSeller" sortOrder="160" resource="Lofmp_FavoriteSeller::favorite_seller" parent="Lof_MarketPlace::marketplace" />
-		<add id="Lofmp_FavoriteSeller::configuration" title="Configuration" module="Lofmp_FavoriteSeller" sortOrder="10" parent="Lofmp_FavoriteSeller::favorite_seller" action="adminhtml/system_config/edit/section/favoriteseller_config" resource="Lofmp_FavoriteSeller::config"/>
+		<!-- <add id="Lofmp_FavoriteSeller::favorite_seller" title="Favorite Sellers" module="Lofmp_FavoriteSeller" sortOrder="160" resource="Lofmp_FavoriteSeller::favorite_seller" parent="Lof_MarketPlace::marketplace" />
+		<add id="Lofmp_FavoriteSeller::configuration" title="Configuration" module="Lofmp_FavoriteSeller" sortOrder="10" parent="Lofmp_FavoriteSeller::favorite_seller" action="adminhtml/system_config/edit/section/favoriteseller_config" resource="Lofmp_FavoriteSeller::config"/> -->
 	</menu>
 </config>

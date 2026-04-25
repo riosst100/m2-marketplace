@@ -12,6 +12,10 @@
                     <label>Allow Deleting Seller Account</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="delete_days" translate="label" type="text" sortOrder="61" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Delete After (Days)</label>
+                    <comment>Number of days to process deleting seller account after seller request</comment>
+                </field>
             </group>
         </section>
     </system>

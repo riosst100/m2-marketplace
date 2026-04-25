@@ -28,6 +28,9 @@ use Magento\Framework\Api\DataObjectHelper;
 
 class Subscription extends AbstractModel implements SubscriptionCustomerInterface
 {
+    protected $dataObjectHelper;
+
+
     const CACHE_TAG = 'lofmp_favoriteseller_subscription';
 
     /**

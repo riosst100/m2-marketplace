@@ -34,6 +34,9 @@ use Magento\Ui\Component\Listing\Columns\Column;
  */
 class Status extends Column
 {
+    protected $helper;
+
+
     /**
      * @var UrlInterface
      */
@@ -42,7 +45,7 @@ class Status extends Column
     /**
      * @var Data
      */
-    protected $helper;
+    protected $hepler;
 
     /**
      * Constructor.

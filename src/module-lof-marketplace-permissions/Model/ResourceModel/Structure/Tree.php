@@ -28,6 +28,10 @@ use Magento\Framework\Data\Tree\Dbp;
  */
 class Tree extends Dbp
 {
+    protected $_coreResource;
+    protected $_loaded;
+
+
     /**
      * @param \Magento\Framework\App\ResourceConnection $resource
      * @throws \DomainException

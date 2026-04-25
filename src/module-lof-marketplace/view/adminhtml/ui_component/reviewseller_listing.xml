@@ -25,10 +25,6 @@
             <item name="deps" xsi:type="string">reviewseller_listing.reviewseller_listing_data_source</item>
         </item>
         <item name="spinner" xsi:type="string">reviewseller_columns</item>
-        <item name="buttons" xsi:type="array">
-            <item name="add" xsi:type="array">
-            </item>
-        </item>
     </argument>
     <dataSource name="reviewseller_listing_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">

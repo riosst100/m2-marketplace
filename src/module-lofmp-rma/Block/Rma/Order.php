@@ -25,6 +25,15 @@ namespace Lofmp\Rma\Block\Rma;
 
 class Order extends \Magento\Framework\View\Element\Template
 {
+    protected $registry;
+    protected $rmaHelper;
+    protected $rmaRepository;
+    protected $searchCriteriaBuilder;
+    protected $sortOrderBuilder;
+    protected $status;
+    protected $context;
+
+
     public function __construct(
         \Magento\Framework\Registry $registry,
         \Lofmp\Rma\Helper\Data    $rmaHelper,

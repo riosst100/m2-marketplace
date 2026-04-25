@@ -58,20 +58,20 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
                 ]
             );
 
-        $this->addTab(
-                'design',
-                [
-                    'label' => __('Design'),
-                    'content' => $this->getLayout()->createBlock('Lof\Faq\Block\Adminhtml\Category\Edit\Tab\Design')->toHtml()
-                ]
-            );
+        // $this->addTab(
+        //         'design',
+        //         [
+        //             'label' => __('Design'),
+        //             'content' => $this->getLayout()->createBlock('Lof\Faq\Block\Adminhtml\Category\Edit\Tab\Design')->toHtml()
+        //         ]
+        //     );
 
-        $this->addTab(
-                'meta',
-                [
-                    'label' => __('SEO'),
-                    'content' => $this->getLayout()->createBlock('Lof\Faq\Block\Adminhtml\Category\Edit\Tab\Meta')->toHtml()
-                ]
-            );
+        // $this->addTab(
+        //         'meta',
+        //         [
+        //             'label' => __('SEO'),
+        //             'content' => $this->getLayout()->createBlock('Lof\Faq\Block\Adminhtml\Category\Edit\Tab\Meta')->toHtml()
+        //         ]
+        //     );
     }
 }

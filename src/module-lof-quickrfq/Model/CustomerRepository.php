@@ -45,6 +45,9 @@ use Lof\Quickrfq\Helper\Data;
  */
 class CustomerRepository implements CustomerRepositoryInterface
 {
+    protected $messageCollectionFactory;
+
+
     /**
      * @var ResourceQuickrfq
      */

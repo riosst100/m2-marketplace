@@ -26,6 +26,9 @@ use Lofmp\StoreLocator\Model\ResourceModel\StoreLocator\CollectionFactory;
 
 class Index extends \Magento\Framework\View\Element\Template implements \Magento\Widget\Block\BlockInterface
 {
+    protected $request;
+
+
 
     protected $_storelocatorData;
     protected $_scopeConfig;

@@ -25,6 +25,9 @@ use Magento\Framework\Event\ObserverInterface;
 
 class QuoteSubmitAfter implements ObserverInterface
 {
+    protected $objectManager;
+
+
     /**
      * @var \Magento\Backend\Model\Session\Quote
      */

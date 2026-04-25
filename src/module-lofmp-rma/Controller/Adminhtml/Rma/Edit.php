@@ -28,6 +28,10 @@ use Lofmp\Rma\Controller\Adminhtml\Rma;
 
 class Edit extends Rma
 {
+    protected $registry;
+    protected $rmaRepository;
+
+
     public function __construct(
         \Lofmp\Rma\Api\Repository\RmaRepositoryInterface $rmaRepository,
         \Magento\Framework\Registry $registry,

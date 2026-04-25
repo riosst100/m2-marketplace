@@ -81,20 +81,20 @@ class Question extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     protected function _afterSave(\Magento\Framework\Model\AbstractModel $object)
     {
         $oldStores = $this->lookupStoreIds($object->getId());
-        $newStores = (array)$object->getStores();
+        $newStores = (array)$object->getWebsites();
         $table = $this->getTable('lof_faq_question_store');
         $insert = array_diff($newStores, $oldStores);
         $delete = array_diff($oldStores, $newStores);
 
         if ($delete) {
-            $where = ['question_id = ?' => (int)$object->getId(), 'store_id IN (?)' => $delete];
+            $where = ['question_id = ?' => (int)$object->getId(), 'website_id IN (?)' => $delete];
             $this->getConnection()->delete($table, $where);
         }
         if ($insert) {
             $data = [];
             foreach ($insert as $storeId) {
 
-                $data[] = ['question_id' => (int)$object->getId(), 'store_id' => (int)$storeId];
+                $data[] = ['question_id' => (int)$object->getId(), 'website_id' => (int)$storeId];
             }
             $this->getConnection()->insertMultiple($table, $data);
         }
@@ -169,12 +169,20 @@ class Question extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
                     $where = ['question_id = ?' => (int)$object->getId()];
                     $this->getConnection()->delete($table, $where);
                     $data = [];
+
+                    if($object->getQuestion_type() == 'supplier') {
+                        $tagType = 'supplier';
+                    } else {
+                        $tagType = 'user';
+                    }
+                    
                     foreach ($tags as $k => $_tag) {
                         $name =  strtolower(str_replace(["_", " "], "-", trim($_tag) ) );
                         $data[] = [
                         'question_id' => (int)$object->getId(),
                         'alias' => $name,
-                        'name' => $_tag
+                        'name' => $_tag,
+                        'tag_type' => $tagType
                         ];
                     }
 
@@ -194,9 +202,9 @@ class Question extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     protected function _afterLoad(\Magento\Framework\Model\AbstractModel $object)
     {
         if ($object->getId()) {
-            $stores = $this->lookupStoreIds($object->getId());
-            $object->setData('store_id', $stores);
-            $object->setData('stores', $stores);
+            $websites = $this->lookupStoreIds($object->getId());
+            $object->setData('website_id', $websites);
+            $object->setData('websites', $websites);
         }
 
         if ($object->getId()) {
@@ -241,20 +249,20 @@ class Question extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $select = parent::_getLoadSelect($field, $value, $object);
 
         if ($object->getStoreId()) {
-            $stores = [(int)$object->getStoreId(), \Magento\Store\Model\Store::DEFAULT_STORE_ID];
+            $websites = [(int)$object->getStoreId(), \Magento\Store\Model\Store::DEFAULT_STORE_ID];
 
             $select->join(
                 ['cbs' => $this->getTable('lof_faq_question_store')],
                 $this->getMainTable() . '.question_id = cbs.question_id',
-                ['store_id']
+                ['website_id']
                 )->where(
                 'is_active = ?',
                 1
                 )->where(
-                'cbs.store_id in (?)',
-                $stores
+                'cbs.website_id in (?)',
+                $websites
                 )->order(
-                'store_id DESC'
+                'website_id DESC'
                 )->limit(
                 1
                 );
@@ -273,9 +281,9 @@ class Question extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     public function getIsUniqueBlockToStores(\Magento\Framework\Model\AbstractModel $object)
     {
         if ($this->_storeManager->hasSingleStore()) {
-            $stores = [\Magento\Store\Model\Store::DEFAULT_STORE_ID];
+            $websites = [\Magento\Store\Model\Store::DEFAULT_STORE_ID];
         } else {
-            $stores = (array)$object->getData('stores');
+            $websites = (array)$object->getData('websites');
         }
 
         $select = $this->getConnection()->select()->from(
@@ -288,8 +296,8 @@ class Question extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
             'cb.identifier = ?',
             $object->getData('identifier')
             )->where(
-            'cbs.store_id IN (?)',
-            $stores
+            'cbs.website_id IN (?)',
+            $websites
             );
 
             if ($object->getId()) {
@@ -314,7 +322,7 @@ class Question extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $connection = $this->getConnection();
         $select = $connection->select()->from(
             $this->getTable('lof_faq_question_store'),
-            'store_id'
+            'website_id'
             )->where(
             'question_id = :question_id'
             );

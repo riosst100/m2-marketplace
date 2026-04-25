@@ -48,6 +48,12 @@ use Magento\Framework\Phrase;
 
 class TransportBuilder extends CoreTransportBuilder
 {
+    protected $templateIdentifier;
+    protected $templateModel;
+    protected $templateVars;
+    protected $templateOptions;
+
+
     /**
      * @var array
      */

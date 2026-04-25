@@ -90,7 +90,7 @@ class View extends \Magento\Framework\App\Action\Action
             }
            /** @var \Magento\Framework\View\Result\PageFactory $resultPage */
            $resultPage = $this->resultPageFactory->create();
-           $resultPage->getConfig()->getTitle()->prepend(__('Manage RFQs'));
+           $resultPage->getConfig()->getTitle()->prepend(__('View Offer'));
            return $resultPage;
 
         } elseif ($customerSession->isLoggedIn() && $status == 0) {

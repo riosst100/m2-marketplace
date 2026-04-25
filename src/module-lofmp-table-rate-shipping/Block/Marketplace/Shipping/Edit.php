@@ -23,6 +23,11 @@ namespace Lofmp\TableRateShipping\Block\Marketplace\Shipping;
 
 class Edit extends \Lof\MarketTheme\Block\Widget\Form\Container
 {
+    protected $_objectId;
+    protected $_blockGroup;
+    protected $_controller;
+
+
     /**
      * Core registry
      *

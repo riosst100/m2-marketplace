@@ -23,8 +23,13 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="vendor-1column"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <update handle="seller_store_switcher"/>
     <body>
+        <referenceBlock name="menu">
+            <action method="setActive">
+                <argument name="itemId" xsi:type="string">CoreMarketplace_MarketPlace::configurations</argument>
+            </action>
+        </referenceBlock>
         <referenceBlock name="content">
-            <block class="Lof\MarketPlace\Block\Shipping\Methods" name="shipping.methods" template="Lof_MarketPlace::shipping/methods.phtml" cacheable="false"/>
+            <block class="Lof\MarketPlace\Block\Shipping\Methods" name="shipping.methods" template="Lof_MarketPlace::shipping/methods.phtml"/>
         </referenceBlock>
     </body>
 </page>

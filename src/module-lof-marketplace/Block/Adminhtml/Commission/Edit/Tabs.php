@@ -36,25 +36,25 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
         $this->addTab(
             'main_section',
             [
-                'label' => __('General Information'),
+                'label' => __('Commission Information'),
                 'content' => $this->getLayout()
                     ->createBlock(\Lof\MarketPlace\Block\Adminhtml\Commission\Edit\Tab\Main::class)->toHtml(),
             ]
         );
 
-        $this->addTab(
-            'conditions',
-            [
-                'label' => __('Conditions'),
-                'content' => $this->getLayout()
-                    ->createBlock(\Lof\MarketPlace\Block\Adminhtml\Commission\Edit\Tab\Conditions::class)->toHtml()
-            ]
-        );
+        // $this->addTab(
+        //     'conditions',
+        //     [
+        //         'label' => __('Conditions'),
+        //         'content' => $this->getLayout()
+        //             ->createBlock(\Lof\MarketPlace\Block\Adminhtml\Commission\Edit\Tab\Conditions::class)->toHtml()
+        //     ]
+        // );
 
         $this->addTab(
             'actions',
             [
-                'label' => __('Actions'),
+                'label' => __('Amount'),
                 'content' => $this->getLayout()
                     ->createBlock(\Lof\MarketPlace\Block\Adminhtml\Commission\Edit\Tab\Actions::class)->toHtml()
             ]

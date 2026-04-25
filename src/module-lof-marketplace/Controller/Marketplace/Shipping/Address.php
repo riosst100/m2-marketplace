@@ -105,7 +105,7 @@ class Address extends \Magento\Framework\App\Action\Action
         $customerId = $customerSession->getId();
         $status = $this->sellerFactory->create()->load($customerId, 'customer_id')->getStatus();
 
-        if ($customerSession->isLoggedIn() && $status == 1) {
+        if ($customerSession->isLoggedIn()) {
             $this->_view->loadLayout();
             $this->_view->renderLayout();
         } elseif ($customerSession->isLoggedIn() && $status == 0) {

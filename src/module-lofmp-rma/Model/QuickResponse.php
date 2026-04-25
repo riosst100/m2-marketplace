@@ -31,6 +31,16 @@ use Magento\Store\Model\StoreFactory;
 
 class QuickResponse extends AbstractModel
 {
+    protected $storeFactory;
+    protected $context;
+    protected $messageHelper;
+    protected $scopeConfig;
+    protected $auth;
+    protected $registry;
+    protected $resource;
+    protected $resourceCollection;
+
+
     public function __construct(
         StoreFactory $storeFactory,
         \Lofmp\Rma\Helper\Message $messageHelper,

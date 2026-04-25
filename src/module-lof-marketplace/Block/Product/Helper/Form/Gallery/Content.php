@@ -52,4 +52,29 @@ class Content extends \Magento\Catalog\Block\Adminhtml\Product\Helper\Form\Galle
 
         return \Magento\Framework\View\Element\AbstractBlock::_prepareLayout();
     }
+
+    public function getCategoriesData() 
+    {
+        $result = [];
+
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->categoryCollectionFactory = $objectManager->create(\Magento\Catalog\Model\ResourceModel\Category\CollectionFactory::class);
+        $this->sellerHelper = $objectManager->create(\Lof\MarketPlace\Helper\Seller::class);
+        $this->storeManager = $objectManager->create(\Magento\Store\Model\StoreManagerInterface::class);
+
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->mainCategories = $objectManager->create(\CoreMarketplace\MarketplaceProductImportExport\Model\Source\MainCategories::class);
+        
+        $categoriesData = $this->mainCategories->toOptionArray();
+        if ($categoriesData) {
+            foreach($categoriesData as $data) {
+                $result[] = [
+                    'text' => $data['label'],
+                    'id' => $data['value']
+                ];
+            }
+        }
+
+        return json_encode($result, true);
+    }
 }

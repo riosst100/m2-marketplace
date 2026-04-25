@@ -37,6 +37,11 @@ use Lof\PreOrder\Model\ResourceModel\PreOrder\CollectionFactory;
  */
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    protected $_urlBuilder;
+    protected $_product_item;
+    protected $_stock_status_data;
+
+
     /**
      * @var \Magento\Store\Model\StoreManagerInterface
      */
@@ -134,6 +139,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @var \Magento\Framework\Json\EncoderInterface
      */
     protected $jsonEncoder;
+
+    protected $_transportBuilder;
 
     /**
      * Data constructor.
@@ -1405,7 +1412,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $msg = $this->getPreorderMsgConfig();
         if ($product) {
             $custom_msg = $product->getPreorderMsg();
-            $custom_msg = trim($custom_msg);
+            $custom_msg = $custom_msg ? trim($custom_msg) : null;
             if ($custom_msg) {
                 $msg = $custom_msg;
             }

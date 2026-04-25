@@ -22,6 +22,9 @@ namespace Lofmp\CouponCode\Helper;
 
 class Generator extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    protected $_objectManager;
+
+
 	CONST EMAILIDENTIFIER = 'sent_mail_with_visitor';
 	protected $_couponHelper;
 	/**

@@ -23,6 +23,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="vendor-1column"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
 	<head>
 	    <title>Generate Coupon Code</title>
+        <css src="Lofmp_CouponCode::css/generate-rule.css" />
 	</head>
     <update handle="seller_store_switcher"/>
     <body>

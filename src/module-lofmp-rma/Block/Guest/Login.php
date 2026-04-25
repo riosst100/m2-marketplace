@@ -26,6 +26,12 @@ use \Magento\Framework\View\Element\Template;
 
 class Login extends \Magento\Framework\View\Element\Template
 {
+    protected $rmaHelper;
+    protected $objectManager;
+    protected $request;
+    protected $context;
+
+
     public function __construct(
         \Lofmp\Rma\Helper\Data         $rmaHelper,
         \Magento\Framework\ObjectManagerInterface $objectManager,

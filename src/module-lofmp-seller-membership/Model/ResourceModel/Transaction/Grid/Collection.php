@@ -30,6 +30,10 @@ use Lofmp\SellerMembership\Model\ResourceModel\Transaction\Collection as Transac
  */
 class Collection extends TransactionCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var AggregationInterface
      */

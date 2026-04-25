@@ -25,6 +25,10 @@ namespace Lofmp\Rma\Model\Config\Source\Order;
 
 class Status implements \Magento\Framework\Option\ArrayInterface
 {
+    protected $orderConfigFactory;
+    protected $context;
+
+
     public function __construct(
         \Magento\Sales\Model\Order\ConfigFactory $orderConfigFactory,
         \Magento\Framework\Model\Context $context

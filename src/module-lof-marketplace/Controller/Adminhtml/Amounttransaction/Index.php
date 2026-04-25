@@ -33,14 +33,14 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Amounttransaction
         /**
          * Set active menu item
          */
-        $resultPage->setActiveMenu('Lof_MarketPlace::amount_transaction');
-        $resultPage->getConfig()->getTitle()->prepend(__('Manage Amount Transactions'));
+        $resultPage->setActiveMenu('CoreMarketplace_MarketPlace::seller_amount_transaction');
+        $resultPage->getConfig()->getTitle()->prepend(__('Seller | Amount Transactions'));
 
         /**
          * Add breadcrumb item
          */
-        $resultPage->addBreadcrumb(__('Manage Amount Transactions'), __('Manage Amount Transactions'));
-        $resultPage->addBreadcrumb(__('Manage Amount Transactions'), __('Manage Amount Transactions'));
+        $resultPage->addBreadcrumb(__('Seller | Amount Transactions'), __('Seller | Amount Transactions'));
+        $resultPage->addBreadcrumb(__('Seller | Amount Transactions'), __('Seller | Amount Transactions'));
 
         return $resultPage;
     }
@@ -52,6 +52,6 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Amounttransaction
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Lof_MarketPlace::amount_transaction');
+        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::seller_amount_transaction');
     }
 }

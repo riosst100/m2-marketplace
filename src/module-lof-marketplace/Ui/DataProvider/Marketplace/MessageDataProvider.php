@@ -106,6 +106,7 @@ class MessageDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
             $this->getCollection()->load();
         }
         $items = $this->getCollection()->toArray();
+        // dd(array_values($items['items']));
         return [
             'totalRecords' => $this->getCollection()->getSize(),
             'items' => array_values($items['items']),

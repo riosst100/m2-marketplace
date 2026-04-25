@@ -93,7 +93,7 @@ class SellerUsersActions extends Column
             && isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as &$item) {
                 $getUrl = $this->urlBuilder->getUrl('permissions/customer/get');
-                $provider = 'seller_users_listing.seller_users_listing_data_source';
+                $provider = 'seller_users_listing.mpseller_users_listing_data_source';
                 $item[$this->getData('name')]['edit'] = [
                     'href' => '#',
                     'label' => __('Edit'),

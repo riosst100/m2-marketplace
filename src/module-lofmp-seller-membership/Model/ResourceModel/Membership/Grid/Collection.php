@@ -30,6 +30,10 @@ use Lofmp\SellerMembership\Model\ResourceModel\Membership\Collection as Membersh
  */
 class Collection extends MembershipCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var AggregationInterface
      */

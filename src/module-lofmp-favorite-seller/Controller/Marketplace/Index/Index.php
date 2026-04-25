@@ -114,8 +114,9 @@ class Index extends  \Magento\Framework\App\Action\Action {
             $status = $this->sellerFactory->create()->load($customerId,'customer_id')->getStatus();
 
             if ($customerSession->isLoggedIn() && $status == 1) {
-                $this->_view->loadLayout();
-                $this->_view->renderLayout();
+                $resultPage = $this->resultPageFactory->create();
+                $resultPage->getConfig()->getTitle()->set(__('Manage Followers'));
+                return $resultPage;
             } elseif($customerSession->isLoggedIn() && $status == 0) {
                 $this->_redirectUrl ( $this->getFrontendUrl('lofmarketplace/seller/becomeseller') );
             } else {

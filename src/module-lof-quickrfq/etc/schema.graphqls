@@ -1,0 +1,182 @@
+# GraphQL schema for Lof_Quickrfq module - exposes quickrfq listing for PWA
+
+type Quickrfq {
+  quickrfq_id: ID
+  contact_name: String
+  email: String
+  phone: String
+  product_id: String
+  product_name: String
+  product_sku: String
+  image_url: String
+  quantity: Int
+  price_per_product: Money
+  comment: String
+  overview: String
+  status: String
+  update_date: String
+  create_date: String
+  attachment: String
+  cart_id: Int
+  store_id: Int
+  website_id: Int
+  store_currency_code: String
+  info_buy_request: String
+  attributes: String
+  date_need_quote: String
+  coupon_code: String
+  admin_quantity: Int
+  admin_price: Money
+  user_id: String
+  user_name: String
+  expiry: String
+  seller_id: String
+  seller_name: String
+  attachments: [QuickrfqAttachment]
+  messages: [QuickrfqMessage]
+}
+
+type PageInfo {
+  page_size: Int
+  current_page: Int
+}
+
+type QuickrfqSearchResult {
+  items: [Quickrfq]
+  total_count: Int
+  page_info: PageInfo
+}
+
+type QuickrfqAttachment {
+  entity_id: ID
+  quickrfq_id: Int
+  message_id: Int
+  file_name: String
+  file_path: String
+  file_type: String
+  created_at: String
+}
+
+type QuickrfqMessage {
+  entity_id: ID
+  quickrfq_id: Int
+  customer_id: Int
+  message: String
+  is_main: Int
+  created_at: String
+}
+
+input QuickrfqInput {
+  product_id: Int!
+  quantity: Float!
+  date_need_quote: String
+  price_per_product: Float
+  comment: String
+  customer_name: String
+  customer_email: String
+  customer_phone: String
+  attributes: String
+  info_buy_request: String
+  files: [UploadInput]
+}
+
+input UploadInput {
+  file_name: String
+  base64: String
+  file_type: String
+}
+
+type QuickrfqResponse {
+  success: Boolean!
+  message: String
+  quickrfq_id: Int
+}
+
+type StoreConfig {
+    quickrfq_upload_file_formats: String
+}
+
+type Query {
+  quickrfqList(
+    filter: QuickrfqFilterInput
+    pageSize: Int
+    currentPage: Int
+    sort: QuickrfqSortInput
+  ): QuickrfqSearchResult
+    @resolver(class: "Lof\\Quickrfq\\Model\\Resolver\\QuickrfqList")
+  quickrfqDetail(quickrfq_id: Int!): Quickrfq @resolver(class: "Lof\\Quickrfq\\Model\\Resolver\\QuickrfqDetail")
+}
+
+input SendRfqMessageInput {
+  quickrfq_id: Int!
+  message: String!
+  attachments: [AttachmentInput]
+}
+
+input AttachmentInput {
+  file_name: String
+  file_path: String
+  file_type: String
+}
+
+type SendRfqMessageOutput {
+  success: Boolean!
+  message: String
+  rfq_message: RfqMessage
+}
+
+type RfqMessage {
+  id: Int
+  quickrfq_id: Int
+  customer_id: Int
+  message: String
+  is_main: Int
+  created_at: String
+  attachments: [RfqAttachment]
+}
+
+type RfqAttachment {
+  id: Int
+  quickrfq_id: Int
+  message_id: Int
+  file_name: String
+  file_path: String
+  file_type: String
+  created_at: String
+}
+
+type ConvertQuickrfqToCartOutput {
+    status: String!
+    message: String!
+    cart_id: Int
+    masked_cart_id: String
+    quickrfq_id: Int!
+    rfq_status: String
+}
+
+type Mutation {
+  createQuickrfq(input: QuickrfqInput!): QuickrfqResponse
+    @resolver(class: "Lof\\Quickrfq\\Model\\Resolver\\CreateQuickrfq")
+  sendRfqMessage(
+    input: SendRfqMessageInput!
+  ): SendRfqMessageOutput
+    @resolver(class: "Lof\\Quickrfq\\Model\\Resolver\\SendRfqMessage")
+    @doc(description: "Send a message related to an existing RFQ")
+  convertQuickrfqToCart(
+        quickrfq_id: Int!
+    ): ConvertQuickrfqToCartOutput @resolver(
+        class: "Lof\\Quickrfq\\Model\\Resolver\\ConvertQuickrfqToCart"
+    )
+}
+
+input QuickrfqFilterInput {
+  customer_id: Int
+  status: String
+  email: String
+  product_id: String
+}
+
+input QuickrfqSortInput {
+  field: String
+  direction: String
+}

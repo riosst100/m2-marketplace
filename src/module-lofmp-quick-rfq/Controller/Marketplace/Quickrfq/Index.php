@@ -110,7 +110,7 @@ class Index extends \Magento\Framework\App\Action\Action
             /** @var \Magento\Framework\View\Result\PageFactory $resultPage */
             $resultPage = $this->resultPageFactory->create();
             $resultPage->getConfig()->getTitle()->prepend(__('Seller Dashboard'));
-            $resultPage->getConfig()->getTitle()->prepend(__('Manage RFQs'));
+            $resultPage->getConfig()->getTitle()->prepend(__('Manage Offers'));
             return $resultPage;
         } elseif ($customerSession->isLoggedIn() && $status == 0) {
             $this->_redirectUrl($this->getFrontendUrl('lofmarketplace/seller/becomeseller'));

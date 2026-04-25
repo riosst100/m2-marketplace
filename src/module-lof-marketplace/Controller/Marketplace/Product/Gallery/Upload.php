@@ -62,7 +62,7 @@ class Upload extends \Magento\Framework\App\Action\Action
             /** @var \Magento\Framework\Image\Adapter\AdapterInterface $imageAdapter */
             $imageAdapter = $this->_objectManager->get(\Magento\Framework\Image\AdapterFactory::class)->create();
             $uploader->addValidateCallback('catalog_product_image', $imageAdapter, 'validateUploadFile');
-            $uploader->setAllowRenameFiles(true);
+            $uploader->setAllowRenameFiles(false);
             $uploader->setFilesDispersion(true);
             /** @var \Magento\Framework\Filesystem\Directory\Read $mediaDirectory */
             $mediaDirectory = $this->_objectManager->get(\Magento\Framework\Filesystem::class)

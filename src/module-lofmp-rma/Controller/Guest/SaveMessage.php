@@ -27,6 +27,14 @@ use Magento\Framework\Controller\ResultFactory;
 
 class SaveMessage extends \Lofmp\Rma\Controller\Guest
 {
+    protected $registry;
+    protected $rmaRepository;
+    protected $messageRepository;
+    protected $resultFactory;
+    protected $eventManager;
+    protected $customerSession;
+
+
     public function __construct(
         \Magento\Framework\Registry $registry,
         \Lofmp\Rma\Api\Repository\RmaRepositoryInterface $rmaRepository,

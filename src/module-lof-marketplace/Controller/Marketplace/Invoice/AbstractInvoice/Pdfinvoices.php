@@ -43,6 +43,9 @@ use Lof\MarketPlace\Model\OrderitemsFactory;
  */
 abstract class Pdfinvoices extends \Lof\MarketPlace\Controller\Marketplace\AbstractMarketplaceAction
 {
+    protected $collectionFactory;
+
+
     /**
      * Authorization level of a basic admin session
      *

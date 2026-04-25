@@ -62,8 +62,92 @@ $editorConfig = $block->getEditorConfig();
 
     <?php endif;
     endif;?>
+    .sets-release-modal .modal-content {
+        text-align: center;
+        color: #333;
+    }
+    .category-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+    .category-box {
+        background-color: #f7f7f7;
+        padding: 15px;
+        border-radius: 8px;
+        /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+        text-align: center;
+        /* transition: transform 0.3s, box-shadow 0.3s; */
+    }
+    .category-box a {
+        text-decoration: none;
+        /* font-weight: bold; */
+        color: #000000;
+    }
+    .category-box:hover {
+        /* transform: scale(1.05); */
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
 </style>
+<div id="sets-release-modal" style="display:none">
+    <div class="category-container">
+        <div class="category-box">
+            <a href="/marketplace/database/actiontoys/index">Action Toys Database</a>
+        </div>
+        <div class="category-box">
+            <a href="/marketplace/database/anime/index">Anime Database</a>
+        </div>
+        <div class="category-box">
+            <a href="/marketplace/database/dolls/index">Fashion Dolls Database</a>
+        </div>
+        <div class="category-box">
+            <a href="/marketplace/database/cardgame/index">Collectible Card Games Database</a>
+        </div>
+        <div class="category-box">
+            <a href="/marketplace/database/livingcardgame/index">Living Card Games Database</a>
+        </div>
+        <div class="category-box">
+            <a href="/marketplace/database/miniaturegame/index">Miniature Games Database</a>
+        </div>
+        <div class="category-box">
+            <a href="/marketplace/database/sportcards/index">Sport Cards Database</a>
+        </div>
+        <div class="category-box">
+            <a href="/marketplace/database/nonsportcards/index">Non Sports Cards Database</a>
+        </div>
+        <div class="category-box">
+            <a href="/marketplace/database/bricks/index">Bricks Database</a>
+        </div>
+        <div class="category-box">
+            <a href="/marketplace/database/diecastmodelkits/index">Diecast / Model Kits Database</a>
+        </div>
+        <div class="category-box">
+            <a href="/marketplace/database/trains/index">Trains Database</a>
+        </div>
+    </div>
+</div>
 <script>
+    require([
+        'jquery',
+        'Magento_Ui/js/modal/modal'
+    ], function ($, modal) {
+        $(document).ready(function () {
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                buttons: []
+            };
+
+            var popup = modal(options, $('#sets-release-modal'));
+            $("#show-sets-release-modal").on('click',function(){
+                $("#sets-release-modal").modal("openModal");
+            });
+        });
+    });
+
     window.tinyMCE_GZ = window.tinyMCE_GZ || {};
     window.tinyMCE_GZ.loaded = true;
     require([

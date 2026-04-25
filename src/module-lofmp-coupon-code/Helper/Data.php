@@ -216,7 +216,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $validator = new EmailAddress();
         $validator->setMessage(
             __('"%1" invalid type entered.', $value),
-            \Zend_Validate_EmailAddress::INVALID
+            \Laminas\Validator\EmailAddress::INVALID
         );
         $phpValidateEmail = filter_var($value, FILTER_VALIDATE_EMAIL);
         $coreValidateEmail = true;
@@ -375,7 +375,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function allowSellerManage($storeId = null)
     {
-        return (int)$this->getConfig("general_settings/allow_seller_manage");
+        return true;
+        // return (int)$this->getConfig("general_settings/allow_seller_manage");
         //return $this->getConfigValue("allow_seller_manage", $storeId);
     }
 

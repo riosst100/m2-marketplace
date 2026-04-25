@@ -17,6 +17,13 @@ namespace Lofmp\Rma\Controller\Marketplace\Rma;
 
 class View extends \Magento\Framework\App\Action\Action
 {
+    protected $registry;
+    protected $rmaRepository;
+    protected $_session;
+    protected $_sellerFactory;
+    protected $_frontendUrl;
+
+
     /**
      * View constructor.
      *

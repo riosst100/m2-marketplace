@@ -110,6 +110,9 @@ class Reload extends \Magento\Framework\App\Action\Action
         /** @var \Magento\Framework\View\Result\Layout $resultLayout */
         $resultLayout = $this->resultFactory->create(ResultFactory::TYPE_LAYOUT);
         if ($productId) {
+            // $storeId = $this->getRequest()->getParam('store', 0);
+            // dd($storeId);
+            // $product = $this->productRepository->getById($productId, true, $storeId);
             $product = $this->helper->getProductById($productId);
         } else {
             $request = $this->request;

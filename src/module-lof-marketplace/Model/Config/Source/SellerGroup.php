@@ -54,7 +54,7 @@ class SellerGroup implements \Magento\Framework\Option\ArrayInterface
 
         if ($addEmpty) {
             $options[] = [
-                'label' => __('-- Please Select a Agroup --'),
+                'label' => __('None'),
                 'value' => 0
             ];
         }

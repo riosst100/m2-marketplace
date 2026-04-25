@@ -2,6 +2,10 @@
 namespace Lofmp\CouponCode\Block;
 class Index extends \Magento\Framework\View\Element\Template
 {
+    protected $_sellerFactory;
+    protected $request;
+
+
      protected $_customerSession;
      protected $_gridFactory;
      protected $_helperData;

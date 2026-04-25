@@ -14,6 +14,10 @@ namespace Lofmp\CouponCode\Model\Action\Condition;
  */
 class Customer extends \Magento\Rule\Model\Condition\AbstractCondition
 {
+    protected $_country;
+    protected $_gender;
+
+
 
 	const CUSTOMER_NAME               = 'name';
 	const CUSTOMER_EMAIL              = 'email';

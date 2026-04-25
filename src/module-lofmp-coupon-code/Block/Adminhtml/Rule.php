@@ -22,6 +22,9 @@ namespace Lofmp\CouponCode\Block\Adminhtml;
 
 class Rule extends \Magento\Backend\Block\Widget\Container
 {
+    protected $_emailFactory;
+
+
     /**
      * @var \Magento\FollowUpEmail\Model\EmailFactory
      */

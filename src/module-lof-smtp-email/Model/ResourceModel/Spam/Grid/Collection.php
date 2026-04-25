@@ -31,7 +31,8 @@ class Collection extends SpamCollection implements SearchResultInterface
 {
     protected $_eventPrefix;
     protected $_eventObject;
-    
+
+
     /**
      * @var AggregationInterface
      */

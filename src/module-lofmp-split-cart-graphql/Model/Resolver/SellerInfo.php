@@ -97,10 +97,17 @@ class SellerInfo implements ResolverInterface
         $sellerName = "";
 
         if ($this->dataHelper->isEnabled() && $this->dataHelper->isAllowAddSellerData() ) {
-            $seller = $this->getSellerByProductSku($product->getSku());
-            $sellerId = $seller["sellerId"];
-            $sellerUrl = $seller["sellerUrlKey"];
-            $sellerName = $seller["sellerName"];
+            if ($product->getSku() !== 'preorder_complete'){
+                $seller = $this->getSellerByProductSku($product->getSku());
+                $sellerId = $seller["sellerId"];
+                $sellerUrl = $seller["sellerUrlKey"];
+                $sellerName = $seller["sellerName"];
+            } else {
+                $seller = $this->getSellerById($cartItem->getLofSellerId());
+                $sellerId = $cartItem->getLofSellerId();
+                $sellerName = $seller->getName();
+                $sellerUrl = $seller->getUrlKey();                
+            }
         }
         return [
             'model' => $cartItem,

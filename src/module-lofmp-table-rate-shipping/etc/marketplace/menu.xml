@@ -21,6 +21,6 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-    	<add id="Lofmp_TableRateShipping::shipping" title="Table Rate Shipping" module="Lofmp_TableRateShipping" action="lofmptablerateshipping/shipping/view" sortOrder="135" parent="Lof_MarketPlace::shipping" resource="Lofmp_TableRateShipping::shipping" dependsOnConfig="carriers/lofmptablerateshipping/allow_seller_manage"/>
+    	<add id="Lofmp_TableRateShipping::shipping" title="Manage Table Rate Shipping" module="Lofmp_TableRateShipping" action="lofmptablerateshipping/shipping/view" sortOrder="135" parent="Lof_MarketPlace::shipping" resource="Lofmp_TableRateShipping::shipping" dependsOnConfig="carriers/lofmptablerateshipping/allow_seller_manage"/>
     </menu>
 </config>

@@ -25,6 +25,15 @@ namespace Lofmp\Rma\Block\Adminhtml\Rule\Edit\Tab;
 
 class Condition extends \Magento\Backend\Block\Widget\Form
 {
+    protected $configSourceRuleEvent;
+    protected $widgetFormRendererFieldset;
+    protected $conditions;
+    protected $formFactory;
+    protected $backendUrlManager;
+    protected $registry;
+    protected $context;
+
+
     public function __construct(
         \Lofmp\Rma\Model\Config\Source\Rule\Event $configSourceRuleEvent,
         \Magento\Backend\Block\Widget\Form\Renderer\Fieldset $widgetFormRendererFieldset,

@@ -36,6 +36,9 @@ use Magento\Framework\Exception\NoSuchEntityException;
  */
 class CouponManagement implements CouponManagementInterface
 {
+    protected $_helperData;
+
+
     /**
      * @var CollectionProcessorInterface
      */

@@ -26,6 +26,11 @@ use Lofmp\Rma\Api\Repository\StatusRepositoryInterface;
 
 class RmaChangedObserver implements ObserverInterface
 {
+    protected $sortOrderBuilder;
+    protected $searchCriteriaBuilder;
+    protected $attachmentFactory;
+
+
     /**
      * @var \Lofmp\Rma\Helper\RuleHelper
      */
@@ -105,6 +110,12 @@ class RmaChangedObserver implements ObserverInterface
         $files = $this->_request->getFiles();
         $post = $this->_request->getParams();
         $filesArray = $files->toArray();
+        if (isset($post['return_label'])) {
+            $isDelete = $post['return_label']['delete'] ?? false;
+            if ($isDelete) {
+                $attachment->delete();
+            }
+        }
         if (count($filesArray) > 0 && (isset($filesArray['return_label']) && $filesArray['return_label']['name'] != '')) {
             if (isset($post['return_label']['delete']) && $post['return_label']['delete']) {
                 $attachment->delete();
@@ -173,12 +184,13 @@ class RmaChangedObserver implements ObserverInterface
                 'isVisible' => 1
             ];
 
-            $message = $this->messageRepository->create();
+            $message = $this->messageRepository->create();            
             $message->setRmaId($rma->getId())
                 ->setText($text)
                 ->setIsVisibleInFrontend(true)
                 ->setIsCustomerNotified(true)
-                ->setUserId($rma->getUserId());
+                ->setSellerId($rma->getSellerId());
+                // ->setUserId($rma->getUserId());                
 
             $this->messageRepository->save($message);
         }

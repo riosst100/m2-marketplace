@@ -25,6 +25,15 @@ use Magento\Framework\Event\ObserverInterface;
 
 class SalesOrderCreditmemoSaveAfter implements ObserverInterface
 {
+    protected $calculate;
+    protected $helper;
+    protected $itemFactory;
+    protected $rmaFactory;
+    protected $_resource;
+    protected $_request;
+    protected $backendSession;
+
+
     /**
      * SalesOrderCreditmemoSaveAfter constructor.
      *

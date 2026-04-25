@@ -34,13 +34,13 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Seller
         /**
          * Set active menu item
          */
-        $resultPage->setActiveMenu("Lof_MarketPlace::seller");
-        $resultPage->getConfig()->getTitle()->prepend(__('Sellers'));
+        $resultPage->setActiveMenu("CoreMarketplace_MarketPlace::all_seller");
+        $resultPage->getConfig()->getTitle()->prepend(__('All Sellers'));
 
         /**
          * Add breadcrumb item
          */
-        $resultPage->addBreadcrumb(__('Sellers'), __('Sellers'));
+        $resultPage->addBreadcrumb(__('All Sellers'), __('All Sellers'));
         $resultPage->addBreadcrumb(__('Manage Sellers'), __('Manage Sellers'));
 
         return $resultPage;
@@ -51,6 +51,6 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Seller
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Lof_MarketPlace::seller');
+        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::all_seller');
     }
 }

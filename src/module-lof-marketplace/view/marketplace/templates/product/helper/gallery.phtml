@@ -25,25 +25,64 @@
 $elementName = $block->getElement()->getName() . '[images]';
 $formName = $block->getFormName();
 
-?>
-<div class="page-title">
-  <div class="title_left">
-    <h3><?= __('Upload'); ?></h3>
-  </div>
+// dd(get_class($block));
 
-</div>
+?>
+<script>
+  require([
+    "jquery",
+    "mage/mage",
+    "select2"
+  ], function ($) {
+    $(document).ready(function() {
+      var data = <?= $block->getCategoriesData() ?>;
+      $('#categories').select2(
+        {
+          data: data,
+          width: 'resolve'
+        }
+      );
+
+      $('#categories').on('change', function() {
+        $('#upload_image_categories').val($(this).val());
+        $('#bulk_upload_image_categories').val($(this).val());
+      })
+    });
+  });
+</script>
 <div class="clearfix"></div>
-<div class="row">
+<div class="row" style="margin-top:10px">
   <div class="col-md-12 col-sm-12 col-xs-12">
+    <!-- <div class="x_panel">
+      <div class="x_title">
+        <h2><?= __('Select Categories'); ?></h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <div class="admin__field field required">
+          <label for="categories" class="label admin__field-label">
+              <span><?= $block->escapeHtml(__('Categories')) ?></span>
+          </label>
+          <div class="admin__field-control control">
+              <div class="admin__field">
+                  <select style="width: 100%" title="Entity Type" name="categories" id="categories" class="admin__control-select"
+                      data-validate="{required:true}" aria-required="true">
+                      <option value="" selected hidden style="display: none;">--Please select category--</option>
+                  </select>
+              </div>
+          </div>
+      </div>
+      </div>
+    </div> -->
     <div class="x_panel">
       <div class="x_title">
-        <h2><?= __('Upload Image Product'); ?></h2>
+        <h2><?= __('Upload Image'); ?></h2>
         <div class="clearfix"></div>
       </div>
       <div class="x_content">
         <form id="upload-image-product" data-parsley-validate="" class="form-horizontal form-label-left" novalidate=""  action="<?php /* @escapeNotVerified */ echo $block->getUrl('*/*/saveimage') ?>" method="post">
           <div class="form-group">
-            <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-12 col-sm-12 col-xs-12" style="padding:0px">
 
               <div id="<?= $block->getHtmlId() ?>"
                    class="gallery"
@@ -53,7 +92,7 @@ $formName = $block->getFormName();
                    data-types='{"image":{"code":"image","value":null,"label":"Base","scope":"[STORE VIEW]","name":"product[image]"},"small_image":{"code":"small_image","value":null,"label":"Small","scope":"[STORE VIEW]","name":"product[small_image]"},"thumbnail":{"code":"thumbnail","value":null,"label":"Thumbnail","scope":"[STORE VIEW]","name":"product[thumbnail]"}}'
               >
                   <?php if (!$block->getElement()->getReadonly()) {?>
-                      <div class="image image-placeholder">
+                      <div class="image image-placeholder" style="margin:1rem">
                           <?= $block->getUploaderHtml(); ?>
                           <div class="product-image-wrapper">
                               <p class="image-placeholder-text">
@@ -62,9 +101,15 @@ $formName = $block->getFormName();
                           </div>
                       </div>
                   <?php } ?>
+                  <input name="upload_image_categories" id="upload_image_categories" type="hidden" value="">
                   <input name="product[image]" data-form-part="product_form" class="image-image" type="hidden" value="">
                   <input name="product[small_image]" data-form-part="product_form" class="image-small_image" type="hidden" value="">
                   <input name="product[thumbnail]" data-form-part="product_form" class="image-thumbnail" type="hidden" value="">
+                  <?php
+                    $selectedFolder = $this->getRequest()->getParam('folder');
+                  ?>
+                  <input type="hidden" name="selected_folder" value="<?= $this->escapeHtmlAttr($selectedFolder) ?>">
+
 
                   <script id="<?= $block->getHtmlId() ?>-template" type="text/x-magento-template"><div class="image item<% if (data.disabled == 1) { %> hidden-for-front<% } %>"
                            data-role="image">
@@ -114,7 +159,6 @@ $formName = $block->getFormName();
                                       <?php /* @escapeNotVerified */ echo __('Delete image') ?>
                                   </span>
                                   </button>
-                                  <div class="draggable-handle"></div>
                               </div>
                               <div class="image-fade"><span><?php /* @escapeNotVerified */ echo __('Hidden') ?></span></div>
                           </div>
@@ -126,117 +170,10 @@ $formName = $block->getFormName();
                                   <span data-role="image-dimens"></span>, <span data-role="image-size"><%- data.sizeLabel %></span>
                               </div>
                           </div>
-
-                          <ul class="item-roles" data-role="roles-labels">
-                              <li data-role-code="image" class="item-role item-role-image">
-                              </li>
-                               <li data-role-code="small_image" class="item-role item-role-small_image">
-                               </li>
-                              <li data-role-code="thumbnail" class="item-role item-role-thumbnail">
-                                      Thumbnail                                  </li>
-                          </ul>
                       </div>
                   </script>
 
                   <script data-role="img-dialog-container-tmpl" type="text/x-magento-template"><div class="image-panel" data-role="dialog">
-                      </div>
-                  </script>
-
-                  <script data-role="img-dialog-tmpl" type="text/x-magento-template"><div class="image-panel-preview">
-                          <img src="<%- data.url %>" alt="<%- data.label %>" />
-                      </div>
-                      <div class="image-panel-controls">
-                          <strong class="image-name"><%- data.label %></strong>
-
-                          <fieldset class="admin__fieldset fieldset-image-panel">
-                              <div class="admin__field field-image-description">
-                                  <label class="admin__field-label" for="image-description">
-                                      <span><?php /* @escapeNotVerified */ echo __('Alt Text')?></span>
-                                  </label>
-
-                                  <div class="admin__field-control">
-                                          <textarea data-role="image-description"
-                                                    rows="3"
-                                                    class="admin__control-textarea"
-                                                    name="<?php /* @escapeNotVerified */
-                                                    echo $elementName
-                                                    ?>[<%- data.file_id %>][label]"><%- data.label %></textarea>
-                                  </div>
-                              </div>
-
-                              <div class="admin__field field-image-role">
-                                  <label class="admin__field-label">
-                                      <span><?php /* @escapeNotVerified */ echo __('Role')?></span>
-                                  </label>
-                                  <div class="admin__field-control">
-                                      <ul class="multiselect-alt">
-                                          <li class="item">
-                                                  <label>
-                                                      <input class="image-type"
-                                                             data-role="type-selector"
-                                                             data-form-part="product_form"
-                                                             type="checkbox"
-                                                             value="image"
-                                                      />
-                                                      Base                                                  </label>
-                                              </li>
-                                            <li class="item">
-                                                  <label>
-                                                      <input class="image-type"
-                                                             data-role="type-selector"
-                                                             data-form-part="product_form"
-                                                             type="checkbox"
-                                                             value="small_image"
-                                                      />
-                                                      Small                                                  </label>
-                                              </li>
-                                              <li class="item">
-                                                  <label>
-                                                      <input class="image-type"
-                                                             data-role="type-selector"
-                                                             data-form-part="product_form"
-                                                             type="checkbox"
-                                                             value="thumbnail"
-                                                      />
-                                                      Thumbnail                                                  </label>
-                                              </li>
-                                      </ul>
-                                  </div>
-                              </div>
-
-                              <div class="admin__field admin__field-inline field-image-size" data-role="size">
-                                  <label class="admin__field-label">
-                                      <span><?php /* @escapeNotVerified */ echo __('Image Size') ?></span>
-                                  </label>
-                                  <div class="admin__field-value" data-message="<?php /* @escapeNotVerified */ echo __('{size}') ?>"></div>
-                              </div>
-
-                              <div class="admin__field admin__field-inline field-image-resolution" data-role="resolution">
-                                  <label class="admin__field-label">
-                                      <span><?php /* @escapeNotVerified */ echo __('Image Resolution') ?></span>
-                                  </label>
-                                  <div class="admin__field-value" data-message="<?php /* @escapeNotVerified */ echo __('{width}^{height} px') ?>"></div>
-                              </div>
-
-                              <div class="admin__field field-image-hide">
-                                  <div class="admin__field-control">
-                                      <div class="admin__field admin__field-option">
-                                          <input type="checkbox"
-                                                 id="hide-from-product-page"
-                                                 data-role="visibility-trigger"
-                                                 data-form-part="<?php /* @escapeNotVerified */ echo $formName ?>"
-                                                 value="1"
-                                                 class="admin__control-checkbox"
-                                                 name="<?php /* @escapeNotVerified */ echo $elementName ?>[<%- data.file_id %>][disabled]"
-                                          <% if (data.disabled == 1) { %>checked="checked"<% } %> />
-
-                                          <label for="hide-from-product-page" class="admin__field-label">
-                                              <?php /* @escapeNotVerified */ echo __('Hide from Product Page')?>
-                                          </label>
-                                      </div>
-                                  </div>
-                              </div>
-                          </fieldset>
                       </div>
                   </script>
                   <?php //echo $block->getChildHtml('new-video'); ?>
@@ -245,7 +182,7 @@ $formName = $block->getFormName();
           </div>
           <div class="form-group">
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <button class="action- scalable btn btn-success" type="submit"><span><?php
+              <button class="action- scalable btn primary" type="submit"><span><?php
               /* @escapeNotVerified */ echo __('Upload') ?></span></button>
             </div>
           </div>
@@ -266,24 +203,29 @@ $formName = $block->getFormName();
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2><?= __('Upload Image Zip'); ?></h2>
+        <h2><?= __('Bulk Upload Image (.zip)'); ?></h2>
         <div class="clearfix"></div>
       </div>
       <div class="x_content">
            <form method="post" action="<?= $this->getUrl('catalog/product/upload'); ?>" id="lofmp_massupload_form" enctype="multipart/form-data" data-mage-init='{"validation":{}}'>
            <fieldset class="fieldset">
-              <div class="field required form-group">
-                <label for="massupload_image" class="label">
+              <div class="field required form-group" style="padding:1rem">
+                <!-- <label for="massupload_image" class="label">
                     <span><?= __("Upload Images Zip"); ?></span>
-                </label>
+                </label> -->
                 <div class="control">
                     <input type="file" data-validate="{required:true}" class="input-text required-entry" title="<?= __("Images Zip"); ?>" name="massupload_image" id="massupload_image" aria-required="true">
+                    <input name="bulk_upload_image_categories" id="bulk_upload_image_categories" type="hidden" value="">
+                    <?php
+                      $selectedFolder = $this->getRequest()->getParam('folder');
+                    ?>
+                    <input type="hidden" name="selected_folder" value="<?= $this->escapeHtmlAttr($selectedFolder) ?>">
                 </div>
               </div>
               <div class="form-group">
               <div class="col-md-6 col-sm-6 col-xs-12">
-                <button class="action- scalable btn btn-success" type="submit"><span><?php
-                /* @escapeNotVerified */ echo __('Upload') ?></span></button>
+                <button class="action- scalable btn primary" type="submit"><span><?php
+                /* @escapeNotVerified */ echo __('Upload From Zip') ?></span></button>
               </div>
             </div>
            </fieldset>

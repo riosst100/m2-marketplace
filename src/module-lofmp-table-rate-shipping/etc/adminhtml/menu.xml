@@ -20,6 +20,6 @@
   -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Backend/etc/menu.xsd">
 	<menu>
-		<add id="Lofmp_TableRateShipping::shipping" title="Table Rate Shipping" module="Lofmp_TableRateShipping" sortOrder="20" parent="Lof_MarketPlace::shipping" action="lofmptablerateshipping/shipping/index" resource="Lofmp_TableRateShipping::shipping"/>
+		<!-- <add id="Lofmp_TableRateShipping::shipping" title="Table Rate Shipping" module="Lofmp_TableRateShipping" sortOrder="20" parent="Lof_MarketPlace::shipping" action="lofmptablerateshipping/shipping/index" resource="Lofmp_TableRateShipping::shipping"/> -->
 	</menu>
 </config>

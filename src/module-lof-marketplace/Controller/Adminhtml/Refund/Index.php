@@ -34,8 +34,8 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Refund
         /**
          * Set active menu item
          */
-        $resultPage->setActiveMenu("Lof_MarketPlace::refund");
-        $resultPage->getConfig()->getTitle()->prepend(__('Refunds'));
+        $resultPage->setActiveMenu("CoreMarketplace_MarketPlace::seller_refunds");
+        $resultPage->getConfig()->getTitle()->prepend(__('Seller | Refunds'));
 
         /**
          * Add breadcrumb item
@@ -51,6 +51,6 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Refund
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Lof_MarketPlace::refund');
+        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::seller_refunds');
     }
 }

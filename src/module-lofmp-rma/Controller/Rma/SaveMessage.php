@@ -25,6 +25,14 @@ use Magento\Framework\Controller\ResultFactory;
 
 class SaveMessage extends \Lofmp\Rma\Controller\Rma
 {
+    protected $registry;
+    protected $rmaRepository;
+    protected $messageRepository;
+    protected $resultFactory;
+    protected $eventManager;
+    protected $customerSession;
+
+
     /**
      * SaveMessage constructor.
      *

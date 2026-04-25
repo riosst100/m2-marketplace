@@ -15,54 +15,20 @@ use Lof\Gdpr\Helper\Data;
 use Psr\Log\LoggerInterface;
 use Lof\MarketPlace\Helper\Data as HelperSeller;
 use Lof\MarketPlace\Model\Seller;
-/**
- * Class Account
- *
- * @package Lofmp\GdprSeller\Controller\Marketplace\Seller
- */
+use Lof\MarketPlace\Model\ResourceModel\Order\CollectionFactory as SellerOrderCollectionFactory;
+use Magento\Sales\Api\OrderRepositoryInterface;
+
 class DeleteSeller extends AbstractAccount
 {
-    /**
-     * @var Session
-     */
     protected $_customerSession;
-
-    /**
-     * @var Registry
-     */
     protected $registry;
-
-    /**
-     * @var LoggerInterface
-     */
     protected $logger;
-
-    /**
-     * @var Data
-     */
     protected $_helper;
+    protected $helperSeller;
+    protected $seller;
+    protected $sellerOrderCollectionFactory;
+    protected $orderRepository;
 
-    /**
-     * @var HelperSeller
-     */
-    private $helperSeller;
-
-    /**
-     * @var Seller
-     */
-    private $seller;
-
-    /**
-     * Delete constructor.
-     *
-     * @param Context $context
-     * @param Session $customerSession
-     * @param Registry $registry
-     * @param LoggerInterface $logger
-     * @param HelperSeller $helperSeller
-     * @param Seller $seller
-     * @param Data $helper
-     */
     public function __construct(
         Context $context,
         Session $customerSession,
@@ -70,14 +36,19 @@ class DeleteSeller extends AbstractAccount
         LoggerInterface $logger,
         HelperSeller $helperSeller,
         Seller $seller,
-        Data $helper
+        Data $helper,
+        SellerOrderCollectionFactory $sellerOrderCollectionFactory,
+        OrderRepositoryInterface $orderRepository
     ) {
-        $this->_customerSession    = $customerSession;
-        $this->registry            = $registry;
-        $this->logger              = $logger;
-        $this->helperSeller        = $helperSeller;
-        $this->_helper             = $helper;
-        $this->seller              = $seller;
+        $this->_customerSession              = $customerSession;
+        $this->registry                      = $registry;
+        $this->logger                        = $logger;
+        $this->helperSeller                  = $helperSeller;
+        $this->_helper                       = $helper;
+        $this->seller                        = $seller;
+        $this->sellerOrderCollectionFactory  = $sellerOrderCollectionFactory;
+        $this->orderRepository               = $orderRepository;
+
         parent::__construct($context);
     }
 
@@ -89,32 +60,83 @@ class DeleteSeller extends AbstractAccount
     public function execute()
     {
         $resultRedirect = $this->resultRedirectFactory->create();
-        if (!$this->_helper->allowDeleteSeller() || !$this->_customerSession->isLoggedIn() || !$this->canDeleteSeller()) {
+
+        if (!$this->_helper->allowDeleteSeller() ||
+            !$this->_customerSession->isLoggedIn() ||
+            !$this->canDeleteSeller()
+        ) {
             $this->messageManager->addErrorMessage(__('Permission denied.'));
-            $resultRedirect->setPath('*/*/');
-            return $resultRedirect;
+            return $resultRedirect->setPath('*/*/');
         }
 
         try {
-
             $sellerId = $this->helperSeller->getSellerId();
+
             if ($sellerId) {
-                $this->seller->load($sellerId)->delete();
+
+                // -----------------------------------------------------
+                // Check if seller has pending / processing orders
+                // -----------------------------------------------------
+                if (!$this->canSellerBeDeleted($sellerId)) {
+                    $this->messageManager->addErrorMessage(
+                        __('You cannot request account deletion because you still have active or incomplete orders.')
+                    );
+                    return $resultRedirect->setPath('*/*/');
+                }
+
+                // -----------------------------------------------------
+                // Submit delete request
+                // -----------------------------------------------------
+                $seller = $this->seller->load($sellerId);
+                $seller->setData('is_delete_request', 1);
+                $seller->setData('delete_request_at', date('Y-m-d H:i:s'));
+                $seller->save();
+
+                $deleteDays = (int) $this->_helper->getConfigGeneral('delete_days');
+
+                $this->messageManager->addSuccessMessage(__(
+                    'Your seller deletion request has been submitted. Your account will be permanently deleted in %1 day(s).',
+                    $deleteDays
+                ));
             }
-            $resultRedirect->setPath('/customer/account/');
+
+            return $resultRedirect->setPath('/customer/account/');
+
         } catch (Exception $e) {
             $this->logger->critical($e->getMessage());
-            $this->messageManager->addErrorMessage(__('Something wrong while deleting your seller profile. Please contact the store owner.'));
-            $resultRedirect->setPath('*/*/');
+            $this->messageManager->addErrorMessage(__('Something went wrong while submitting your deletion request.'));
+            return $resultRedirect->setPath('*/*/');
         }
+    }
 
-        return $resultRedirect;
+    public function canDeleteSeller()
+    {
+        return $this->_helper->getConfigGeneral('allow_delete_seller');
     }
 
     /**
-     * @return array|mixed
+     * 🔍 Check if seller has incomplete orders
      */
-    public function canDeleteSeller() {
-        return $this->_helper->getConfigGeneral('allow_delete_seller');
+    private function canSellerBeDeleted($sellerId)
+    {
+        // Order statuses that allow deletion
+        $allowedStatuses = ['complete', 'closed', 'canceled'];
+
+        $collection = $this->sellerOrderCollectionFactory->create()
+            ->addFieldToFilter('seller_id', $sellerId);
+
+        foreach ($collection as $sellerOrder) {
+            try {
+                $order = $this->orderRepository->get($sellerOrder->getOrderId());
+                if (!in_array($order->getStatus(), $allowedStatuses)) {
+                    return false; // Block deletion
+                }
+            } catch (\Exception $e) {
+                // If order cannot be loaded → treat it as active to be safe
+                return false;
+            }
+        }
+
+        return true; // All orders complete/closed/cancelled
     }
 }

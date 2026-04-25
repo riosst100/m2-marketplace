@@ -23,15 +23,38 @@
 namespace Lof\MarketPlace\Observer\QuoteItem;
 
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Registry;
 
 class SetSellerId implements ObserverInterface
 {
+	/**
+     * @var Registry
+     */
+    protected $registry;
+
+    /**
+     * Constructor
+     */
+    public function __construct(
+        Registry $registry
+    ) {
+        $this->registry = $registry;
+    }
+
     /**
      * @param \Magento\Framework\Event\Observer $observer
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         $quoteItem = $observer->getItem();
-        $quoteItem->setData('lof_seller_id', $quoteItem->getProduct()->getSellerId());
+        
+        $data = $this->registry->registry('preorder_graphql_input');
+        if ($data) {
+        	$quoteItem->setData('lof_seller_id', $data['lof_seller_id']);
+        } elseif ($quoteItem->getLofSellerId()) {
+        	$quoteItem->setData('lof_seller_id', $quoteItem->getLofSellerId());
+    	}else {
+        	$quoteItem->setData('lof_seller_id', $quoteItem->getProduct()->getSellerId());
+        }
     }
 }

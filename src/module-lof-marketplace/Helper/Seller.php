@@ -97,6 +97,10 @@ class Seller extends \Magento\Framework\App\Helper\AbstractHelper
      */
     private $postData = null;
 
+    protected $helperDateTime;
+
+    protected $marketplaceConfig;
+
     /**
      * Seller constructor.
      * @param Context $context
@@ -122,7 +126,8 @@ class Seller extends \Magento\Framework\App\Helper\AbstractHelper
         FilterManager $filter,
         VacationFactory $vacation,
         GroupFactory $group,
-        DateTime $helperDateTime
+        DateTime $helperDateTime,
+        \Lof\MarketPlace\Model\ConfigFactory $marketplaceConfig
     ) {
         parent::__construct($context);
         $this->sellerFactory = $sellerFactory;
@@ -136,6 +141,7 @@ class Seller extends \Magento\Framework\App\Helper\AbstractHelper
         $this->vacation = $vacation;
         $this->group = $group;
         $this->helperDateTime = $helperDateTime;
+        $this->marketplaceConfig = $marketplaceConfig;
     }
 
     /**
@@ -850,5 +856,20 @@ class Seller extends \Magento\Framework\App\Helper\AbstractHelper
 
         $countryDialCode = $countrycode[$code];
         return "(+" . $countryDialCode . ")";
+    }
+
+    public function getOriginRegion()
+    {
+        $sellerId = $this->getSellerId();
+        try {
+            $key = 'shipping/address/region';
+            $keyTable = $this->_sellerHelper->getTableKey('key');
+            $sellerKeyTable = $this->_sellerHelper->getTableKey('seller_id');
+            $config = $this->marketplaceConfig->create()
+                ->loadByField([$keyTable, $sellerKeyTable], [$key, $sellerId])->getValue();            
+            return $config;
+        } catch (\Exception $e) {            
+            return false;
+        }
     }
 }

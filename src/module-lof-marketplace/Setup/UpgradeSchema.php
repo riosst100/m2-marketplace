@@ -741,6 +741,172 @@ class UpgradeSchema implements UpgradeSchemaInterface
             $this->addColumnStatusToAmountTransaction($installer);
         }
 
+        if (version_compare($context->getVersion(), '1.2.2', '<')) {
+
+            /**
+             * Table 1: lof_marketplace_rabbitmq_import_notification
+             */
+            if (!$installer->tableExists('lof_marketplace_rabbitmq_import_notification')) {
+                $table = $installer->getConnection()
+                    ->newTable($installer->getTable('lof_marketplace_rabbitmq_import_notification'))
+                    ->addColumn(
+                        'notif_id',
+                        Table::TYPE_INTEGER,
+                        null,
+                        ['identity' => true, 'nullable' => false, 'primary' => true, 'unsigned' => true],
+                        'Notification ID'
+                    )->addColumn(
+                        'seller_id',
+                        Table::TYPE_INTEGER,
+                        null,
+                        ['nullable' => false, 'unsigned' => true],
+                        'Seller ID'
+                    )->addColumn(
+                        'import_type',
+                        Table::TYPE_TEXT,
+                        32,
+                        ['nullable' => false, 'default' => 'db'],
+                        'Import Type (bulk/db)'
+                    )->addColumn(
+                        'import_status',
+                        Table::TYPE_TEXT,
+                        32,
+                        ['nullable' => false, 'default' => 'processing'],
+                        'Import Status (processing/done)'
+                    )->addColumn(
+                        'is_read',
+                        Table::TYPE_SMALLINT,
+                        null,
+                        ['nullable' => false, 'default' => 0],
+                        'Is Read'
+                    )->addColumn(
+                        'message',
+                        Table::TYPE_TEXT,
+                        '2M',
+                        ['nullable' => true],
+                        'JSON Message from RabbitMQ'
+                    )->addColumn(
+                        'created_at',
+                        Table::TYPE_TIMESTAMP,
+                        null,
+                        ['nullable' => false, 'default' => Table::TIMESTAMP_INIT],
+                        'Created At'
+                    )->addColumn(
+                        'updated_at',
+                        Table::TYPE_TIMESTAMP,
+                        null,
+                        ['nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE],
+                        'Updated At'
+                    )->setComment('RabbitMQ Import Notification');
+                $installer->getConnection()->createTable($table);
+            }
+
+            /**
+             * Table 2: lof_marketplace_rabbitmq_import_db_notification_detail
+             */
+            if (!$installer->tableExists('lof_marketplace_rabbitmq_import_db_notification_detail')) {
+                $table = $installer->getConnection()
+                    ->newTable($installer->getTable('lof_marketplace_rabbitmq_import_db_notification_detail'))
+                    ->addColumn(
+                        'detail_id',
+                        Table::TYPE_INTEGER,
+                        null,
+                        ['identity' => true, 'nullable' => false, 'primary' => true, 'unsigned' => true],
+                        'Detail ID'
+                    )->addColumn(
+                        'notif_id',
+                        Table::TYPE_INTEGER,
+                        null,
+                        ['nullable' => false, 'unsigned' => true],
+                        'Notification ID'
+                    )->addColumn(
+                        'seller_id',
+                        Table::TYPE_INTEGER,
+                        null,
+                        ['nullable' => false, 'unsigned' => true],
+                        'Seller ID'
+                    )->addColumn(
+                        'date',
+                        Table::TYPE_DATETIME,
+                        null,
+                        ['nullable' => false],
+                        'Import Date'
+                    )->addColumn(
+                        'categories',
+                        Table::TYPE_TEXT,
+                        255,
+                        ['nullable' => true],
+                        'Categories'
+                    )->addColumn(
+                        'card_game',
+                        Table::TYPE_TEXT,
+                        255,
+                        ['nullable' => true],
+                        'Card Game'
+                    )->addColumn(
+                        'language_version',
+                        Table::TYPE_TEXT,
+                        255,
+                        ['nullable' => true],
+                        'Language'
+                    )->addColumn(
+                        'product_type',
+                        Table::TYPE_TEXT,
+                        255,
+                        ['nullable' => true],
+                        'Product Type'
+                    )->addColumn(
+                        'card_set',
+                        Table::TYPE_TEXT,
+                        255,
+                        ['nullable' => true],
+                        'Card Set'
+                    )->addColumn(
+                        'total_products',
+                        Table::TYPE_INTEGER,
+                        null,
+                        ['nullable' => true, 'default' => 0],
+                        'Total Products'
+                    )->addColumn(
+                        'status',
+                        Table::TYPE_TEXT,
+                        32,
+                        ['nullable' => false, 'default' => 'processing'],
+                        'Status'
+                    )->addForeignKey(
+                        $installer->getFkName(
+                            'lof_marketplace_rabbitmq_import_db_notification_detail',
+                            'notif_id',
+                            'lof_marketplace_rabbitmq_import_notification',
+                            'notif_id'
+                        ),
+                        'notif_id',
+                        $installer->getTable('lof_marketplace_rabbitmq_import_notification'),
+                        'notif_id',
+                        Table::ACTION_CASCADE
+                    )->setComment('RabbitMQ Import DB Notification Detail');
+                $installer->getConnection()->createTable($table);
+            }
+        }
+
+        // Add new column `data` in import_history for version 1.2.3
+        if (version_compare($context->getVersion(), '1.2.3', '<')) {
+            $tableName = $installer->getTable('import_history');
+
+            if ($installer->getConnection()->isTableExists($tableName) == true) {
+                $installer->getConnection()->addColumn(
+                    $tableName,
+                    'data_import',
+                    [
+                        'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                        'length' => '2M',
+                        'nullable' => true,
+                        'comment' => 'Import Data'
+                    ]
+                );
+            }
+        }
+
         $installer->endSetup();
     }
 

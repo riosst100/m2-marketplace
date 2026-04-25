@@ -588,5 +588,44 @@ class UpgradeSchema implements UpgradeSchemaInterface
             );
 
         }
+
+        if (version_compare($context->getVersion(), '1.0.10', '<')) {
+            $question_table = $installer->getTable('lof_faq_question');
+            $installer->getConnection()->addColumn(
+                $question_table,
+                'question_type',
+                [
+                    'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    'length' => 255,
+                    'nullable' => true,
+                    'comment' => 'Question Type'
+                ]
+            );
+
+            $question_table = $installer->getTable('lof_faq_category');
+            $installer->getConnection()->addColumn(
+                $question_table,
+                'category_type',
+                [
+                    'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    'length' => 255,
+                    'nullable' => true,
+                    'comment' => 'Category Type'
+                ]
+            );
+
+            $question_table = $installer->getTable('lof_faq_question_tag');
+            $installer->getConnection()->addColumn(
+                $question_table,
+                'tag_type',
+                [
+                    'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    'length' => 255,
+                    'nullable' => true,
+                    'comment' => 'Tag Type'
+                ]
+            );
+
+        }
     }
 }

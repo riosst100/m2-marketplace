@@ -25,6 +25,10 @@ use Magento\Framework\View\Element\UiComponent\ContextInterface;
 
 class Image extends \Magento\Ui\Component\Listing\Columns\Column
 {
+    protected $imageHelper;
+    protected $urlBuilder;
+
+
     const NAME = 'image';
 
     const ALT_FIELD = 'name';

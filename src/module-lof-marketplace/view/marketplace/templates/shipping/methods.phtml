@@ -1,90 +1,229 @@
-<?php
+<?php 
 /**
- * Landofcoder
+ * Shipping Configuration
  *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Landofcoder.com license that is
- * available through the world-wide-web at this URL:
- * https://landofcoder.com/license-agreement.html
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade this extension to newer
- * version in the future.
- *
- * @category   Landofcoder
- * @package    Lof_MarketPlace
- * @copyright  Copyright (c) 2021 Landofcoder (https://landofcoder.com/)
- * @license    https://landofcoder.com/LICENSE-1.0.html
- */
-
-//phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
-//phpcs:disable Magento2.Security.XssTemplate.FoundUnescaped
-/**
  * @var $block \Lof\MarketPlace\Block\Shipping\Methods
  */
 
+$shipping_methods = $block->getShippingMethods();
+$helper = $this->helper('Lof\MarketPlace\Helper\Seller');
+$originRegionIsset = $helper->getOriginRegion();
 ?>
 
 <div class="row">
     <div class="col-md-12" style="margin-top:10px;">
         <div class="panel panel-default">
-            <div class="panel-heading col-md-12 uptransform" style="font-weight:bold;padding:4px 15px;">
-                <div class="col-md-6 panel_product_heading" style="line-height:31px;font-size:17px;padding-left:0;">
-                    <?= $block->escapeHtml(__('Shipping Methods')) ?>
-                </div>
-                <div class="buttons-set col-md-6 buttons_scb" style="text-align:right;padding-right:0;">
-                    <button class="btn btn-success uptransform product-button" title="Save" type="submit"
-                            onClick="jQuery('#form-validate').submit();" id="save_butn" style="float: none;">
-                        <span><?= $block->escapeHtml(__('Save')) ?></span>
-                    </button>
-                </div>
-            </div>
-            <br/>
-            <br/>
             <div class="panel-body">
-                <?= $this->getFormHtml(); ?>
-                <div class="buttons-set">
-                    <p class="required"><?= $block->escapeHtml(__('* Required Fields')) ?></p>
-                </div>
+
+                <?= $this->getLayout()
+                    ->createBlock('CoreMarketplace\MarketPlace\Block\Steps')
+                    ->setTemplate('CoreMarketplace_MarketPlace::registration-step/step-guide.phtml')
+                    ->toHtml();
+                ?>
+
+                <?php if (!$originRegionIsset): ?>
+                    <div class="message message-warning" style="margin-bottom:20px;">
+                        <div>
+                            <strong>Warning:</strong> Please configure your store's origin address
+                            <a href="<?= $this->getUrl('catalog/shipping/address') ?>">here</a>
+                            before setting up shipping methods.
+                        </div>
+                    </div>
+                <?php else: ?>
+
+                    <div id="step_shipping">
+                        <h2>Available Shipping Methods</h2>
+
+                        <?= $this->getLayout()
+                            ->createBlock('CoreMarketplace\MarketPlace\Block\SellerInfo')
+                            ->setInstruction('Learn how to configure shipping on')
+                            ->setDocsUrlPath('shipping')
+                            ->setDocsLabel('Seller Help Center - Shipping')
+                            ->setTemplate('CoreMarketplace_MarketPlace::seller_info.phtml')
+                            ->toHtml();
+                        ?>
+
+                        <div class="grid">
+                            <?php foreach ($shipping_methods as $code => $method): ?>
+                                <?php
+                                    $status = $block->getShippingMethodStatus($code);
+                                    $name   = $block->getShippingMethodName($code);
+                                    $desc   = $block->getShippingMethodDesc($code);
+                                ?>
+
+                                <div class="card">
+
+                                    <h3><?= $name ?></h3>
+                                    <p class="desc"><?= $desc ?></p>
+
+                                    <div class="status-wrapper" style="text-align:left">
+                                        <p>Status: 
+                                            <span class="status <?= $status ? 'active' : 'inactive' ?>">
+                                                <?= $status ? 'Active' : 'Not Active' ?>
+                                            </span>
+                                        </p>
+                                    </div>
+
+                                    <?php if ($code === 'rajaongkir'): ?>
+
+                                        <?php if ($status): ?>
+                                            <a href="<?= $block->getUrl('catalog/shipping/deactivate/id/' . $code) ?>"
+                                               class="btn btn-deactivate">Deactivate</a>
+                                        <?php else: ?>
+                                            <div data-method="<?= $code ?>"
+                                                 id="activate-shipping-<?= $code ?>"
+                                                 class="btn btn-activate activate-shipping">
+                                                 Activate
+                                            </div>
+
+                                            <div data-method="<?= $code ?>"
+                                                 id="cancel-shipping-<?= $code ?>"
+                                                 class="btn btn-cancel cancel-shipping"
+                                                 style="display:none">
+                                                 Cancel
+                                            </div>
+                                        <?php endif; ?>
+
+
+                                    <?php elseif ($code === 'tablerate'): ?>
+
+                                        <a href="<?= $block->getUrl('lofmptablerateshipping/shipping/view') ?>"
+                                           class="btn btn-activate">
+                                           Configure
+                                        </a>
+
+                                    <?php elseif ($code === 'flatrate'): ?>
+
+                                        <a href="<?= $block->getUrl('lofmpflatrateshipping/shipping/view') ?>"
+                                           class="btn btn-activate">
+                                           Configure
+                                        </a>
+
+                                    <?php else: ?>
+
+                                        <?php if ($status): ?>
+                                            <a href="<?= $block->getUrl('catalog/shipping/deactivate/id/' . $code) ?>"
+                                                class="btn btn-deactivate">
+                                                Deactivate
+                                            </a>
+                                        <?php else: ?>
+                                            <div data-method="<?= $code ?>" 
+                                                 id="activate-shipping-<?= $code ?>"
+                                                 class="btn btn-activate activate-shipping">
+                                                Activate
+                                            </div>
+
+                                            <div data-method="<?= $code ?>"
+                                                 id="cancel-shipping-<?= $code ?>"
+                                                 class="btn btn-cancel cancel-shipping"
+                                                 style="display:none">
+                                                 Cancel
+                                            </div>
+                                        <?php endif; ?>
+
+                                    <?php endif; ?>
+
+                                </div>
+
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+
+                <?php endif; ?>
+
+                <div id="activate-shipping-container"></div>
+
             </div>
         </div>
     </div>
 </div>
 
+
 <script type="text/javascript">
-    require([
-        "jquery"
-    ], function ($) {
-        $(".field-lofmpproductshipping-title").css('display', 'none');
-        $("#lofmpproductshipping-name").attr('placeholder', 'Standard Shipping');
-        $("#lofmpproductshipping-name").keyup(function (){
-            var methodName = $(this).val();
-            $("#lofmpproductshipping-title").val(methodName);
-        })
-        var methodName1 = $("#lofmpproductshipping-name").val();
-        $("#lofmpproductshipping-title").val(methodName1);
-        $('#lofmptablerateshipping-active option[value="1"]').attr('selected', false);
-        $('#lofmpflatrateshipping-active option[value="1"]').attr('selected', false);
-        $('#lofmpproductshipping-active option[value="1"]').attr('selected', false);
-        if ($("h2").length > 0) {
-            $("h2").addClass("lof_shipping");
-        }
+require([
+    "jquery"
+], function ($) {
+
+    function activateShipping() {
+        var method = $(this).data('method');
+
+        $.ajax({
+            url: '<?= $block->getUrl("catalog/shipping/activate") ?>',
+            type: 'POST',
+            dataType: 'json',
+            data: { method: method },
+            showLoader: true,
+            success: function(response) {
+                if (response.success) {
+
+                    $('#cancel-shipping-' + method).show();
+                    $('#activate-shipping-' + method).hide();
+
+                    $('#activate-shipping-container').html(response.html).slideDown();
+
+                    $('html, body').animate({
+                        scrollTop: $('#activate-shipping-container').offset().top
+                    }, 600);
+                }
+            }
+        });
+    }
+
+    $('.activate-shipping').on('click', activateShipping);
+
+    $('.cancel-shipping').on('click', function(){
+        var method = $(this).data('method');
+        $('#cancel-shipping-' + method).hide();
+        $('#activate-shipping-container').slideUp();
+        $('#activate-shipping-' + method).show();
     });
 
-
+});
 </script>
+
+
 <style>
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+}
 
-    h2.legend.lof_shipping {
-        margin-left: 0;
-    }
-    .admin__control-select, .ui-datepicker .ui-datepicker-title select {
-        -moz-appearance: meterchunk !important;
-    }
+.card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 22px rgba(16,24,40,0.08);
+    text-align: center;
+}
 
-    .box-header .fa.fa-bars{
-        display: none;
-    }
+.card h3 {
+    margin: 0 0 10px 0;
+    font-weight: 600;
+}
+
+.card .desc {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.status.active { color: green; font-weight: bold; }
+.status.inactive { color: red; font-weight: bold; }
+
+.btn {
+    display: block;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 12px;
+    text-align: center;
+}
+
+.btn-activate { background: #0b76ff; color: #fff; }
+.btn-deactivate { background: #d9534f; color: #fff; }
+.btn-cancel { background: #aaa; color: #fff; }
 </style>

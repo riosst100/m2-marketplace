@@ -34,6 +34,12 @@ use Magento\Framework\Exception\CouldNotSaveException;
  */
 class AdminMessageRepository implements AdminMessageRepositoryInterface
 {
+    protected $dataObjectProcessor;
+    protected $storeManager;
+    protected $collectionProcessor;
+    protected $searchAdminResultsFactory;
+
+
 
     /**
      * @var SellerFactory

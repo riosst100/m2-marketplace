@@ -23,6 +23,11 @@ namespace Lof\MarketPlace\Block\Adminhtml\Seller;
 
 class Edit extends \Magento\Backend\Block\Widget\Form\Container
 {
+    protected $_objectId;
+    protected $_blockGroup;
+    protected $_controller;
+
+
     /**
      * Core registry
      *
@@ -81,6 +86,8 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
         } else {
             $this->buttonList->remove('delete');
         }
+
+        $this->buttonList->remove('reset');
     }
 
     /**

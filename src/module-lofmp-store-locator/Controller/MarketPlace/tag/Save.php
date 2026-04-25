@@ -26,6 +26,9 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Filesystem\DirectoryList;
 
 class Save extends \Magento\Customer\Controller\AbstractAccount  {
+    protected $session;
+
+
     /**
      *
      * @var Magento\Framework\App\Action\Session

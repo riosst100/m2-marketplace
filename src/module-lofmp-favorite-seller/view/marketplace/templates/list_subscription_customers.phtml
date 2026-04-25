@@ -15,7 +15,7 @@ $enableSendEmail = $configData->getEmailConfig("enable");
                 <div class="x_title">
                     <a href="<?= $block->getUrl('favoriteseller/index/index')?>"><input id="back-btn" type="button" value="<?= $block->escapeHtmlAttr(__("Back"));?>"/></a>
                     <?php if ($enableSendEmail) : ?>
-                        <a id="open-modal" href="#send-mail-modal"><input id="send-email" type="button" value="<?= $block->escapeHtmlAttr(__("Send email to customers"));?>"/></a>
+                        <a id="open-modal" href="#send-mail-modal"><input id="send-email" type="button" value="<?= $block->escapeHtmlAttr(__("Send Newsletter to Selected Subscribers"));?>"/></a>
                     <?php endif; ?>
                     <div class="clearfix"></div>
                 </div>
@@ -54,7 +54,7 @@ $enableSendEmail = $configData->getEmailConfig("enable");
 <div id="send-mail-modal" style="display: none">
     <h2><?= $block->escapeHtml(__("Send message to customers"));?></h2>
     <form id="send-mail-form" action="#" method="post" name="send-mail-form">
-        <label for="email-addresses"><?= $block->escapeHtml(__("Email Addresses"));?></label>
+        <label for="email-addresses"><?= $block->escapeHtml(__("Recipients"));?></label>
         <div id='tagsinput-container' style="width: 500px; margin: 0px auto;">
             <input name="email-addresses" id="input-tags" style="width:500px !important" readonly="readonly"/>
         </div>
@@ -63,7 +63,9 @@ $enableSendEmail = $configData->getEmailConfig("enable");
         <br/>
         <input id="email-subject" class="txt" type="text" name="email-subject"/>
         <br>
-        <label for="email-content"><?= $block->escapeHtml(__("Enter a Message"));?></label>
+        <label for="email-content"><?= $block->escapeHtml(__("Write a Message"));?></label>
+        <textarea id="post_description" name="post_description" type="text"></textarea>
+<input name="image" type="file" id="upload" style="visibility:hidden;">
         <textarea id="email-content" class="txtarea" name="email-content"></textarea>
         <button id="send-message"><?= $block->escapeHtml(__("Send Message"));?></button>
         <div id="loading-animation" class="sk-fading-circle">
@@ -83,6 +85,41 @@ $enableSendEmail = $configData->getEmailConfig("enable");
     </form>
 </div>
 <?php endif; ?>
+<script type="text/javascript">
+require([
+        'jquery',
+        'mage/adminhtml/wysiwyg/tiny_mce/setup'
+    ], function($){
+    tinymce.init({
+    selector: "#post_description",
+    theme: "modern",
+    paste_data_images: true,
+    plugins: [
+        "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+        "searchreplace wordcount visualblocks visualchars code fullscreen",
+        "insertdatetime media nonbreaking save table contextmenu directionality",
+        "emoticons template paste textcolor colorpicker textpattern"
+    ],
+    menubar: false,
+    image_advtab: true,
+    file_picker_callback: function(callback, value, meta) {
+        if (meta.filetype == 'image') {
+            $('#upload').trigger('click');
+            $('#upload').on('change', function() {
+                var file = this.files[0];
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                callback(e.target.result, {
+                alt: ''
+            });
+            };
+            reader.readAsDataURL(file);
+            });
+        }
+    }
+});
+});
+</script>
 <script type="text/javascript">
     require(['jquery', 'alertify', 'jquery.dataTables', 'jquery.fancybox', 'jquery.tagsinput'],function($, alertify){
         $(document).ready( function () {

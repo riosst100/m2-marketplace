@@ -14,6 +14,10 @@ namespace Lofmp\CouponCode\Model\Action\Condition;
  */
 class Behavior extends \Magento\Rule\Model\Condition\AbstractCondition
 {
+    protected $_country;
+    protected $_gender;
+
+
 	const OPTION_TOTAL_ORDER          = 'total_orders';
 	const OPTION_TOTAL_SALES          = 'total_sales';
 	const OPTION_ORDERS_NUMBER        = 'orders_num';

@@ -23,6 +23,10 @@ namespace Lofmp\Rma\Block\Adminhtml\Report;
 
 class ProductGrid extends \Magento\Backend\Block\Widget\Grid\Extended
 {
+    protected $_RmaFactory;
+    protected $_StatusFactory;
+
+
     /**
      * @var
      */

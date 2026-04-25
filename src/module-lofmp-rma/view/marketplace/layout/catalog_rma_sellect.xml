@@ -23,6 +23,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="vendor-1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
     </head>
+    <update handle="seller_store_switcher"/>
     <body>
         <referenceContainer name="content">
                 <block  class="Lofmp\Rma\Block\Marketplace\Rma\NewRma\SellectOrder" name="sellectorder" template="Lofmp_Rma::sellectorder.phtml" />

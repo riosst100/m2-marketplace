@@ -22,6 +22,24 @@
 <?php $expiry = $block->getCartExpiry(); ?>
 <?php $request = $block->getProduct(); ?>
 <?php $quote = $block->getQuote();  ?>
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+/** @var \Magento\Store\Model\StoreManagerInterface $storeManager */
+$storeManager = $objectManager->get(\Magento\Store\Model\StoreManagerInterface::class);
+
+$websiteName = '';
+try {
+    $websiteId = (int)$quote->getData('website_id');
+    if ($websiteId) {
+        $website = $storeManager->getWebsite($websiteId);
+        $websiteName = $website->getName();
+    }
+} catch (\Exception $e) {
+    $websiteName = __('N/A');
+}
+?>
+
 <form action="<?= $block->getUpdateFormLink() ?>"
                             autocomplete="off" data-action="product-form" method="post" id="manage-request-rfq-form">
 <section id="order-items" class="admin__page-section order-items">
@@ -31,24 +49,25 @@
     <div class="admin__table-wrapper" style="border-bottom: 1px solid #ccc">
             <table class="admin__table-primary">
                 <tr>
+                    <th><?= $block->escapeHtml(__('Images'))?></th>
                     <th><?= $block->escapeHtml(__('Name & SKU')) ?></th>
-                    <th><?= $block->escapeHtml(__('Thumnail'))?></th>
                     <th><?= $block->escapeHtml(__('Product Price')) ?></th>
                     <th><?= $block->escapeHtml(__('Expected Price')) ?></th>
                     <th><?= $block->escapeHtml(__('Quantity')) ?></th>
                     <th><?= $block->escapeHtml(__('Total Price')) ?></th>
+                    <th><?= $block->escapeHtml(__('Store')) ?></th>
                 </tr>
                 <tr>
+                    <td>
+                        <span>
+                            <div class="image-thumbnail"></div>
+                        </span>
+                    </td>
                     <td>
                         <span>
                             <a href="<?= $block->getEditProductUrl($quote->getData("product_id"));?>" target="_BLANK"><?= $block->escapeHtml(__($request->getName())) ?></a>
                         </span>
                         <p style="padding-top: 5px"> <?= 'SKU: ' . $block->escapeHtml(__($request->getSku())) ?></p>
-                    </td>
-                    <td>
-                        <span>
-                            <div class="image-thumnail"/>
-                        </span>
                     </td>
                     <td>
                         <span>
@@ -89,6 +108,11 @@
                         </span>
                         <?php endif; ?>
                     </td>
+                    <td>
+                        <span>
+                            <?= $block->escapeHtml(__($websiteName)) ?>
+                        </span>
+                    </td>
                 </tr>
             </table>
     </div>
@@ -107,7 +131,8 @@
                     </span>
                 </td>
             </tr>
-            <?php if($quote->getData("seller_name")) : ?>
+
+            <!-- <?php if($quote->getData("seller_name")) : ?>
             <tr>
                 <td>
                     <span class="quote-seller">
@@ -116,13 +141,25 @@
                     </span>
                 </td>
             </tr>
-            <?php endif; ?>
+            <?php endif; ?> -->
             <tr>
                 <td>
-                    <span class="quote-coupon-code">
-                        <span><?= __("Add Coupon Code: "); ?></span>
-                        <input type="text" class="input-text admin__control-text" name="coupon_code" placeholder="<?= $block->escapeHtml(__("Input Coupon Code"));?>" value="<?= $quote->getData('coupon_code'); ?>" />
-                    </span>
+                    <div class="quote-coupon-code">
+                        <label><?= __("Add Coupon Code: "); ?></label>
+
+                        <input type="text"
+                            id="coupon_code_input"
+                            class="input-text admin__control-text"
+                            name="coupon_code"
+                            placeholder="<?= $block->escapeHtml(__("Input Coupon Code"));?>"
+                            value="<?= $quote->getData('coupon_code'); ?>" />
+
+                        <button type="button"
+                                class="action-secondary"
+                                id="open-coupon-popup">
+                            <?= __("Available Coupons") ?>
+                        </button>
+                    </div>
                 </td>
             </tr>
             <?php if($expiry) : ?>
@@ -145,14 +182,93 @@
         </table>
     </div>
 </section>
+
+<div id="coupon-popup" style="display:block;">
+    <table class="admin__table-primary">
+        <thead>
+        <tr>
+            <th><?= __("Coupon Code") ?></th>
+            <th><?= __("Description") ?></th>
+            <th><?= __("Action") ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        /** @var \Lofmp\CouponCode\Block\MarketPlace\Coupon\Coupon $couponBlock */
+        $couponBlock = $block->getLayout()
+            ->createBlock(\Lofmp\CouponCode\Block\MarketPlace\Coupon\Coupon::class);
+
+        $coupons = $couponBlock->getAvailableCouponCode();
+        ?>
+
+        <?php if ($coupons && count($coupons)): ?>
+            <?php foreach ($coupons as $coupon): ?>
+                
+                <tr>
+                    <td><strong><?= $block->escapeHtml($coupon['code']) ?></strong></td>
+                    <td><?= $block->escapeHtml($coupon['description'] ?? '') ?></td>
+                    <td>
+                        <button type="button"
+                                class="action-primary select-coupon"
+                                data-code="<?= $block->escapeHtml($coupon['code']) ?>">
+                            <?= __("Use") ?>
+                        </button>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="3"><?= __("No available coupons") ?></td>
+            </tr>
+        <?php endif; ?>
+        </tbody>
+    </table>
+</div>
+
 </form>
 <style>
-    .image-thumnail {
+    .image-thumbnail {
         background-image: url("<?= $this->helper('Magento\Cms\Helper\Wysiwyg\Images')->getBaseUrl().'catalog/product'.$request->getImage();?>");
-        width: 65px;
-        height: 65px;
+        width: 60px;
+        height: 85px;
         background-position: center center;
         background-repeat: no-repeat;
         background-size: cover
     }
+
+    .quote-coupon-code {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    #open-coupon-popup {
+        white-space: nowrap;
+    }
 </style>
+<script>
+require([
+    "jquery",
+    "Magento_Ui/js/modal/modal"
+], function ($, modal) {
+
+    var popup = modal({
+        title: "Available Coupons",
+        type: "popup",
+        responsive: true,
+        innerScroll: true,
+        buttons: []
+    }, $('#coupon-popup'));
+
+    $('#open-coupon-popup').on('click', function () {
+        $('#coupon-popup').modal('openModal');
+    });
+
+    $(document).on('click', '.select-coupon', function () {
+        var code = $(this).data('code');
+        $('#coupon_code_input').val(code);
+        $('#coupon-popup').modal('closeModal');
+    });
+
+});
+</script>

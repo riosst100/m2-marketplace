@@ -25,10 +25,6 @@
             <item name="deps" xsi:type="string">transaction_listing.transaction_listing_data_source</item>
         </item>
         <item name="spinner" xsi:type="string">transaction_columns</item>
-        <item name="buttons" xsi:type="array">
-            <item name="add" xsi:type="array">
-            </item>
-        </item>
     </argument>
     <dataSource name="transaction_listing_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
@@ -162,7 +158,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Order ID</item>
+                    <item name="label" xsi:type="string" translate="true">Order Number</item>
                     <item name="sortTransaction" xsi:type="number">15</item>
                 </item>
             </argument>
@@ -171,7 +167,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Product Name</item>
+                    <item name="label" xsi:type="string" translate="true">Product</item>
                     <item name="sortTransaction" xsi:type="number">30</item>
                 </item>
             </argument>
@@ -199,7 +195,7 @@
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Lof_MarketPlace/js/grid/columns/link</item>
-                    <item name="label" xsi:type="string" translate="true">Seller</item>
+                    <item name="label" xsi:type="string" translate="true">Store</item>
                     <item name="sortOrder" xsi:type="number">90</item>
                 </item>
             </argument>

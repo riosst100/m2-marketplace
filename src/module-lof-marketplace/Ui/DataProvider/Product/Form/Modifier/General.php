@@ -337,6 +337,7 @@ class General extends AbstractModifier
                     'handleNameChanges' => '${$.provider}:data.product.name',
                     'handleDescriptionChanges' => '${$.provider}:data.product.description',
                     'handleSkuChanges' => '${$.provider}:data.product.sku',
+                    'handleSellerSkuChanges' => '${$.provider}:data.product.supplier_sku',
                     'handleColorChanges' => '${$.provider}:data.product.color',
                     'handleCountryChanges' => '${$.provider}:data.product.country_of_manufacture',
                     'handleGenderChanges' => '${$.provider}:data.product.gender',
@@ -363,8 +364,16 @@ class General extends AbstractModifier
             ]
         );
 
-        $namePath = $this->arrayManager->findPath(ProductAttributeInterface::CODE_NAME, $meta, null, 'children');
+        $sellerSkuPath = $this->arrayManager->findPath('supplier_sku', $meta, null, 'children');
+        return $this->arrayManager->merge(
+            $sellerSkuPath . static::META_CONFIG_PATH,
+            $meta,
+            [
+                'valueUpdate' => 'keyup'
+            ]
+        );
 
+        $namePath = $this->arrayManager->findPath(ProductAttributeInterface::CODE_NAME, $meta, null, 'children');
         return $this->arrayManager->merge(
             $namePath . static::META_CONFIG_PATH,
             $meta,

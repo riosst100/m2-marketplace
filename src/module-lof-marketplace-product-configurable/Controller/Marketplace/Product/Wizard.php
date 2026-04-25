@@ -33,6 +33,12 @@ use Magento\Catalog\Model\Product;
  */
 class Wizard extends \Magento\Framework\App\Action\Action
 {
+    protected $request;
+    protected $registry;
+    protected $productFactory;
+    protected $storeFactory;
+
+
     /**
      * @var Builder
      */

@@ -53,7 +53,7 @@ class Index extends \Magento\Backend\App\Action
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Lof_Quickrfq::quickrfq');
+        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::manage_seller_rfq');
     }
 
     /**
@@ -66,10 +66,10 @@ class Index extends \Magento\Backend\App\Action
 
         /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
-        $resultPage->setActiveMenu('Lof_Quickrfq::quickrfq');
+        $resultPage->setActiveMenu('CoreMarketplace_MarketPlace::manage_seller_rfq');
         $resultPage->addBreadcrumb(__('RFQ'), __('RFQ'));
         $resultPage->addBreadcrumb(__('Manage Quotes'), __('Manage Quotes'));
-        $resultPage->getConfig()->getTitle()->prepend(__('Manage RFQ\'s'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Seller | Manage Offers'));
 
         return $resultPage;
     }

@@ -6,4 +6,75 @@ type Query {
         order_id: String
         code: String 
     ): CustomerOrder @resolver(class: "Lof\\TrackorderGraphQl\\Model\\Resolver\\TrackOrder") @deprecated(reason: "Track Order Info from customer instead") @cache(cacheable: false)
+    trackOrder(increment_id: String!): TrackOrderData @resolver(class: "Lof\\TrackorderGraphQl\\Model\\Resolver\\TrackOrderRajaOngkir")
+}
+
+type StoreConfig {
+    order_status_canceled: String
+    order_status_closed: String
+    order_status_complete: String
+    order_status_fraud: String
+    order_status_holded: String
+    order_status_payment_review: String
+    order_status_paypal_canceled_reversal: String
+    order_status_paypal_reversed: String
+    order_status_pending: String
+    order_status_pending_payment: String
+    order_status_pending_paypal: String
+    order_status_processing: String
+}
+
+type TrackOrderData {
+    delivered: Boolean
+    summary: TrackOrderSummary
+    details: TrackOrderDetails
+    delivery_status: TrackOrderDeliveryStatus
+    manifest: [TrackOrderManifest]
+}
+
+type TrackOrderSummary {
+    courier_code: String
+    courier_name: String
+    waybill_number: String
+    service_code: String
+    waybill_date: String
+    shipper_name: String
+    receiver_name: String
+    origin: String
+    destination: String
+    status: String
+}
+
+type TrackOrderDetails {
+    waybill_number: String
+    waybill_date: String
+    waybill_time: String
+    weight: String
+    origin: String
+    destination: String
+    shipper_name: String
+    shipper_address1: String
+    shipper_address2: String
+    shipper_address3: String
+    shipper_city: String
+    receiver_name: String
+    receiver_address1: String
+    receiver_address2: String
+    receiver_address3: String
+    receiver_city: String
+}
+
+type TrackOrderDeliveryStatus {
+    status: String
+    pod_receiver: String
+    pod_date: String
+    pod_time: String
+}
+
+type TrackOrderManifest {
+    manifest_code: String
+    manifest_description: String
+    manifest_date: String
+    manifest_time: String
+    city_name: String
 }

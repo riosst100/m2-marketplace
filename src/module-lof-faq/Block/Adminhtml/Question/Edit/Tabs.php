@@ -42,21 +42,21 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
                     'content' => $this->getLayout()->createBlock('Lof\Faq\Block\Adminhtml\Question\Edit\Tab\Main')->toHtml()
                 ]
             );
-        $this->addTab(
-                'author',
-                [
-                    'label' => __('Author'),
-                    'content' => $this->getLayout()->createBlock('Lof\Faq\Block\Adminhtml\Question\Edit\Tab\Author')->toHtml()
-                ]
-            );
-        $this->addTab(
-                'products',
-                [
-                    'label' => __('Products'),
-                    'url' => $this->getUrl('loffaq/*/products', ['_current' => true]),
-                    'class' => 'ajax'
-                ]
-            );
+        // $this->addTab(
+        //         'author',
+        //         [
+        //             'label' => __('Author'),
+        //             'content' => $this->getLayout()->createBlock('Lof\Faq\Block\Adminhtml\Question\Edit\Tab\Author')->toHtml()
+        //         ]
+        //     );
+        // $this->addTab(
+        //         'products',
+        //         [
+        //             'label' => __('Products'),
+        //             'url' => $this->getUrl('loffaq/*/products', ['_current' => true]),
+        //             'class' => 'ajax'
+        //         ]
+        //     );
         $this->addTab(
                 'relatedquestions',
                 [
@@ -65,19 +65,19 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
                     'class' => 'ajax'
                 ]
             );
-        $this->addTab(
-                'design',
-                [
-                    'label' => __('Design'),
-                    'content' => $this->getLayout()->createBlock('Lof\Faq\Block\Adminhtml\Question\Edit\Tab\Design')->toHtml()
-                ]
-            );
-        $this->addTab(
-                'meta',
-                [
-                    'label' => __('SEO'),
-                    'content' => $this->getLayout()->createBlock('Lof\Faq\Block\Adminhtml\Question\Edit\Tab\Meta')->toHtml()
-                ]
-            );
+        // $this->addTab(
+        //         'design',
+        //         [
+        //             'label' => __('Design'),
+        //             'content' => $this->getLayout()->createBlock('Lof\Faq\Block\Adminhtml\Question\Edit\Tab\Design')->toHtml()
+        //         ]
+        //     );
+        // $this->addTab(
+        //         'meta',
+        //         [
+        //             'label' => __('SEO'),
+        //             'content' => $this->getLayout()->createBlock('Lof\Faq\Block\Adminhtml\Question\Edit\Tab\Meta')->toHtml()
+        //         ]
+        //     );
     }
 }

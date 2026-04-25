@@ -60,6 +60,15 @@ class MessageAdmin extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $this->_init('lof_marketplace_message_admin', 'message_id');
     }
 
+    protected function _beforeSave(\Magento\Framework\Model\AbstractModel $object)
+    {
+        if ($object->getId() !== null) {
+            $object->setIsRead(0);
+        }
+
+        return parent::_beforeSave($object);
+    }
+
     /**
      * @param \Magento\Framework\Model\AbstractModel $object
      * @return MessageAdmin|void

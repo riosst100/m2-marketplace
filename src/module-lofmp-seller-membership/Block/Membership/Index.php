@@ -27,6 +27,9 @@ use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductColl
 
 class Index extends \Magento\Framework\View\Element\Template
 {
+    protected $_logger;
+
+
     /**
      * @var \Magento\Store\Model\StoreManagerInterface
      */
@@ -345,7 +348,7 @@ class Index extends \Magento\Framework\View\Element\Template
      */
     public function _prepareLayout()
     {
-        $this->pageConfig->getTitle()->set(__('My Membership Plans'));
+        // $this->pageConfig->getTitle()->set(__('My Membership Plans'));
         return parent::_prepareLayout();
     }
 }

@@ -28,6 +28,10 @@ use Lofmp\SellerMembership\Model\ResourceModel\Cancelrequest\Collection as Cance
 
 class Collection extends CancelrequestCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var
      */

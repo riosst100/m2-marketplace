@@ -27,7 +27,7 @@
 <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
         <div class="x_title">
-            <h2><?= $block->escapeHtml(__('Post a Reply')) ?></h2>
+            <h2><?= $block->escapeHtml(__('Send Message to Admin')) ?></h2>
             <div class="clearfix"></div>
         </div>
         <div class="x_content">
@@ -66,8 +66,8 @@
                                value="<?= $block->escapeHtmlAttr($this->getSeller()->getName()) ?>"/>
                         <input type="hidden" name="seller_email"
                                value="<?= $block->escapeHtmlAttr($this->getSeller()->getEmail()) ?>"/>
-                        <button class="btn btn-primary" type="reset"><?= $block->escapeHtml(__('Reset')) ?></button>
-                        <button type="submit" class="btn btn-success"><?= $block->escapeHtml(__('Submit')) ?></button>
+                        <!-- <button class="btn btn-primary" type="reset"><?= $block->escapeHtml(__('Reset')) ?></button> -->
+                        <button type="submit" class="btn btn-success"><?= $block->escapeHtml(__('Send Message')) ?></button>
                     </div>
                 </div>
             </form>

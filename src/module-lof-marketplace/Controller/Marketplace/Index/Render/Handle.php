@@ -42,6 +42,7 @@ class Handle extends AbstractAction
         $this->_view->loadLayout(['default', $handle], true, true, false);
 
         $uiComponent = $this->_view->getLayout()->getBlock($namespace);
+        // die($uiComponent." dan ".$namespace);
         $response = $uiComponent instanceof UiComponent ? $uiComponent->toHtml() : '';
 
         if ($buttons) {

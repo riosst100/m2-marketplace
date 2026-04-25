@@ -80,23 +80,24 @@ class Category extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      */
     protected function _afterSave(\Magento\Framework\Model\AbstractModel $object)
     {
-        $oldStores = $this->lookupStoreIds($object->getId());
-        $newStores = (array)$object->getStores();
+        $oldWebsites = $this->lookupWebsiteIds($object->getId());
+        $newWebsites = (array)$object->getWebsites();
 
         $table = $this->getTable('lof_faq_category_store');
-        $insert = array_diff($newStores, $oldStores);
-        $delete = array_diff($oldStores, $newStores);
+        $insert = array_diff($newWebsites, $oldWebsites);
+        $delete = array_diff($oldWebsites, $newWebsites);
 
         if ($delete) {
-            $where = ['category_id = ?' => (int)$object->getId(), 'store_id IN (?)' => $delete];
+            $where = ['category_id = ?' => (int)$object->getId(), 'website_id IN (?)' => $delete];
             $this->getConnection()->delete($table, $where);
         }
 
         if ($insert) {
             $data = [];
             foreach ($insert as $storeId) {
-                $data[] = ['category_id' => (int)$object->getId(), 'store_id' => (int)$storeId];
+                $data[] = ['category_id' => (int)$object->getId(), 'website_id' => (int)$storeId];
             }
+            
             $this->getConnection()->insertMultiple($table, $data);
         }
 
@@ -131,9 +132,8 @@ class Category extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     protected function _afterLoad(\Magento\Framework\Model\AbstractModel $object)
     {
         if ($object->getId()) {
-            $stores = $this->lookupStoreIds($object->getId());
-            $object->setData('store_id', $stores);
-            $object->setData('stores', $stores);
+            $websites = $this->lookupWebsiteIds($object->getId());
+            $object->setData('websites', $websites);
         }
 
         if ($id = $object->getId()) {
@@ -162,21 +162,21 @@ class Category extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     {
         $select = parent::_getLoadSelect($field, $value, $object);
 
-        if ($object->getStoreId()) {
-            $stores = [(int)$object->getStoreId(), \Magento\Store\Model\Store::DEFAULT_STORE_ID];
+        if ($object->getWebsiteId()) {
+            $websites = [(int)$object->getWebsiteId(), 0];
 
             $select->join(
                 ['cbs' => $this->getTable('lof_faq_category_store')],
                 $this->getMainTable() . '.category_id = cbs.category_id',
-                ['store_id']
+                ['website_id']
                 )->where(
                 'is_active = ?',
                 1
                 )->where(
-                'cbs.store_id in (?)',
-                $stores
+                'cbs.website_id in (?)',
+                $websites
                 )->order(
-                'store_id DESC'
+                'website_id DESC'
                 )->limit(
                 1
                 );
@@ -195,9 +195,9 @@ class Category extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     public function getIsUniqueBlockToStores(\Magento\Framework\Model\AbstractModel $object)
     {
         if ($this->_storeManager->hasSingleStore()) {
-            $stores = [\Magento\Store\Model\Store::DEFAULT_STORE_ID];
+            $websites = [\Magento\Store\Model\Store::DEFAULT_STORE_ID];
         } else {
-            $stores = (array)$object->getData('stores');
+            $websites = (array)$object->getData('websites');
         }
 
         $select = $this->getConnection()->select()->from(
@@ -210,8 +210,8 @@ class Category extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
             'cb.identifier = ?',
             $object->getData('identifier')
             )->where(
-            'cbs.store_id IN (?)',
-            $stores
+            'cbs.website_id IN (?)',
+            $websites
             );
 
             if ($object->getId()) {
@@ -231,13 +231,13 @@ class Category extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      * @param int $id
      * @return array
      */
-    public function lookupStoreIds($id)
+    public function lookupWebsiteIds($id)
     {
         $connection = $this->getConnection();
 
         $select = $connection->select()->from(
             $this->getTable('lof_faq_category_store'),
-            'store_id'
+            'website_id'
             )->where(
             'category_id = :category_id'
             );

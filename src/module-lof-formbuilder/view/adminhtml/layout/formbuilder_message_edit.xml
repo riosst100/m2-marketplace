@@ -27,9 +27,9 @@
     </head>
     <update handle="editor"/>
     <body>
-        <referenceContainer name="page.main.actions">
+        <!-- <referenceContainer name="page.main.actions">
             <block class="Lof\Formbuilder\Block\Adminhtml\Menu" name="lof_formbuilder_menu" />
-        </referenceContainer>
+        </referenceContainer> -->
         <referenceContainer name="content">
             <block class="Lof\Formbuilder\Block\Adminhtml\Message\Edit" name="formbuilder_form_edit"/>
         </referenceContainer>
@@ -42,14 +42,14 @@
                     <argument name="name" xsi:type="string">main_section</argument>
                     <argument name="block" xsi:type="string">lof_formbuilder_edit_tab_main</argument>
                 </action>
-                <action method="addTab">
+                <!-- <action method="addTab">
                     <argument name="name" xsi:type="string">client_section</argument>
                     <argument name="block" xsi:type="string">lof_formbuilder_edit_tab_client</argument>
-                </action>
-                <action method="addTab">
+                </action> -->
+                <!-- <action method="addTab">
                     <argument name="name" xsi:type="string">email_section</argument>
                     <argument name="block" xsi:type="string">lof_formbuilder_edit_tab_email</argument>
-                </action>
+                </action> -->
             </block>
         </referenceContainer>
     </body>

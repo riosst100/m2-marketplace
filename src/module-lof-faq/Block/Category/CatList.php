@@ -90,6 +90,7 @@ class CatList extends \Magento\Framework\View\Element\Template
         $collection = $this->_categoryFactory->getCollection()
         ->addFieldToFilter('is_active',1)
         ->addFieldToFilter('include_in_sidebar',1)
+        ->addFieldToFilter('category_type','supplier')
         ->addStoreFilter($store)
         ->setCurPage(1);
         $collection->getSelect()->order('position ASC');
@@ -127,17 +128,50 @@ class CatList extends \Magento\Framework\View\Element\Template
     }
 
     public function drawItem($collection, $html = ''){
+        $objectManager       = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->urlBuilder = $objectManager->create('\Magento\Framework\UrlInterface');
+
+        $currentUrl = $this->urlBuilder->getCurrentUrl();
+
+        $count = 0;
+
+        if (str_contains($currentUrl, "documentation/id/") || str_contains($currentUrl, "search")) {
+            $html .= '<li class="">';
+            $html .= '<a href="' . $this->_faqHelper->getDocsUrl() . '"><span style="margin-right:10px"><i class="fa fa-arrow-left" aria-hidden="true"></i></span>All Category</a>';
+            $html .= '</li>';
+            return $html;
+        }
+
         foreach ($collection as $_cat) {
+
+
+            if (!$this->getNumberQuestion($_cat->getId())) {
+                continue;
+            }
+        
+            $catIdentifier = $this->_faqHelper->getCategoryIdentifier($_cat);
+            // dd($catIdentifier);
+            
+
+            $path = parse_url($currentUrl, PHP_URL_PATH); // /id/documentation/seller23
+            $segments = explode('/', trim($path, '/'));
+            $lastKey = end($segments);
+
+            $isActive = $lastKey == $catIdentifier ? true : false;
 
             $children = $_cat->getChildren();
             $class = '';
             if($children) $class = "class='level" . $_cat->getLevel() . "' parent";
+            if($isActive || $count++ == 0) $class = "class='active'";
+            // dd($class);
             $html .= '<li ' . $class . ' >';
-            $html .= '<a href="' . $this->_faqHelper->getCategoryUrl($_cat) .'">';
+            $html .= '<a href="#" class="category_open" data-id="' . $_cat->getId() . '">';
             if($_cat->getParentId() == 0){
-            $html .= $_cat->getTitle() . '  ('.$this->getNumberQuestion($_cat->getId()).')';
+            // $html .= $_cat->getTitle() . '  ('.$this->getNumberQuestion($_cat->getId()).')';
+            $html .= $_cat->getTitle();
             }else{
-                $html .= $_cat->getTitle() . '  ('.$this->getNumberQuestionChild($_cat->getId()).')';
+                // $html .= $_cat->getTitle() . '  ('.$this->getNumberQuestionChild($_cat->getId()).')';
+                $html .= $_cat->getTitle();
             }
             $html .= '</a>';
             if($children){

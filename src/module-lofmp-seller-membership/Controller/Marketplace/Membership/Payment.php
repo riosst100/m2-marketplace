@@ -26,6 +26,9 @@ use Magento\Framework\App\Action\Context;
 
 class Payment extends \Magento\Framework\App\Action\Action
 {
+    protected $helper_membership;
+
+
     const FLAG_IS_URLS_CHECKED = 'check_url_settings';
 
     /**

@@ -21,6 +21,6 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-    	<add id="Lofmp_FlatRateShipping::shipping" title="Flat Rate Shipping" module="Lofmp_FlatRateShipping" action="lofmpflatrateshipping/shipping/view" sortOrder="145" parent="Lof_MarketPlace::shipping" resource="Lofmp_FlatRateShipping::shipping"/>
+    	<add id="Lofmp_FlatRateShipping::shipping" title="Manage Flat Rate Shipping" module="Lofmp_FlatRateShipping" action="lofmpflatrateshipping/shipping/view" sortOrder="145" parent="Lof_MarketPlace::shipping" resource="Lofmp_FlatRateShipping::shipping"/>
     </menu>
 </config>

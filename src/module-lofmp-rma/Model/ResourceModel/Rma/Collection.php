@@ -31,6 +31,23 @@ namespace Lofmp\Rma\Model\ResourceModel\Rma;
  */
 class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
 {
+    protected $entityFactory;
+    protected $logger;
+    protected $fetchStrategy;
+    protected $eventManager;
+    protected $statusCollectionFactory;
+    protected $storeManager;
+    protected $_localeDate;
+    protected $connection;
+    protected $resource;
+    protected $_from_date_filter;
+    protected $_to_date_filter;
+    protected $_product_id_filter;
+    protected $periodFormat;
+    protected $selectedColumns;
+    protected $reportType;
+
+
 
      protected $_date_column_filter = "main_table.created_at";
      protected $_period_type = "";

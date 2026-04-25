@@ -22,6 +22,8 @@
 namespace Lof\MarketPlace\Controller\Marketplace\Product;
 
 use Magento\Framework\App\Action\Context;
+use Lof\MarketPlace\Model\ResourceModel\RabbitmqImportNotification;
+use Lof\MarketPlace\Model\RabbitmqImportNotificationFactory;
 
 class Import extends \Magento\Customer\Controller\AbstractAccount
 {
@@ -51,6 +53,8 @@ class Import extends \Magento\Customer\Controller\AbstractAccount
      * @var \Lof\MarketPlace\Model\SellerFactory
      */
     protected $sellerFactory;
+    protected $notificationFactory;
+    protected $notificationResource;
 
     /**
      * Import constructor.
@@ -65,7 +69,9 @@ class Import extends \Magento\Customer\Controller\AbstractAccount
         \Magento\Customer\Model\Session $customerSession,
         \Lof\MarketPlace\Model\SellerFactory $sellerFactory,
         \Magento\Framework\Url $frontendUrl,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory
+        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
+        RabbitmqImportNotificationFactory $notificationFactory,
+        RabbitmqImportNotification $notificationResource
     ) {
         parent::__construct($context);
 
@@ -74,6 +80,8 @@ class Import extends \Magento\Customer\Controller\AbstractAccount
         $this->sellerFactory = $sellerFactory;
         $this->session = $customerSession;
         $this->resultPageFactory = $resultPageFactory;
+        $this->notificationFactory = $notificationFactory;
+        $this->notificationResource = $notificationResource;
     }
 
     /**
@@ -116,8 +124,21 @@ class Import extends \Magento\Customer\Controller\AbstractAccount
                 return $this->_redirect('catalog/dashboard');
             }
 
-            $this->_view->loadLayout();
-            $this->_view->renderLayout();
+            // $this->_view->loadLayout();
+            // $this->_view->renderLayout();
+            $notifId = (int) $this->getRequest()->getParam('notif_id');
+            if ($notifId) {
+                $notif = $this->notificationFactory->create();
+                $this->notificationResource->load($notif, $notifId);
+                if ($notif->getId()) {
+                    $notif->setIsRead(1);
+                    $this->notificationResource->save($notif);
+                }
+            }
+
+            $resultPage = $this->resultPageFactory->create();
+            $resultPage->getConfig()->getTitle()->set(__('Bulk Upload Products'));
+            return $resultPage;
         } elseif ($customerSession->isLoggedIn() && $status == 0) {
             $this->_redirectUrl($this->getFrontendUrl('lofmarketplace/seller/becomeseller'));
         } else {

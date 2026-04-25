@@ -178,11 +178,17 @@ class ConvertQuote extends \Magento\Framework\App\Helper\AbstractHelper
                         $quoteItem->setCustomPrice($customPrice);
                         $quoteItem->setOriginalCustomPrice($customPrice);
                         $quoteItem->setOriginalPrice($old_price);
+                        $quoteItem->getProduct()->setIsSuperMode(true);
                     }
+                    $quoteItem->getProduct()->setIsSuperMode(true);
                     $quoteItem->setDescription(__("Added item from Quick RFQ ID %1", $quoteModel->getQuickrfqId()));
-                    $quoteItem->save();
+                    // $quoteItem->save();
                     
+                    // $mageQuoteModel->collectTotals();
+                    $mageQuoteModel->setTotalsCollectedFlag(false);
                     $mageQuoteModel->collectTotals();
+                    $mageQuoteModel->save();
+                    // $this->cartRepository->save($mageQuoteModel);
                 }
                 //Step 4: Auto Apply coupon code if admin added
                 if ($cartItem && $quoteModel->getCouponCode() && $this->helperData->getConfig("quote_process/auto_apply_coupon")) {

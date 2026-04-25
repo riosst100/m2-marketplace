@@ -29,6 +29,9 @@ use Lof\PreOrder\Model\ResourceModel\PreOrder\CollectionFactory;
 
 class massNotify extends \Lof\PreOrder\Controller\Adminhtml\Preorder
 {
+    protected $filter;
+
+
      /**
       * @var \Lof\PreOrder\Helper\Data
       */

@@ -27,6 +27,10 @@
                 <item name="faq_question_listing_data_source" xsi:type="string">Lof\Faq\Model\ResourceModel\Question\Grid\Collection</item>
                 <item name="faq_category_listing_data_source" xsi:type="string">Lof\Faq\Model\ResourceModel\Category\Grid\Collection</item>
                 <item name="faq_tag_listing_data_source" xsi:type="string">Lof\Faq\Model\ResourceModel\Tag\Grid\Collection</item>
+
+                <item name="faq_questionuser_listing_data_source" xsi:type="string">Lof\Faq\Model\ResourceModel\QuestionUser\Grid\Collection</item>
+                <item name="faq_categoryuser_listing_data_source" xsi:type="string">Lof\Faq\Model\ResourceModel\CategoryUser\Grid\Collection</item>
+                <item name="faq_taguser_listing_data_source" xsi:type="string">Lof\Faq\Model\ResourceModel\TagUser\Grid\Collection</item>
             </argument>
         </arguments>
     </type>
@@ -54,6 +58,32 @@
             <argument name="resourceModel" xsi:type="string">Lof\Faq\Model\ResourceModel\Tag</argument>
         </arguments>
     </type>
+
+    <type name="Lof\Faq\Model\ResourceModel\QuestionUser\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">lof_faq_question</argument>
+            <argument name="eventPrefix" xsi:type="string">faq_question_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">question_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Lof\Faq\Model\ResourceModel\QuestionUser</argument>
+        </arguments>
+    </type>
+    <type name="Lof\Faq\Model\ResourceModel\CategoryUser\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">lof_faq_category</argument>
+            <argument name="eventPrefix" xsi:type="string">faq_category_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">faqcategory_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Lof\Faq\Model\ResourceModel\CategoryUser</argument>
+        </arguments>
+    </type>
+    <type name="Lof\Faq\Model\ResourceModel\TagUser\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">lof_faq_question_tag</argument>
+            <argument name="eventPrefix" xsi:type="string">faq_tag_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">faqtag_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Lof\Faq\Model\ResourceModel\TagUser</argument>
+        </arguments>
+    </type>
+
     <virtualType name="FaqGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
         <arguments>
             <argument name="appliers" xsi:type="array">

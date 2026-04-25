@@ -33,6 +33,10 @@ use Magento\Framework\Stdlib\ArrayManager;
 
 class Categories extends AbstractModifier
 {
+    protected $sellerHelper;
+    protected $storeManager;
+
+
     /**#@+
      * Category tree cache id
      */

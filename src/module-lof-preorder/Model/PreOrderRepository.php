@@ -32,7 +32,7 @@ use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Reflection\DataObjectProcessor;
-use Lof\PreOrder\Model\ResourceModel\PreOrder as ResourcePreOrder;
+use Lofmp\PreOrder\Model\ResourceModel\PreOrder as ResourcePreOrder;
 use Lof\PreOrder\Model\ResourceModel\PreOrder\CollectionFactory as PreOrderCollectionFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -44,6 +44,9 @@ use Magento\Quote\Api\CartRepositoryInterface;
 
 class PreOrderRepository implements PreOrderRepositoryInterface
 {
+    protected $_productCollection;
+
+
 
     protected $resource;
 

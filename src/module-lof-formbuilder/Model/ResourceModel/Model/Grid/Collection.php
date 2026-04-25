@@ -36,6 +36,10 @@ use Psr\Log\LoggerInterface;
 
 class Collection extends ModelCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var AggregationInterface
      */

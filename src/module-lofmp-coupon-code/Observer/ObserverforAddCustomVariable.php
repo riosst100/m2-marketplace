@@ -25,6 +25,9 @@ use Magento\Framework\App\ObjectManager;
 
 class ObserverforAddCustomVariable implements ObserverInterface
 {
+    protected $rulesFactory;
+
+
 
     protected $ruleFactory;
     protected $couponGenerator;

@@ -93,7 +93,7 @@ class Categories implements \Lof\Faq\Api\CategoriesInterface
      */
     public function save(\Lof\Faq\Api\Data\CategoryInterface $category)
     {
-        if ($category['title'] && $category['identifier'] && $category['stores']) {
+        if ($category['title'] && $category['identifier'] && $category['websites']) {
             try {
                 $this->resource->save($category);
             } catch (\Exception $exception) {

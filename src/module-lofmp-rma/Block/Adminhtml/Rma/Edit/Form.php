@@ -27,6 +27,9 @@ use Magento\Framework\Data\FormFactory;
 
 class Form extends WidgetForm
 {
+    protected $formFactory;
+
+
     /**
      * Form constructor.
      *

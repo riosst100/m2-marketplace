@@ -23,6 +23,9 @@ namespace Lof\MarketPlace\Block\Seller;
 
 class Login extends \Magento\Framework\View\Element\Template
 {
+    protected $_isScopePrivate;
+
+
     /**
      * @var int
      */

@@ -30,6 +30,12 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Ui\Component\MassAction\Filter;
 
 class MassApprove extends \Magento\Backend\App\Action {
+    protected $filter;
+    protected $collectionFactory;
+    protected $sellerAmountFactory;
+    protected $amountTransactionFactory;
+
+
     public function __construct(
         Context $context,
         Filter $filter,

@@ -29,6 +29,9 @@ use Magento\Backend\Block\MenuItemChecker;
  */
 class Menu extends \Magento\Backend\Block\Menu
 {
+    protected $anchorRenderer;
+
+
     /**
      * @var \Lof\MarketPlace\Model\Menu\Config
      */
@@ -156,7 +159,7 @@ class Menu extends \Magento\Backend\Block\Menu
      * @return string
      */
     protected function _renderAnchor($menuItem, $level, $hasChildren = false)
-    {
+    {   
         $output = '<a href="' . ($menuItem->getUrl() ? $menuItem->getUrl() : "#") . '" '
             . $this->_renderItemAnchorTitle($menuItem)
             . $this->_renderItemOnclickFunction($menuItem)
@@ -165,7 +168,11 @@ class Menu extends \Magento\Backend\Block\Menu
             . '<span>' . $this->_getAnchorLabel($menuItem) . '</span>'
             . ($hasChildren ? '<span class="fa fa-chevron-down"></span>' : '')
             . '</a>';
-
+        if ($menuItem->getId() == "CoreMarketplace_MarketPlace::add_product_database") {
+            $output .= '<div class="menu-desc">
+            Quickly create a product using existing data from the platform database.
+            </div>';
+        }
         return $output;
     }
 
@@ -216,9 +223,31 @@ class Menu extends \Magento\Backend\Block\Menu
         if (!$menuItem->hasChildren()) {
             return $output;
         }
-        $colStops = null;
+        // $colStops = null;
+
+        // $output .= $this->renderNavigation($menuItem->getChildren(), $level + 1, $limit, $colStops);
+        $output .= '<div class="submenu"' . ($level == 0 && isset($id) ? ' aria-labelledby="' . $id . '"' : '') . '>';
+        $colStops = [];
+        if ($level == 0 && $limit) {
+            $colStops = $this->_columnBrake($menuItem->getChildren(), $limit);
+            $output .= '<strong class="submenu-title">' . $this->_getAnchorLabel($menuItem) . '</strong>';
+            $output .= '<a href="#" class="action-close _close" data-role="close-submenu"> </a>';
+        }
+
+        if ($id == "menu-coremarketplace-productattributeslink-sets-database"){
+            $output .= '<div style="padding: 15px; background-color: #455a6d;color: #d5ebff; font-size: 14px;  border: 1px solid #657c91;margin: 0px 40px 20px 40px; font-weight: 400;">Browse our comprehensive Toys, Cards, and Games database to streamline your product creation process.</div>';
+        }
+
+        if ($id == "menu-coremarketplace-marketplace-catalog-products"){
+            $output .= '<div style="padding: 15px; background-color: #455a6d;color: #d5ebff; font-size: 14px;  border: 1px solid #657c91;margin: 0px 40px 20px 40px; font-weight: 400;">Select a category to view and manage your product listings.</div>';
+        }
+
+        if ($id == "menu-coremarketplace-marketplace-catalog-add-products"){
+            $output .= '<div style="padding: 15px; background-color: #455a6d;color: #d5ebff; font-size: 14px;  border: 1px solid #657c91;margin: 0px 40px 20px 40px; font-weight: 400;">How would you like to create a product?</div>';
+        }
 
         $output .= $this->renderNavigation($menuItem->getChildren(), $level + 1, $limit, $colStops);
+        $output .= '</div>';
         return $output;
     }
 
@@ -252,14 +281,23 @@ class Menu extends \Magento\Backend\Block\Menu
      */
     public function renderNavigation($menu, $level = 0, $limit = 0, $colBrakes = [])
     {
+        $limit = 10;
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->anchorRenderer = $objectManager->create(\Magento\Backend\Block\AnchorRenderer::class);
+
         $itemPosition = 1;
         $outputStart = '<ul ' . (0 == $level ? ' role="menubar"' : 'role="menu"')
             . ' class="' . (0 == $level ? "nav side-menu" : "nav child_menu") . '">';
         $output = '';
 
-        /** @var $menuItem \Magento\Backend\Model\Menu\Item */
         foreach ($this->_getMenuIterator($menu) as $menuItem) {
+
             $menuId = $menuItem->getId();
+            if ($menuItem->getId() == "CoreMarketplace_MarketPlace::catalog_add_products") {
+                $limit = 7;
+            } else {
+                $limit = 10;
+            }
             $itemName = substr($menuId, strrpos($menuId, '::') + 2);
             $itemClass = str_replace('_', '-', strtolower($itemName));
 
@@ -269,12 +307,22 @@ class Menu extends \Magento\Backend\Block\Menu
 
             $id = $this->getJsId($menuItem->getId());
             $subMenu = $this->_addSubMenu($menuItem, $level, $limit, $id);
-            $anchor = $this->_renderAnchor($menuItem, $level, $subMenu);
+
+            if ($level == 0) {
+                $anchor = $this->_renderAnchor($menuItem, $level, $subMenu);
+            } else {
+                $anchor = $this->anchorRenderer->renderAnchor($this->getActiveItemModel(), $menuItem, $level);
+            }
+
             $output .= '<li ' . $this->getUiId($menuItem->getId())
                 . ' class="' . ($subMenu ? "nav child_menu " : '') . 'item-' . $itemClass . ' '
                 . $this->_renderItemCssClass($menuItem, $level)
                 . ($level == 0 ? '" id="' . $id . '" aria-haspopup="true' : '')
-                . '" role="menu-item">' . $anchor . $subMenu . '</li>';
+                . '" role="menu-item">'
+                . $anchor
+                . $subMenu
+                . '</li>';
+
             $itemPosition++;
         }
 

@@ -21,7 +21,7 @@
                     class="Lofmp\CouponCode\Block\MarketPlace\Form\Rule\BackButton"/>
             <button name="save_and_continue"
                     class="Lofmp\CouponCode\Block\MarketPlace\Form\Rule\SaveContinueButton"/>
-
+        
         </buttons>
         <namespace>sellercouponcode_rule_form</namespace>
         <dataScope>data</dataScope>
@@ -74,8 +74,9 @@
                     <item name="label" xsi:type="string" translate="true">Rule Identifier Key</item>
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="validation" xsi:type="array">
-                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="required-entry" xsi:type="boolean">false</item>
                     </item>
+                    <item name="visible" xsi:type="boolean">false</item>
                     <item name="source" xsi:type="string">rule</item>
                     <item name="dataScope" xsi:type="string">rule_key</item>
                 </item>
@@ -104,6 +105,7 @@
                     <item name="label" xsi:type="string" translate="true">Customer Groups</item>
                     <item name="formElement" xsi:type="string">multiselect</item>
                     <item name="source" xsi:type="string">rule</item>
+                    <item name="visible" xsi:type="boolean">false</item>
                     <item name="dataScope" xsi:type="string">customer_group_ids</item>
                 </item>
             </argument>
@@ -162,6 +164,7 @@
                     <item name="label" xsi:type="string" translate="true">Priority</item>
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="source" xsi:type="string">rule</item>
+                    <item name="visible" xsi:type="boolean">false</item>
                     <item name="dataScope" xsi:type="string">sort_order</item>
                 </item>
             </argument>
@@ -287,7 +290,270 @@
             </argument>
         </field>
     </fieldset>
+    <fieldset name="conditions_section" sortOrder="25">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Conditions</label>
+        </settings>
 
+        <!-- Applicable Category -->
+        <field name="category_condition" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="array">
+                    <item name="0" xsi:type="array">
+                        <item name="label" xsi:type="string">All Categories</item>
+                        <item name="value" xsi:type="string">all</item>
+                    </item>
+                    <item name="1" xsi:type="array">
+                        <item name="label" xsi:type="string">Specific Categories</item>
+                        <item name="value" xsi:type="string">specific</item>
+                    </item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Applicable Category</item>
+                    <item name="dataScope" xsi:type="string">category_condition</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                </item>
+            </argument>
+        </field>
+
+        <!-- Select Category (visible only when specific category chosen) -->
+        <field name="select_category" formElement="select">
+            <argument name="data" xsi:type="array">
+                <!-- <item name="options" xsi:type="object">Lofmp\CouponCode\Model\Config\Source\CategoryOptions</item> -->
+                <item name="options" xsi:type="array">
+                    <item name="select" xsi:type="array">
+                        <item name="label" xsi:type="string">All Categories</item>
+                        <item name="value" xsi:type="string"></item>
+                    </item>
+
+                    <item name="actiontoys" xsi:type="array">
+                        <item name="label" xsi:type="string">Action Toys</item>
+                        <item name="value" xsi:type="string">actiontoys</item>
+                    </item>
+
+                    <item name="actiontoysmodelkits" xsi:type="array">
+                        <item name="label" xsi:type="string">Action Toys Model Kits</item>
+                        <item name="value" xsi:type="string">actiontoysmodelkits</item>
+                    </item>
+
+                    <item name="animetoys" xsi:type="array">
+                        <item name="label" xsi:type="string">Anime Toys</item>
+                        <item name="value" xsi:type="string">animetoys</item>
+                    </item>
+
+                    <item name="animemodelkits" xsi:type="array">
+                        <item name="label" xsi:type="string">Anime Model Kits</item>
+                        <item name="value" xsi:type="string">animemodelkits</item>
+                    </item>
+
+                    <item name="gundam" xsi:type="array">
+                        <item name="label" xsi:type="string">Gundam</item>
+                        <item name="value" xsi:type="string">gundam</item>
+                    </item>
+
+                    <item name="fungoods" xsi:type="array">
+                        <item name="label" xsi:type="string">Fun Goods</item>
+                        <item name="value" xsi:type="string">fungoods</item>
+                    </item>
+
+                    <item name="fashiondolls" xsi:type="array">
+                        <item name="label" xsi:type="string">Fashion Dolls</item>
+                        <item name="value" xsi:type="string">fashiondolls</item>
+                    </item>
+
+                    <item name="dollsaccessories" xsi:type="array">
+                        <item name="label" xsi:type="string">Doll Accessories</item>
+                        <item name="value" xsi:type="string">dollsaccessories</item>
+                    </item>
+
+                    <item name="cardgame" xsi:type="array">
+                        <item name="label" xsi:type="string">Collectible Card Games</item>
+                        <item name="value" xsi:type="string">cardgame</item>
+                    </item>
+
+                    <item name="livingcardgames" xsi:type="array">
+                        <item name="label" xsi:type="string">Living Card Games</item>
+                        <item name="value" xsi:type="string">livingcardgames</item>
+                    </item>
+
+                    <item name="miniaturegames" xsi:type="array">
+                        <item name="label" xsi:type="string">Miniature Games</item>
+                        <item name="value" xsi:type="string">miniaturegames</item>
+                    </item>
+
+                    <item name="gamesworkshop" xsi:type="array">
+                        <item name="label" xsi:type="string">Games Workshop</item>
+                        <item name="value" xsi:type="string">gamesworkshop</item>
+                    </item>
+
+                    <item name="sportcards" xsi:type="array">
+                        <item name="label" xsi:type="string">Sport Cards</item>
+                        <item name="value" xsi:type="string">sportcards</item>
+                    </item>
+
+                    <item name="nonsportcards" xsi:type="array">
+                        <item name="label" xsi:type="string">Non Sports Cards</item>
+                        <item name="value" xsi:type="string">nonsportcards</item>
+                    </item>
+
+                    <item name="bricks" xsi:type="array">
+                        <item name="label" xsi:type="string">Bricks</item>
+                        <item name="value" xsi:type="string">bricks</item>
+                    </item>
+
+                    <item name="diecastvehicles" xsi:type="array">
+                        <item name="label" xsi:type="string">Diecast Vehicles</item>
+                        <item name="value" xsi:type="string">diecastvehicles</item>
+                    </item>
+
+                    <item name="diecastaircrafts" xsi:type="array">
+                        <item name="label" xsi:type="string">Diecast Aircrafts</item>
+                        <item name="value" xsi:type="string">diecastaircrafts</item>
+                    </item>
+
+                    <item name="diecastmilitary" xsi:type="array">
+                        <item name="label" xsi:type="string">Diecast Military</item>
+                        <item name="value" xsi:type="string">diecastmilitary</item>
+                    </item>
+
+                    <item name="diecastaccessories" xsi:type="array">
+                        <item name="label" xsi:type="string">Diecast Accessories</item>
+                        <item name="value" xsi:type="string">diecastaccessories</item>
+                    </item>
+
+                    <item name="modelkitsvehicles" xsi:type="array">
+                        <item name="label" xsi:type="string">Model Kits Vehicles</item>
+                        <item name="value" xsi:type="string">modelkitsvehicles</item>
+                    </item>
+
+                    <item name="modelkitsaircrafts" xsi:type="array">
+                        <item name="label" xsi:type="string">Model Kits Aircrafts</item>
+                        <item name="value" xsi:type="string">modelkitsaircrafts</item>
+                    </item>
+
+                    <item name="modelkitsmilitary" xsi:type="array">
+                        <item name="label" xsi:type="string">Model Kits Military</item>
+                        <item name="value" xsi:type="string">modelkitsmilitary</item>
+                    </item>
+
+                    <item name="railway" xsi:type="array">
+                        <item name="label" xsi:type="string">Trains</item>
+                        <item name="value" xsi:type="string">railway</item>
+                    </item>
+
+                    <item name="railwayaccessories" xsi:type="array">
+                        <item name="label" xsi:type="string">Trains Accessories</item>
+                        <item name="value" xsi:type="string">railwayaccessories</item>
+                    </item>
+
+                    <item name="hobbysupplies" xsi:type="array">
+                        <item name="label" xsi:type="string">Hobby Supplies</item>
+                        <item name="value" xsi:type="string">hobbysupplies</item>
+                    </item>
+
+                    <item name="hobbysuppliescardsgames" xsi:type="array">
+                        <item name="label" xsi:type="string">Cards &amp; Games</item>
+                        <item name="value" xsi:type="string">hobbysuppliescardsgames</item>
+                    </item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Select Category</item>
+                    <item name="dataScope" xsi:type="string">select_category</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
+                    <item name="imports" xsi:type="array">
+                        <item name="visible" xsi:type="string">${ $.provider }:data.category_condition == 'specific'</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <!-- Applicable Products -->
+        <field name="products_condition" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="array">
+                    <item name="0" xsi:type="array">
+                        <item name="label" xsi:type="string">All Products</item>
+                        <item name="value" xsi:type="string">all</item>
+                    </item>
+                    <item name="1" xsi:type="array">
+                        <item name="label" xsi:type="string">Specific Products</item>
+                        <item name="value" xsi:type="string">specific</item>
+                    </item>
+                </item>
+                <!-- imports moved under config to align with Magento UI patterns -->
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Applicable Products</item>
+                    <item name="dataScope" xsi:type="string">products_condition</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
+                    <item name="imports" xsi:type="array">
+                        <item name="visible" xsi:type="string">${ $.provider }:data.category_condition == 'specific'</item>
+                        <item name="disabled" xsi:type="string">${ $.provider }:data.category_condition != 'specific'</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <!-- Add Products Button -->        
+        <field name="add_products_button" formElement="button">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Add Products</item>
+                    <item name="formElement" xsi:type="string">button</item>
+                    <item name="componentType" xsi:type="string">button</item>
+                    <item name="actions" xsi:type="array">
+                        <item name="0" xsi:type="array">
+                            <item name="targetName" xsi:type="string">add_products_modal</item>
+                            <item name="actionName" xsi:type="string">openModal</item>
+                            <item name="params" xsi:type="array">
+                                <item name="0" xsi:type="boolean">true</item>
+                            </item>
+                        </item>
+                    </item>
+                    <item name="buttonClasses" xsi:type="string">action-primary add-products-btn</item>
+                    <item name="additionalClasses" xsi:type="string">add-products-btn</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
+                    <item name="title" xsi:type="string" translate="true">Add Products</item>
+                    <item name="imports" xsi:type="array">
+                        <item name="initialize" xsi:type="string">Lofmp_CouponCode/js/form/trigger-modal</item>
+                    </item>
+                    <item name="url" xsi:type="string">lofmpcouponcode/rule/loadProductModal</item>
+                </item>
+            </argument>
+        </field>
+        <field name="selected_product_ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Selected Products</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="inputClasses" xsi:type="string">selected_product_ids</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="add_products_button_2" formElement="container">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Add Products</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/components/button/button</item>
+                    <item name="title" xsi:type="string" translate="true">Add Products</item>
+                    <item name="buttonClasses" xsi:type="string">action-primary</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="imports" xsi:type="array">
+                        <item name="initialize" xsi:type="string">Lofmp_CouponCode/js/form/trigger-modal</item>
+                    </item>
+                    <item name="url" xsi:type="string">lofmpcouponcode/rule/loadProductModal</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
     <fieldset name="actions" sortOrder="30">
         <settings>
             <collapsible>true</collapsible>

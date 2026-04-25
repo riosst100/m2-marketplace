@@ -28,6 +28,10 @@ use Lofmp\Rma\Controller\Adminhtml\Rma;
 
 class Add extends Rma
 {
+    protected $rmaFactory;
+    protected $registry;
+
+
     protected $helperData;
 
     public function __construct(

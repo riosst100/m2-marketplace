@@ -8,6 +8,10 @@ use Magento\Framework\Exception\NoSuchEntityException;
 
 class GenericButton
 {
+    protected $context;
+    protected $registry;
+
+
     public function __construct(
         Context $context,
         \Magento\Framework\Registry $registry

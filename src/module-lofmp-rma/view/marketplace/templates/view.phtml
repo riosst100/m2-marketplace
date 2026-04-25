@@ -34,10 +34,9 @@ $orderitems = $objectManager->get('Lof\MarketPlace\Model\Orderitems');
                     <?php if ($block->allowCreateCreditmemo($block->getOrder()->getId(), $seller_id)):
                         ?>
                         <button type="button" class="btn btn-primary lof_creditmemo"
-                                style="float: right;"><?= __('Credit Memo'); ?></button>
-                        <div id="lof_creditmemo">
-                            <div><?= __('Are you sure you want to create credit memo for order?'); ?></div>
-                        </div>
+                                style="float: right;">
+                                <?= __('Credit Memo'); ?>
+                        </button>
                     <?php
                     endif;
                     ?>
@@ -47,9 +46,9 @@ $orderitems = $objectManager->get('Lof\MarketPlace\Model\Orderitems');
                     <div class="content invoice">
                         <div class="row">
                             <div class="col-xs-12 invoice-header">
-                                <h1>
-                                    <i class="fa fa-globe"></i> <?= __('Information'); ?>
-                                </h1>
+                                <h2>
+                                    <?= __('Information'); ?>
+                                </h2>
                             </div>
                         </div>
                         <div class="row invoice-info">
@@ -71,44 +70,28 @@ $orderitems = $objectManager->get('Lof\MarketPlace\Model\Orderitems');
                             <!-- /.col -->
                             <div class="col-sm-3 invoice-col">
                                 <?php /* @escapeNotVerified */
-                                echo __('<b>Order:</b> # %1', $block->getOrder()->getRealOrderId()) ?>
+                                echo __('<b>Order Number:</b> %1', $block->getOrder()->getRealOrderId()) ?>
 
                                 <br>
-                                <b><?= __('Order Date'); ?>:</b> <?= $block->getOrderDate(); ?>
+                                <b><?= __('Order Date'); ?>:</b> <?= $helper->formatDateTime($block->getOrder()->getCreatedAt(), \IntlDateFormatter::SHORT, true); ?>
                                 <br>
-                                <b><?= __('Order Status'); ?>
-                                    :</b> <?= $block->getOrder()->getStatusLabel(); ?>
+                                <b><?= __('RMA Date'); ?>:</b> <?= $helper->formatDateTime($block->getRma()->getCreatedAt(), \IntlDateFormatter::SHORT, true); ?>
                                 <br>
+                                <br />
                                 <b><?= __('Customer Name'); ?>
                                     :</b> <?= $block->getOrder()->getCustomerName(); ?>
                                 <br>
-                                <b><?= __('Email'); ?>:</b> <?= $block->getOrder()->getCustomerEmail(); ?>
-                                <br>
-                                <b><?= __('Customer Group'); ?>:</b> <?= $block->getCustomerGroupName(); ?>
-
-
+                                <b><?= __('Customer Email'); ?>:</b> <?= $block->getOrder()->getCustomerEmail(); ?>
                             </div>
                             <!-- /.col -->
                             <div class="col-sm-3 invoice-col">
-                                <b><?= __('Account Information '); ?></b>
-                                <br>
-                                <b><?= __('Rma Date'); ?>:</b> <?= $block->getRmaDate(); ?>
-
-                                <?php if ($rma->getUserId()): ?>
-                                    <br/><b><?= __('Managers'); ?>
-                                        :</b> <?= $rmaHelper->getUserName($rma->getUserId());
-                                endif ?>
-                                <br>
-
-
                                 <?php foreach ($rmaHelper->getVisibleFields($rma->getStatusId(), true, true) as $field):
                                     if ($value = $rmaHelper->getFieldValue($rma, $field)):
                                         ?>
-                                        <br/><b><?= __($field->getName()) ?>: </b><?= $value ?>
+                                        <b><?= __($field->getName()) ?>: </b><?= $value ?><br/>
                                     <?php endif;
                                 endforeach ?>
-                                <br>
-                                <b><?= __('Rma Status'); ?>:</b><br/>
+                                <b><?= __('Status'); ?>:</b><br/>
                                 <select id="status_id" name="status_id" class=" select admin__control-select"
                                         data-ui-id="adminhtml-rma-edit-tab-generalinfo-0-fieldset-element-select-status-id">
                                     <?php foreach ($rmaHelper->getStatusList() as $status): ?>
@@ -119,9 +102,9 @@ $orderitems = $objectManager->get('Lof\MarketPlace\Model\Orderitems');
                                         ><?= $status->getName() ?></option>
                                     <?php endforeach ?>
                                 </select>
-                                </select>
                                 <br>
-                                <b><?= __('Rma Return Address'); ?>:</b>
+                                <br>
+                                <b><?= __('Return Address'); ?>:</b>
                                 <br/>
                                 <textarea name="return_address" cols="20"
                                           style="width: 300px"><?= $rma->getReturnAddress() ? $rma->getReturnAddress() : $currentSeller['address'] ?></textarea>
@@ -129,9 +112,9 @@ $orderitems = $objectManager->get('Lof\MarketPlace\Model\Orderitems');
                         </div>
                         <div class="row">
                             <div class="col-xs-12 invoice-header">
-                                <h1>
-                                    <i class="fa fa-globe"></i> <?= __('Items'); ?>
-                                </h1>
+                                <h2>
+                                    <?= __('Items'); ?>
+                                </h2>
                             </div>
                         </div>
                         <div class="row invoice-info">
@@ -142,13 +125,13 @@ $orderitems = $objectManager->get('Lof\MarketPlace\Model\Orderitems');
                                         <th><?= __('Product'); ?></th>
                                         <th><?= __('Item Status'); ?></th>
                                         <th><?= __('Qty'); ?></th>
-                                        <th><?= __('Admin Commission'); ?></th>
-                                        <th><?= __('Seller Total'); ?></th>
+                                        <!-- <th><?= __('Admin Commission'); ?></th> -->
+                                        <th><?= __('Total Amount'); ?></th>
                                         <th><?= __('Qty Return'); ?></th>
                                         <th><?= __('Return Reason'); ?></th>
                                         <th><?= __('Condition'); ?></th>
                                         <th><?= __('Resolution'); ?></th>
-                                        <th><?= __('Refund Commission'); ?></th>
+                                        <!-- <th><?= __('Refund Commission'); ?></th> -->
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -264,7 +247,7 @@ $orderitems = $objectManager->get('Lof\MarketPlace\Model\Orderitems');
                                                         </tbody>
                                                     </table>
                                                 </td>
-                                                <td><?= $helper->getPriceFomat($admin_commission); ?></td>
+                                                <!-- <td><?= $helper->getPriceFomat($admin_commission); ?></td> -->
                                                 <td><?= $helper->getPriceFomat($seller_commission); ?></td>
                                                 <td>
                                                     <?= $itemData['qty_requested']; ?>
@@ -280,7 +263,7 @@ $orderitems = $objectManager->get('Lof\MarketPlace\Model\Orderitems');
                                                         <?= __($itemData['resolution_name']) ?>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                <!-- <td>
                                                     <table class="qty-table">
                                                         <tbody>
                                                         <?php if ($itemData['seller_commission'] > 0) { ?>
@@ -297,7 +280,7 @@ $orderitems = $objectManager->get('Lof\MarketPlace\Model\Orderitems');
                                                         <?php } ?>
                                                         </tbody>
                                                     </table>
-                                                </td>
+                                                </td> -->
 
                                             </tr>
                                         <?php }
@@ -306,41 +289,12 @@ $orderitems = $objectManager->get('Lof\MarketPlace\Model\Orderitems');
                                 </table>
                             </div>
                         </div>
-                        <div class="col-xs-12 invoice-header">
-                            <h1>
-                                <i class="fa fa-globe"></i> <?= __('Comment'); ?>
-                            </h1>
-                        </div>
-                        <div class="col-xs-12 invoice-header">
-                            <style type="text/css">
-                                .rma-message-list {
-                                    list-style: none;
-                                    padding: 0;
-
-                                }
-
-                                .message-list .message-item {
-                                    background: #f4feff;
-                                    border: 1px solid #a2d7e1;
-                                    border-radius: 6px;
-                                    padding: 15px 10px;
-                                    margin-bottom: 15px;
-                                    position: relative;
-                                    width: 90%;
-                                    -webkit-box-sizing: border-box;
-                                    box-sizing: border-box;
-                                    clear: both;
-                                }
-
-                                .message-list .message-item.internal {
-                                    background: #6FA7D6;
-                                }
-
-                                .message-list .message-item.admin {
-                                    border: 1px solid #b5eaab;
-                                    float: right;
-                                }
-                            </style>
+                        <!-- <div class="col-xs-12 invoice-header">
+                            <h2>
+                                <?= __('Comment'); ?>
+                            </h2>
+                        </div> -->
+                        <div class="col-xs-12 invoice-header messages-section">
                             <script type="text/javascript">
                                 require([
                                     'jquery',
@@ -389,9 +343,11 @@ $orderitems = $objectManager->get('Lof\MarketPlace\Model\Orderitems');
                                             }
                                         }]
                                     };
-                                    var popup = modal(options_creditmemo, $('#lof_creditmemo'));
-                                    $(".lof_creditmemo").on('click', function () {
-                                        $("#lof_creditmemo").modal("openModal");
+                                    var popup = modal(options_creditmemo, $('#lof_creditmemo_modal'));
+
+                                    $('.lof_creditmemo').on('click', function () {
+                                        console.log('Open Modal');
+                                        $('#lof_creditmemo_modal').modal('openModal');
                                     });
                                     $replyArea.on('keyup', function () {
                                         updateSaveBtn();
@@ -402,68 +358,96 @@ $orderitems = $objectManager->get('Lof\MarketPlace\Model\Orderitems');
                             $responses = $helper_message->getOptionsList();
                             ?>
 
-                            <legend class="admin__legend legend">
-                                <span><?= __('RMA Message') ?></span>
-
-                                <div class="actions _primary " style="float: right;">
+                            <legend class="admin__legend legend" style="margin-bottom: 15px;">
+                                <span style="font-weight: 500;"><?= __('Messages') ?></span>
+                                <!-- <div class="actions _primary" style="float: right; margin-top: 4px; margin-right: 8px;">
                                     <?php if ($rma->getIsAdminRead()): ?>
-                                        <a href="<?= $block->getMarkUrl(false) ?>"><?= __('mark as unread') ?></a>
+                                        <form method="post" action="<?= $block->getMarkUrl(false) ?>" style="display:inline;">
+                                            <button type="submit" class="action-mark btn btn-outline-primary btn-sm" title="Mark as Unread" style="display:flex;align-items:center;gap:6px;">
+                                                <span style="font-size:1.1em;">&#128065;</span>
+                                                <span><?= __('Mark as Unread') ?></span>
+                                            </button>
+                                        </form>
                                     <?php else: ?>
-                                        <a href="<?= $block->getMarkUrl(true) ?>"><?= __('mark as read') ?></a>
+                                        <form method="post" action="<?= $block->getMarkUrl(true) ?>" style="display:inline;">
+                                            <button type="submit" class="action-mark btn btn-outline-primary btn-sm" title="Mark as Read" style="display:flex;align-items:center;gap:6px;">
+                                                <span style="font-size:1.1em;">&#128065;</span>
+                                                <span><?= __('Mark as Read') ?></span>
+                                            </button>
+                                        </form>
                                     <?php endif ?>
-                                </div>
+                                </div> -->
                             </legend>
 
-                            <div class="message-list">
-                                <?php foreach ($rmaHelper->getMessages($rma) as $message):
-                                    if ($message->getInternal() == 1) {
-                                        continue;
+                            <style>
+                                .rma-messages-wrapper { max-height: 420px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding-right: 6px; }
+                                .rma-message-row { display: flex; }
+                                .rma-message-row.self { justify-content: flex-end; }
+                                .rma-message-row.other { justify-content: flex-start; }
+                                .rma-message-bubble { max-width: 60%; padding: 12px 14px; border-radius: 12px; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.06); border: 1px solid transparent; }
+                                .rma-message-bubble.self { background: #fff7e6; border-color: #f5c07a; }
+                                .rma-message-bubble.other { background: #eaf8ff; border-color: #9fd7ff; }
+                                .rma-message-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+                                .rma-message-header.self { justify-content: flex-end; }
+                                .rma-message-sender { font-weight: 600; color: #333; }
+                                .rma-message-time { font-size: 12px; color: #666; white-space: nowrap; }
+                                .rma-message-content { color: #333; word-wrap: break-word; overflow-wrap: anywhere; }
+                            </style>
+                            <div class="message-list rma-messages-wrapper" id="rma-message-list">
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        var msgList = document.getElementById('rma-message-list');
+                                        if (msgList) {
+                                            msgList.scrollTop = msgList.scrollHeight;
+                                        }
+                                    });
+                                </script>
+                                <?php
+                                $messages = array_filter(
+                                    $rmaHelper->getMessages($rma),
+                                    function($message) { return $message->getInternal() != 1; }
+                                );
+                                usort($messages, function($a, $b) {
+                                    return strtotime($a->getCreatedAt()) <=> strtotime($b->getCreatedAt());
+                                });
+                                foreach ($messages as $message):
+                                    $roleClass = $message->getUserId() ? 'admin' : ($message->getSellerId() ? 'seller' : 'customer');
+                                    $isSelf = ($message->getSellerId() && $message->getSellerId() == $currentSeller['seller_id']);
+                                    if ($message->getUserId()) {
+                                        $senderLabel = $rmaHelper->getUserName($message->getUserId());
+                                    } elseif ($message->getSellerId()) {
+                                        $senderLabel = __('Seller');
+                                    } elseif ($message->getCustomerId()) {
+                                        $senderLabel = $message->getCustomerName();
+                                    } else {
+                                        $senderLabel = __('User');
                                     }
-                                    ?>
-
-                                    <div
-                                        class="message-item <?= $message->getInternal() ?> <?= $message->getUserId() ? 'admin' : 'customer' ?>">
-                                        <div class="rma-message__header">
-                                            <strong>
-                                                <?php if ($message->getCustomerId()): ?>
-                                                    <?= $message->getCustomerName() ?>
-                                                    <?php if ($rmaHelper->getCustomerEmail($message->getCustomerId()) != ''): ?>
-                                                        , <?= $rmaHelper->getCustomerEmail($message->getCustomerId()) ?>
-                                                    <?php endif ?>
-                                                <?php elseif ($message->getUserId()): ?>
-                                                    <?= $rmaHelper->getUserName($message->getUserId()) ?>
-                                                <?php elseif ($message->getSellerId()): ?>
-                                                    <?= $rmaHelper->getSellerName($message->getSellerId()) ?>
-                                                <?php endif ?>
-                                            </strong>
-                                            <span style="float: right;"><?= $message->getCreatedAt() ?></span>
-                                        </div>
-
-                                        <div
-                                            class="rma-message__body">
-                                            <?php if ($message->getText()):
-                                                if ($message->getIsHtml()): ?>
-                                                    <?= $message->getText() ?>
+                                    $timeText = $helper->formatDateTime($message->getCreatedAt(), \IntlDateFormatter::SHORT, true);
+                                ?>
+                                        <div class="rma-message-row <?= $isSelf ? 'self' : 'other' ?>">
+                                            <div class="rma-message-bubble <?= $isSelf ? 'self' : 'other' ?>">
+                                                <?php if ($isSelf): ?>
+                                                    <div class="rma-message-header self">
+                                                        <span class="rma-message-time"><?= $timeText ?></span>
+                                                    </div>
+                                                    <div class="rma-message-content">
+                                                        <?= $message->getText() ? $block->escapeHtml($message->getText()) : '' ?>
+                                                    </div>
                                                 <?php else: ?>
-                                                    <?= nl2br($message->getText()) ?>
-                                                <?php endif ?>
-                                            <?php endif ?>
-                                            <?php $attachments = $rmaHelper->getAttachments('message',
-                                                $message->getId()) ?>
-                                            <?php if (count($attachments)): ?>
-                                                <div class="rma-message__attachments">
-                                                    <?php /** @var \Lofmp\Rma\Api\Data\AttachmentInterface $attachment */ ?>
-                                                    <?php foreach ($attachments as $attachment): ?>
-                                                        <a href="<?= $block->getAttachmentUrl($attachment->getUid()) ?>"><?= $attachment->getName() ?></a>
-                                                    <?php endforeach ?>
-                                                </div>
-                                            <?php endif ?>
+                                                    <div class="rma-message-header">
+                                                        <span class="rma-message-sender"><?= $block->escapeHtml($senderLabel) ?></span>
+                                                        <span class="rma-message-time"><?= $timeText ?></span>
+                                                    </div>
+                                                    <div class="rma-message-content">
+                                                        <?= $message->getText() ? $block->escapeHtml($message->getText()) : '' ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
                                         </div>
-                                    </div>
-                                <?php endforeach ?>
+                                    <?php endforeach; ?>
                             </div>
 
-                            <div class="field admin__field">
+                            <!-- <div class="field admin__field">
                                 <label class="label admin__field-label" for="quick_reply">
                                     <?= __('Insert Quick Response') ?>
                                 </label>
@@ -486,8 +470,8 @@ $orderitems = $objectManager->get('Lof\MarketPlace\Model\Orderitems');
                                     </select>
                                     <?= $templatesHtml; ?>
                                 </div>
-                            </div>
-                            <div class="field admin__field">
+                            </div> -->
+                            <!-- <div class="field admin__field">
 
                                 <div class="control admin__field-control">
                                     <input type="checkbox" id="internalcheck" name="internalcheck"
@@ -495,7 +479,7 @@ $orderitems = $objectManager->get('Lof\MarketPlace\Model\Orderitems');
 
                                     <div data-role="reply-note"></div>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <div class="field admin__field rma-add-message__reply-area">
                                 <div class="control admin__field-control">
@@ -503,12 +487,18 @@ $orderitems = $objectManager->get('Lof\MarketPlace\Model\Orderitems');
                       style="width:100%" data-role="reply-area"></textarea>
                                 </div>
                             </div>
-
-                            <div class="field admin__field rma-add-message__attachments">
+                            <div class="actions-toolbar">
+                                <div class="primary">
+                                    <button type="submit" class="action primary rma-message" data-role="rma-submit">
+                                        <span><?= __('Submit') ?></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- <div class="field admin__field rma-add-message__attachments">
                                 <div class="control admin__field-control" data-mage-init='{"jqueryMultiFile": {}}'>
                                     <input id="attachment" name="attachment[]" value="" class="multi" type="file"/>
                                 </div>
-                            </div>
+                            </div> -->
 
                         </div>
                     </div>
@@ -516,11 +506,7 @@ $orderitems = $objectManager->get('Lof\MarketPlace\Model\Orderitems');
             </div>
         </div>
     </div>
-    <div class="actions-toolbar">
-        <div class="primary">
-            <button type="submit" class="action primary" data-role="rma-submit">
-                <span><?= __('Submit Request') ?></span>
-            </button>
-        </div>
+    <div id="lof_creditmemo_modal" style="display:none;">
+        <p><?= __('Are you sure you want to create Credit Memo?') ?></p>
     </div>
 </form>

@@ -431,4 +431,17 @@ class SellersFrontendRepository implements SellersFrontendRepositoryInterface
         }
         throw new NoSuchEntityException(__('Seller is not exists for product sku "%1".', $sku));
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSellerDataByProductSku($sku, $storeId = null, $showOtherInfo = false, $getProducts = false)
+    {
+        // $product = $this->productRepository->get($sku, false, $storeId);
+        // $sellerId = $product->getSellerId();
+        // if ($sellerId) {
+        //     return $this->get((int)$sellerId, $showOtherInfo, $getProducts);
+        // }
+        throw new NoSuchEntityException(__('Seller is not exists for product sku "%1".', $sku));
+    }
 }

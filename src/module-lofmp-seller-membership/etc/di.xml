@@ -34,7 +34,7 @@
     <preference for="Lofmp\SellerMembership\Api\Data\CancelrequestSearchResultsInterface"  type="Magento\Framework\Api\SearchResults"/>
 
     <preference for="Lofmp\SellerMembership\Api\ProductMembershipRepositoryInterface"           type="Lofmp\SellerMembership\Model\ProductMembershipRepository"/>
-    <preference for="Lofmp\SellerMembership\Api\Data\ProductMembershipInterface"               type="Lofmp\SellerMembership\Model\ProductMembership"/>
+    <!-- <preference for="Lofmp\SellerMembership\Api\Data\ProductMembershipInterface"               type="Lofmp\SellerMembership\Model\ProductMembership"/> -->
     <preference for="Lofmp\SellerMembership\Api\Data\ProductMembershipSearchResultsInterface"   type="Magento\Framework\Api\SearchResults"/>
 
 

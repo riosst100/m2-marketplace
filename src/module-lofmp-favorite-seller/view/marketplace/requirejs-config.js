@@ -4,7 +4,8 @@ var config = {
         "jquery.fancybox":"Lofmp_FavoriteSeller/js/jquery.fancybox.min",
         "jquery.tagsinput":"Lofmp_FavoriteSeller/js/jquery.tagsinput.min",
         "alertify":"Lofmp_FavoriteSeller/js/alertify.min",
-        "ckeditor":"Lofmp_FavoriteSeller/js/ckeditor/ckeditor"
+        "ckeditor":"Lofmp_FavoriteSeller/js/ckeditor/ckeditor",
+        "sendMailModal": "Lofmp_FavoriteSeller/js/send-mail-modal"
     },
     shim:{
         'jquery.dataTables':{
@@ -22,6 +23,7 @@ var config = {
         'ckeditor':{
             deps:['jquery'],
             exports: 'CKEDITOR'
-        }
+        },
+        'sendMailModal': ['jquery']
     }
 };

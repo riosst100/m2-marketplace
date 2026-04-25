@@ -24,6 +24,11 @@ $showTagblock      = $helper->getConfig('sidebar/show_tagblock');
 $title             = $helper->getConfig('sidebar/tagblock_title');
 $show_tagcountdown = $helper->getConfig("sidebar/show_tagcountdown");  
 ?>
+<style>
+	.page-title {
+		display:none !important;
+	}
+</style>
 <div class="row lof-faq-details" >
 	<?php if($category){ ?>
 	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
@@ -45,19 +50,6 @@ $show_tagcountdown = $helper->getConfig("sidebar/show_tagcountdown");
 				<?php if($showDate && ($question->getCreationTime()!='')){ ?>
 				<span class="post-date">
 					<?php echo __('on %1', $helper->getFormatDate($question->getCreationTime(), 'medium')); ?>
-				</span>
-				<?php } ?>
-				<?php if($showCat){ ?>
-				<span class="post-categories">
-					<?php echo __('Published in: ') ?>
-					<?php
-					$categories = $question->getQuestionCategories();
-					$count = count($categories);
-					?>
-					<?php foreach ($categories as $k => $v) { ?>
-					<a href="<?php echo $helper->getCategoryUrl($v)  ?>" title="<?php echo $block->escapeHtml($v['title']); ?>"><?php echo $block->escapeHtml($v['title']); ?></a>
-					<?php if(isset($categories[$k+1])) echo __(','); ?>
-					<?php } ?>
 				</span>
 				<?php } ?>
 			</div>
@@ -137,7 +129,7 @@ $show_tagcountdown = $helper->getConfig("sidebar/show_tagcountdown");
 	<?php } ?> 
 	<?php  
 		$tag  = $question->getTag(); 
-		$tags = explode(",", $tag);
+		$tags = $tag ? explode(",", $tag) : [];
                 if(!empty($tags)){ 
                     $data = [];
                     foreach ($tags as $k => $_tag) {

@@ -1,0 +1,129 @@
+.btn-success {
+  background: #eb5202;
+  border: 1px solid #eb5202;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  float: right;
+}
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success:active:focus,
+.btn-success:active:hover,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background: #ba4000;
+  border-color: #b84002;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+}
+.btn-primary {
+  float: right;
+  background: transparent;
+  border: 1px solid #eb5202;
+  color: #eb5202;
+  border-radius: 6px;
+  margin-right: 10px;
+}
+table.tile_info td:first-child {
+  width: 15%;
+}
+
+.control-label {
+  text-align: left;
+  font-size: 15px;
+}
+.chat-messages {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 345px;
+  min-height: 345px;
+  overflow-y: auto;
+}
+.chat-messages-history {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 300px;
+  min-height: 300px;
+  overflow-y: auto;
+}
+.chat-row {
+  display: flex;
+}
+.chat-row.self {
+  justify-content: flex-end;
+}
+.chat-row.other {
+  justify-content: flex-start;
+}
+.chat-bubble {
+  max-width: 60%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+.chat-bubble.self {
+  background: #fff7e6;
+  border-color: #f5c07a;
+}
+.chat-bubble.other {
+  background: #eaf8ff;
+  border-color: #9fd7ff;
+}
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.chat-header.self {
+  justify-content: flex-end;
+}
+.chat-sender {
+  font-weight: 600;
+  color: #333;
+}
+.chat-time {
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+}
+.chat-content {
+  color: #333;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Seller message page tidy layout */
+.seller-message-meta .tile_info td {
+  padding: 6px 12px;
+  vertical-align: top;
+}
+.seller-message-meta .tile_info td:first-child {
+  color: #333;
+  font-weight: 600;
+  width: 22%;
+}
+.seller-message-reply .form-group {
+  margin-bottom: 12px;
+}
+.seller-message-reply .control-label {
+  padding-top: 6px;
+  font-weight: 600;
+}
+.seller-message-reply #status {
+  min-width: 160px;
+}

@@ -44,6 +44,9 @@ class SellersProduct extends \Magento\Catalog\Model\AbstractModel implements
     SaleableInterface,
     SellersProductInterface
 {
+    protected $customAttributesCodes;
+
+
     /**
      * @var
      */

@@ -22,5 +22,15 @@ namespace Lofmp\CouponCode\Controller\Marketplace\Generate;
 
 class Index extends \Lofmp\CouponCode\Controller\Marketplace\Generate
 {
+    public function execute()
+    {
+        /** @var \Magento\Framework\View\Result\Page $resultPage */
+        $resultPage = $this->resultFactory->create(
+            \Magento\Framework\Controller\ResultFactory::TYPE_PAGE
+        );
 
+        $resultPage->getConfig()->getTitle()->prepend(__('Generate Coupons'));
+
+        return $resultPage;
+    }
 }

@@ -46,17 +46,23 @@ echo __('* Required Fields') ?>" data-mage-init='{"validation":{}}'>
             <div class="x_panel">
                 <div class="x_title">
                     <h2><?= $block->escapeHtml(__('Order #%1', $this->getOrder()->getRealOrderId())) ?></h2>
+                    <!-- this row will not appear when printing -->
+                    <div class="row no-print">
+                        <div class="col-xs-12">
+                            <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i>
+                                Print
+                            </button>
+                        </div>
+                    </div>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                     <div class="content invoice">
                         <div class="row">
                             <div class="col-xs-12 invoice-header">
-                                <h1>
-                                    <i class="fa fa-globe"></i> <?= __('Order'); ?>
-                                    <small class="pull-right"><?= __('Created At'); ?>
-                                        : <?= $block->getOrderDate(); ?></small>
-                                </h1>
+                                <h2>
+                                    <?= __('Order'); ?>
+                                </h2>
                             </div>
                         </div>
                         <div class="row invoice-info">
@@ -85,7 +91,7 @@ echo __('* Required Fields') ?>" data-mage-init='{"validation":{}}'>
                                 <br>
                                 <b><?= __('Order Status'); ?>:</b> <?= $block->getOrder()->getStatusLabel(); ?>
                                 <br>
-                                <b><?= __('Purchased From'); ?>:</b> <?= $block->getOrderStoreName(); ?>
+                                <b><?= __('Countries/Regions'); ?>:</b> <?= $block->getOrder()->getStore()->getWebsite()->getName(); ?>
                             </div>
                             <!-- /.col -->
                             <div class="col-sm-3 invoice-col">
@@ -95,8 +101,6 @@ echo __('* Required Fields') ?>" data-mage-init='{"validation":{}}'>
                                 <b><?= __('Customer Name'); ?>:</b> <?= $block->getOrder()->getCustomerName(); ?>
                                 <br>
                                 <b><?= __('Email'); ?>:</b> <?= $block->getOrder()->getCustomerEmail(); ?>
-                                <br>
-                                <b><?= __('Customer Group'); ?>:</b> <?= $block->getCustomerGroupName(); ?>
                             </div>
                         </div>
                         <div class="row">
@@ -110,13 +114,10 @@ echo __('* Required Fields') ?>" data-mage-init='{"validation":{}}'>
                                         <th><?= __('Return to Stock'); ?></th>
                                         <th><?= __('Qty to Refund'); ?></th>
                                         <th><?= __('Subtotal'); ?></th>
-                                        <th><?= __('Tax Amount'); ?></th>
-                                        <th><?= __('Tax Percent'); ?></th>
                                         <th><?= __('Discount Amount'); ?></th>
                                         <th><?= __('Row Total'); ?></th>
                                         <th><?= __('Admin Commission'); ?></th>
-                                        <th><?= __('Seller Total'); ?></th>
-                                        <th><?= __('Seller'); ?></th>
+                                        <th><?= __('Total Amount'); ?></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -220,13 +221,10 @@ echo __('* Required Fields') ?>" data-mage-init='{"validation":{}}'>
                                                                name="creditmemo[items][<?= $itemId; ?>][qty]"
                                                                value="<?= $item->getQtyToRefund() ?>"/></td>
                                                     <td><?= $helper->getPriceFomat($total); ?></td>
-                                                    <td><?= $helper->getPriceFomat($tax_amount); ?></td>
-                                                    <td><?= $item->getData('tax_percent') . '%'; ?></td>
                                                     <td><?= $helper->getPriceFomat($discount_amount); ?></td>
                                                     <td><?= $helper->getPriceFomat($row_total); ?></td>
                                                     <td><?= $helper->getPriceFomat($admin_commission); ?></td>
                                                     <td><?= $helper->getPriceFomat($seller_commission); ?></td>
-                                                    <td><?= $seller_name; ?></td>
                                                 </tr>
                                             <?php
                                             endif;
@@ -240,15 +238,8 @@ echo __('* Required Fields') ?>" data-mage-init='{"validation":{}}'>
                         </div>
                         <div class="row">
                             <!-- accepted payments column -->
-                            <div class="col-xs-8">
+                            <div class="col-xs-6">
                                 <p class="lead"><?= __('Payment Methods'); ?>:</p>
-                                <img src="<?= $block->getViewFileUrl('Lof_MarketPlace::images/visa.png') ?>" alt="Visa">
-                                <img src="<?= $block->getViewFileUrl('Lof_MarketPlace::images/mastercard.png') ?>"
-                                     alt="Mastercard">
-                                <img src="<?= $block->getViewFileUrl('Lof_MarketPlace::images/american_express.png') ?>"
-                                     alt="American Express">
-                                <img src="<?= $block->getViewFileUrl('Lof_MarketPlace::images/paypal.png') ?>"
-                                     alt="Paypal">
                                 <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
                                     <?= $block->getOrder()->getPayment()->getMethodInstance()->getTitle(); ?>
                                 </p>
@@ -272,9 +263,9 @@ echo __('* Required Fields') ?>" data-mage-init='{"validation":{}}'>
                                 </div>
                             </div>
                             <!-- /.col -->
-                            <div class="col-xs-4">
+                            <div class="col-xs-6 order-totals">
                                 <p class="lead"><?= __('Order Totals'); ?></p>
-                                <div class="table-responsive">
+                                <div class="table-responsive text-muted well well-sm no-shadow">
                                     <table class="table">
                                         <tbody>
                                         <tr>
@@ -337,47 +328,29 @@ echo __('* Required Fields') ?>" data-mage-init='{"validation":{}}'>
                                         <label class="admin__field-label"
                                                for="history_notify"><?= __('Visible on Frontend') ?></label>
                                     </div>
-                                    <div
-                                        class="field choice admin__field admin__field-option field-is_visible_on_front">
-                                        <input id="send-email" name="creditmemo[send_email]" value="1" type="checkbox"
-                                               class="admin__control-checkbox">
-                                        <label class="admin__field-label"
-                                               for="send-email"><?= __('Email Copy of Credit Memo') ?></label>
-                                    </div>
-                                </div>
-
-                                <div class="actions">
-                                    <button class="action-default scalable save submit-button primary" type="button"
-                                            id="submit_creditMemo_offline">
-                    <span>
-                      <span>
-                        <?= __('Refund Offline') ?>
-                      </span>
-                    </span>
-                                    </button>
-                                    <?php
-                                    if ($invoice && $invoice->getTransactionId()) { ?>
+                                    <div class="actions">
                                         <button class="action-default scalable save submit-button primary" type="button"
-                                                id="submit_creditMemo" title="<?= __('Refund Online') ?>">
-                      <span>
-                        <span>
-                            <?= __('Refund') ?>
-                        </span>
-                      </span>
+                                                id="submit_creditMemo_offline">
+                                                <span>
+                                                <span>
+                                                    <?= __('Refund Offline') ?>
+                                                </span>
+                                                </span>
                                         </button>
                                         <?php
-                                    } ?>
+                                        if ($invoice && $invoice->getTransactionId()) { ?>
+                                            <button class="action-default scalable save submit-button primary" type="button"
+                                                    id="submit_creditMemo" title="<?= __('Refund Online') ?>">
+                                            <span>
+                                                <span>
+                                                    <?= __('Refund') ?>
+                                                </span>
+                                            </span>
+                                            </button>
+                                            <?php
+                                        } ?>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <!-- /.col -->
-                        </div>
-                        <!-- this row will not appear when printing -->
-                        <div class="row no-print">
-                            <div class="col-xs-12">
-                                <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i>
-                                    Print
-                                </button>
                             </div>
                         </div>
                     </div>

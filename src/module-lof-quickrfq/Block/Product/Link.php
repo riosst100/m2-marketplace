@@ -50,8 +50,8 @@ class Link extends AbstractView
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Lof\Quickrfq\Helper\Data                        $helperConfig
      * @param \Magento\Framework\Registry                      $registry
-     * @param array                                            $data
      * @param \Magento\Customer\Model\Session                  $session
+     * @param array                                            $data
      */
     public function __construct(
         Context $context,

@@ -21,6 +21,10 @@
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="vendor-1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="seller_store_switcher"/>
+    <head>
+		<css src="Lofmp_Rma::css/styles.css"/>
+	</head>
     <body>
         <referenceContainer name="content">
             <referenceBlock name="creditmemo">

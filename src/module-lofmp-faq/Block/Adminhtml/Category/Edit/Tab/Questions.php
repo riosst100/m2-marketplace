@@ -26,6 +26,9 @@ use Magento\Catalog\Model\Product;
 
 class Questions extends Extended
 {
+    protected $_question;
+
+
     /**
      * Core registry
      *

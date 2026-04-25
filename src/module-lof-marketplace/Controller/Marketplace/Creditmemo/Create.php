@@ -157,8 +157,12 @@ class Create extends \Magento\Framework\App\Action\Action
 
             $this->_coreRegistry->register('mp_current_order', $order);
             $this->_coreRegistry->register('mp_current_seller_order', $sellerOrder);
-            $this->_view->loadLayout();
-            $this->_view->renderLayout();
+
+            /** @var \Magento\Framework\View\Result\Page $resultPage */
+            $resultPage = $this->resultPageFactory->create();
+            $resultPage->getConfig()->getTitle()->set(__('New Credit Memo'));
+            return $resultPage;
+
         } elseif ($customerSession->isLoggedIn() && $status == 0) {
             $this->_redirectUrl($this->getFrontendUrl('lofmarketplace/seller/becomeseller'));
         } else {

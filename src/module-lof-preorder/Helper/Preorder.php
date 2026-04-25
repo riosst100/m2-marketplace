@@ -33,6 +33,10 @@ use Lof\PreOrder\Model\ResourceModel\PreOrder\CollectionFactory;
 
 class Preorder extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    protected $_product_item;
+    protected $_stock_status_data;
+
+
     /** @var \Magento\Store\Model\StoreManagerInterface */
     protected $_storeManager;
 

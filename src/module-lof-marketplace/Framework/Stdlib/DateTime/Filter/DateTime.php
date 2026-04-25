@@ -25,6 +25,10 @@ use Magento\Framework\Stdlib\DateTime\Filter\Date;
 
 class DateTime extends Date
 {
+    protected $_localToNormalFilter;
+    protected $_normalToLocalFilter;
+
+
     /**
      * DateTime constructor.
      * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate

@@ -83,7 +83,7 @@ class Messages extends \Magento\Framework\View\Element\Messages
                         break;
                     case MessageInterface::TYPE_NOTICE:
                         $title = __("Info");
-                        $class = 'fa-info';
+                        $class = 'fa-info-circle';
                         $messateType = 'info';
                         break;
                     case MessageInterface::TYPE_SUCCESS:
@@ -105,7 +105,8 @@ class Messages extends \Magento\Framework\View\Element\Messages
                     $html .= '<' . $this->contentWrapTagName . $this->getUiId('message', $type) . '>';
                     $html .= '<button aria-hidden="true" data-dismiss="alert" class="close" type="button">';
                     $html .= '&times;</button>';
-                    $html .= '<h4><i class="icon fa ' . $class . '"></i> ' . $title . '</h4>';
+                    $html .= '<span style="font-size: 14px;padding-right: 5px;"><i class="icon fa ' . $class . '"></i></span>';
+                    // $html .= '<h4><i class="icon fa ' . $class . '"></i> ' . $title . '</h4>';
                     $html .= $this->interpretationStrategy->interpret($message);
                     $html .= '</' . $this->contentWrapTagName . '>';
                     $html .= '</' . $this->secondLevelTagName . '>';

@@ -29,6 +29,15 @@
         <css src="Lof_Faq::css/animate.css" />
 	</head>
 	<body>
+		<referenceContainer name="footer" remove="true"/>
+		<referenceBlock name="top.search" remove="true"/>
+		<referenceBlock name="minicart" remove="true"/>
+		<referenceBlock name="faq.tag.list" remove="true"/>
+		<referenceContainer name="navigation.sections" remove="true"/>
+		<referenceContainer name="header.panel.wrapper" remove="true"/>
+		<referenceBlock name="sale.reorder.sidebar" remove="true"/>
+		<referenceBlock name="wishlist_sidebar" remove="true"/>
+		<referenceBlock name="catalog.compare.sidebar" remove="true"/>
 		<referenceBlock name="header.links">
 			<block class="Lof\Faq\Block\Toplinks" name="loffaq-toplinks">
 				<arguments>

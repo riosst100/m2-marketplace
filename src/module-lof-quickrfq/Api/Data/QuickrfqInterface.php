@@ -108,6 +108,10 @@ interface QuickrfqInterface extends \Magento\Framework\Api\ExtensibleDataInterfa
     /**
      *
      */
+    const WEBSITE_ID = 'website_id';
+    /**
+     *
+     */
     const STORE_CURRENCY_CODE = 'store_currency_code';
     /**
      *
@@ -381,6 +385,19 @@ interface QuickrfqInterface extends \Magento\Framework\Api\ExtensibleDataInterfa
      * @return \Lof\Quickrfq\Api\Data\QuickrfqInterface
      */
     public function setStoreId($store_id);
+
+    /**
+     * Get website_id
+     * @return int|null
+     */
+    public function getWebsiteId();
+
+    /**
+     * Set website_id
+     * @param int $website_id
+     * @return \Lof\Quickrfq\Api\Data\QuickrfqInterface
+     */
+    public function setWebsiteId($website_id);
 
     /**
      * Get store_currency_code

@@ -25,6 +25,9 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 
 class Save extends \Lofmp\Faq\Controller\Adminhtml\Category
 {
+    protected $jsHelper;
+
+
     /**
      * Core registry
      *

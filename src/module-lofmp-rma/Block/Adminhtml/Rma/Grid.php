@@ -25,6 +25,12 @@ use Magento\Backend\Block\Widget\Grid\Extended as GridExtended;
 
 class Grid extends GridExtended
 {
+    protected $orderItemRepository;
+    protected $rmaHelper;
+    protected $sellerHelper;
+    protected $storesHelper;
+
+
     /**
      * @var array
      */
@@ -67,6 +73,8 @@ class Grid extends GridExtended
         \Lofmp\Rma\Model\StatusFactory $statusFactory,
         \Lofmp\Rma\Helper\Help $Help,
         \Lofmp\Rma\Helper\Data $dataHelper,
+        \CoreMarketplace\MarketPlace\Helper\Seller $sellerHelper,
+        \CoreMarketplace\MarketPlace\Helper\Stores $storesHelper,
         \Magento\Backend\Block\Widget\Context $context,
         \Magento\Backend\Helper\Data $backendHelper,
         array $data = []
@@ -76,6 +84,8 @@ class Grid extends GridExtended
         $this->rmaHelper = $Help;
         $this->statusFactory = $statusFactory;
         $this->dataHelper = $dataHelper;
+        $this->sellerHelper = $sellerHelper;
+        $this->storesHelper = $storesHelper;
 
         parent::__construct($context, $backendHelper, $data);
     }
@@ -87,7 +97,7 @@ class Grid extends GridExtended
     {
         parent::_construct();
         $this->setId('rma_grid');
-        $this->setDefaultSort('updated_at');
+        $this->setDefaultSort('created_at');
         $this->setDefaultDir('DESC');
         $this->setSaveParametersInSession(true);
     }
@@ -121,36 +131,68 @@ class Grid extends GridExtended
         return parent::_prepareCollection();
     }
 
+    public function sellerFormat($renderedValue, $row, $column, $isExport)
+    {
+        $sellerId = $row->getSellerId();
+
+        if (!$sellerId) {
+            return '-';
+        }
+
+        // ambil nama store (contoh, sesuaikan dengan helper/module kamu)
+        $storeName = $this->sellerHelper->getSellerNameById($sellerId);
+
+        $url = $this->getUrl('lofmarketplace/seller/edit', ['seller_id' => $sellerId]);
+
+        return '<a href="' . $url . '" target="_blank">' . $storeName . '</a>';
+    }
+
+    public function orderNumberFormat($renderedValue, $row, $column, $isExport)
+    {
+        $incrementId = $row->getData('order_increment_id');
+        if (!$incrementId) {
+            return '-';
+        }
+
+        $url = $this->getUrl('sales/order/view', [
+            'order_id' => $row->getOrderId(),
+            'back_url' => 'seller_rma'
+        ]);
+
+        return '<a href="' . $url . '" target="_blank">' . $incrementId . '</a>';
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function _prepareColumns()
     {
+        $this->addColumn('seller_id', [
+    'header' => __('Store'),
+    'index' => 'seller_id',
+    'filter_index' => 'main_table.seller_id',
+    'frame_callback' => [$this, 'sellerFormat'],
+]);
         $this->addColumn('increment_id', [
-            'header' => __('RMA #'),
+            'header' => __('RMA Number'),
             'index' => 'increment_id',
-            'filter_index' => 'main_table.increment_id',
+            'filter_index' => 'main_table.increment_id', 
         ]);
         $this->addColumn('order_increment_id', [
-            'header' => __('Order #'),
+            'header' => __('Order Number'),
             'index' => 'order_increment_id',
             'filter_index' => 'order.increment_id',
+            'frame_callback' => [$this, 'orderNumberFormat'],
         ]);
-        $this->addColumn('customer_name', [
-            'header' => __('Customer Name'),
-            'index' => ['customer_firstname', 'customer_lastname'],
-            'type' => 'concat',
-            'separator' => ' ',
-            'filter_index' => new \Zend_Db_Expr("CONCAT(customer.firstname, ' ', customer.lastname)"),
-        ]);
+        
+        // $this->addColumn('customer_name', [
+        //     'header' => __('Customer Name'),
+        //     'index' => ['customer_firstname', 'customer_lastname'],
+        //     'type' => 'concat',
+        //     'separator' => ' ',
+        //     'filter_index' => new \Zend_Db_Expr("CONCAT(customer.firstname, ' ', customer.lastname)"),
+        // ]);
 
-        $this->addColumn('seller_id', [
-            'header' => __('Seller Id'),
-            'index' => 'seller_id',
-            'type' => 'text',
-            'separator' => ' ',
-            'filter_index' => 'main_table.seller_id',
-        ]);
         $this->addColumn('email', [
             'header' => __('Customer Email'),
             'index' => 'customer_email',
@@ -158,20 +200,23 @@ class Grid extends GridExtended
             'separator' => ' ',
             'filter_index' => 'customer.email',
         ]);
-        $this->addColumn('user_id', [
-            'header' => __('Owner'),
-            'index' => 'user_id',
-            'filter_index' => 'main_table.user_id',
-            'type' => 'options',
-            'options' => $this->dataHelper->getAdminOptionArray(),
-        ]);
 
-        $this->addColumn('last_reply_name', [
-            'header' => __('Last Replier'),
-            'index' => 'last_reply_name',
-            'filter_index' => 'main_table.last_reply_name',
-            'frame_callback' => [$this, '_lastReplyFormat'],
-        ]);
+        
+        
+        // $this->addColumn('user_id', [
+        //     'header' => __('Owner'),
+        //     'index' => 'user_id',
+        //     'filter_index' => 'main_table.user_id',
+        //     'type' => 'options',
+        //     'options' => $this->dataHelper->getAdminOptionArray(),
+        // ]);
+
+        // $this->addColumn('last_reply_name', [
+        //     'header' => __('Last Replier'),
+        //     'index' => 'last_reply_name',
+        //     'filter_index' => 'main_table.last_reply_name',
+        //     'frame_callback' => [$this, '_lastReplyFormat'],
+        // ]);
 
         $this->addColumn('status_id', [
             'header' => __('Status'),
@@ -179,6 +224,14 @@ class Grid extends GridExtended
             'filter_index' => 'main_table.status_id',
             'type' => 'options',
             'options' => $this->statusFactory->create()->getCollection()->getOptionArray(),
+        ]);
+
+        $this->addColumn('store_id', [
+            'header' => __('Countries/Regions'),
+            'index' => 'store_id',
+            'filter_index' => 'main_table.store_id',
+            'type' => 'options',
+            'options' => $this->storesHelper->getStoresGridOptionsArray(),
         ]);
 
         $this->addColumn('created_at', [
@@ -189,13 +242,7 @@ class Grid extends GridExtended
         ]);
         $collection = $this->dataHelper->getFields();
 
-        $this->addColumn('store_id', [
-            'header' => __('Store'),
-            'index' => 'store_id',
-            'filter_index' => 'main_table.store_id',
-            'type' => 'options',
-            'options' => $this->rmaHelper->getCoreStoreOptionArray(),
-        ]);
+        
 
         $this->addColumn('items', [
             'header' => __('Items'),
@@ -213,7 +260,7 @@ class Grid extends GridExtended
                 'getter' => 'getId',
                 'actions' => [
                     [
-                        'caption' => __('View'),
+                        'caption' => __('View Detail'),
                         'url' => [
                             'base' => 'rma/rma/edit',
                         ],
@@ -303,7 +350,7 @@ class Grid extends GridExtended
      */
     public function getRowUrl($row)
     {
-        return $this->getUrl('rma/rma/edit', ['id' => $row->getId()]);
+        return '#';
     }
 
     /**

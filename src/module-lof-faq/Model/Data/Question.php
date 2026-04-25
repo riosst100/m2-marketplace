@@ -46,7 +46,7 @@ class Question implements \Lof\Faq\Api\QuestionManagementInterface
      */
     public function save(\Lof\Faq\Api\Data\QuestionInterface $question)
     {
-        if ($question['title'] && $question['categories'] && $question['stores']) {
+        if ($question['title'] && $question['categories'] && $question['websites']) {
             try {
                 $this->resource->save($question);
             } catch (\Exception $exception) {
@@ -63,7 +63,7 @@ class Question implements \Lof\Faq\Api\QuestionManagementInterface
 
     public function saveInFrontend(\Lof\Faq\Api\Data\QuestionInterface $question)
     {
-        if ($question['author_name'] && $question['title'] && $question['author_email'] && $question['stores']) {
+        if ($question['author_name'] && $question['title'] && $question['author_email'] && $question['websites']) {
             try {
                 $this->resource->save($question);
             } catch (\Exception $exception) {

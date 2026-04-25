@@ -25,6 +25,7 @@
         <title>View Quote</title>
         <css src="Lofmp_Quickrfq::css/quickrfq.css"></css>
     </head>
+    <update handle="seller_store_switcher"/>
     <body>
         <referenceContainer name="content">
             <block class="Lofmp\Quickrfq\Block\Marketplace\Quickrfq\QuickrfqButton"

@@ -26,6 +26,11 @@ use Magento\Framework\Controller\ResultFactory;
 
 class Download extends \Magento\Framework\App\Action\Action
 {
+    protected $attachmentFactory;
+    protected $context;
+    protected $resultFactory;
+
+
     public function __construct(
         \Lofmp\Rma\Model\AttachmentFactory $attachmentFactory,
         \Magento\Framework\App\Action\Context $context

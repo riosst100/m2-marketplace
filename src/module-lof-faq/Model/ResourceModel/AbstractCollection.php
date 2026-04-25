@@ -66,8 +66,8 @@ abstract class AbstractCollection extends \Magento\Framework\Model\ResourceModel
             $connection = $this->getConnection();
             $select = $connection->select()->from(['faq_entity_store' => $this->getTable($tableName)])
                 ->join(
-                ['st' => $this->getTable('store')],
-                'faq_entity_store.store_id = st.store_id',
+                ['st' => $this->getTable('store_website')],
+                'faq_entity_store.website_id = st.website_id',
                 []
                 )->where('faq_entity_store.' . $columnName . ' IN (?)', $items);
             $result = $connection->fetchAll($select);
@@ -75,7 +75,7 @@ abstract class AbstractCollection extends \Magento\Framework\Model\ResourceModel
                 $tmp_result = [];
                 foreach($result as $k=>$v) {
                     $fieldvalue = isset($v[$columnName])?$v[$columnName]:0;
-                    $store_id = isset($v['store_id'])?$v['store_id']:0;
+                    $website_id = isset($v['website_id'])?$v['website_id']:0;
                     if(!$fieldvalue)
                         continue;
 
@@ -83,7 +83,7 @@ abstract class AbstractCollection extends \Magento\Framework\Model\ResourceModel
                         $tmp_result[$fieldvalue] = [];
                     }
 
-                    $tmp_result[$fieldvalue][] = (int)$store_id;
+                    $tmp_result[$fieldvalue][] = (int)$website_id;
                 }
                 if($tmp_result) {
                     $result = $tmp_result;
@@ -94,22 +94,22 @@ abstract class AbstractCollection extends \Magento\Framework\Model\ResourceModel
                         continue;
                     }
                     if ($result[$entityId] == 0 || (is_array($result[$entityId]) && in_array(0, $result[$entityId]))) {
-                        $stores = $this->storeManager->getStores(false, true);
-                        $storeId = current($stores)->getId();
-                        $storeCode = key($stores);
+                        $websites = $this->storeManager->getWebsite(0);
+                        $websiteId = $websites->getId();
+                        $websiteCode = $websites->getCode();
                     } else {
-                        $storeId = $result[$entityId];
-                        if(is_array($storeId)) {
-                            $storeId = current($storeId);
+                        $websiteId = $result[$entityId];
+                        if(is_array($websiteId)) {
+                            $websiteId = current($websiteId);
                         }
-                        $storeCode = $this->storeManager->getStore($storeId)->getCode();
+                        $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
                     }
-                    $item->setData('_first_store_id', $storeId);
-                    $item->setData('store_code', $storeCode);
+                    $item->setData('_first_website_id', $websiteId);
+                    $item->setData('website_code', $websiteCode);
                     if(is_array($result[$entityId])){
-                        $item->setData('store_id', $result[$entityId]);
+                        $item->setData('website_id', $result[$entityId]);
                     } else {
-                        $item->setData('store_id', [$result[$entityId]]);
+                        $item->setData('website_id', [$result[$entityId]]);
                     }
                 }
             }
@@ -125,8 +125,8 @@ abstract class AbstractCollection extends \Magento\Framework\Model\ResourceModel
      */
     public function addFieldToFilter($field, $condition = null)
     {
-        if ($field === 'store_id') {
-            return $this->addStoreFilter($condition, false);
+        if ($field === 'website_id') {
+            return $this->addWebsiteFilter($condition);
         }
 
         return parent::addFieldToFilter($field, $condition);
@@ -140,6 +140,35 @@ abstract class AbstractCollection extends \Magento\Framework\Model\ResourceModel
      * @return $this
      */
     abstract public function addStoreFilter($store, $withAdmin = true);
+
+    public function addWebsiteFilter($website)
+    {
+        if ($website instanceof \Magento\Store\Model\Website) {
+            $website = [$website->getId()];
+        } else {
+            $website = $website['in'];
+        }
+
+        if (!is_array($website)) {
+            $website = [$website];
+        }
+
+        // dd($website['in']);
+
+        $this->addFilter('website_id', ['in' => $website], 'public');
+        // dd($this);
+        // $this->getSelect()
+        // ->join(
+        //     ['store' => $this->getTable('lof_faq_category_store')],
+        //     'main_table.entity_id=store.category_id',
+        //     []
+        // )->where(
+        //     'store.website_id IN ?',
+        //     $condition['in']
+        // );
+
+        return $this;
+    }
 
     /**
      * Perform adding filter by store
@@ -174,7 +203,7 @@ abstract class AbstractCollection extends \Magento\Framework\Model\ResourceModel
      */
     protected function joinStoreRelationTable($tableName, $columnName)
     {
-        if ($this->getFilter('store')) {
+        if ($this->getFilter('store') || $this->getFilter('website_id')) {
             $this->getSelect()->join(
                 ['store_table' => $this->getTable($tableName)],
                 'main_table.' . $columnName . ' = store_table.' . $columnName,

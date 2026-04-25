@@ -50,6 +50,11 @@ class Index extends Form
         parent::__construct($context, $coreRegistry);
     }
 
+    protected function _isAllowed()
+    {
+        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::new_game_brand_request_form');
+    }
+
     /**
      * Index action
      *
@@ -59,7 +64,8 @@ class Index extends Form
     {
         /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
-        $this->initPage($resultPage)->getConfig()->getTitle()->prepend(__('Forms'));
+        $resultPage->setActiveMenu('CoreMarketplace_MarketPlace::new_game_brand_request_form');
+        $resultPage->getConfig()->getTitle()->prepend(__('New Games/Brands Request | Manage Form'));
         return $resultPage;
     }
 }

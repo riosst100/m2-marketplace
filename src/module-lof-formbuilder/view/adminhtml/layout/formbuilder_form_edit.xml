@@ -30,9 +30,9 @@
     </head>
     <update handle="editor"/>
     <body>
-        <referenceContainer name="page.main.actions">
+        <!-- <referenceContainer name="page.main.actions">
             <block class="Lof\Formbuilder\Block\Adminhtml\Menu" name="lof_formbuilder_menu" />
-        </referenceContainer>
+        </referenceContainer> -->
         <referenceContainer name="content">
             <block class="Lof\Formbuilder\Block\Adminhtml\Form\Edit" name="formbuilder_form_edit"/>
             <block class="Lof\Formbuilder\Block\Adminhtml\Form\Edit\Button\Save" name="email_type_list"/>

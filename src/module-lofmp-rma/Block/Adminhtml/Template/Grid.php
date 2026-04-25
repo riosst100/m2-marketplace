@@ -30,6 +30,9 @@ use Lofmp\Rma\Model\QuickResponseFactory;
 
 class Grid extends GridExtended
 {
+    protected $templateFactory;
+
+
     public function __construct(
         QuickResponseFactory $templateFactory,
         Context $context,

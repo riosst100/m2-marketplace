@@ -44,6 +44,10 @@ use Magento\ImportExport\Model\History;
 use Magento\ImportExport\Model\Report\ReportProcessorInterface;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\ImportExport\Model\Import\ErrorProcessing\ProcessingErrorAggregatorInterface;
+use Magento\ImportExport\Model\History as ModelHistory;
+use Magento\Framework\MessageQueue\PublisherInterface;
+use Magento\Framework\App\ObjectManager;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -55,6 +59,15 @@ use Magento\Framework\App\Action\HttpPostActionInterface;
  */
 class Processimport extends ImportResultController implements HttpGetActionInterface, HttpPostActionInterface
 {
+    protected $customerSession;
+    protected $_frontendUrl;
+    protected $_actionFlag;
+    protected $mappingHelper;
+    protected $request;
+    protected $storeManager;
+    protected $productAction;
+
+
     const FLAG_IS_URLS_CHECKED = 'check_url_settings';
 
     /**
@@ -112,6 +125,12 @@ class Processimport extends ImportResultController implements HttpGetActionInter
      * @var \Lof\MarketPlace\Model\SellerFactory
      */
     protected $sellerFactory;
+
+    // NEW: message publisher
+    protected $publisher;
+
+    // Topic name
+    const TOPIC_PRODUCT_IMPORT = 'lof.marketplace.product_import';
 
     /**
      * @var string[]
@@ -191,7 +210,8 @@ class Processimport extends ImportResultController implements HttpGetActionInter
         ItemFactory $stockItemFactory,
         \Magento\Customer\Model\Session $customerSession,
         \Lof\MarketPlace\Model\SellerFactory $sellerFactory,
-        \Magento\Framework\Url $frontendUrl
+        \Magento\Framework\Url $frontendUrl,
+        PublisherInterface $publisher
     ) {
         parent::__construct(
             $context,
@@ -214,6 +234,7 @@ class Processimport extends ImportResultController implements HttpGetActionInter
         $this->sellerFactory = $sellerFactory;
         $this->_frontendUrl = $frontendUrl;
         $this->_actionFlag = $context->getActionFlag();
+        $this->publisher = $publisher;
     }
 
     /**
@@ -253,6 +274,10 @@ class Processimport extends ImportResultController implements HttpGetActionInter
      */
     public function execute()
     {
+        $objectManager = ObjectManager::getInstance();
+        $this->storeManager = $objectManager->create(\Magento\Store\Model\StoreManagerInterface::class);
+        $this->productAction = $objectManager->create(\Magento\Catalog\Model\Product\Action::class);
+
         $customerSession = $this->customerSession;
         $customerId = $customerSession->getId();
         $sellerModel = $this->sellerFactory->create()->load($customerId, 'customer_id');
@@ -260,6 +285,10 @@ class Processimport extends ImportResultController implements HttpGetActionInter
         if ($customerSession->isLoggedIn() && $status == 1) {
             $data = $this->getRequest()->getPostValue();
             if ($data) {
+                $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/import.log');
+                $logger = new \Zend_Log();
+                $logger->addWriter($writer);
+
                 $this->_eventManager->dispatch('marketplace_start_import_product', [
                     'object' => $this,
                     'seller' => $sellerModel,
@@ -282,7 +311,6 @@ class Processimport extends ImportResultController implements HttpGetActionInter
                 $productUpdateIds = [];
 
                 if ($approval && $approvalEditing && $behavior != 'delete') {
-                    //validate pending product attribute
                     if ($pendingProductAttributes != 0) {
                         $pendingProductAttributes = explode(',', $pendingProductAttributes);
                         foreach ($pendingProductAttributes as $k => $v) {
@@ -290,187 +318,161 @@ class Processimport extends ImportResultController implements HttpGetActionInter
                         }
                     }
 
+                    // sample a few rows to detect productUpdateIds (same logic as before)
                     $fileUpload = $this->getRequest()->getFiles();
-                    $tmp_name = $fileUpload['import_file']['tmp_name'];
-                    $csvData = $this->csvProcessor->getData($tmp_name);
-                    if ($csvData) {
-                        $csvData = $this->mergeData($csvData);
-                        foreach ($csvData as $_csvData) {
-                            $orgProductData = $this->_productFactory->create()
-                                ->loadByAttribute('sku', $_csvData['sku']);
-
-                            //if Pending Product Attributes is Default
-                            if ($orgProductData && $pendingProductAttributes == 0) {
-                                foreach ($_csvData as $key => $value) {
-                                    if (isset($this->_fieldsMap[$key])) {
-                                        $attributeCode = $this->_fieldsMap[$key];
-                                    }
-
-                                    //convert attribute name
-                                    $attributeCode = isset($this->_fieldsMap[$key]) ? $this->_fieldsMap[$key] : '';
-                                    if ($attributeCode != null && $value != null) {
-                                        if ($value != $this->getProductData($orgProductData, $attributeCode)) {
-                                            array_push($productUpdateIds, $orgProductData->getId());
-                                        }
-                                    }
-                                }
-                            } elseif ($orgProductData) {
-                                foreach ($_csvData as $key => $value) {
-                                    //convert attribute name
-                                    $attributeCode = isset($this->_fieldsMap[$key]) ? $this->_fieldsMap[$key] : '';
-
-                                    if ($attributeCode != null
-                                        && in_array($attributeCode, $pendingProductAttributes)
-                                        && $value != null
-                                    ) {
-                                        if ($value != $this->getProductData($orgProductData, $attributeCode)) {
-                                            array_push($productUpdateIds, $orgProductData->getId());
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                $this->importModel->setData($data);
-                $errorAggregator = $this->importModel->getErrorAggregator();
-
-                try {
-                    $this->importModel->importSource();
-                } catch (\Exception $e) {
-                    //
-                }
-
-                if ($this->importModel->getErrorAggregator()->hasToBeTerminated()) {
-                    $resultBlock->addError(__('Maximum error count has been reached or system error is occurred!'));
-                    $this->addErrorMessages($resultBlock, $errorAggregator);
-                } else {
-                    $this->importModel->invalidateIndex();
-
-                    $file = $this->importModel->invalidateIndex()->uploadSource();
-
-                    // phpcs:disable Magento2.Functions.DiscouragedFunction.Discouraged
-                    // TODO: Move to Observer
-                    if (file_exists($file)) {
+                    $tmp_name = $fileUpload['import_file']['tmp_name'] ?? null;
+                    if ($tmp_name && file_exists($tmp_name)) {
                         try {
-                            $data = $this->csvProcessor->getData($file);
-                            $file = [];
-                            foreach ($data as $key => $_data) {
-                                if (!$key) {
-                                    continue;
-                                }
-                                $file[] = $_data[0];
-                                $product = $this->_productFactory->create()->loadByAttribute('sku', $_data[0]);
-
-                                $productId = $product ? (int)$product->getId() : 0;
-
-                                if (!$productId) {
-                                    continue;
-                                }
-
-                                $productSellerId = $product->getSellerId();
-                                $sellerId = $sellerModel->getSellerId();
-                                $isPendingProduct = false;
-
-                                if ($approval) {
-                                    if ($this->isUpdateProduct($productId)) {
-                                        if ($sellerId != $productSellerId) {
-                                            continue;
+                            $csvData = $this->csvProcessor->getData($tmp_name);
+                            if ($csvData) {
+                                $csvData = $this->mergeData($csvData);
+                                foreach ($csvData as $_csvData) {
+                                    $orgProductData = $this->_productFactory->create()
+                                        ->loadByAttribute('sku', $_csvData['sku']);
+                                    if ($orgProductData && $pendingProductAttributes == 0) {
+                                        foreach ($_csvData as $key => $value) {
+                                            $attributeCode = isset($this->_fieldsMap[$key]) ? $this->_fieldsMap[$key] : '';
+                                            if ($attributeCode != null && $value != null) {
+                                                if ($value != $this->getProductData($orgProductData, $attributeCode)) {
+                                                    array_push($productUpdateIds, $orgProductData->getId());
+                                                }
+                                            }
                                         }
-                                    }
-
-                                    if ($this->isNewProduct($productId)) {
-                                        $isPendingProduct = true;
-                                    } elseif ($this->isUpdateProduct($productId) && $approvalEditing) {
-                                        if (count($productUpdateIds) > 0) {
-                                            if (in_array($product->getId(), $productUpdateIds)) {
-                                                $isPendingProduct = true;
+                                    } elseif ($orgProductData) {
+                                        foreach ($_csvData as $key => $value) {
+                                            $attributeCode = isset($this->_fieldsMap[$key]) ? $this->_fieldsMap[$key] : '';
+                                            if ($attributeCode != null
+                                                && in_array($attributeCode, $pendingProductAttributes)
+                                                && $value != null
+                                            ) {
+                                                if ($value != $this->getProductData($orgProductData, $attributeCode)) {
+                                                    array_push($productUpdateIds, $orgProductData->getId());
+                                                }
                                             }
                                         }
                                     }
                                 }
-
-                                $status = $approval ? 1 : 2;
-                                $connection = $this->resourceConnection->getConnection();
-                                $productData = [
-                                    'approval' => $status,
-                                ];
-
-                                if (!$productSellerId) {
-                                    $productData['seller_id'] = $sellerId;
-                                }
-                                if (!$productSellerId || ($productSellerId && ($productSellerId == $sellerId))) {
-                                    $connection->update(
-                                        $this->resourceConnection->getTableName('catalog_product_entity'),
-                                        $productData,
-                                        [
-                                            'entity_id = ?' => $productId,
-                                        ]
-                                    );
-                                }
-
-                                $sellerProduct = $this->_sellerProduct->create()->load($productId, 'product_id');
-                                if ($sellerProduct && count($sellerProduct->getData()) > 0) {
-                                    $sellerProductSellerId = $sellerProduct->getSellerId();
-                                    if (!$sellerProductSellerId) {
-                                        $sellerProduct
-                                            ->setData('seller_id', $sellerId)
-                                            ->setData('status', 3)
-                                            ->save();
-                                    } elseif ($sellerProductSellerId == $sellerId) {
-                                        if (!$approvalEditing) {
-                                            $sellerProduct
-                                                ->setData('status', 3)
-                                                ->save();
-                                        }
-                                    }
-                                } else {
-                                    if (!$productSellerId) {
-                                        $sellerProduct
-                                            ->setData('seller_id', $sellerId)
-                                            ->setData('product_id', $productId)
-                                            ->setData('status', 0)
-                                            ->setData('product_name', $product->getName())
-                                            ->save();
-                                    } elseif ($productSellerId && ($productSellerId == $sellerId)) {
-                                        $sellerProduct
-                                            ->setData('seller_id', $sellerId)
-                                            ->setData('product_id', $productId)
-                                            ->setData('status', 0)
-                                            ->setData('product_name', $product->getName())
-                                            ->save();
-                                    }
-                                }
-
-                                if ($approval && $isPendingProduct) {
-                                    $sellerProduct
-                                        ->setData('status', 1)
-                                        ->setData('product_name', $product->getName())
-                                        ->save();
-                                }
-
                             }
-                            $this->_eventManager->dispatch('marketplace_import_product_success', [
-                                'object' => $this,
-                                'seller' => $sellerModel,
-                                'data' => $data
-                            ]);
                         } catch (\Exception $e) {
-                            //
+                            // ignore sampling errors — still allow queueing
                         }
                     }
-
-                    $this->addErrorMessages($resultBlock, $errorAggregator);
-                    $resultBlock->addSuccess(__('Import successfully done'));
                 }
+
+                // Move uploaded file to var/import/lof_marketplace
+                $fileUpload = $this->getRequest()->getFiles();
+                $tmp_name = $fileUpload['import_file']['tmp_name'] ?? null;
+                // Custom tmp_name
+                $targetDirValidated  = BP . '/var/importexport';
+                $tmp_name = $targetDirValidated . '/catalog_product.csv';
+
+                $origName = $fileUpload['import_file']['name'] ?? 'upload.csv';
+
+                if (!$tmp_name || !file_exists($tmp_name)) {
+                    $resultBlock->addError(__('No import file uploaded or file could not be read.'));
+                    return $resultLayout;
+                }
+
+                $targetDir = BP . '/var/import/lof_marketplace';
+                if (!is_dir($targetDir)) {
+                    @mkdir($targetDir, 0777, true);
+                }
+                $safeName = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($origName));
+                $targetFile = $targetDir . '/' . uniqid('import_') . '_' . $safeName;
+
+                $moved = false;
+                try {
+                    if (is_uploaded_file($tmp_name)) {
+                        $moved = @move_uploaded_file($tmp_name, $targetFile);
+                    } else {
+                        $moved = @copy($tmp_name, $targetFile);
+                    }
+                    @chmod($targetFile, 0644);
+                } catch (\Exception $e) {
+                    $moved = false;
+                }
+
+                if (!$moved || !file_exists($targetFile)) {
+                    $resultBlock->addError(__('Failed to move uploaded file to %1', $targetDir));
+                    return $resultLayout;
+                }
+
+                // Use validated file from var/importexport instead of uploaded one
+                // $targetDir  = BP . '/var/importexport';
+                // $targetFile = $targetDir . '/catalog_product.csv';
+                // $origName   = 'catalog_product.csv';
+
+                if (!file_exists($targetFile)) {
+                    $resultBlock->addError(__('Validated import file not found: %1', $targetFile));
+                    return $resultLayout;
+                }
+
+                // Basic header check: must contain 'sku'
+                try {
+                    // $logger->info('ProcessImport: Validating import file header: ' . $targetFile);
+                    $csvHead = $this->csvProcessor->getData($targetFile);
+                    if (!$csvHead || !isset($csvHead[0]) || !in_array('sku', $csvHead[0])) {
+                        @unlink($targetFile);
+                        $resultBlock->addError(__('Uploaded CSV must contain a "sku" column.'));
+                        return $resultLayout;
+                    }
+                } catch (\Exception $e) {
+                    $logger->info('CSV read failed: ' . $e->getMessage());
+                }
+
+                // Build payload with only primitive-friendly values
+                $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+                $this->session = $objectManager->create(\Magento\Framework\Session\SessionManager::class);                
+                $historyId = $this->session->getData('history_id');
+                $data['history_id'] = $historyId;
+
+                $payload = [
+                    'file' => $targetFile,
+                    'data' => $data,
+                    'seller_customer_id' => $customerId,
+                    'seller_id' => $sellerModel->getSellerId(),
+                    'approval' => (int)$approval,
+                    'approval_editing' => (int)$approvalEditing,
+                    'pending_attributes' => $pendingProductAttributes,
+                    'product_update_ids' => $productUpdateIds
+                ];
+                $this->session->unsetData('history_id');
+                try {
+                    $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/import.log');
+                    $logger = new \Zend_Log();
+                    $logger->addWriter($writer);
+                    $logger->info('===== PUBLISHING TO QUEUE =====');
+                    $logger->info('Payload: '.json_encode($payload));
+
+                    $this->publisher->publish(self::TOPIC_PRODUCT_IMPORT, json_encode($payload));
+                    
+                    // Save payload to history 
+                    $history = $this->historyModel->load($historyId);
+
+                    if ($history->getId()) {                        
+                        $history->setData('data_import', json_encode($payload));
+                        $history->save();
+                    } else {
+                        throw new \Magento\Framework\Exception\LocalizedException(__('History not found'));
+                    }
+
+                    $this->_eventManager->dispatch('marketplace_import_product_queued', [
+                        'object' => $this,
+                        'seller' => $sellerModel,
+                        'payload' => $payload
+                    ]);
+
+                    $resultBlock->addSuccess(__('Import queued. The file will be processed in the background.'));
+                } catch (\Exception $e) {
+                    // $logger->info('Failed to queue import: ' . $e->getMessage());
+                    $resultBlock->addError(__('Could not queue import: %1', $e->getMessage()));
+                }
+
                 return $resultLayout;
             }
 
-            /** @var Redirect $resultRedirect */
             $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
             $resultRedirect->setPath('*/*/import');
-
             return $resultRedirect;
         } elseif ($customerSession->isLoggedIn() && $status == 0) {
             $this->_redirectUrl('lofmarketplace/seller/becomeseller');
@@ -478,6 +480,19 @@ class Processimport extends ImportResultController implements HttpGetActionInter
             $this->messageManager->addNoticeMessage(__('You must have a seller account to access'));
             $this->_redirectUrl('lofmarketplace/seller/login');
         }
+    }
+
+    protected function createErrorReport(ProcessingErrorAggregatorInterface $errorAggregator)
+    {
+        $this->historyModel->loadLastInsertItem();
+        $sourceFile = $this->reportHelper->getReportAbsolutePath($this->historyModel->getImportedFile());
+        $writeOnlyErrorItems = true;
+        if ($this->historyModel->getData('execution_time') == ModelHistory::IMPORT_VALIDATION) {
+            $writeOnlyErrorItems = false;
+        }
+        $fileName = $this->reportProcessor->createReport($sourceFile, $errorAggregator, $writeOnlyErrorItems);
+        $this->historyModel->addErrorReportFile($fileName);
+        return $fileName;
     }
 
     /**

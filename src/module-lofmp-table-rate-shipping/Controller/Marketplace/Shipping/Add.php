@@ -118,6 +118,13 @@ class Add extends Action
     {
         $seller = $this->helper->getSeller();
         $status = $seller ? $seller->getStatus() : 0;
+
+        if ($this->_customerSession->isLoggedIn()) {            
+            $resultPage = $this->_resultPageFactory->create();
+            $resultPage->getConfig()->getTitle()->set(__('Marketplace Table Rate Shipping'));
+            return $resultPage;
+        }
+
         if ($this->_customerSession->isLoggedIn() && $status == 1) {
             $partnerId = $seller ? $seller->getId() : 0;
             if (!$partnerId) {

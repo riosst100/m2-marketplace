@@ -72,9 +72,9 @@ class TypePreOrder extends Column
             foreach ($dataSource['data']['items'] as &$item) {
                 if (isset($item['type'])) {
                     if ($item['type'] == 1) {
-                        $type = __('Partial Payment');
+                        $type = __('Deposit');
                     } else {
-                        $type = __('Complete Payment');
+                        $type = __('Full');
                     }
                     $item[$fieldName] = $type;
                 }

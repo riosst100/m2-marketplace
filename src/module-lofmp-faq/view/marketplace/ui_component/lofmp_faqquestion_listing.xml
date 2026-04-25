@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:framework:Ui/etc/ui_configuration.xsd">
+
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">
+                lofmp_faqquestion_listing.lofmp_faqquestion_listing_data_source
+            </item>
+            <item name="deps" xsi:type="string">
+                lofmp_faqquestion_listing.lofmp_faqquestion_listing_data_source
+            </item>
+        </item>
+        <item name="spinner" xsi:type="string">faq_columns</item>
+    </argument>
+
+    <dataSource name="lofmp_faqquestion_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">
+                Lofmp\Faq\Ui\DataProvider\Marketplace\FaqQuestionDataProvider
+            </argument>
+            <argument name="name" xsi:type="string">lofmp_faqquestion_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">question_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+        </argument>
+    </dataSource>
+
+    <columns name="faq_columns">
+        <column name="title">
+            <settings>
+                <label translate="true">Title</label>
+            </settings>
+        </column>
+
+        <column name="category_title">
+            <settings>
+                <label translate="true">Category</label>
+            </settings>
+        </column>
+
+        <column name="answer">
+            <settings>
+                <label translate="true">Answer</label>
+                <bodyTmpl>ui/grid/cells/text</bodyTmpl>
+            </settings>
+        </column>
+
+        <column name="status">
+            <settings>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
+
+        <column name="position">
+            <settings>
+                <label translate="true">Position</label>
+            </settings>
+        </column>
+
+        <column name="creation_time">
+            <settings>
+                <label translate="true">Created</label>
+            </settings>
+        </column>
+
+        <column name="update_time">
+            <settings>
+                <label translate="true">Modified</label>
+            </settings>
+        </column>
+
+        <actionsColumn name="actions" class="Magento\Ui\Component\Listing\Columns\Column">
+            <settings>
+                <indexField>question_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

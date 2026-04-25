@@ -267,6 +267,7 @@ class Save extends Action
                 'customer_id'       => $data['customer_id'],
                 'price_per_product' => $data['price_per_product'],
                 'store_id'          => $this->storeManager->getStore()->getId(),
+                'website_id'          => $this->storeManager->getStore()->getWebsite()->getId(),
                 'store_currency_code' => $this->storeManager->getStore()->getCurrentCurrency()->getCode(),
                 'product_sku'       => $product?$product->getSku():null,
                 'attributes'        => isset($data["attributes"])?$data["attributes"]:null,

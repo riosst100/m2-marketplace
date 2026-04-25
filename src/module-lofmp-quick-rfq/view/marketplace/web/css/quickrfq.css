@@ -1,107 +1,197 @@
 .manage-request-message-history {
-    float: left;
-    width: calc((100%) * 0.5 - 30px);
+  float: left;
+  width: calc((100%) * 0.5 - 30px);
+  border: 1px solid #e6e9ed;
+  padding: 16px;
+  border-radius: 4px;
+  background: #fff;
+}
+.manage-request-message-history .admin__page-section {
+  border-top: 1px solid #e6e9ed;
+  margin-bottom: 0;
+}
+.messages-container {
+  padding: 10px;
+}
+.message-title {
+  font-size: 16px;
+}
+.messages-wrapper {
+  max-height: 420px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 6px;
+}
+.message-row {
+  display: flex;
+}
+.message-row.self {
+  justify-content: flex-end;
+}
+.message-row.other {
+  justify-content: flex-start;
+}
+.message-bubble {
+  max-width: 60%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  border: 1px solid transparent;
+}
+.message-bubble.self {
+  background: #fff7e6;
+  border-color: #f5c07a;
+}
+.message-bubble.other {
+  background: #eaf8ff;
+  border-color: #9fd7ff;
+}
+.message-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.message-sender {
+  font-weight: 600;
+  color: #333;
+}
+.message-time {
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+}
+.message-header.self {
+  margin-bottom: 6px;
+  justify-content: flex-end;
+  gap: 5rem;
+}
+.message-text {
+  flex: 1;
+  color: #333;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+.quote-message-block {
+  margin-top: 14px;
+}
+#manage-request-message-textarea {
+  width: 100%;
+  box-sizing: border-box;
 }
 .customer-info {
-    float: right;
-    width: calc((100%) * 0.5 - 30px);
+  float: right;
+  width: calc((100%) * 0.5 - 30px);
 }
-#message-send-button{
-    float: right;
-    font-size: 1.7rem;
+#message-send-button {
+  float: right;
+  font-size: 1.7rem;
 }
 
 .message-field-label {
-    font-weight: 600;
-    font-size: 1.6rem;
-    display: block;
+  font-weight: 600;
+  font-size: 1.6rem;
+  display: block;
 }
 
 .attachments-item {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    display: block;
-    width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  width: 250px;
 }
 
 .field-attachment label {
-    display: inline-block;
-    text-decoration: none;
-    color: #1979c3;
-    cursor: pointer;
-    font-size: 1.4rem;
-    margin-left: 2rem;
-    margin-top: 1rem;
-    position: relative;
+  display: inline-block;
+  text-decoration: none;
+  color: #f76b1c;
+  cursor: pointer;
+  font-size: 1.4rem;
+  margin-left: 2rem;
+  margin-top: 1rem;
+  position: relative;
 }
 
 .field-attachment {
-    padding-bottom: 1rem;
+  padding-bottom: 1rem;
 }
 
 .field-attachment label:before {
-    left: -2rem;
-    position: absolute;
+  left: -2rem;
+  position: absolute;
 }
 
 .field-attachment input {
-    display: none;
+  display: none;
 }
 
 .field-attachment label:before {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-size: 1.4rem;
-    line-height: 1.4;
-    color: #1979c3;
-    content: '\e900';
-    font-family: 'magento-icons';
-    vertical-align: middle;
-    display: inline-block;
-    font-weight: normal;
-    overflow: hidden;
-    speak: none;
-    text-align: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  color: #f76b1c;
+  content: "\e900";
+  font-family: "magento-icons";
+  vertical-align: middle;
+  display: inline-block;
+  font-weight: normal;
+  overflow: hidden;
+  speak: none;
+  text-align: center;
 }
 
 #manage-request-message-textarea {
-    margin-top: 10px;
-    width: 100%;
-    margin-bottom: 10px;
+  margin-top: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+  border: 1px solid #cccccc;
 }
-
+#manage-request-message-textarea:hover,
+#manage-request-message-textarea:active {
+  border: 1px solid #878787;
+}
+#manage-request-message-textarea:focus {
+  border: 1px solid #878787;
+  outline-style: none;
+  outline-width: 0;
+}
 .message-block-item {
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 3rem;
-    padding-bottom: 3rem;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 3rem;
+  padding-bottom: 3rem;
 }
 
 .message-block-item-date-time {
-    display: block;
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: .5rem;
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
 
 .message-block-item {
-    font-size: 1.4rem;
-    word-break: break-all;
+  font-size: 1.4rem;
+  word-break: break-all;
 }
 #description span {
-    height: 18px;
-    width: 110px;
-    overflow: hidden;
-    position: relative;
-    display: inline-block;
-    text-decoration: none;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    color: #000;
+  height: 18px;
+  width: 110px;
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #000;
 }
 
 #message-send-button.submitting {
-    pointer-events: none;
-    cursor: not-allowed;
-    opacity: 0.7;
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.7;
 }

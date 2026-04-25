@@ -35,14 +35,14 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Invoice
         /**
          * Set active menu item
          */
-        $resultPage->setActiveMenu("Lof_MarketPlace::invoice");
-        $resultPage->getConfig()->getTitle()->prepend(__('Invoices'));
+        $resultPage->setActiveMenu("CoreMarketplace_MarketPlace::seller_invoices");
+        $resultPage->getConfig()->getTitle()->prepend(__('Seller | Invoices'));
 
         /**
          * Add breadcrumb item
          */
         $resultPage->addBreadcrumb(__('Invoices'), __('Invoices'));
-        $resultPage->addBreadcrumb(__('Manage Invoices'), __('Manage Invoices'));
+        $resultPage->addBreadcrumb(__('Seller'), __('Seller'));
 
         return $resultPage;
     }
@@ -52,6 +52,6 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Invoice
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Lof_MarketPlace::invoice');
+        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::seller_invoices');
     }
 }

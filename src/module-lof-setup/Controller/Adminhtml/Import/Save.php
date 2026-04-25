@@ -19,7 +19,6 @@
  * @license   http://www.landofcoder.com/LICENSE-1.0.html
  */
 namespace Lof\Setup\Controller\Adminhtml\Import;
-
 use Magento\Framework\Json\EncoderInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
 
@@ -27,6 +26,7 @@ class Save extends \Magento\Backend\App\Action
 {
     protected $_resource;
     protected $mediaConfig;
+
 
     /**
      * @var \Magento\Framework\Registry

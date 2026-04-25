@@ -30,6 +30,9 @@ use Lofmp\StoreLocator\Model\StoreLocator;
 use Lofmp\StoreLocator\Helper\Data;
 
 class Index extends \Magento\Framework\App\Action\Action {
+    protected $_storeManager;
+
+
 
     protected $_resultPageFactory;
     protected $_storelocatorCollection;

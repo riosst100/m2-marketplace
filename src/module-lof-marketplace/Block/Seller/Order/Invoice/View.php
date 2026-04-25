@@ -23,6 +23,11 @@ namespace Lof\MarketPlace\Block\Seller\Order\Invoice;
 
 class View extends \Magento\Backend\Block\Widget\Form\Container
 {
+    protected $_objectId;
+    protected $_controller;
+    protected $_mode;
+
+
     /**
      * @var string
      */

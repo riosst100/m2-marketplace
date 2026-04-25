@@ -1,0 +1,55 @@
+<?php
+$method = $block->getMethod();
+?>
+
+<div class="activation-box">
+
+    <?php if ($block->isRajaOngkir()): ?>
+        <h3>Activate RajaOngkir</h3>
+        <p>Enter your RajaOngkir API Key.</p>
+
+        <form action="<?= $block->getUrl('catalog/shipping/saveactivate') ?>" method="post">
+            <input type="hidden" name="method" value="rajaongkir">
+            <label>API Key</label>
+            <input type="text" name="api_key" class="input-text" required>
+            <button type="submit" class="btn btn-activate">Save & Activate</button>
+        </form>
+
+    <?php elseif ($block->isTableRate()): ?>
+        <h3>Activate Table Rate</h3>
+        <p>Configure your shipping table rate.</p>
+
+        <a class="btn btn-activate"
+        href="<?= $block->getUrl('catalog/shipping/saveactivate', ['method' => 'lofmptablerateshipping']) ?>">
+            Go to Configuration
+        </a>
+
+    <?php elseif ($block->isFlatRate()): ?>
+        <h3>Activate Flat Rate</h3>
+        <p>Configure your flat rate shipping.</p>
+
+        <a class="btn btn-activate"
+        href="<?= $block->getUrl('catalog/shipping/saveactivate', ['method' => 'lofmpflatrateshipping']) ?>">
+            Go to Configuration
+        </a>
+        
+    <?php else: ?>
+        <p>Configuration form not available for this method.</p>
+    <?php endif; ?>
+
+</div>
+
+<style>
+.activation-box {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+.activation-box input.input-text {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px;
+}
+</style>

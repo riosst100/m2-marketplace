@@ -33,7 +33,8 @@ class TransportPlugin extends \Laminas\Mail\Transport\Smtp
     protected $_auth;
     protected $_host;
     protected $_config;
-    
+
+
     /**
      * @var \Magento\Framework\Mail\MessageInterface
      */

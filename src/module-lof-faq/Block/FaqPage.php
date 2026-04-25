@@ -119,6 +119,15 @@ class FaqPage extends \Magento\Framework\View\Element\Template
         $show_breadcrumbs = $this->getConfig('faq_page/show_breadcrumbs');
 
         if($show_breadcrumbs && $breadcrumbsBlock){
+            // $breadcrumbsBlock->addCrumb(
+        	// 	'dashboard',
+        	// 	[
+            //         'label' => __('Seller Dashboard'),
+            //         'title' => __('Go to Seller Dashboard'),
+            //         'link'  => $baseUrl.'/marketplace/catalog/dashboard/'
+            //     ]
+            //     );
+
         	$breadcrumbsBlock->addCrumb(
         		'home',
         		[
@@ -127,6 +136,7 @@ class FaqPage extends \Magento\Framework\View\Element\Template
                     'link'  => $baseUrl
                 ]
                 );
+            
 
         	$breadcrumbsBlock->addCrumb(
         		'faqpage',
@@ -136,6 +146,7 @@ class FaqPage extends \Magento\Framework\View\Element\Template
                     'link'  => ''
                 ]
                 );
+                
         }
     }
 
@@ -270,8 +281,16 @@ class FaqPage extends \Magento\Framework\View\Element\Template
         $store = $this->_storeManager->getStore();
         $categoryCollection = $this->_categoryFactory->getCollection()
         ->addFieldToFilter('is_active',1)
+        ->addFieldToFilter('category_type', 'supplier')
         ->addStoreFilter($store)
         ->setCurPage(1);
+
+        $category = $this->_coreRegistry->registry('current_faq_category');
+        if ($category) {
+            // dd($category->getCategoryId());
+            $categoryCollection->addFieldToFilter('main_table.category_id', $category->getCategoryId());
+        }
+
         $categoryCollection->getSelect()->order('position ASC');
         return $categoryCollection;
     }

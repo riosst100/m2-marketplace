@@ -21,6 +21,9 @@
 namespace Lofmp\CouponCode\Model\Config\Source;
 class Staticblock implements \Magento\Framework\Option\ArrayInterface
 {
+    protected $_groupModel;
+
+
 	protected  $_blockModel;
 
     /**

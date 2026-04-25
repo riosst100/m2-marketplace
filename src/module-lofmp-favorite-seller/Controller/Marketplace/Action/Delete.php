@@ -29,6 +29,9 @@ use Magento\Framework\App\Action\Context;
  */
 class Delete extends Action
 {
+    protected $actionFlag;
+
+
     /**
      * @var \Magento\Customer\Model\Session
      */
@@ -134,6 +137,8 @@ class Delete extends Action
             $sellerSession = $this->customerSession;
             $sellerId = $this->marketplaceHelper->getSellerId();
 
+            $deletedFollowers = 0;
+
             $status = $this->sellerFactory->create()->load($sellerId,'seller_id')->getStatus();
 
             if ($sellerSession->isLoggedIn() && $status == 1) {
@@ -146,7 +151,12 @@ class Delete extends Action
                     ->load();
 
                 foreach($subscriptions as $subscription){
+                    $deletedFollowers++;
                     $subscription->delete();
+                }
+
+                if ($deletedFollowers > 0) {
+                    $this->messageManager->addSuccess(__('A total of %1 follower(s) have been deleted.', $deletedFollowers));
                 }
 
             } elseif($sellerSession->isLoggedIn() && $status == 0) {
@@ -156,7 +166,24 @@ class Delete extends Action
                 $this->_redirectUrl ($this->getFrontendUrl('lofmarketplace/seller/login'));
             }
 
-            return $this->_redirect('favoriteseller/index/index');
+            $url = $this->_redirect('favoriteseller/index/index/');
+
+            $websiteCode = null;
+
+            $refererUrl = $this->_redirect->getRefererUrl();
+            if ($refererUrl) {
+                if (preg_match('/country\/([a-z]+)/', $refererUrl, $matches)) {
+                    $websiteCode = $matches[1];
+                }
+            }
+
+            dd($websiteCode);
+            
+            if ($websiteCode) {
+                $url .= 'country/' . $websiteCode;
+            }           
+
+            return $url;
         } else {
             $this->messageManager->addNotice(__('You dont have permission to access this feature.'));
             $this->_redirectUrl($this->getFrontendUrl('lofmarketplace/catalog/dashboard/'));

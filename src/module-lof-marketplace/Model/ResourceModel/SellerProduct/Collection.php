@@ -57,6 +57,7 @@ class Collection extends AbstractCollection
             \Lof\MarketPlace\Model\ResourceModel\SellerProduct::class
         );
         $this->_map['fields']['entity_id'] = 'main_table.entity_id';
+        $this->_map['fields']['store'] = 'main_table.store_id';
     }
 
     /**

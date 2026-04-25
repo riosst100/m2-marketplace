@@ -26,6 +26,10 @@ use Magento\Framework\UrlInterface;
 
 class CancelrequestDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 {
+    protected $_request;
+    protected $collection;
+
+
     /**
      * @var UrlInterface
      */

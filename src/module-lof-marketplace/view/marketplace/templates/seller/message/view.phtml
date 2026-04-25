@@ -31,13 +31,13 @@ $currPageUrl = $helper->getCurrentUrls();
 $this->isRead();
 ?>
 <div class="row">
-    <div class="col-md-6 col-sm-6 col-xs-12">
+    <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
                 <h2><?= $block->escapeHtml($this->getMessage()->getSubject()) ?></h2>
                 <div class="clearfix"></div>
             </div>
-            <div class="x_content">
+            <div class="x_content seller-message-meta">
                 <table class="tile_info">
                     <tbody>
                     <tr>
@@ -64,21 +64,21 @@ $this->isRead();
         </div>
     </div>
     <?php if ($block->getMessage()->getStatus() != 0): ?>
-        <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6">
             <div class="x_panel">
                 <div class="x_title">
                     <h2><?= $block->escapeHtml(__('Post a Reply')) ?></h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form id="form-message" data-parsley-validate=""
+                      <form id="form-message" data-parsley-validate=""
                           action="<?= $block->escapeHtmlAttr($formActionUrl) ?>"
-                          class="form-horizontal form-label-left" method="post"
+                          class="form-horizontal form-label-left seller-message-reply" method="post"
                           data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>"
                           data-mage-init='{"validation":{}}'>
                         <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12"><?= __('Status'); ?></label>
-                            <div class="col-md-2 col-sm-2 col-xs-12">
+                            <label class="control-label col-md-2 col-sm-2 col-xs-2"><?= __('Status'); ?></label>
+                            <div class="col-md-10 col-sm-10 col-xs-10">
                                 <select class="form-control" id="status" name="status">
                                     <?php foreach ($helper->arrayStatus() as $status): ?>
                                         <option <?= ($status['value'] == $block->getMessage()->getStatus()) ? 'selected' : '' ?>
@@ -90,18 +90,18 @@ $this->isRead();
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">
+                            <label class="control-label col-md-2 col-sm-2 col-xs-2" for="content">
                                 <?= $block->escapeHtml(__('Message')) ?>
                                 <span class="required">*</span>
                             </label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="col-md-10 col-sm-10 col-xs-10">
                                 <textarea name="content" rows="10" id="content" required="required"
                                           class="form-control col-md-7 col-xs-12"> </textarea>
                             </div>
                         </div>
                         <div class="ln_solid"></div>
-                        <div class="form-group">
-                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                        <div class="form-group action-button">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
                                 <input type="hidden" name="sender_id"
                                        value="<?= $block->escapeHtmlAttr($block->getSeller()->getSellerId()) ?>"/>
                                 <input type="hidden" name="seller_send" value="1"/>
@@ -119,11 +119,11 @@ $this->isRead();
                                        value="<?= $block->escapeHtmlAttr($block->getMessage()->getMessageId()) ?>"/>
                                 <input type="hidden" name="currUrl" id="currUrl"
                                        value="<?= $block->escapeHtmlAttr($currPageUrl) ?>"/>
-                                <button class="btn btn-primary" type="reset">
-                                    <?= $block->escapeHtml(__('Reset')) ?>
-                                </button>
                                 <button type="submit" class="btn btn-success">
                                     <?= $block->escapeHtml(__('Submit')) ?>
+                                </button>
+                                <button class="btn btn-primary" type="reset">
+                                    <?= $block->escapeHtml(__('Reset')) ?>
                                 </button>
                             </div>
                         </div>
@@ -132,44 +132,59 @@ $this->isRead();
             </div>
         </div>
     <?php endif; ?>
-    <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="col-md-6 col-sm-6 col-xs-6">
         <div class="x_panel">
             <div class="x_title">
                 <h2><?= $block->escapeHtml(__('Message History')) ?></h2>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <ul class="messages">
-                    <?php foreach ($block->getDetail() as $detail): ?>
-                        <li>
-                            <div class="message_date">
-                                <h4 class="date text-info">
-                                    <?= $block->escapeHtml($helper->nicetime($detail->getCreatedAt())) ?>
-                                </h4>
-                                <p class="month">
-                                    <?= $block->escapeHtml($helper->getFormatDate($detail->getCreatedAt())) ?>
-                                </p>
-                            </div>
-                            <div class="message_wrapper">
-                                <h4 class="heading"><?= $block->escapeHtml($detail->getSenderName()) ?></h4>
-                                <blockquote class="contact-message">
-                                    <?= $block->escapeHtml($detail->getContent()) ?>
-                                </blockquote>
+                <ul class="chat-messages" id="seller-message-list">
+                    <script>
+                        (function(){
+                            var list = document.getElementById('seller-message-list');
+                            if (list) { list.scrollTop = list.scrollHeight; }
+                        })();
+                    </script>
+                    <?php foreach ($block->getDetail() as $detail):
+                        $isSelf = ($detail->getSenderId() == $block->getSeller()->getSellerId());
+                        $timeText = $helper->formatDateTime($detail->getCreatedAt(), \IntlDateFormatter::SHORT, true);
+                    ?>
+                        <li class="chat-row <?= $isSelf ? 'self' : 'other' ?>">
+                            <div class="chat-bubble <?= $isSelf ? 'self' : 'other' ?>">
+                                <?php if ($isSelf): ?>
+                                    <div class="chat-header self">
+                                        <span class="chat-time"><?= $block->escapeHtml($timeText) ?></span>
+                                    </div>
+                                    <div class="chat-content"><?= $block->escapeHtml($detail->getContent()) ?></div>
+                                <?php else: ?>
+                                    <div class="chat-header">
+                                        <span class="chat-sender"><?= $block->escapeHtml($detail->getSenderName()) ?></span>
+                                        <span class="chat-time"><?= $block->escapeHtml($timeText) ?></span>
+                                    </div>
+                                    <div class="chat-content"><?= $block->escapeHtml($detail->getContent()) ?></div>
+                                <?php endif; ?>
                             </div>
                         </li>
                     <?php endforeach; ?>
-                    <li>
-                        <div class="message_date">
-                            <h4 class="date text-info">
-                                <?= $block->escapeHtml($helper->nicetime($block->getMessage()->getCreatedAt())) ?>
-                            </h4>
-                            <p class="month"><?= $helper->getFormatDate($block->getMessage()->getCreatedAt()); ?></p>
-                        </div>
-                        <div class="message_wrapper">
-                            <h4 class="heading"><?= $block->escapeHtml($block->getMessage()->getSenderName()) ?></h4>
-                            <blockquote class="contact-message">
-                                <?= $block->escapeHtml($block->getMessage()->getDescription()) ?>
-                            </blockquote>
+                    <?php
+                        $baseIsSelf = ($block->getMessage()->getSenderId() == $block->getSeller()->getSellerId());
+                        $baseTimeText = $helper->formatDateTime($block->getMessage()->getCreatedAt(), \IntlDateFormatter::SHORT, true);
+                    ?>
+                    <li class="chat-row <?= $baseIsSelf ? 'self' : 'other' ?>">
+                        <div class="chat-bubble <?= $baseIsSelf ? 'self' : 'other' ?>">
+                            <?php if ($baseIsSelf): ?>
+                                <div class="chat-header self">
+                                    <span class="chat-time"><?= $block->escapeHtml($baseTimeText) ?></span>
+                                </div>
+                                <div class="chat-content"><?= $block->escapeHtml($block->getMessage()->getDescription()) ?></div>
+                            <?php else: ?>
+                                <div class="chat-header">
+                                    <span class="chat-sender"><?= $block->escapeHtml($block->getMessage()->getSenderName()) ?></span>
+                                    <span class="chat-time"><?= $block->escapeHtml($baseTimeText) ?></span>
+                                </div>
+                                <div class="chat-content"><?= $block->escapeHtml($block->getMessage()->getDescription()) ?></div>
+                            <?php endif; ?>
                         </div>
                     </li>
                 </ul>

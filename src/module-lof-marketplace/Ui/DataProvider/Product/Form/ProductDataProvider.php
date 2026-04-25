@@ -28,6 +28,10 @@ use Magento\Ui\DataProvider\Modifier\PoolInterface;
 
 class ProductDataProvider extends AbstractDataProvider
 {
+    protected $collection;
+    protected $data;
+
+
     /**
      * @var PoolInterface
      */

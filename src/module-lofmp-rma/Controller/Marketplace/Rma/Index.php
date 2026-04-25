@@ -25,9 +25,13 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\StoreManager;
+use Lofmp\TableRateShipping\Helper\Data;
 
 class Index extends \Magento\Framework\App\Action\Action
 {
+    protected $_storeManager;
+
+
 
     protected $_resultPageFactory;
 
@@ -42,6 +46,8 @@ class Index extends \Magento\Framework\App\Action\Action
     protected $_sellerFactory = null;
 
      protected $_frontendUrl;
+
+     protected $helper;
     /**
      * [__construct description]
      * @param \Magento\Framework\App\Action\Context       $context
@@ -56,7 +62,8 @@ class Index extends \Magento\Framework\App\Action\Action
         StoreManager       $storeManager,
         \Magento\Customer\Model\Session $sellerSession,
         \Lof\MarketPlace\Model\SellerFactory $sellerFactory,
-        \Magento\Framework\Url $frontendUrl
+        \Magento\Framework\Url $frontendUrl,
+        Data $helper
     ) {
 
         $this->_resultPageFactory      = $resultPageFactory;
@@ -64,7 +71,8 @@ class Index extends \Magento\Framework\App\Action\Action
         $this->_objectManager          = $context->getObjectManager();
         $this->_session = $sellerSession;
         $this->_sellerFactory = $sellerFactory;
-         $this->_frontendUrl = $frontendUrl;
+        $this->_frontendUrl = $frontendUrl;
+        $this->helper = $helper;
         parent::__construct($context);
     }
 
@@ -77,22 +85,35 @@ class Index extends \Magento\Framework\App\Action\Action
      *
      * @return \Magento\Framework\View\Result\PageFactory
      */
+    // public function execute()
+    // {
+
+    //     $resultRedirect = $this->resultRedirectFactory->create();
+
+    //     $sellerId = $this->_session->getId();
+    //     $status = $this->_sellerFactory->create()->load($sellerId, 'customer_id')->getStatus();
+
+    //     if ($this->_session->isLoggedIn() && $status == 1) {
+    //         $this->_view->loadLayout();
+    //         $this->_view->renderLayout();
+    //     } elseif ($this->_session->isLoggedIn() && $status == 0) {
+    //         $this->_redirect($this->getFrontendUrl('lofmarketplace/seller/becomeseller'));
+    //     } else {
+    //         $this->messageManager->addNotice(__('You must have a seller account to access'));
+    //         $this->_redirect($this->getFrontendUrl('lofmarketplace/seller/login'));
+    //     }
+    // }
+
     public function execute()
     {
-
-        $resultRedirect = $this->resultRedirectFactory->create();
-
-        $sellerId = $this->_session->getId();
-        $status = $this->_sellerFactory->create()->load($sellerId, 'customer_id')->getStatus();
-
-        if ($this->_session->isLoggedIn() && $status == 1) {
-            $this->_view->loadLayout();
-            $this->_view->renderLayout();
-        } elseif ($this->_session->isLoggedIn() && $status == 0) {
-            $this->_redirect($this->getFrontendUrl('lofmarketplace/seller/becomeseller'));
-        } else {
-            $this->messageManager->addNotice(__('You must have a seller account to access'));
-            $this->_redirect($this->getFrontendUrl('lofmarketplace/seller/login'));
+        $seller = $this->helper->getSellerByCustomer();
+        $partnerId = $seller && isset($seller['seller_id']) ? $seller['seller_id'] : 0;
+        if (!$partnerId) {
+            $this->_redirectUrl($this->getFrontendUrl('lofmarketplace/seller/becomeseller'));
+            return;
         }
+        $resultPage = $this->_resultPageFactory->create();
+        $resultPage->getConfig()->getTitle()->set(__('Manage Return / RMA'));
+        return $resultPage;
     }
 }

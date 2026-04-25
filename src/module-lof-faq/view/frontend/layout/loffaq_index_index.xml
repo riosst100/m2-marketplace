@@ -26,8 +26,10 @@
 			<block class="Lof\Faq\Block\Category\CatList" name="faq.category.list" template="Lof_Faq::category/list.phtml" before="-"/>
 			<block class="Lof\Faq\Block\Tag\TagList" ifconfig="loffaq/sidebar/show_tagblock" name="faq.tag.list" template="Lof_Faq::tag/list.phtml" after="faq.category.list"/>
 		</referenceContainer>
-		<referenceContainer name="content">
+		<referenceContainer name="page.main.title">
 			<block class="Magento\Framework\View\Element\Template" ifconfig="loffaq/faq_page/searchform_enable" name="faq.searchform" template="Lof_Faq::search/form.phtml" before="-"/>
+		</referenceContainer>
+		<referenceContainer name="content">
 			<block class="Lof\Faq\Block\FaqPage" name="loffaq.questions" template="Lof_Faq::faqpage.phtml">
 				<block class="Lof\Faq\Block\QuestionsFeatured" name="loffaq.questions.featured" as="questions_featured" template="Lof_Faq::questions_featured.phtml"/>
 				<block class="Lof\Faq\Block\Toolbar" name="faq_toolbar" template="Lof_Faq::toolbar.phtml">

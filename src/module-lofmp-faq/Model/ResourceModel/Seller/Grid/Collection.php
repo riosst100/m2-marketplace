@@ -32,6 +32,11 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class Collection extends SellerCollection implements SearchResultInterface {
+    protected $_eventPrefix;
+    protected $_eventObject;
+    protected $aggregations;
+
+
 	/**
      * Resource initialization
      * @param EntityFactoryInterface   $entityFactory,

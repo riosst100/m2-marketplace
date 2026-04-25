@@ -25,6 +25,15 @@ namespace Lofmp\Rma\Controller\Adminhtml;
 
 abstract class Status extends \Magento\Backend\App\Action
 {
+    protected $statusFactory;
+    protected $statusRepository;
+    protected $localeDate;
+    protected $registry;
+    protected $context;
+    protected $backendSession;
+    protected $resultFactory;
+
+
     public function __construct(
         \Lofmp\Rma\Model\StatusFactory $statusFactory,
         \Lofmp\Rma\Api\Repository\StatusRepositoryInterface $statusRepository,

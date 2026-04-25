@@ -23,6 +23,11 @@ namespace Lofmp\FlatRateShipping\Block\Adminhtml\Shipping;
 
 class Upload extends \Magento\Backend\Block\Widget\Form\Container
 {
+    protected $_objectId;
+    protected $_blockGroup;
+    protected $_controller;
+
+
     /**
      * Core registry
      *

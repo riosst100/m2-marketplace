@@ -28,6 +28,9 @@ use Lofmp\Rma\Model\FieldFactory;
 
 class Grid extends GridExtended
 {
+    protected $fieldFactory;
+
+
     public function __construct(
         FieldFactory $fieldFactory,
         Context $context,

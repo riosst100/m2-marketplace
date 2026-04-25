@@ -10,23 +10,24 @@
     	<add 
 			id="Lofmp_Faq::faq" 
 			icon="fa fa-question-circle" 
-			title="FAQ" 
+			title="Product FAQ" 
 			module="Lofmp_Faq" 
-			sortOrder="50" 
+			action="catalog/faqquestion/index"
+			sortOrder="490" 
 			resource="Lofmp_Faq::faq"
 			dependsOnConfig="lofmpfaq/general_settings/allow_seller_manage"
 			/>
-    	<add 
+    	<!-- <add 
 			id="Lofmp_Faq::manager_category" 
-			title="Manager Category" 
+			title="Manage Category" 
 			module="Lofmp_Faq" 
 			action="catalog/faqcategory/index" 
 			sortOrder="51" 
 			parent="Lofmp_Faq::faq" 
 			resource="Lofmp_Faq::manager_category" 
 			dependsOnConfig="lofmpfaq/general_settings/allow_seller_manage"
-			/>
-    	<add 
+			/> -->
+    	<!-- <add 
 			id="Lofmp_Faq::new_category" 
 			title="New Category" 
 			module="Lofmp_Faq"  
@@ -35,18 +36,18 @@
 			parent="Lofmp_Faq::faq" 
 			resource="Lofmp_Faq::new_category" 
 			dependsOnConfig="lofmpfaq/general_settings/allow_seller_manage"
-		/>
-    	<add 
+		/> -->
+    	<!-- <add 
 			id="Lofmp_Faq::manager_question" 
-			title="Manager Question" 
+			title="Manage Question" 
 			module="Lofmp_Faq"  
 			action="catalog/faqquestion/index" 
 			sortOrder="53" 
 			parent="Lofmp_Faq::faq" 
 			resource="Lofmp_Faq::manager_question" 
 			dependsOnConfig="lofmpfaq/general_settings/allow_seller_manage"
-			/>
-    	<add 
+			/> -->
+    	<!-- <add 
 			id="Lofmp_Faq::new_question" 
 			title="New Question"
 			module="Lofmp_Faq" 
@@ -65,6 +66,6 @@
 			parent="Lofmp_Faq::faq" 
 			resource="Lofmp_Faq::setting" 
 			dependsOnConfig="lofmpfaq/general_settings/allow_seller_manage"
-			/>
+			/> -->
     </menu>
 </config>

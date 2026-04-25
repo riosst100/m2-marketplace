@@ -81,7 +81,7 @@ class Edit extends \Lof\Faq\Controller\Adminhtml\Question
             $id ? __('Edit Question') : __('New Question')
         );
         $resultPage->getConfig()->getTitle()->prepend(__('Questions'));
-        $resultPage->getConfig()->getTitle()->prepend($model->getId() ? $model->getTitle() : __('New Question'));
+        $resultPage->getConfig()->getTitle()->prepend($model->getId() ? 'Seller Help Center | ' . $model->getTitle() : __('Seller Help Center | New Question'));
         return $resultPage;
     }
 }

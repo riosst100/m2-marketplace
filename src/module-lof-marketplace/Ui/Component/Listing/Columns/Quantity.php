@@ -73,7 +73,8 @@ class Quantity extends Column
 
                 if (isset($item['entity_id'])) {
                     $product = $this->_productloader->create()->load($item['entity_id']);
-                    $item[$fieldName] = $product->getData('quantity_and_stock_status')['qty'];
+                    $qty = $product->getData('quantity_and_stock_status')['qty'] ?? 0;
+                    $item[$fieldName] = $qty ?: 0;
 
                 }
             }

@@ -28,6 +28,9 @@ use Lofmp\Rma\Controller\Adminhtml\Rma;
 
 class MarkRead extends Rma
 {
+    protected $rmaFactory;
+
+
     public function __construct(
         \Lofmp\Rma\Model\RmaFactory $rmaFactory,
         \Magento\Backend\App\Action\Context $context

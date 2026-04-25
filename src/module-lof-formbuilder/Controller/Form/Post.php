@@ -273,6 +273,7 @@ class Post extends Action
      */
     public function execute()
     {
+        die('okeee');
         try {
             $store = $this->storeManager->getStore();
             $mediaUrl = $this->helper->getBaseMediaUrl();

@@ -26,6 +26,10 @@ use Lofmp\CouponCode\Model\ResourceModel\Coupon\Collection as CouponCollection;
 
 class Collection extends CouponCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var AggregationInterface
      */

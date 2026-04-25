@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <type name="Magento\StoreGraphQl\Model\Resolver\Store\StoreConfigDataProvider">
+        <arguments>
+            <argument name="extendedConfigData" xsi:type="array">
+                <item name="order_status_canceled" xsi:type="string">vestrackorder/order_status/canceled</item>
+                <item name="order_status_closed" xsi:type="string">vestrackorder/order_status/closed</item>
+                <item name="order_status_complete" xsi:type="string">vestrackorder/order_status/complete</item>
+                <item name="order_status_fraud" xsi:type="string">vestrackorder/order_status/fraud</item>
+                <item name="order_status_holded" xsi:type="string">vestrackorder/order_status/holded</item>
+                <item name="order_status_payment_review" xsi:type="string">vestrackorder/order_status/payment_review</item>
+                <item name="order_status_paypal_canceled_reversal" xsi:type="string">vestrackorder/order_status/paypal_canceled_reversal</item>
+                <item name="order_status_paypal_reversed" xsi:type="string">vestrackorder/order_status/paypal_reversed</item>
+                <item name="order_status_pending" xsi:type="string">vestrackorder/order_status/pending</item>
+                <item name="order_status_pending_payment" xsi:type="string">vestrackorder/order_status/pending_payment</item>
+                <item name="order_status_pending_paypal" xsi:type="string">vestrackorder/order_status/pending_paypal</item>
+                <item name="order_status_processing" xsi:type="string">vestrackorder/order_status/processing</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

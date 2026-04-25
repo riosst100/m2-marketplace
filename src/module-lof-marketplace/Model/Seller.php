@@ -307,9 +307,9 @@ class Seller extends \Magento\Framework\Model\AbstractModel
     public function getAvailableStatuses()
     {
         return [
-            self::STATUS_ENABLED => __('Approved'),
-            self::STATUS_DISABLED => __('Disapproved'),
-            self::STATUS_PENDING => __('Pending')
+            self::STATUS_ENABLED => __('Active'),
+            self::STATUS_DISABLED => __('Suspended'),
+            self::STATUS_PENDING => __('Inactive')
         ];
     }
 

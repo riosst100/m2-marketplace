@@ -89,35 +89,24 @@ var setContentHeight = function () {
 	$RIGHT_COL.css('min-height', contentHeight);
 };
 
-  $SIDEBAR_MENU.find('a').on('click', function(ev) {
-	  console.log('clicked - sidebar_menu');
-        var $li = jQuery(this).parent();
-
-        if ($li.is('.active')) {
-            $li.removeClass('active active-sm');
-            jQuery('ul:first', $li).slideUp(function() {
-                setContentHeight();
-            });
-        } else {
-            // prevent closing menu if we are on child menu
-            if (!$li.parent().is('.child_menu')) {
-                $SIDEBAR_MENU.find('li').removeClass('active active-sm');
-                $SIDEBAR_MENU.find('li ul').slideUp();
-            }else
-            {
-				if ( $BODY.is( ".nav-sm" ) )
-				{
-					$SIDEBAR_MENU.find( "li" ).removeClass( "active active-sm" );
-					$SIDEBAR_MENU.find( "li ul" ).slideUp();
-				}
-			}
-            $li.addClass('active');
-
-            jQuery('ul:first', $li).slideDown(function() {
-                setContentHeight();
-            });
-        }
-    });
+$SIDEBAR_MENU.find('a').on('click', function(ev) {
+	var $li = jQuery(this).parent();
+	$SIDEBAR_MENU.find('li.active').not($li).removeClass('active');
+	// jQuery('ul:first', $li).slideUp(function() {
+	// 	setContentHeight();
+	// });
+	if ($li.is('.active')) {
+		$li.removeClass('active');
+		jQuery('ul:first', $li).slideUp(function() {
+			setContentHeight();
+		});
+	} else {
+		$li.addClass('active');
+		jQuery('ul:first', $li).slideDown(function() {
+			setContentHeight();
+		});
+	}
+});
 
 // toggle small or large menu
 $MENU_TOGGLE.on('click', function() {
@@ -1889,7 +1878,7 @@ if (typeof NProgress != 'undefined') {
 
 		function init_CustomNotification() {
 
-			console.log('run_customtabs');
+			// console.log('run_customtabs');
 
 			if( typeof (CustomTabs) === 'undefined'){ return; }
 			console.log('init_CustomTabs');
@@ -2001,9 +1990,437 @@ if (typeof NProgress != 'undefined') {
 
 			};
 
+		/**
+		 * Initialize Select Product Modal
+		 * Triggered by button with class .open-select-product-modal
+		 */
+		function initSelectProductModal() {
+			console.log('ok');
+			require([
+				'jquery',
+				'Magento_Ui/js/modal/modal',
+				'mage/translate'
+			], function ($, modal) {
+				'use strict';
 
-		function init_charts() {
+				let selectedProducts = {}; // store product info: {id: {name, sku}}
+				let iframe; // store iframe globally so we can reload it later
 
+				// 🔹 Category → endpoint mapping
+				const categoryUrlMap = {
+					// toys: 'actiontoys/index',
+					// dolls: 'product/dolls',
+					// cardgame: 'cardgame/index',
+					// livingcardgame: 'product/games',
+					// miniaturegame: 'product/miniaturegames',
+					// sportcards: 'sportcards/sealedproducts',
+					// nonsportcards: 'product/cards',
+					// bricks: 'product/lego',
+					// diecastmodelkits: 'product/diecast',
+					// trains: 'product/trains'
+					actiontoys: 'actiontoys/index',
+					actiontoysmodelkits: 'actiontoysmodelkits/index',
+					animetoys: 'animetoys/index',
+					animemodelkits: 'animemodelkits/index',
+					gundam: 'gundam/index',
+					fungoods: 'fungoods/index',
+					fashiondolls: 'fashiondolls/index',
+					dollsaccessories: 'dollsaccessories/index',
+					cardgame: 'cardgame/index',
+					livingcardgames: 'livingcardgames/index',
+					miniaturegames: 'miniaturegames/index',
+					gamesworkshop: 'gamesworkshop/index',
+					sportcards: 'sportcards/index',
+					nonsportcards: 'nonsportcards/index',
+					bricks: 'bricks/index',
+					diecastvehicles: 'diecastvehicles/index',
+					diecastaircrafts: 'diecastaircrafts/index',
+					diecastmilitary: 'diecastmilitary/index',
+					diecastaccessories: 'diecastaccessories/index',
+					modelkitsvehicles: 'modelkitsvehicles/index',
+					modelkitsaircrafts: 'modelkitsaircrafts/index',
+					modelkitsmilitary: 'modelkitsmilitary/index',
+					railway: 'railway/index',
+					railwayaccessories: 'railwayaccessories/index',
+					hobbysupplies: 'hobbysupplies/index',
+					hobbysuppliescardsgames: 'hobbysuppliescardsgames/index',
+				};
+
+				function getListingUrl() {
+					// const selectedCategory = $('select[name="select_category"]').val() || 'cardgame';
+					// NEW: Add Products category (new page)
+				    let selectedCategory = $('#add_products_category').val();
+
+				    // OLD: existing page dropdown (keep working)
+				    if (!selectedCategory) {
+				        selectedCategory = $('select[name="select_category"]').val();
+				    }
+
+				    // FINAL fallback
+				    selectedCategory = selectedCategory || 'cardgame';
+
+					const endpoint = categoryUrlMap[selectedCategory] || 'singles';
+					return BASE_URL + 'marketplace/catalog/' + endpoint;
+				}
+
+				// 🔹 Fetch previously saved product IDs from backend (from condition_serialized)
+				function loadSavedProducts() {
+					let ruleId = new URL(window.location.href).searchParams.get('coupon_rule_id');
+					if (!ruleId) {
+						// Try to extract from path like /coupon_rule_id/1/
+						const match = window.location.pathname.match(/coupon_rule_id\/(\d+)/);
+						if (match) {
+							ruleId = match[1];
+						}
+					}
+					if (!ruleId) {
+						console.warn('No coupon_rule_id found in URL.');
+						return;
+					}
+
+					$.ajax({
+						url: BASE_URL + 'marketplace/lofmpcouponcode/rule/loadProductModal',
+						type: 'GET',
+						data: { coupon_rule_id: ruleId },
+						dataType: 'json',
+						showLoader: true,
+						success: function (res) {
+							if (res.success && res.products && res.products.length) {
+								console.log('Loaded saved products:', res.products);
+								const hiddenInput = $('[name="selected_product_ids"]');
+								const ids = res.products.map(p => p.id);
+								hiddenInput.val(ids.join(',')).trigger('change').trigger('input');
+
+								// Fill product info for table
+								res.products.forEach(function (p) {
+									selectedProducts[p.id] = { name: p.name, sku: p.sku };
+								});
+
+								updateSelectedProductsTable();
+							}
+						},
+						error: function (xhr) {
+							console.error('Failed to load saved products', xhr);
+						}
+					});
+				}
+
+				// 🔹 Open modal
+				$(document).on('click', '.add-products-btn', function (e) {
+					e.preventDefault();
+					console.log('Button clicked');
+
+					const modalId = '#add-products-modal';
+					const listingUrl = getListingUrl();
+					console.log('Listing URL:', listingUrl);
+
+					// If modal exists, just reload iframe
+					if ($(modalId).length) {
+						if (iframe && iframe.length) {
+							iframe.attr('src', listingUrl);
+						}
+						$(modalId).modal('openModal');
+						return;
+					}
+
+					// Create modal container
+					const popup = $('<div id="add-products-modal" class="admin__scope-old" />')
+						.append('<div class="loading-mask"><div class="loader"></div></div>')
+						.modal({
+							type: 'slide',
+							title: $.mage.__('Select Products'),
+							modalClass: 'add-products-modal',
+							responsive: true,
+							innerScroll: false,
+							buttons: [
+								{
+									text: $.mage.__('Cancel'),
+									class: 'action-secondary',
+									click: function () {
+										this.closeModal();
+									}
+								},
+								{
+									text: $.mage.__('Add Selected'),
+									class: 'action-primary',
+									click: function () {
+										this.closeModal();
+										updateSelectedProductsTable();
+									}
+								}
+							]
+						});
+
+					popup.modal('openModal');
+
+					// Create iframe dynamically
+					iframe = $('<iframe>', {
+						src: listingUrl,
+						css: {
+							width: '100%',
+							height: '80vh',
+							border: 'none'
+						}
+					});
+
+					iframe.on('load', function () {
+						console.log('Iframe loaded successfully');
+						$(modalId).find('.loading-mask').remove();
+						const iframeDoc = iframe[0].contentDocument || iframe[0].contentWindow.document;
+						if (!iframeDoc) return console.error('Unable to access iframe content');
+
+						$(iframeDoc).find('#sidebar-menu, .nav_menu, .left_col').hide();
+
+					    // optional: remove layout gap if needed
+					    $(iframeDoc).find('body').addClass('iframe-popup-mode');
+						// Checkbox event listener inside iframe
+						$(iframeDoc).on('change', 'input[data-action="select-row"]', function () {
+							const productId = $(this).val();
+							const hiddenInput = $('[name="selected_product_ids"]');
+							let selected = hiddenInput.val() ? hiddenInput.val().split(',') : [];
+
+							if ($(this).is(':checked')) {
+								if (!selected.includes(productId)) {
+									const $row = $(this).closest('tr');
+									const $table = $row.closest('table');
+									const $headers = $table.find('thead th');
+									let nameIndex = -1;
+									let skuIndex = -1;
+
+									// find header indexes dynamically
+									$headers.each(function (i) {
+										const headerText = $(this).text().trim().toLowerCase();
+										if (headerText === 'name') nameIndex = i + 1;
+										if (headerText === 'sku') skuIndex = i + 1;
+									});
+
+									const name = nameIndex > 0 ? $row.find(`td:nth-child(${nameIndex}) .data-grid-cell-content`).text().trim() : '';
+									const sku = skuIndex > 0 ? $row.find(`td:nth-child(${skuIndex}) .data-grid-cell-content`).text().trim() : '';
+
+									selected.push(productId);
+									selectedProducts[productId] = { name, sku };
+								}
+							} else {
+								selected = selected.filter(id => id !== productId);
+								delete selectedProducts[productId];
+							}
+
+							hiddenInput.val(selected.join(',')).trigger('change').trigger('input');
+							console.log('Updated selected_product_ids:', hiddenInput.val());
+
+							/* ============================
+							 * NEW LOGIC (SAFE MERGE)
+							 * ============================ */
+							const $form = hiddenInput.closest('form');
+
+							// collect existing product IDs
+							const existingIds = [];
+							$form.find('input[name="productIds[]"]').each(function () {
+							    existingIds.push($(this).val());
+							});
+
+							// merge + deduplicate
+							const mergedIds = [...new Set([...existingIds, ...selected])];
+
+							// remove only obsolete duplicates
+							$form.find('input[name="productIds[]"]').each(function () {
+							    const val = $(this).val();
+							    if (!mergedIds.includes(val)) {
+							        $(this).remove();
+							    }
+							});
+
+							// append missing IDs only
+							mergedIds.forEach(function (id) {
+							    if (!$form.find('input[name="productIds[]"][value="' + id + '"]').length) {
+							        $('<input>', {
+							            type: 'hidden',
+							            name: 'productIds[]',
+							            value: id
+							        }).appendTo($form);
+							    }
+							});
+
+							console.log('Final unique productIds[]:', mergedIds);
+
+
+						});
+					});
+
+					$(modalId).html(iframe);
+				});
+
+				// 🔹 React to category change while modal is open
+				$(document).on('change', 'select[name="select_category"]', function () {
+					const modalId = '#add-products-modal';
+					const newUrl = getListingUrl();
+					console.log('Category changed → reloading iframe:', newUrl);
+
+					// 🧹 Clear previous selections when category changes
+					selectedProducts = {};
+					const hiddenInput = $('[name="selected_product_ids"]');
+					hiddenInput.val('').trigger('change').trigger('input');
+					updateSelectedProductsTable();
+
+					// 🌀 If modal open → reload iframe
+					if ($(modalId).is(':visible') && iframe && iframe.length) {
+						$(modalId).find('.loading-mask').remove();
+						$(modalId).append('<div class="loading-mask"><div class="loader"></div></div>');
+						iframe.attr('src', newUrl);
+					}
+				});
+
+				// ✅ Table below Add Products button
+				function updateSelectedProductsTable() {
+					console.log('Updating selected products table');
+					const selectedInput = $('[name="selected_product_ids"]');
+					const selectedIds = selectedInput.val() ? selectedInput.val().split(',') : [];
+
+					let tableContainer = $('#selected-products-table');
+					if (!tableContainer.length) {
+						tableContainer = $('<div id="selected-products-table" class="admin__fieldset" style="margin-top:15px;"></div>');
+						$('.add-products-btn').after(tableContainer);
+					}
+
+					if (selectedIds.length === 0) {
+						tableContainer.html('<p>No products selected.</p>');
+						return;
+					}
+
+					let html = `
+						<table class="data-grid admin__control-table" style="margin-top:10px;width:100%;">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>SKU</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+					`;
+
+					selectedIds.forEach(function (id) {
+						const product = selectedProducts[id] || { name: '-', sku: '-' };
+						html += `
+							<tr data-id="${id}">
+								<td>${product.name}</td>
+								<td>${product.sku}</td>
+								<td><button type="button" class="action-delete remove-selected-product" data-id="${id}">Remove</button></td>
+							</tr>
+						`;
+					});
+
+					html += '</tbody></table>';					
+					tableContainer.html(html);
+				}
+
+				// ✅ Remove product
+				$(document).on('click', '.remove-selected-product', function () {
+					const id = $(this).data('id');
+					const hiddenInput = $('[name="selected_product_ids"]');
+					let selected = hiddenInput.val() ? hiddenInput.val().split(',') : [];
+					selected = selected.filter(pid => pid !== String(id));
+					delete selectedProducts[id];
+					hiddenInput.val(selected.join(',')).trigger('change').trigger('input');
+					updateSelectedProductsTable();
+				});
+
+				// 🔹 Wait until "selected_product_ids" input is available, then load saved products once
+				$(function () {
+					let attempts = 0;
+					const maxAttempts = 20; // ~10s max (20 * 500ms)
+					const interval = setInterval(function () {
+						const hiddenInput = $('[name="selected_product_ids"]');
+						if (hiddenInput.length) {
+							clearInterval(interval);
+							console.log('selected_product_ids field found, loading saved products...');
+							loadSavedProducts();
+						} else if (++attempts >= maxAttempts) {
+							clearInterval(interval);
+							console.warn('selected_product_ids field not found after waiting.');
+						}
+					}, 500); // check every 500ms
+				});
+
+			});
+		}
+
+
+		function initCategoryConditionWatcher() {
+			require(['jquery'], function ($) {
+				'use strict';
+
+				// Listen for changes on the category_condition dropdown
+				$(document).on('change', '[name="category_condition"]', function () {
+					const condition = $(this).val();
+					const categorySelect = $('[name="select_category"]');
+					const productsCondition = $('[name="products_condition"]');
+
+					if (condition === 'all') {
+						categorySelect.prop('disabled', true);
+						productsCondition.prop('disabled', true);
+					} else {
+						categorySelect.prop('disabled', false);
+						productsCondition.prop('disabled', false);
+					}
+
+					// Trigger change/input so Knockout updates properly
+					categorySelect.trigger('change').trigger('input');
+
+					console.log('Category condition:', condition);
+					console.log('select_category disabled:', categorySelect.prop('disabled'));
+				});
+
+				// Run once on page load to ensure correct initial state
+				$(function () {
+					const condition = $('[name="category_condition"]').val();
+					const categorySelect = $('[name="select_category"]');
+					if (condition === 'all') {
+						categorySelect.prop('disabled', true);
+						categorySelect.trigger('change').trigger('input');
+					}
+				});
+			});
+
+			require(['jquery'], function ($) {
+				'use strict';
+
+				// Listen for changes on the products_condition dropdown
+				$(document).on('change', '[name="products_condition"]', function () {
+					const condition = $(this).val();
+					const addProductsButton = $('.add-products-btn');
+
+					if (condition === 'specific') {
+						addProductsButton.prop('disabled', false);
+					} else {
+						addProductsButton.prop('disabled', true);
+					}
+
+					// Trigger change/input for Knockout if needed
+					addProductsButton.trigger('change').trigger('input');
+
+					console.log('Products condition:', condition);
+					console.log('Add Products button disabled:', addProductsButton.prop('disabled'));
+				});
+
+				// Run once on page load to ensure correct initial state
+				$(function () {
+					const condition = $('[name="products_condition"]').val();
+					const addProductsButton = $('.add-products-btn');
+
+					if (condition === 'specific') {
+						addProductsButton.prop('disabled', false);
+					} else {
+						addProductsButton.prop('disabled', true);
+					}
+
+					addProductsButton.trigger('change').trigger('input');
+				});
+			});
+		}
+
+		function init_charts() {				
+				console.log('tet');
 				console.log('run_charts  typeof [' + typeof (Chart) + ']');
 
 				if( typeof (Chart) === 'undefined'){ return; }
@@ -2410,7 +2827,7 @@ if (typeof NProgress != 'undefined') {
 		function init_compose() {
 
 			if( typeof (jQuery.fn.slideToggle) === 'undefined'){ return; }
-			console.log('init_compose');
+			// console.log('init_compose');
 
 			jQuery('#compose, .compose-close').click(function(){
 				jQuery('.compose').slideToggle();
@@ -2525,10 +2942,10 @@ if (typeof NProgress != 'undefined') {
 
 			function init_DataTables() {
 
-				console.log('run_datatables');
+				// console.log('run_datatables');
 
 				if( typeof (jQuery.fn.DataTable) === 'undefined'){ return; }
-				console.log('init_DataTables');
+				// console.log('init_DataTables');
 
 				var handleDataTableButtons = function() {
 				  if (jQuery("#datatable-buttons").length) {
@@ -2613,7 +3030,7 @@ if (typeof NProgress != 'undefined') {
 		function init_morris_charts() {
 
 			if( typeof (Morris) === 'undefined'){ return; }
-			console.log('init_morris_charts');
+			// console.log('init_morris_charts');
 
 			if (jQuery('#graph_bar').length){
 
@@ -5066,6 +5483,8 @@ if (typeof NProgress != 'undefined') {
 		init_SmartWizard();
 		init_EasyPieChart();
 		init_charts();
+		initSelectProductModal();
+		initCategoryConditionWatcher();
 		init_echarts();
 		init_morris_charts();
 		init_skycons();

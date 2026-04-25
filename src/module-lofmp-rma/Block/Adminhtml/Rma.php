@@ -39,6 +39,11 @@ class Rma extends Container
         parent::_construct();
     }
 
+    protected function _addNewButton()
+    {
+        return null;
+    }
+
     /**
      * {@inheritdoc}
      */

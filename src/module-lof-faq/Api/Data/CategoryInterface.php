@@ -44,6 +44,7 @@ interface CategoryInterface extends \Magento\Framework\Api\ExtensibleDataInterfa
     const PAGE = 'page';
     const LINKS = 'links';
     const STORES = 'stores';
+    const WEBSITES = 'websites';
 
     /**
      * Get category_id
@@ -517,4 +518,16 @@ interface CategoryInterface extends \Magento\Framework\Api\ExtensibleDataInterfa
      */
     public function setStores($stores);
 
+
+    /**
+     * Get websites
+     * @return string[]|null
+     */
+    public function getWebsites();
+    /**
+     * Set websites
+     * @param string[] $websites
+     * @return \Lof\Faq\Api\Data\CategoryInterface
+     */
+    public function setWebsites($websites);
 }

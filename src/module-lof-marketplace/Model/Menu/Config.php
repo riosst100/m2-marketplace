@@ -23,6 +23,9 @@ namespace Lof\MarketPlace\Model\Menu;
 
 class Config extends \Magento\Backend\Model\Menu\Config
 {
+    protected $_menu;
+
+
     const CACHE_ID = 'seller_menu_config';
     const CACHE_MENU_OBJECT = 'seller_menu_object';
 

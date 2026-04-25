@@ -27,6 +27,10 @@ use Lof\MarketPlace\Model\ResourceModel\ShippingCommission\Collection as Shippin
 
 class Collection extends ShippingCommissionCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var \Magento\Framework\Api\Search\AggregationInterface
      */

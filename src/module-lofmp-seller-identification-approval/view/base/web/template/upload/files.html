@@ -17,9 +17,15 @@
   ~ @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
   ~ @license    https://landofcoder.com/terms
   -->
-<div class="attachments-item" data-role="attached-item">
-    <span><%- data.name %></span>
-    <button type="button" class="action-delete" data-role="delete-button">
-        <span><%- data.label %></span>
-    </button>
-</div>
+<tr>
+    <td>
+        <span><%- data.name %></span>
+    </td>
+    <td style="width:20%"></td>
+    <td style="width:10%"></td>
+    <td style="width:10%">
+        <a data-role="delete-button">
+            <span>Delete</span>
+        </a>
+    </td>
+</tr>

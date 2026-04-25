@@ -25,6 +25,7 @@
     <head>
         <title>View List Quotes</title>
     </head>
+    <update handle="seller_store_switcher"/>
     <body>
         <referenceContainer name="content">
             <uiComponent name="mpquickrfq_quotes_listing"/>

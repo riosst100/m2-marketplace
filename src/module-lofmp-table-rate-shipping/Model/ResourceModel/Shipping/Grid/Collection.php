@@ -27,6 +27,11 @@ use Magento\Framework\Search\AggregationInterface;
 
 class Collection extends ShippingCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+    protected $_aggregations;
+
+
     /**
      * @var
      */

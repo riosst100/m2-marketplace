@@ -50,6 +50,16 @@ class Index extends Message
     }
 
     /**
+     * Check the permission to run it
+     *
+     * @return bool
+     */
+    protected function _isAllowed()
+    {
+        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::new_game_brand_request_messages');
+    }
+
+    /**
      * Index action
      *
      * @inheritdoc
@@ -58,7 +68,8 @@ class Index extends Message
     {
         /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
-        $this->initPage($resultPage)->getConfig()->getTitle()->prepend(__('Messages'));
+        $resultPage->setActiveMenu('CoreMarketplace_MarketPlace::new_game_brand_request_messages');
+        $resultPage->getConfig()->getTitle()->prepend(__('New Games/Brands Request | Manage Form Messages'));
         return $resultPage;
     }
 }

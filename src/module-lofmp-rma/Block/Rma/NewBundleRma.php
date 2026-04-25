@@ -23,6 +23,18 @@ namespace Lofmp\Rma\Block\Rma;
 
 class NewBundleRma extends \Magento\Framework\View\Element\Template
 {
+    protected $addressRenderer;
+    protected $groupRepository;
+    protected $rmaHelper;
+    protected $imageHelper;
+    protected $objectManager;
+    protected $request;
+    protected $context;
+    protected $_orderFactory;
+    protected $_productFactory;
+    protected $_order_ids;
+
+
     protected $_orderModel;
     protected $_orders = [];
     protected $calculate;

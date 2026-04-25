@@ -26,6 +26,9 @@ use Lofmp\StoreLocator\Model\ResourceModel\StoreLocator\CollectionFactory;
 use Lofmp\StoreLocator\Helper\Image;
 
 class Locations extends \Magento\Framework\App\Action\Action {
+    protected $storeLocatorHelper;
+
+
 
 
     protected $_resultPageFactory;

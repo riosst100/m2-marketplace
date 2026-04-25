@@ -25,6 +25,9 @@ namespace Lofmp\StoreLocator\Helper;
 
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    protected $_sellerId;
+
+
     /**
      * @var \Magento\Framework\ObjectManagerInterface
      */
@@ -64,6 +67,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     protected $_sellers = [];
 
     CONST GMAP_API_KEY   = 'lofmpstorelocator/general/api_key';
+
+    protected $_filterProvider;
+    protected $_resource;
 
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,

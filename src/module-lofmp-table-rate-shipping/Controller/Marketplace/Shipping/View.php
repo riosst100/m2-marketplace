@@ -58,6 +58,8 @@ class View extends Action
      */
     protected $_frontendUrl;
 
+    protected $sellerFactory;
+
     /**
      * @param Context $context
      * @param PageFactory $resultPageFactory
@@ -72,7 +74,8 @@ class View extends Action
         \Magento\Customer\Model\Session $customerSession,
         Url $customerUrl,
         Data $helper,
-        FrontendUrl $frontendUrl
+        FrontendUrl $frontendUrl,
+        \Lof\MarketPlace\Model\SellerFactory $sellerFactory
     ) {
         parent::__construct($context);
         $this->_customerSession = $customerSession;
@@ -80,6 +83,7 @@ class View extends Action
         $this->_customerUrl = $customerUrl;
         $this->helper = $helper;
         $this->_frontendUrl = $frontendUrl;
+        $this->sellerFactory = $sellerFactory;
     }
 
     /**
@@ -116,15 +120,26 @@ class View extends Action
      */
     public function execute()
     {
+        $customerSession = $this->_customerSession;
+        $customerId = $customerSession->getId();
+        $status = $this->sellerFactory->create()->load($customerId, 'customer_id')->getStatus();
+
+        if ($customerSession->isLoggedIn()) {
+            $resultPage = $this->_resultPageFactory->create();
+            $resultPage->getConfig()->getTitle()->set(__('Marketplace Table Rate Shipping'));
+            return $resultPage;
+        }
         $seller = $this->helper->getSellerByCustomer();
         $partnerId = $seller && isset($seller['seller_id']) ? $seller['seller_id'] : 0;
         if (!$partnerId) {
             $this->_redirectUrl($this->getFrontendUrl('lofmarketplace/seller/becomeseller'));
             return;
-        }
-        $resultPage = $this->_resultPageFactory->create();
-        $resultPage->getConfig()->getTitle()->set(__('Marketplace Table Rate Shipping'));
-        return $resultPage;
+        } elseif ($customerSession->isLoggedIn() && $status == 0) {
+            $this->_redirectUrl($this->getFrontendUrl('lofmarketplace/seller/becomeseller'));
+        } else {
+            $this->messageManager->addNoticeMessage(__('You must have a seller account to access'));
+            $this->_redirectUrl($this->getFrontendUrl('lofmarketplace/seller/login'));
+        }        
     }
 
     /**

@@ -108,9 +108,10 @@ define([
          * @private
          */
         _reloadGrid: function () {
-            this._getGridProvider().reload({
-                refresh: true
-            });
+            location.reload();
+            // this._getGridProvider().reload({
+            //     refresh: true
+            // });
         },
 
         /**

@@ -28,6 +28,9 @@ use Lofmp\Rma\Model\ReasonFactory;
 
 class Grid extends GridExtended
 {
+    protected $reasonFactory;
+
+
     public function __construct(
         ReasonFactory $reasonFactory,
         Context $context,

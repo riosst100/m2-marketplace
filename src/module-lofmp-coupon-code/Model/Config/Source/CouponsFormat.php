@@ -22,6 +22,9 @@ namespace Lofmp\CouponCode\Model\Config\Source;
  
 class CouponsFormat implements \Magento\Framework\Option\ArrayInterface
 {
+    protected $couponHelper;
+
+
     /**
      * @var \Magento\SalesRule\Helper\Coupon
      */

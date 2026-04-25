@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../Magento/Backend/etc/menu.xsd">
     <menu>
-        <add id="Lofmp_Rma::rma" title="MKP RMA" module="Lofmp_Rma" sortOrder="12" resource="Lofmp_Rma::rma_rma"/>
+        <add id="Lofmp_Rma::rma" title="Seller RMA" module="Lofmp_Rma" sortOrder="12" resource="Lofmp_Rma::rma_rma"/>
         <add id="Lofmp_Rma::rma_manager" title="Marketplace Return Orders" module="Lofmp_Rma" sortOrder="12" resource="Lofmp_Rma::rma_manager" parent="Lofmp_Rma::rma"/>
         <add id="Lofmp_Rma::rma_rma" title="RMA" module="Lofmp_Rma" sortOrder="10" action="rma/rma" resource="Lofmp_Rma::rma_rma" parent="Lofmp_Rma::rma_manager"/>
         <add id="Lofmp_Rma::rma_status" title="Rma Status" module="Lofmp_Rma" sortOrder="20" action="rma/status" resource="Lofmp_Rma::rma_status" parent="Lofmp_Rma::rma_manager"/>

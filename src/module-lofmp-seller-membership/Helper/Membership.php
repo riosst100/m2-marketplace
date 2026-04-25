@@ -29,6 +29,9 @@ use Lof\MarketPlace\Model\ResourceModel\Seller as SellerResource;
 
 class Membership extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    protected $membershipFactory;
+
+
     /**
      * @var Magento\Framework\Stdlib\DateTime\DateTime
      */
@@ -65,7 +68,7 @@ class Membership extends \Magento\Framework\App\Helper\AbstractHelper
     protected $_current_membership = null;
 
     /**
-     * @var \\Lofmp\SellerMembership\Model\ResourceModel\Membership\Collection|mixed|string|null
+     * @var \Lofmp\SellerMembership\Model\ResourceModel\Membership\Collection|mixed|string|null
      */
     protected $_membershipCollection = null;
 

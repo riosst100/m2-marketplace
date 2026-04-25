@@ -27,6 +27,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Quote\Model\Quote;
 use Magento\Store\Model\ScopeInterface;
 use Lof\Paymentfee\Model\Config\Source\ConfigData;
+use Magento\Directory\Model\CurrencyFactory;
 
 class Data extends AbstractHelper
 {
@@ -39,6 +40,8 @@ class Data extends AbstractHelper
      * @var array
      */
     protected $methodFee = [];
+
+    protected $otherFee = [];
 
     /**
      * Session quote
@@ -57,6 +60,14 @@ class Data extends AbstractHelper
      */
     private $_priceHelper;
 
+    protected $customerSession;
+
+    protected $marketplaceData;
+
+    protected $marketplaceConfig;
+
+    protected $currencyFactory;
+
     /**
      * Data constructor.
      * @param \Magento\Framework\App\Helper\Context $context
@@ -74,7 +85,10 @@ class Data extends AbstractHelper
         CustomerSession $customerSession,
         \Magento\Backend\Model\Session\Quote $sessionQuote,
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepositoryInterface,
-        \Magento\Framework\Pricing\Helper\Data $priceHelper
+        \Magento\Framework\Pricing\Helper\Data $priceHelper,
+        \Lof\MarketPlace\Helper\Data $marketplaceData,
+        \Lof\MarketPlace\Model\ConfigFactory $marketplaceConfig,
+        CurrencyFactory $currencyFactory
     ) {
         parent::__construct($context);
         $this->serialize = $serialize;
@@ -82,6 +96,9 @@ class Data extends AbstractHelper
         $this->_sessionQuote = $sessionQuote;
         $this->_customerRepositoryInterface = $customerRepositoryInterface;
         $this->_priceHelper = $priceHelper;
+        $this->marketplaceData = $marketplaceData;
+        $this->marketplaceConfig = $marketplaceConfig;
+        $this->currencyFactory = $currencyFactory;
     }
 
     /**
@@ -188,6 +205,11 @@ class Data extends AbstractHelper
      */
     public function getPaymentFee()
     {
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/fee.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        // $logger->info('getPaymentFee');
+
         if (!$this->methodFee) {
             $paymentFees = $this->getConfig(ConfigData::PAYMENTFEE_AMOUNT_XML_PATH);
             if (is_string($paymentFees) && !empty($paymentFees)) {
@@ -202,7 +224,7 @@ class Data extends AbstractHelper
                 }
             }
         }
-
+        // $logger->info(json_encode($this->methodFee));
         return $this->methodFee;
     }
 
@@ -213,11 +235,17 @@ class Data extends AbstractHelper
     public function canApply(Quote $quote)
     {
         $this->getPaymentFee();
+        // custom other fee
+        $this->getSellerOtherFee($quote);
+
         if ($this->isEnable()) {
             if ($method = $quote->getPayment()->getMethod()) {
                 if (isset($this->methodFee[$method])) {
                     return true;
                 }
+            }
+            if (is_array($this->otherFee) && count($this->otherFee)) {
+                return true;
             }
         }
         return false;
@@ -229,9 +257,145 @@ class Data extends AbstractHelper
      */
     public function getFee(Quote $quote)
     {
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/fee.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        // $logger->info('getFee');
+
         $method  = $quote->getPayment()->getMethod();
-        $fee = $this->methodFee[$method]['fee'];
+        $fee = isset($this->methodFee[$method]['fee']) ? $this->methodFee[$method]['fee'] : 0;
+        // $logger->info('get payment fee: '.$fee);
+        if (is_array($this->otherFee)) {
+            $amount = $quote->getBaseSubtotal();
+
+            // $logger->info('Base Subtotal: '.$amount);
+            foreach ($this->otherFee as $otherFee) {
+                // $logger->info('other Fee: '.json_encode($otherFee));
+                $apply = $otherFee['min_subtotal'] <= $amount ? true: false;
+                if ($apply) {
+                    $fee = $fee + $otherFee['fee'];
+                }                
+            }
+            // $fee = $this->otherFee[$method]['fee'];
+        }
+        // $logger->info('getFee: '.$fee);
         return $fee;
+    }
+
+    public function getFeeApplied(Quote $quote)
+    {
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/fee.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        // $logger->info('getFeeApplied');
+        $feeApplied = [];
+
+        $method  = $quote->getPayment()->getMethod();
+        $fee = isset($this->methodFee[$method]['fee']) ? $this->methodFee[$method]['fee'] : 0;
+        // $logger->info('get payment fee: '.$fee);
+        if (is_array($this->otherFee)) {
+            $amount = $quote->getBaseSubtotal();
+
+            // $logger->info('Base Subtotal: '.$amount);
+            foreach ($this->otherFee as $otherFee) {
+                // $logger->info('other Fee: '.json_encode($otherFee));
+                $apply = $otherFee['min_subtotal'] <= $amount ? true: false;
+                
+                $toCurrency = $quote->getQuoteCurrencyCode();
+                $fromCurrency = $quote->getBaseCurrencyCode();
+                
+                if ($apply) {
+                    $feeApplied[] = [                                                
+                        'title' => $otherFee['title'],
+                        'value' => $otherFee['currency_fee'],
+                        'currency' => $toCurrency
+                    ];
+                }                
+            }
+            // $fee = $this->otherFee[$method]['fee'];
+        }
+        // $logger->info('getFeeApplied: '.json_encode($feeApplied));
+        return json_encode($feeApplied);
+    }
+
+    public function getSellerOtherFee($quote)
+    {
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/fee.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        // $logger->info('getSellerOtherFee');
+
+        $quotes = [];
+        foreach ($quote->getAllItems() as $item) {
+            $product = $item->getProduct()->load($item->getProductId());
+            if ($item->getParentItem() || $product->isVirtual()) {
+                continue;
+            }
+
+            // Identify seller
+            $sellerId = $item->getSellerId() ?: $product->getSellerId() ?: 'no_seller';
+            
+            if (!isset($quotes[$sellerId])) {
+                $quotes[$sellerId] = [];
+            }
+            $quotes[$sellerId][] = $item;
+        }
+
+        $config = [];
+
+        // Process each seller’s items 
+        
+        if ($quotes) {       
+            foreach ($quotes as $sellerId => $items) {                            
+                try {
+                    // $logger->info('Try');
+                    $key = 'otherfees/other_fees/json_data';
+                    $keyTable = $this->marketplaceData->getTableKey('key');
+                    $sellerKeyTable = $this->marketplaceData->getTableKey('seller_id');
+                    $config = $this->marketplaceConfig->create()
+                        ->loadByField([$keyTable, $sellerKeyTable], [$key, $sellerId])->getValue();
+                    $otherFees = json_decode($config,true);                    
+
+                    $fromCurrency = $quote->getQuoteCurrencyCode();
+                    $toCurrency = $quote->getBaseCurrencyCode();
+                    if (is_array($otherFees)) {
+                        foreach ($otherFees as $paymentFee) {
+                            $this->otherFee[$paymentFee['title']] = [
+                                'title' => $paymentFee['title'],
+                                'fee' => $this->convertCurrency($paymentFee['amount'], $fromCurrency, $toCurrency),
+                                'currency_fee' => $paymentFee['amount'],
+                                'min_subtotal' => $this->convertCurrency($paymentFee['no_fees_minimum_subtotal'], $fromCurrency, $toCurrency)
+                            ];
+                        }
+                    }
+                    // $logger->info('getSellerOtherFee: '.json_encode($this->otherFee));
+                    return $this->otherFee;
+                } catch (\Exception $e) {
+                    $logger->info('Catch: '.$e->getMessage());
+                    $config = [];
+                }
+            }
+        }
+        
+        // return $config;
+    }
+
+    private function convertCurrency($amount, $fromCurrency, $toCurrency)
+    {        
+        // $toCurrency = 'USD';
+        try {
+            $currency = $this->currencyFactory->create()->load($fromCurrency);
+            $convertedAmount = $currency->convert($amount, $toCurrency);
+
+            $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/fee.log');
+            $logger = new \Zend_Log();
+            $logger->addWriter($writer);
+            // $logger->info("Converted {$amount} {$fromCurrency} → {$convertedAmount} {$toCurrency}");
+
+            return $convertedAmount;
+        } catch (\Exception $e) {
+            return $amount; // fallback if conversion fails
+        }
     }
 
     /**

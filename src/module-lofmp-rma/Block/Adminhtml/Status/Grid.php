@@ -29,6 +29,9 @@ use Lofmp\Rma\Model\StatusFactory;
 
 class Grid extends GridExtended
 {
+    protected $statusFactory;
+
+
     public function __construct(
         StatusFactory $statusFactory,
         Context $context,

@@ -79,6 +79,7 @@
             <settings>
                 <label translate="true">ID</label>
                 <sortable>false</sortable>
+                <visible>false</visible>
             </settings>
         </column>
         <column name="role_name" component="Magento_Ui/js/grid/columns/column">

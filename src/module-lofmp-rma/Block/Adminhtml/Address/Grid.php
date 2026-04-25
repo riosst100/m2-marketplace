@@ -28,6 +28,9 @@ use Lofmp\Rma\Model\AddressFactory;
 
 class Grid extends GridExtended
 {
+    protected $addressFactory;
+
+
     public function __construct(
         AddressFactory $addressFactory,
         Context $context,

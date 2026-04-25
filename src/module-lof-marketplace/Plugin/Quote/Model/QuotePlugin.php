@@ -8,6 +8,9 @@ use Magento\Quote\Model\Quote;
 
 class QuotePlugin
 {
+    protected $sellerHelper;
+
+
     /**
      * @param Seller $sellerHelper
      */

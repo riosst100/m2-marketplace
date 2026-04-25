@@ -23,5 +23,15 @@ namespace Lofmp\CouponCode\Controller\Marketplace\Rule;
 
 class Index extends \Lofmp\CouponCode\Controller\Marketplace\Rule
 {
-    
+    public function execute()
+    {
+        /** @var \Magento\Framework\View\Result\Page $resultPage */
+        $resultPage = $this->resultFactory->create(
+            \Magento\Framework\Controller\ResultFactory::TYPE_PAGE
+        );
+
+        $resultPage->getConfig()->getTitle()->prepend(__('Manage Coupon Rules'));
+
+        return $resultPage;
+    }
 }

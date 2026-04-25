@@ -26,6 +26,10 @@ use Lofmp\StoreLocator\Model\ResourceModel\StoreLocator\Collection as StoreLocat
 
 class Collection extends StoreLocatorCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var AggregationInterface
      */

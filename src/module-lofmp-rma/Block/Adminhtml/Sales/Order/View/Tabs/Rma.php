@@ -31,6 +31,9 @@ use Magento\Backend\Block\Widget\Tab\TabInterface;
 
 class Rma extends Widget implements TabInterface
 {
+    protected $rmaHelper;
+
+
     public function __construct(
         // RmaHelper $rmaHelper,
         Context $context,

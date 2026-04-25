@@ -1,18 +1,18 @@
 <?php
 /**
  * Landofcoder
- *
+ * 
  * NOTICE OF LICENSE
- *
+ * 
  * This source file is subject to the landofcoder.com license that is
  * available through the world-wide-web at this URL:
  * http://landofcoder.com/license
- *
+ * 
  * DISCLAIMER
- *
+ * 
  * Do not edit or add to this file if you wish to upgrade this extension to newer
  * version in the future.
- *
+ * 
  * @category   Landofcoder
  * @package    Lof_FAQ
  * @copyright  Copyright (c) 2016 Landofcoder (http://www.landofcoder.com/)
@@ -27,6 +27,11 @@ use Magento\Framework\View\Result\PageFactory;
 
 class Search extends \Magento\Framework\App\Action\Action
 {
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $_resource;
+
     /**
      * @var \Magento\Framework\App\RequestInterface
      */
@@ -68,6 +73,13 @@ class Search extends \Magento\Framework\App\Action\Action
     protected $_questionFactory;
 
     /**
+     * Core registry
+     *
+     * @var \Magento\Framework\Registry
+     */
+    protected $_coreRegistry = null;
+
+    /**
      * @param Context
      * @param \Magento\Store\Model\StoreManager
      * @param \Magento\Framework\View\Result\PageFactory
@@ -75,6 +87,9 @@ class Search extends \Magento\Framework\App\Action\Action
      * @param \Magento\Framework\View\Result\LayoutFactory
      * @param \Magento\Framework\Controller\Result\ForwardFactory
      * @param \Lof\Faq\Model\Question
+     * @param \Lof\Faq\Model\Category
+     * @param \Magento\Framework\App\ResourceConnection
+     * @param \Magento\Framework\Registry
      */
     public function __construct(
         Context $context,
@@ -83,14 +98,20 @@ class Search extends \Magento\Framework\App\Action\Action
         \Lof\Faq\Helper\Data $faqHelper,
         \Magento\Framework\View\Result\LayoutFactory $resultLayoutFactory,
         \Magento\Framework\Controller\Result\ForwardFactory $resultForwardFactory,
-        \Lof\Faq\Model\Question $questionFactory
-    ) {
-        $this->resultPageFactory    = $resultPageFactory;
-        $this->_faqHelper           = $faqHelper;
+        \Lof\Faq\Model\Question $questionFactory,
+        \Lof\Faq\Model\Category $categoryFactory,
+        \Magento\Framework\App\ResourceConnection $resource,
+        \Magento\Framework\Registry $registry
+        ) {
+        $this->resultPageFactory = $resultPageFactory;
+        $this->_faqHelper = $faqHelper;
         $this->resultForwardFactory = $resultForwardFactory;
-        $this->resultLayoutFactory  = $resultLayoutFactory;
-        $this->_questionFactory     = $questionFactory;
-        $this->_storeManager        = $storeManager;
+        $this->resultLayoutFactory = $resultLayoutFactory;
+        $this->_questionFactory = $questionFactory;
+        $this->_categoryFactory = $categoryFactory;
+        $this->_storeManager = $storeManager;
+        $this->_coreRegistry = $registry;
+        $this->_resource = $resource;
         parent::__construct($context);
     }
 
@@ -102,40 +123,61 @@ class Search extends \Magento\Framework\App\Action\Action
     public function execute()
     {
         if (!$this->getRequest()->isPost()) {
-            throw new \Exception('Wrong request.');
+            return $this->_redirect($this->_faqHelper->getDocsUrl());
         }
-        $resultLayout = $this->resultLayoutFactory->create();
-        $questionsBlock = $resultLayout->getLayout()->getBlock('loffaq.questions');
 
-        $category_id = $this->getRequest()->getParam('catid');
-        $s = $this->getRequest()->getParam('s');
-        $s = strtolower($s);
         $store = $this->_storeManager->getStore();
+        $catId = (int)$this->getRequest()->getParam('category_id');
+
+        $cat = $this->_categoryFactory->getCollection()
+            ->addFieldToFilter('is_active', 1)
+            ->addFieldToFilter('main_table.category_id', $catId)
+            ->addStoreFilter($store)
+            ->getFirstItem();
+
+        $this->_coreRegistry->register('current_faq_category', $cat);
+
+        $page = $this->resultPageFactory->create();
+
+        /** SET PAGE LAYOUT */
+        $pageLayout = $this->_faqHelper->getConfig('faq_page/page_layout');
+        if ($pageLayout) {
+            $page->getConfig()->setPageLayout($pageLayout); // 1column, 2columns-left, dll
+        }
+
+        /** LOAD BLOCK */
+        $questionsBlock = $page->getLayout()->getBlock('loffaq.questions');
+        $searchBlock = $page->getLayout()->getBlock('faq.searchform');
+        $s = strtolower($this->getRequest()->getParam('s'));
+
+        if (!$s) {
+            return $this->_redirect($this->_faqHelper->getDocsUrl());
+        }
 
         $questionCollection = $this->_questionFactory->getCollection()
-            ->addFieldToFilter('is_active',1)
+            ->addFieldToFilter('is_active', 1)
+            ->addStoreFilter($store)
             ->addTagRelation();
-        if($category_id) {
-            $questionCollection->addCategoryFilter($category_id);
-        }
-        $questionCollection->addStoreFilter($store)
-            ->setCurPage(1);
-//        $questionCollection->getSelect()->where('(LOWER(title) LIKE "%' . addslashes($s) . '%") OR (LOWER(answer) LIKE "%' . addslashes($s) . '%") OR (LOWER(tag_table.name) LIKE "%' . addslashes($s) . '%") OR (LOWER(tag_table.alias) LIKE "%' . addslashes($s) . '%")')->order('question_position ASC');
-        $questionCollection->addKeywordFilter($s)
-            ->setOrder('question_position', 'ASC');
 
-        $layout = $this->_faqHelper->getConfig("faq_page/layout_type");
-        if($layout ==5){
-            $questionsBlock->assign('layout', 1);
-        }
-        //echo $questionCollection->getSelect();
-        $data['html'] = $questionsBlock->setData("is_search", true)->setCollection($questionCollection)->toHtml();
-        $this->getResponse()->representJson(
-            $this->_objectManager->get('Magento\Framework\Json\Helper\Data')->jsonEncode($data)
-        );
-    }
+        $questionCollection->getSelect()
+            // ->where(
+            //     '(LOWER(main_table.title) LIKE ? OR LOWER(main_table.answer) LIKE ?)',
+            //     ["%$s%", "%$s%"]
+            // )
+            ->group('main_table.question_id');
 
-    public function getLayout() {
-        return $this->_layout;
+            if ($questionsBlock) {
+                $questionsBlock
+                    ->setData('is_search', true)
+                    ->setCollection($questionCollection);
+            }
+
+            if ($searchBlock) {
+                $searchBlock
+                    ->setData('search_query', $s);
+            }
+
+        return $page;
+
     }
 }

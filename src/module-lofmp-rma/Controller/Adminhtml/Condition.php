@@ -24,6 +24,14 @@ namespace Lofmp\Rma\Controller\Adminhtml;
 
 abstract class Condition extends \Magento\Backend\App\Action
 {
+    protected $conditionFactory;
+    protected $localeDate;
+    protected $registry;
+    protected $context;
+    protected $backendSession;
+    protected $resultFactory;
+
+
     public function __construct(
         \Lofmp\Rma\Model\ConditionFactory $conditionFactory,
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate,

@@ -40,6 +40,9 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 
 class CustomerRmaRepository implements CustomerRmaRepositoryInterface
 {
+    protected $addressFactory;
+
+
 
     protected $resource;
 

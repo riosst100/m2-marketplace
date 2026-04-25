@@ -93,6 +93,7 @@
             <settings>
                 <label translate="true">ID</label>
                 <sortable>false</sortable>
+                <visible>false</visible>
             </settings>
         </column>
         <column name="name">

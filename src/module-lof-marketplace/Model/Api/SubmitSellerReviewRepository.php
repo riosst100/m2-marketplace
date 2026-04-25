@@ -29,6 +29,9 @@ use Magento\Framework\Exception\CouldNotSaveException;
  */
 class SubmitSellerReviewRepository implements SubmitSellerReviewRepositoryInterface
 {
+    protected $storeManager;
+
+
 
     /**
      * @var SellerFactory

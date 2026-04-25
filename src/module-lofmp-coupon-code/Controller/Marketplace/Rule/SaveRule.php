@@ -24,6 +24,10 @@ namespace Lofmp\CouponCode\Controller\Marketplace\Rule;
 class SaveRule extends \Lofmp\CouponCode\Controller\Marketplace\Rule {
 
     public function execute() {
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/coupon.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+
         $customerSession = $this->_getSession();
         $customerId = $customerSession->getId();
         $seller = $this->sellerFactory->create()->load($customerId,'customer_id');
@@ -33,7 +37,9 @@ class SaveRule extends \Lofmp\CouponCode\Controller\Marketplace\Rule {
                 $websiteId = $this->_getStoreManager()->getStore()->getWebsiteId();
                 $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
                 $data = $this->getRequest()->getPostValue();
+                $logger->info('Data: ' . print_r($data, true));
                 if ($data) {
+                    $data['customer_group_ids'] = ['1'];
                     $model = $objectManager->get('Lofmp\CouponCode\Model\Rule');
                     $model = $this->_objectManager->create('Lofmp\CouponCode\Model\Rule');
                     $model_sale_rule = $this->_objectManager->create('Magento\SalesRule\Model\Rule');
@@ -83,6 +89,8 @@ class SaveRule extends \Lofmp\CouponCode\Controller\Marketplace\Rule {
                     }
                     $data['seller_id'] = $seller->getId();
                     $data['coupon_type'] = '2';
+                    
+                    $data['rule_key'] = $data['seller_id'] . '_' . $data['name'];
                     $data['use_auto_generation'] = '1';
                     $data['uses_per_customer'] = '0';
                     $data['website_ids'] = $model->getId()?$model->getWebsiteIds():[];
@@ -92,6 +100,31 @@ class SaveRule extends \Lofmp\CouponCode\Controller\Marketplace\Rule {
                     }
                     $data['actions'] = isset($data['actions']) ? $data['actions']: $model_sale_rule->getActionsSerialized();
                     $data["actions"] = $this->helperData->generateActionCondition($data["actions"], $data['seller_id']);
+                    
+                    // ADD CUSTOM FIELDS CONDITIONS
+                    $customFields = [
+                        'selected_product_ids',
+                        'category_condition',
+                        'select_category',
+                        'products_condition'
+                    ];
+
+                    foreach ($customFields as $field) {
+                        if (isset($data[$field])) {
+                            $model->setData($field, $data[$field]);
+                        } else {
+                            $model->setData($field, null);
+                        }
+                    }
+
+                    // Log for debug
+                    $logger->info('Custom rule fields saved: ' . print_r([
+                        'selected_product_ids' => $data['selected_product_ids'] ?? null,
+                        'category_condition' => $data['category_condition'] ?? null,
+                        'select_category' => $data['select_category'] ?? null,
+                        'products_condition' => $data['products_condition'] ?? null,
+                    ], true));
+                    
                     try {
                         $model_sale_rule->loadPost($data);
                         $model->setData($data);

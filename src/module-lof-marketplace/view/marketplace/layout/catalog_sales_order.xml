@@ -20,7 +20,7 @@
   -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="vendor-1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
-        <title>Manage Sale Orders</title>
+        <title>Manage Orders</title>
     </head>
     <update handle="customer_account"/>
     <update handle="seller_store_switcher"/>

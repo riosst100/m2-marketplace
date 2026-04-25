@@ -17,298 +17,536 @@
  * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
  * @license    https://landofcoder.com/terms
  */
-
+.print-button {
+  border-radius: 5px;
+}
 .tab-content .fade {
-    background-color: #fff;
-    position: relative;
+  background-color: #fff;
+  position: relative;
 }
 #menu1 .lof-message {
-    display: block;
+  display: block;
 }
 .ratings {
-    margin: 7px 0;
+  margin: 7px 0;
 }
 .ratings .rating-box {
-    margin: 0;
-    display: inline-block;
-    zoom: 1;
-    background-image: url(../image/stars-big.png);
-    background-position: left -22px;
-    background-repeat: no-repeat;
-    height: 19px;
-    width: 121px;
+  margin: 0;
+  display: inline-block;
+  zoom: 1;
+  background-image: url(../image/stars-big.png);
+  background-position: left -22px;
+  background-repeat: no-repeat;
+  height: 19px;
+  width: 121px;
 }
 .ratings .rating-box .rating {
-    background-image: url(../image/stars-big.png);
-    background-position: left top;
-    background-repeat: no-repeat;
-    height: 19px;
+  background-image: url(../image/stars-big.png);
+  background-position: left top;
+  background-repeat: no-repeat;
+  height: 19px;
 }
 
 .amount-transaction .amount {
-    color: #1abb9c;
+  color: #1abb9c;
 }
 .amount-transaction .refund {
-    color: #eb5202;
+  color: #eb5202;
 }
 .page-main-actions .page-actions._fixed {
-    left:230px;
-    width: auto;
+  left: 0;
+  width: auto;
 }
 .main-col label {
-    color: #303030;
+  color: #303030;
 }
 .admin__field.field.required {
-    display: inline-block;
-    width: 100%;
+  display: inline-block;
+  width: 100%;
 }
 
 .fileupload-buttonbar .toggle {
-    float:none;
+  float: none;
 }
 #media_gallery_content {
-    overflow: initial;
+  overflow: initial;
 }
 .import-product .admin__fieldset > .admin__field {
-    display: block;
+  display: block;
 }
 #return_policy_path_row,
 #shipping_policy_path_row,
 #company_description_path_row {
-    display: none;
+  display: none;
 }
 .actions-split .action-default {
-    margin-right: 0;
+  margin-right: 0;
 }
-.image.image-placeholder input[type='file'] {
-    border: 0px;
-    font-size: 14px;
+.image.image-placeholder input[type="file"] {
+  border: 0px;
+  font-size: 14px;
 }
-.btn, .buttons, .modal-footer .btn+.btn, button,.action-multicheck-wrap button {
-    margin-bottom: 0px !important;
-    margin-right: 0px;
+.buttons_scb .btn-success {
+  background: #eb5202;
+  border: 1px solid #eb5202;
+  box-shadow: 0 0 0 1px #eb5202;
+  color: #fff;
+  text-decoration: none;
+  float: right !important;
+}
+.buttons_scb .btn-success:hover,
+.buttons_scb .btn-success:focus,
+.buttons_scb .btn-success:active,
+.buttons_scb .btn-success:active:focus,
+.buttons_scb .btn-success:active:hover {
+  background: #ba4000;
+  border-color: #b84002;
+  box-shadow: 0 0 0 1px #b84002;
+  color: #fff;
+  text-decoration: none;
+}
+.btn,
+.buttons,
+.modal-footer .btn + .btn,
+button,
+.action-multicheck-wrap button {
+  margin-bottom: 0px !important;
+  margin-right: 0px;
 }
 table.qty-table th {
-    padding-right: 7px;
+  padding-right: 7px;
 }
-.modal-content,.modal-header,.modal-footer {
-    box-shadow: none !important;
-    border-radius: 0px !important;
-    border-width: 0px !important;
+.modal-content,
+.modal-header,
+.modal-footer {
+  box-shadow: none !important;
+  border-radius: 0px !important;
+  border-width: 0px !important;
 }
 .lof_marketplace .actions-split:hover {
-    box-shadow: 0 0 0 1px #f8f8f8;
+  box-shadow: 0 0 0 1px #f8f8f8;
 }
 .form-group .col-sm-9 {
-    margin: 0;
-    width: 60%;
+  margin: 0;
+  width: 60%;
 }
 .form-group .col-sm-9 select.form-control {
-    background-image: url(../images/arrows-bg.svg), linear-gradient(#e3e3e3, #e3e3e3), linear-gradient(#007bdb, #007bdb);
-    background-position: calc(100% - 12px) 13px, 100%, calc(100% - 3.2rem) 0;
+  background-image: url(../images/arrows-bg.svg),
+    linear-gradient(#e3e3e3, #e3e3e3), linear-gradient(#007bdb, #007bdb);
+  background-position: calc(100% - 12px) 13px, 100%, calc(100% - 3.2rem) 0;
 }
 .ui-datepicker .ui-datepicker-buttonpane button {
-    margin: 0px;
+  margin: 0px;
 }
-[class*='admin__control-grouped'] > .admin__field:first-child > .admin__field-label, .admin__control-fields > .admin__field:first-child > .admin__field-label {
-    background: none;
+[class*="admin__control-grouped"]
+  > .admin__field:first-child
+  > .admin__field-label,
+.admin__control-fields > .admin__field:first-child > .admin__field-label {
+  background: none;
 }
 /*.action-basic[data-index="create_category_button"] {
     display: none;
 }*/
 .sticky-header {
-    left: 23rem;
-    /* top: 56px!important; */
+  left: 1;
+  /* top: 56px!important; */
 }
 @media screen and (max-width: 768px) {
-    .editprofile .admin__field:not(.admin__field-option) > .admin__field-label,
-    .editprofile .admin__fieldset > .admin__field > .admin__field-control {
-            word-wrap: inherit;
-        text-align: left;
-        width: 90%;
-    }
-    .admin__field:not(.admin__field-option) > .admin__field-label span[data-config-scope]:before, .accordion .config .label span[data-config-scope]:before {
-        font-size: 0px;
-    }
-    .page-main-actions .page-actions._fixed {
+  .editprofile .admin__field:not(.admin__field-option) > .admin__field-label,
+  .editprofile .admin__fieldset > .admin__field > .admin__field-control {
+    word-wrap: inherit;
+    text-align: left;
+    width: 90%;
+  }
+  .admin__field:not(.admin__field-option)
+    > .admin__field-label
+    span[data-config-scope]:before,
+  .accordion .config .label span[data-config-scope]:before {
+    font-size: 0px;
+  }
+  .page-main-actions .page-actions._fixed {
     left: 0px;
-    }
-    .admin__fieldset-wrapper-content .admin__fieldset {
-        width: 100%;
-    }
-   .page-actions > button, .page-actions .page-actions-buttons > button, .page-actions > .block-footer .action-add, .page-actions .page-actions-buttons > .block-footer .action-add,.page-actions .actions-split {
-     margin-left: 0px;
-   }
-   .page-main-actions .page-actions._fixed {
+  }
+  .admin__fieldset-wrapper-content .admin__fieldset {
     width: 100%;
-   }
-   .admin__data-grid-header-row .col-xs-2,
-   .admin__data-grid-header-row .col-xs-9,
-    .admin__data-grid-header-row .col-xs-10 {
-        width: 100%;
-   }
-   .admin__data-grid-header-row {
-         margin-top: 50px;
-   }
+  }
+  .page-actions > button,
+  .page-actions .page-actions-buttons > button,
+  .page-actions > .block-footer .action-add,
+  .page-actions .page-actions-buttons > .block-footer .action-add,
+  .page-actions .actions-split {
+    margin-left: 0px;
+  }
+  .page-main-actions .page-actions._fixed {
+    width: 100%;
+  }
+  .admin__data-grid-header-row .col-xs-2,
+  .admin__data-grid-header-row .col-xs-9,
+  .admin__data-grid-header-row .col-xs-10 {
+    width: 100%;
+  }
+  .admin__data-grid-header-row {
+    margin-top: 50px;
+  }
 }
 
-.img-circle.profile_img{
-    width: 60px !important;
-    height: 60px;
-    margin-top: 32px !important;
+.img-circle.profile_img {
+  width: 60px !important;
+  height: 60px;
+  margin-top: 32px !important;
 }
 
-.data-grid-cap-left, .data-grid-cap-right {
-    width: 2rem;
+.data-grid-cap-left,
+.data-grid-cap-right {
+  width: 2rem;
 }
 
 .sticky-header {
-    padding: 0.5rem 2rem 0;
-    top: 57px;
+  padding: 0.5rem 2rem 0;
+  top: 68px;
 }
 
 .modal-slide {
-    left: 22.8rem;
+  left: 22.8rem;
 }
 
 .admin__control-fields .control-grouped {
-    display: -webkit-inline-flex;
-    display: -ms-inline-flexbox;
-    display: inline-flex;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
 }
 
 .admin__control-fields .control-grouped .admin__field + .admin__field {
-    margin-left: 1rem;
-    margin-top: 0;
+  margin-left: 1rem;
+  margin-top: 0;
 }
-.abs-action-button-as-link:active, .abs-action-button-as-link:not(:focus), .action-additional:active, .action-additional:not(:focus), .data-grid .action-delete:active, .data-grid .action-delete:not(:focus) {
-    box-shadow: none;
+.abs-action-button-as-link:active,
+.abs-action-button-as-link:not(:focus),
+.action-additional:active,
+.action-additional:not(:focus),
+.data-grid .action-delete:active,
+.data-grid .action-delete:not(:focus) {
+  box-shadow: none;
 }
 .admin__field-group-additional .action-additional {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }
-.abs-action-button-as-link, .action-additional, .data-grid .action-delete {
-    line-height: 1.36;
-    padding: 0;
-    color: #007bdb;
-    text-decoration: none;
-    background: none;
-    border: 0;
-    display: inline;
-    font-weight: 400;
-    border-radius: 0;
+.abs-action-button-as-link,
+.action-additional,
+.data-grid .action-delete {
+  line-height: 1.36;
+  padding: 0;
+  color: #007bdb;
+  text-decoration: none;
+  background: none;
+  border: 0;
+  display: inline;
+  font-weight: 400;
+  border-radius: 0;
 }
-.abs-action-button-as-link:hover, .abs-action-button-as-link:active, .abs-action-button-as-link:focus, .action-additional:hover, .action-additional:active, .action-additional:focus, .data-grid .action-delete:hover, .data-grid .action-delete:active, .data-grid .action-delete:focus {
-    background: none;
-    border: 0;
+.abs-action-button-as-link:hover,
+.abs-action-button-as-link:active,
+.abs-action-button-as-link:focus,
+.action-additional:hover,
+.action-additional:active,
+.action-additional:focus,
+.data-grid .action-delete:hover,
+.data-grid .action-delete:active,
+.data-grid .action-delete:focus {
+  background: none;
+  border: 0;
 }
-.abs-action-button-as-link:hover, .action-additional:hover, .data-grid .action-delete:hover {
-    color: #007bdb;
-    text-decoration: underline;
+.abs-action-button-as-link:hover,
+.action-additional:hover,
+.data-grid .action-delete:hover {
+  color: #007bdb;
+  text-decoration: underline;
 }
 
 .admin__field._required > label span:after,
 .admin__field.required > label span:after {
-    left: auto;
-    color: #e22626;
-    content: '*';
-    display: inline-block;
-    font-size: 1.6rem;
-    font-weight: 500;
-    line-height: 1;
-    margin-left: 10px;
-    margin-top: 0;
-    position: absolute;
-    top: 0.6rem;
-    z-index: 1;
+  left: auto;
+  color: #e22626;
+  content: "*";
+  display: inline-block;
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1;
+  margin-left: 10px;
+  margin-top: 0;
+  position: absolute;
+  top: 0.6rem;
+  z-index: 1;
 }
-
+.field-address-region._required > label span:after,
+.field-address-region.required > label span:after {
+  display: none;
+}
 .required > .admin__field-label span:after,
 ._required > .admin__field-label span:after {
-    color: #e22626;
-    content: '*';
-    display: inline-block;
-    font-size: 1.6rem;
-    font-weight: 500;
-    line-height: 1;
-    margin-left: 10px;
-    margin-top: 0.2rem;
-    position: absolute;
-    z-index: 1;
+  color: #e22626;
+  content: "*";
+  display: inline-block;
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1;
+  margin-left: 10px;
+  margin-top: 0.2rem;
+  position: absolute;
+  z-index: 1;
 }
 
 .admin__field.field > label {
-    padding: 0 30px 0 30px;
+  padding: 0 30px 0 30px;
 }
 
 .selectmenu-toggle {
-    margin-right: 0;
+  margin-right: 0;
 }
 
 .mpk-seller-group {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .fue-status-completed,
 .fue-status-Completed {
-    color: #1AA941;
+  color: #1aa941;
 }
 
 .fue-status-completed.red {
-    color: #BB1212;
+  color: #bb1212;
 }
 
 .fue-status-processing,
 .fue-status-pending,
 .fue-status-Pending {
-    color: #F96B25;
+  color: #f96b25;
 }
 
 .fue-status {
-    background: #feeee1 none repeat scroll 0 0;
-    border: 1px solid #ed4f2e;
-    color: #ed4f2e;
-    display: block;
-    font-weight: bold;
-    line-height: 17px;
-    padding: 0 3px;
-    text-align: center;
-    text-transform: uppercase;
-    width: 150px;
+  background: #feeee1 none repeat scroll 0 0;
+  border: 1px solid #ed4f2e;
+  color: #ed4f2e;
+  display: block;
+  font-weight: bold;
+  line-height: 17px;
+  padding: 0 3px;
+  text-align: center;
+  text-transform: uppercase;
+  width: 150px;
 }
 
 .fue-status.fue-status-completed,
 .fue-status.fue-status-Completed,
 .fue-status.fue-status-sent {
-    background: #d0e5a9 none repeat scroll 0 0;
-    border-color: #5b8116;
-    color: #185b00;
+  background: #d0e5a9 none repeat scroll 0 0;
+  border-color: #5b8116;
+  color: #185b00;
 }
 .fue-status.fue-status-pending,
-.fue-status.fue-status-Pending
-{
-    background: #feddcd none repeat scroll 0 0;
-    border-color: #F96B25;
-    color: #F96B25;
+.fue-status.fue-status-Pending {
+  background: #feddcd none repeat scroll 0 0;
+  border-color: #f96b25;
+  color: #f96b25;
 }
 .fue-status.fue-status-canceled,
 .fue-status.fue-status-Canceled,
-.fue-status.fue-status-failed{
-    background: #f9d4d4 none repeat scroll 0 0;
-    border-color: #e22626;
-    color: #e22626;
+.fue-status.fue-status-failed {
+  background: #f9d4d4 none repeat scroll 0 0;
+  border-color: #e22626;
+  color: #e22626;
 }
-.fue-status-canceled{
-    color: #e22626;
+.fue-status-canceled {
+  color: #e22626;
 }
-.fue-status-Canceled{
-    color: #e22626;
+.fue-status-Canceled {
+  color: #e22626;
+}
+.actions-split .print-button {
+  border-radius: 5px;
+  padding: 5px 12px;
+}
+.action-multicheck-toggle {
+  height: 16px !important;
+  width: 16px !important;
+}
+.actions-split .btn {
+  vertical-align: inherit;
+}
+.lof_marketplace .lead {
+  font-weight: 600;
+  font-size: 14px;
+  margin: 0 0 8px;
+  color: #333 !important;
+}
+#invoice_content .invoice-info_shipment {
+  margin-bottom: 20px;
+}
+#invoice_content .shipment-info {
+  margin-bottom: 20px;
+}
+.preorder-info p strong {
+  color: #303030;
+}
+.lof_marketplace .payment-info .carrier,
+.lof_marketplace .payment-info .tracking-number {
+  border-radius: 5px;
+}
+#invoice_content .col-xs-3 .well {
+  background: #f7f7f9;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 12px 14px;
+}
+.lof_marketplace .payment-info .box-content.well,
+.lof_marketplace .payment-info .text-muted.well,
+.lof_marketplace .payment-info .order-totals .well {
+  background: #f7f7f9;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 12px 14px;
 }
 
-.action-multicheck-toggle {
-    height: 16px !important;
-    width: 16px !important;
+.lof_marketplace .preorder-info .box-content p {
+  margin: 0 0 8px;
+}
+.modal-inner-wrap {
+  border-radius: 6px;
+}
+.modal-inner-wrap .modal-footer button {
+  border-radius: 6px;
+  background-color: #f76b1c;
+  border-color: #f76b1c;
+  color: #fff;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.25);
+}
+.modal-inner-wrap .modal-footer button:hover,
+.modal-inner-wrap .modal-footer button:focus,
+.modal-inner-wrap .modal-footer button:active {
+  background-color: #ba4000;
+  border-color: #b84002;
+  box-shadow: 0 0 0 1px #b84002;
+  color: #fff;
+  text-decoration: none;
+}
+.lof_marketplace .payment-info .col-xs-3 {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+.col-xs-3 .text-muted {
+  color: #333;
+}
+.col-xs-3 .box-content p {
+  color: #333 !important;
+}
+/* Responsive overrides: bootstrap col-xs-3 is rigid; make it wrap nicely */
+@media (max-width: 1200px) {
+  .lof_marketplace .payment-info .col-xs-3 {
+    width: 50% !important;
+    margin-bottom: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .lof_marketplace .payment-info .col-xs-3 {
+    width: 100% !important;
+  }
+}
+
+/* Order totals table alignment and emphasis */
+.lof_marketplace .order-totals .table {
+  margin-bottom: 0;
+}
+.lof_marketplace .order-totals .table th,
+.lof_marketplace .order-totals .table td {
+  border: 0;
+  padding: 6px 0;
+}
+.lof_marketplace .order-totals .table td:last-child {
+  text-align: right;
+}
+.lof_marketplace .order-totals .table tr:last-child td {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 10px;
+  font-weight: 700;
+}
+
+/* Shipping method title style */
+.lof_marketplace .payment-info .box-title span {
+  font-weight: 600;
+  color: #5e6872;
+}
+
+/* Balance headings inside info columns */
+.lof_marketplace .customer-info b,
+.lof_marketplace .invoice-col b {
+  font-weight: 600;
+}
+/* Floating Messages Button */
+.floating-messages {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1050; /* above most UI elements */
+}
+
+.floating-messages__btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #2f3b52;
+  color: #ffffff !important;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.12);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.floating-messages__btn:hover {
+  transform: translateY(-2px);
+  background: #1f2a3d;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18), 0 4px 10px rgba(0, 0, 0, 0.14);
+}
+
+.floating-messages__btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.25), 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.floating-messages__btn .fa {
+  font-size: 20px;
+}
+
+.floating-messages__badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 9999px;
+  background: #10b981; /* emerald */
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 640px) {
+  .floating-messages {
+    right: 16px;
+    bottom: 16px;
+  }
+  .floating-messages__btn {
+    width: 52px;
+    height: 52px;
+  }
 }

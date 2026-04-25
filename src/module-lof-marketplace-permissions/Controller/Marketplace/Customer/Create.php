@@ -46,6 +46,9 @@ class Create extends \Lof\MarketPermissions\Controller\Marketplace\AbstractActio
      */
     private $customerAction;
 
+    private $structureFactory;
+
+    private $structureRepository;
 
     /**
      * Create constructor.
@@ -62,11 +65,15 @@ class Create extends \Lof\MarketPermissions\Controller\Marketplace\AbstractActio
         \Magento\Framework\Url $frontendUrl,
         \Psr\Log\LoggerInterface $logger,
         Structure $structureManager,
-        CustomerAction $customerAction
+        CustomerAction $customerAction,
+        \Lof\MarketPermissions\Api\Data\StructureInterfaceFactory $structureFactory,
+        \Lof\MarketPermissions\Model\StructureRepository $structureRepository
     ) {
         parent::__construct($context, $sellerContext, $frontendUrl, $logger);
         $this->structureManager = $structureManager;
         $this->customerAction = $customerAction;
+        $this->structureFactory = $structureFactory;
+        $this->structureRepository = $structureRepository;
     }
 
     /**
@@ -74,6 +81,10 @@ class Create extends \Lof\MarketPermissions\Controller\Marketplace\AbstractActio
      */
     public function execute()
     {
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/permission.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        
         $request = $this->getRequest();
 
         $targetId = $request->getParam('target_id');
@@ -84,8 +95,18 @@ class Create extends \Lof\MarketPermissions\Controller\Marketplace\AbstractActio
         } elseif (!$targetId) {
             $structure = $this->structureManager
                 ->getStructureByCustomerId($this->sellerContext->getCustomerId());
-            if ($structure === null) {
-                return $this->handleJsonError(__('Cannot create the customer.'));
+            if ($structure === null) {                
+                // return $this->handleJsonError(__('Cannot create the customer.'));
+                $structure = $this->structureFactory->create();
+                $structure->setEntityId($this->sellerContext->getCustomerId());
+                $structure->setEntityType(0);
+                $structure->setParentId(0);
+                $structureData = $this->structureRepository->save($structure);
+                
+                // $logger->info(json_encode($structureData));                
+                $structure->setPath((string)$structureData);
+
+                $this->structureRepository->save($structure);
             }
         }
 

@@ -26,6 +26,10 @@ use Lofmp\StoreLocator\Model\ResourceModel\Tag\Collection as TagCollection;
 
 class Collection extends TagCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var AggregationInterface
      */

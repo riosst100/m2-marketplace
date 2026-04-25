@@ -117,6 +117,7 @@ class Index extends \Magento\Backend\App\Action
         $providerName = $this->_providers->getProviderName($providerId);
 
         $options = [
+            'name' => $providerName,
             'host' => $smtpHost,
             'port' => $port,
         ];
@@ -152,6 +153,7 @@ class Index extends \Magento\Backend\App\Action
 
         $result = __('Sent... Please check your email') . ' ' . $to;
 
+        // Send email
         try {
             $transport->send($message);
         } catch (\Exception $e) {

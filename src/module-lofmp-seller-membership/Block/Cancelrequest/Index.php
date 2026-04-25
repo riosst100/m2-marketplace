@@ -30,6 +30,9 @@ use Magento\Framework\Pricing\PriceCurrencyInterface;
 
 class Index extends \Magento\Framework\View\Element\Template
 {
+    protected $_transactionCollection;
+
+
     /**
      * @var CancelrequestFactory
      */

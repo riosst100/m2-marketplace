@@ -246,8 +246,8 @@ class View extends \Magento\Framework\View\Element\Template
                 return nl2br($this->getOrder()->getStoreName()) . $deleted;
             }
             $store = $this->_storeManager->getStore($storeId);
-            $name = [$store->getWebsite()->getName(), $store->getGroup()->getName(), $store->getName()];
-            return implode('<br/>', $name);
+            $name = $store->getWebsite()->getName();
+            return $name;
         }
 
         return null;

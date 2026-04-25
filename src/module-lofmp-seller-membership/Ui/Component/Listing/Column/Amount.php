@@ -27,6 +27,9 @@ use Magento\Ui\Component\Listing\Columns\Column;
 
 class Amount extends Column
 {
+    protected $storeManager;
+
+
     /**
      * Column name
      */

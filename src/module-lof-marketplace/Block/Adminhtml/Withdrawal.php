@@ -36,7 +36,7 @@ class Withdrawal extends \Magento\Backend\Block\Widget\Grid\Container
 
         parent::_construct();
 
-        if ($this->_isAllowedAction('Lof_MarketPlace::commission_save')) {
+        if ($this->_isAllowedAction('CoreMarketplace_MarketPlace::product_commission')) {
             $this->buttonList->update('add', 'label', __('Add New Withdrawal'));
         } else {
             $this->buttonList->remove('add');

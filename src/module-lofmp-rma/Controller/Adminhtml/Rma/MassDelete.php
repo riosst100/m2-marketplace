@@ -29,6 +29,9 @@ use Lofmp\Rma\Controller\Adminhtml\Rma;
 
 class MassDelete extends Rma
 {
+    protected $rmaFactory;
+
+
     public function __construct(
         \Lofmp\Rma\Model\RmaFactory $rmaFactory,
         \Magento\Backend\App\Action\Context $context

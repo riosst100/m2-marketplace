@@ -111,14 +111,23 @@ class Upload extends \Magento\Customer\Controller\AbstractAccount
      */
     public function execute()
     {
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/imageupload.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer); 
+
         $customerSession = $this->session;
         $customerId = $customerSession->getId();
         $status = $this->sellerFactory->create()->load($customerId, 'customer_id')->getStatus();
         if ($customerSession->isLoggedIn() && $status == 1) {
             $strtotime = strtotime("now");
             try {
-                $this->helper->uploadZip($strtotime);
-                $this->messageManager->addSuccessMessage(__('Import Image Product Success'));
+                $upload = $this->helper->uploadZip($strtotime, $this->getRequest()->getParam('bulk_upload_image_categories'), $this->getRequest()->getParam('selected_folder'));
+                // $logger->info('Upload result: ' . print_r($upload, true));
+                if (isset($upload['error']) && $upload['error']) {
+                    $this->messageManager->addErrorMessage(__($upload['msg']));
+                } else {
+                    $this->messageManager->addSuccessMessage(__('Images Uploaded Successfully!'));
+                }                
             } catch (\Magento\Framework\Exception\LocalizedException $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
             } catch (\Exception $e) {
@@ -131,7 +140,7 @@ class Upload extends \Magento\Customer\Controller\AbstractAccount
             $this->messageManager->addNoticeMessage(__('You must have a seller account to access'));
             $this->_redirectUrl($this->getFrontendUrl('lofmarketplace/seller/login'));
         }
-        $this->_redirect('catalog/product/uploadimage');
+        $this->_redirect('catalog/product/mediagallery');
         return null;
     }
 }

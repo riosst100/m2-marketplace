@@ -58,7 +58,7 @@ class Save extends \Lof\Faq\Controller\Adminhtml\Question
         $resultRedirect = $this->resultRedirectFactory->create();
         // check if data sent
         $data = $this->getRequest()->getPostValue();
-  
+        
         if ($data) {
 
             $links = $this->getRequest()->getPost('links');
@@ -83,7 +83,8 @@ class Save extends \Lof\Faq\Controller\Adminhtml\Question
             }
 
             // init model and set data
-
+            $data['question_type'] = 'supplier';
+            $data['creation_time'] = (string) date('m/d/Y H:i:s');
             $model->setData($data);
 
             // try to save it

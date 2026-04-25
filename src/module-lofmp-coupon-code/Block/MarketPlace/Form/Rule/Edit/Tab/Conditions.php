@@ -59,14 +59,25 @@ class Conditions extends \Magento\Backend\Block\Widget\Form\Generic implements \
 
     protected function _prepareForm()
     {
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/coupon.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        $logger->info('Conditions: _prepareForm'); 
+
         $model = $this->_coreRegistry->registry('current_model');
         $form = $this->_formFactory->create();
         $form->setHtmlIdPrefix('rule_'); 
         $formName = 'sellercouponcode_rule_form';
         $renderer = $this->_rendererFieldset->setTemplate(
             'Lofmp_CouponCode::promo/fieldset.phtml'
+        // )->setNewChildUrl(
+        //     $this->getUrl('sales_rule/promo_quote/newConditionHtml/form/rule_conditions_fieldset', ['form_namespace' => $formName])
+        // );
         )->setNewChildUrl(
-            $this->getUrl('sales_rule/promo_quote/newConditionHtml/form/rule_conditions_fieldset', ['form_namespace' => $formName])
+            $this->getUrl(
+                'lofmpcouponcode/rule/newConditionHtml/form/rule_conditions_fieldset',
+                ['form_namespace' => $formName]
+            )
         );
         $fieldset = $form->addFieldset(
             'conditions_fieldset',
@@ -89,6 +100,7 @@ class Conditions extends \Magento\Backend\Block\Widget\Form\Generic implements \
             $this->_conditions
         );
         // $this->addCustomerConditions($form,$model);
+        $logger->info('Conditions: Model Data ' . print_r($model->getData(), true));
         $form->setValues($model->getData());
         $this->setForm($form);
 

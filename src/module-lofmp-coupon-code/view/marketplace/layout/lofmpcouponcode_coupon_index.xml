@@ -22,6 +22,7 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="vendor-1column"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
 	<head>
+		<css src="Lofmp_CouponCode::css/manage-rule.css" />
 	    <title>Manage Coupon Codes</title>
 	</head>
     <update handle="seller_store_switcher"/>

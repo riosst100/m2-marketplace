@@ -5,6 +5,10 @@
     top: -0.2rem!important;
 }
 
+.data-grid-search-control-wrap {
+    margin-bottom: 10px;
+}
+
 .vlicense .vitem {
     float: left;
     width: 100%;

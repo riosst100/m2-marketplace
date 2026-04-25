@@ -34,6 +34,10 @@ use Magento\Catalog\Model\ProductFactory;
 
 class ProductMembershipRepository implements ProductMembershipRepositoryInterface
 {
+    protected $productVisibility;
+    protected $catalogConfig;
+
+
     /**
      * @var \Lofmp\SellerMembership\Model\MembershipFactory
      */

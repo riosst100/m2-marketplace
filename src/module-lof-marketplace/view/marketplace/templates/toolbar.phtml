@@ -20,9 +20,8 @@
  */
 
 // @codingStandardsIgnoreFile
-
 ?>
-<?php if ($block->getChildHtml()):?>
+<?php if ($block->getChildHtml() && $block->getChildHtml() != " " && $block->getChildHtml() != ""):?>
     <div data-mage-init='{"floatingHeader": {}}' class="page-actions" <?php /* @escapeNotVerified */ echo $block->getUiId('content-header') ?>>
         <?= $block->getChildHtml(); ?>
     </div>

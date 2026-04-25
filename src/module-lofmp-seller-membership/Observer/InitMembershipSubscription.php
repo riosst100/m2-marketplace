@@ -28,6 +28,9 @@ use Magento\Framework\App\ObjectManager;
 
 class InitMembershipSubscription implements ObserverInterface
 {
+    protected $_objectManager;
+
+
     const DEFAULT_DURATION_MONTH = 1;
 
     /**

@@ -26,6 +26,10 @@ use Lofmp\CouponCode\Model\ResourceModel\Log\Collection as LogCollection;
 
 class Collection extends LogCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var AggregationInterface
      */

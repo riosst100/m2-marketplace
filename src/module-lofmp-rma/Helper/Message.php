@@ -25,6 +25,19 @@ namespace Lofmp\Rma\Helper;
 
 class Message extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    protected $registry;
+    protected $searchCriteriaBuilder;
+    protected $quickResponseRepository;
+    protected $responseFactory;
+    protected $pricingHelper;
+    protected $eavConfig;
+    protected $storeRepository;
+    protected $customerFactory;
+    protected $userFactory;
+    protected $sellerFactory;
+    protected $context;
+
+
 
     public function __construct(
         \Magento\Framework\Registry                              $registry,
@@ -107,7 +120,7 @@ class Message extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function parse($str, $objects, $additional = [], $storeId = false)
     {
-        if (trim($str) == '') {
+        if ($str != null && trim($str) == '') {
             return $str;
         }
 
@@ -116,10 +129,10 @@ class Message extends \Magento\Framework\App\Helper\AbstractHelper
         $bBOpen = '{WWWWW';
         $bBClose = 'WWWWW}';
 
-        $str = str_replace('[', $bAOpen, $str);
-        $str = str_replace(']', $bAClose, $str);
-        $str = str_replace('{', $bBOpen, $str);
-        $str = str_replace('}', $bBClose, $str);
+        $str = $str != null && str_replace('[', $bAOpen, $str);
+        $str = $str != null && str_replace(']', $bAClose, $str);
+        $str = $str != null && str_replace('{', $bBOpen, $str);
+        $str = $str != null && str_replace('}', $bBClose, $str);
 
         $pattern = '/\[ZZZZZ[^ZZZZZ\]]*ZZZZZ\]/';
 

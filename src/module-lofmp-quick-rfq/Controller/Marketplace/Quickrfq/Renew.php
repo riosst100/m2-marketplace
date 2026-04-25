@@ -33,6 +33,10 @@ use Magento\Framework\App\Action\Context;
  */
 class Renew extends \Magento\Framework\App\Action\Action
 {
+    protected $dataProcessor;
+    protected $quickrfq;
+
+
     /**
      * @var Data
      */

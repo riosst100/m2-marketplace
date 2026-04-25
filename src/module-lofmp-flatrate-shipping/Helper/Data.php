@@ -83,9 +83,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $customerId = $this->_customerSession->create()->getCustomerId();
         if ($customerId && !isset($this->_seller[$customerId])) {
             $this->_seller[$customerId] = $this->sellerFactory->create()->load($customerId, 'customer_id');
-            if ($this->_seller[$customerId]->getId() && $this->_seller[$customerId]->getStatus() == 0) { //need approval
-                $this->_seller[$customerId] = null;
-            }
+            // if ($this->_seller[$customerId]->getId() && $this->_seller[$customerId]->getStatus() == 0) { //need approval
+            //     $this->_seller[$customerId] = null;
+            // }
         }
         return $this->_seller[$customerId];
     }

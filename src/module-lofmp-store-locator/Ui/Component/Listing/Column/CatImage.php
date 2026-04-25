@@ -25,6 +25,10 @@ use Magento\Framework\View\Element\UiComponent\ContextInterface;
 
 class CatImage extends \Magento\Ui\Component\Listing\Columns\Column
 {
+    protected $imageHelper;
+    protected $urlBuilder;
+
+
     const NAME = 'thumbnail';
 
     const ALT_FIELD = 'name';

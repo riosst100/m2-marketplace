@@ -1,0 +1,64 @@
+<?php
+$configData = $this->helper("Lofmp\FavoriteSeller\Helper\ConfigData");
+$enableSendEmail = $configData->getEmailConfig("enable");
+?>
+<?php if ($enableSendEmail): ?>
+<div id="send-mail-modal" style="display:none">
+    <div id="send-mail-messages" style="display:none; margin-bottom:10px;"></div>
+    <!-- <h2><?= __('Send message to customers') ?></h2> -->
+    <form id="send-mail-form">
+        <label><?= __('Recipients') ?></label>
+        <div id='tagsinput-container' style="width: 500px; margin: 0 auto;">
+            <input name="email-addresses" id="input-tags" style="width:500px !important" />
+        </div>
+        <br/>
+        <label><?= __('Subject') ?></label>
+        <input id="email-subject" class="txt" type="text" name="email-subject"/>
+        <br/>
+        <label><?= __('Write a Message') ?></label>
+        <!-- <textarea id="post_description" name="post_description"></textarea> -->
+        <!-- <input name="image" type="file" id="upload" style="visibility:hidden;"> -->
+        <textarea id="email-content" class="txtarea" name="email-content"></textarea>
+        <button id="send-message"><?= __('Send Message') ?></button>
+        <div id="loading-animation" class="sk-fading-circle" style="visibility:hidden">
+            <div class="sk-circle1 sk-circle"></div>
+            <div class="sk-circle2 sk-circle"></div>
+            <div class="sk-circle3 sk-circle"></div>
+            <div class="sk-circle4 sk-circle"></div>
+            <div class="sk-circle5 sk-circle"></div>
+            <div class="sk-circle6 sk-circle"></div>
+            <div class="sk-circle7 sk-circle"></div>
+            <div class="sk-circle8 sk-circle"></div>
+            <div class="sk-circle9 sk-circle"></div>
+            <div class="sk-circle10 sk-circle"></div>
+            <div class="sk-circle11 sk-circle"></div>
+            <div class="sk-circle12 sk-circle"></div>
+        </div>
+    </form>
+</div>
+<?php endif; ?>
+<style>
+    #input-tags_tagsinput {
+  min-height: auto !important;
+  height: auto !important;
+}
+        #send-mail-messages {
+            display: none;
+            background: #f4f4f4;
+            border: 1px solid #ccc;
+            color: #333;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        #send-mail-messages.success {
+            background: #dff0d8;
+            border-color: #d6e9c6;
+            color: #3c763d;
+        }
+        #send-mail-messages.error {
+            background: #f2dede;
+            border-color: #ebccd1;
+            color: #a94442;
+        }
+    </style>

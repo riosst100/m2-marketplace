@@ -83,7 +83,7 @@ class Edit extends Form
             $id ? __('Edit Form') : __('New Form')
         );
         $resultPage->getConfig()->getTitle()->prepend(__('Forms'));
-        $resultPage->getConfig()->getTitle()->prepend($model->getId() ? $model->getTitle() : __('New Form'));
+        $resultPage->getConfig()->getTitle()->prepend($model->getId() ? $model->getTitle() : __('New Games/Brands Request | New Form'));
         return $resultPage;
     }
 }

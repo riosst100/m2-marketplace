@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Communication/etc/communication.xsd">
+    <topic name="lof.marketplace.product_import" request="string">
+        <handler name="lof_marketplace_product_import_handler" type="Lof\MarketPlace\Model\Queue\ProductImportConsumer" method="process"/>
+    </topic>
+    <topic name="lof.marketplace.product_import_db" request="string">
+        <handler name="lof_marketplace_product_import_db_handler" type="Lof\MarketPlace\Model\Queue\ProductImportDbConsumer" method="process"/>
+    </topic>
+</config>

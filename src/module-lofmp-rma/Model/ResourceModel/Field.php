@@ -25,6 +25,11 @@ namespace Lofmp\Rma\Model\ResourceModel;
 
 class Field extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
+    protected $context;
+    protected $resourcePrefix;
+    protected $fieldFactory;
+
+
     public function __construct(
         \Magento\Framework\Model\ResourceModel\Db\Context $context,
         \Lofmp\Rma\Model\FieldFactory $fieldFactory,

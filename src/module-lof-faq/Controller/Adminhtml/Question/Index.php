@@ -50,7 +50,7 @@ class Index extends \Lof\Faq\Controller\Adminhtml\Question
     {
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
-        $this->intQuestion($resultPage)->getConfig()->getTitle()->prepend(__('Questions'));
+        $this->intQuestion($resultPage)->getConfig()->getTitle()->prepend(__('Seller Help Center | Manage Questions'));
         return $resultPage;
     }
 }

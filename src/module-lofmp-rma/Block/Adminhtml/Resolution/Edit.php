@@ -23,6 +23,13 @@ namespace Lofmp\Rma\Block\Adminhtml\Resolution;
 
 class Edit extends \Magento\Backend\Block\Widget\Form\Container
 {
+    protected $registry;
+    protected $context;
+    protected $_objectId;
+    protected $_controller;
+    protected $_blockGroup;
+
+
     /**
      * Edit constructor.
      *

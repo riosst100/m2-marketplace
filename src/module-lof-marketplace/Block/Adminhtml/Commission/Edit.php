@@ -23,6 +23,11 @@ namespace Lof\MarketPlace\Block\Adminhtml\Commission;
 
 class Edit extends \Magento\Backend\Block\Widget\Form\Container
 {
+    protected $_objectId;
+    protected $_blockGroup;
+    protected $_controller;
+
+
     /**
      * Core registry
      *
@@ -57,7 +62,7 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
 
         parent::_construct();
 
-        if ($this->_isAllowedAction('Lof_MarketPlace::commission_save')) {
+        if ($this->_isAllowedAction('CoreMarketplace_MarketPlace::product_commission')) {
             $this->buttonList->update('save', 'label', __('Save'));
             $this->buttonList->add(
                 'saveandcontinue',
@@ -76,7 +81,7 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
             $this->buttonList->remove('save');
         }
 
-        if ($this->_isAllowedAction('Lof_MarketPlace::commission_delete')) {
+        if ($this->_isAllowedAction('CoreMarketplace_MarketPlace::product_commission')) {
             $this->buttonList->update('delete', 'label', __('Delete Commission'));
         } else {
             $this->buttonList->remove('delete');

@@ -24,6 +24,19 @@ namespace Lofmp\Rma\Block\Rma;
 
 class View extends \Magento\Framework\View\Element\Template
 {
+    protected $datahelper;
+    protected $registry;
+    protected $addressRenderer;
+    protected $imageHelper;
+    protected $fieldRepository;
+    protected $searchCriteriaBuilder;
+    protected $sortOrderBuilder;
+    protected $helper;
+    protected $context;
+    protected $request;
+    protected $status;
+
+
     public function __construct(
         \Magento\Framework\Registry                       $registry,
         \Magento\Framework\View\Element\Template\Context  $context,

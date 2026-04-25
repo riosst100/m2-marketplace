@@ -15,6 +15,9 @@ use Lof\MarketPlace\Model\ResourceModel\MessageDetail\CollectionFactory;
 
 class MessageDetail implements ResolverInterface
 {
+    protected $request;
+
+
 
     /**
      * @var \Lof\MarketPlace\Model\ResourceModel\MessageDetail\CollectionFactory

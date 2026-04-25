@@ -68,7 +68,7 @@ class Save extends \Lof\Faq\Controller\Adminhtml\Tag
             }
 
             // init model and set data
-
+            $data['tag_type'] = 'supplier';
             $model->setData($data);
 
             // try to save it

@@ -28,6 +28,20 @@ namespace Lofmp\Rma\Helper;
  */
 class Mail extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    protected $emailTemplateFactory;
+    protected $transportBuilder;
+    protected $rmaHelper;
+    protected $helper;
+    protected $localeDate;
+    protected $customerFactory;
+    protected $sellerFactory;
+    protected $userFactory;
+    protected $orderRepository;
+    protected $storeManager;
+    protected $context;
+    protected $inlineTranslation;
+
+
     /**
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
@@ -108,8 +122,8 @@ class Mail extends \Magento\Framework\App\Helper\AbstractHelper
             $this->transportBuilder->addAttachment(
                 $attachment->getBody(),
                 $attachment->getType(),
-                \Zend_Mime::DISPOSITION_ATTACHMENT,
-                \Zend_Mime::ENCODING_BASE64,
+                \Laminas\Mime\Mime::DISPOSITION_ATTACHMENT,
+                \Laminas\Mime\Mime::ENCODING_BASE64,
                 $attachment->getName()
             );
         }

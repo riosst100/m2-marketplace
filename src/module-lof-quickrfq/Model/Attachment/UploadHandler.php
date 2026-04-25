@@ -120,4 +120,64 @@ class UploadHandler
                        ->save();
         }
     }
+
+    public function processPwa(array $file, $quoteId)
+    {
+        try {
+            $fileName = $file['file_name'] ?? null;
+            $fileType = $file['file_type'] ?? null;
+            $base64   = $file['base64'] ?? null;
+
+            if (!$fileName || !$base64) {
+                throw new \Magento\Framework\Exception\LocalizedException(
+                    __('Invalid attachment data')
+                );
+            }
+
+            $fileContent = base64_decode($base64, true);
+
+            if ($fileContent === false) {
+                throw new \Magento\Framework\Exception\LocalizedException(
+                    __('Invalid base64 file content')
+                );
+            }
+
+            $tmpDirectory = $this->filesystem->getDirectoryWrite(DirectoryList::SYS_TMP);
+            $tmpFileName  = substr(md5(uniqid()), 0, 7) . '_' . $fileName;
+
+            $tmpDirectory->writeFile($tmpFileName, $fileContent);
+
+            $fileAttributes = [
+                'tmp_name' => $tmpDirectory->getAbsolutePath() . $tmpFileName,
+                'name'     => $fileName,
+            ];
+
+            /** @var \Lof\Quickrfq\Model\Attachment\Uploader $uploader */
+            $uploader = $this->uploaderFactory->create();
+            $uploader->processFileAttributes($fileAttributes);
+            $uploader->addValidateCallback('nameLength', $uploader, 'validateNameLength');
+            $uploader->addValidateCallback('size', $uploader, 'validateSize');
+            $uploader->setAllowRenameFiles(true)
+                    ->setFilesDispersion(true)
+                    ->setAllowCreateFolders(true);
+
+            $path = $this->filesystem->getDirectoryRead(
+                DirectoryList::MEDIA
+            )->getAbsolutePath(self::ATTACHMENTS_FOLDER);
+
+            $data = $uploader->save($path);
+
+            if (!empty($data['name']) && !empty($data['file'])) {
+                $attachment = $this->attachmentFactory->create();
+                $attachment->setQuickrfqId($quoteId)
+                        ->setFileName($data['name'])
+                        ->setFilePath($data['file'])
+                        ->setFileType($fileType)
+                        ->save();
+            }
+        } catch (\Exception $e) {
+            $this->logger->critical($e);
+            throw $e;
+        }
+    }
 }

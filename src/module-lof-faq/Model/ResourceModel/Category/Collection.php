@@ -48,7 +48,7 @@ class Collection extends AbstractCollection
     protected function _construct()
     {
         $this->_init('Lof\Faq\Model\Category', 'Lof\Faq\Model\ResourceModel\Category');
-        $this->_map['fields']['store'] = 'store_table.store_id';
+        $this->_map['fields']['website'] = 'store_table.website_id';
     }
 
     /**

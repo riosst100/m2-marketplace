@@ -29,6 +29,9 @@ class Condition extends \Magento\Framework\Model\AbstractModel implements
     IdentityInterface,
     \Lofmp\Rma\Api\Data\ConditionInterface
 {
+    protected $helper;
+
+
     const CACHE_TAG = 'rma_condition';
 
     /**

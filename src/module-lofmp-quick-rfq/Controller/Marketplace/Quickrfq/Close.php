@@ -32,6 +32,10 @@ use Magento\Framework\App\Action\Context;
  */
 class Close extends \Magento\Framework\App\Action\Action
 {
+    protected $dataProcessor;
+    protected $quickrfq;
+
+
     /**
      * @var Data
      */

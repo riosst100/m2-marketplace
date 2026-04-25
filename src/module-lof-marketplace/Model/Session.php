@@ -31,6 +31,9 @@ use Magento\Customer\Model\ResourceModel\Customer as ResourceCustomer;
  */
 class Session extends \Magento\Customer\Model\Session
 {
+    protected $_session;
+
+
     /**
      * @var \Lof\MarketPlace\Model\SellerFactory
      */

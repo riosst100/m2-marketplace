@@ -53,8 +53,11 @@ class Seller extends AbstractSellerQuery implements ResolverInterface
         $storeId = $store->getId();
         $data = [];
         try {
-            $sellerData = $this->_sellerRepository->getSellerByProductSku($productSku, $storeId);
-            $data = $sellerData ? $sellerData->__toArray() : [];
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $this->sellerCache = $objectManager->create('\CoreMarketplace\MarketPlace\Model\SellerDataCache');
+
+            $sellerData = $this->sellerCache->getSellerById($product->getSellerId());
+            $data = $sellerData ?: [];
             $data["model"] = $sellerData;
         } catch (\Exception $e) {
             //

@@ -53,25 +53,25 @@ class Actions extends Generic implements TabInterface
                 'name' => 'commission_by',
                 'options' => [
                     'by_fixed' => __('Fixed Amount'),
-                    'by_percent' => __('Percent Of Product Price'),
+                    'by_percent' => __('Percent of Total Paid'),
                 ]
             ]
         );
 
-        $fieldset->addField(
-            'commission_action',
-            'select',
-            [
-                'label' => __('Calculate Commission Based On'),
-                'name' => 'commission_action',
-                'options' => [
-                    'by_price_incl_tax' => __('Product Price (Incl. Tax)'),
-                    'by_price_excl_tax' => __('Product Price (Excl. Tax)'),
-                    'by_price_after_discount_incl_tax' => __('Product Price After Discount (Incl. Tax)'),
-                    'by_price_after_discount_excl_tax' => __('Product Price After Discount (Excl. Tax)'),
-                ]
-            ]
-        );
+        // $fieldset->addField(
+        //     'commission_action',
+        //     'select',
+        //     [
+        //         'label' => __('Calculate Commission Based On'),
+        //         'name' => 'commission_action',
+        //         'options' => [
+        //             'by_price_incl_tax' => __('Product Price (Incl. Tax)'),
+        //             'by_price_excl_tax' => __('Product Price (Excl. Tax)'),
+        //             'by_price_after_discount_incl_tax' => __('Product Price After Discount (Incl. Tax)'),
+        //             'by_price_after_discount_excl_tax' => __('Product Price After Discount (Excl. Tax)'),
+        //         ]
+        //     ]
+        // );
 
         $fieldset->addField(
             'commission_amount',
@@ -84,16 +84,16 @@ class Actions extends Generic implements TabInterface
             ]
         );
 
-        $fieldset->addField(
-            'stop_rules_processing',
-            'select',
-            [
-                'label' => __('Discard subsequent rules'),
-                'title' => __('Discard subsequent rules'),
-                'name' => 'stop_rules_processing',
-                'options' => ['1' => __('Yes'), '0' => __('No')]
-            ]
-        );
+        // $fieldset->addField(
+        //     'stop_rules_processing',
+        //     'select',
+        //     [
+        //         'label' => __('Discard subsequent rules'),
+        //         'title' => __('Discard subsequent rules'),
+        //         'name' => 'stop_rules_processing',
+        //         'options' => ['1' => __('Yes'), '0' => __('No')]
+        //     ]
+        // );
 
         $form->setValues($model->getData());
 

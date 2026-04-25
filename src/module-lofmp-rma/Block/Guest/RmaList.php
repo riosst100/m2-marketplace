@@ -25,6 +25,15 @@ namespace Lofmp\Rma\Block\Guest;
 
 class RmaList extends \Magento\Framework\View\Element\Template
 {
+    protected $rmaRepository;
+    protected $customerSession;
+    protected $searchCriteriaBuilder;
+    protected $sortOrderBuilder;
+    protected $status;
+    protected $helper;
+    protected $sessionObj;
+
+
     public function __construct(
         \Magento\Framework\Session\SessionManagerInterface $sessionObj,
         \Magento\Customer\Model\Session $customerSession,

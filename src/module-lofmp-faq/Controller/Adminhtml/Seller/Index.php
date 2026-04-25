@@ -22,6 +22,9 @@ namespace Lofmp\Faq\Controller\Adminhtml\Seller;
 
 class Index extends \Magento\Backend\App\Action
 {
+    protected $coreRegistry;
+
+
     /**
      * @var \Magento\Framework\View\Result\PageFactory
      */

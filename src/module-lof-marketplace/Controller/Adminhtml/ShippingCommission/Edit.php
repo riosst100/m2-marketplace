@@ -69,7 +69,7 @@ class Edit extends \Magento\Backend\App\Action
     {
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
-        $resultPage->setActiveMenu('Lof_MarketPlace::commission')
+        $resultPage->setActiveMenu('CoreMarketplace_MarketPlace::product_commission')
             ->addBreadcrumb(__('Commissions'), __('Commissions'))
             ->addBreadcrumb(__('Manage Shipping Commissions'), __('Manage Shipping Commissions'));
         return $resultPage;

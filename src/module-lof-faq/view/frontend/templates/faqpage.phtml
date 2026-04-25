@@ -38,18 +38,20 @@ $question_active_icon_default = $helper->getConfig('faq_page/question_active_ico
 $animation_class_default      = $helper->getConfig('faq_page/animation_class');
 $animation_speed_default      = $helper->getConfig('faq_page/animation_speed');
 $enable_question_link      = $helper->getConfig('faq_page/enable_question_link');
+// dd($catCollection);
 if(!isset($layout)){
 	$layout  = $helper->getConfig("faq_page/layout_type");
 }?>
 <?php if($isSearch && $total == 0){ ?>
-<?php echo __('Your search returns no results'); ?>
+<?php echo __('Your search returns no results.'); ?>
 <?php } ?>
-
+<style>
+	.page-title {
+		display:none !important;
+	}
+</style>
 <?php if($isSearch && $total){ ?>
-<span id="faqsearch-result"><?php echo __('%1 keywords matches', $total); ?></span>
-<?php } ?>
-<?php if(!$isSearch){ ?>
-<button class="faq-backpage"><?php echo __('Back to FAQ page') ?></button>
+<span id="faqsearch-result"><?php echo __('%1 articles found', $total); ?></span>
 <?php } ?>
 <div class="faq-results"></div>
 <?php if(!$isSearch){ ?>
@@ -249,12 +251,14 @@ if(!isset($layout)){
 		if($collection){
 			$productIds = $collection->getAllIds();
 		}
+		$count = 0;
 		?>
 		<?php foreach ($catCollection as $_cat) { ?>
-		<?php $catQuestions = $this->getQuestionByCategory($_cat->getId(), $productIds); ?>
+			<?php $catQuestions = $this->getQuestionByCategory($_cat->getId(), $productIds); ?>
+			<?php if (!count($catQuestions)) { continue; } ?>
 		<?php if($isSearch && $catQuestions->count()==0) continue ?>
-		<div id="faqcat-<?php echo $_cat->getId() ?>" class="faqcat-block">
-			<a href="<?php echo $helper->getCategoryUrl($_cat); ?>">
+		<div style="display:<?= $count++ == 0 ? 'block' : 'none' ?>" id="faqcat-<?php echo $_cat->getId() ?>" class="faqcat-block">
+			<a href="<?php echo $helper->getCategoryUrl($_cat); ?>" style="display:none">
 			<?php
 			$catTitleStyle = ($_cat->getData('title_bg'))?$_cat->getData('title_bg'):$_cat->getData('title_color');
 			if($catTitleStyle) $catTitleStyle = 'style="color: ' . $catTitleStyle . '"';
@@ -262,7 +266,7 @@ if(!isset($layout)){
 			<h3 class="faqcat-title" <?php echo $catTitleStyle ?> title="<?php echo $_cat->getTitle() ?>">
 				<i class="line" <?php if($catTitleStyle){ ?>style="border-bottom-color: <?php echo ($_cat->getData('title_bg'))?$_cat->getData('title_bg'):$_cat->getData('title_color'); ?>"<?php } ?>></i>
 				<i class="fa <?php echo $_cat->getData('cat_icon'); ?>" <?php echo $catTitleStyle ?>></i>
-				<small class="pull-right"><i class="fa fa-hdd-o fa-fw"></i><?php echo $catQuestions->getSize(); ?></small>
+				<!-- <small class="pull-right"><i class="fa fa-hdd-o fa-fw"></i><?php echo $catQuestions->getSize(); ?></small> -->
 				<?php echo $_cat->getTitle() ?>
 			</h3>
 			</a>
@@ -362,49 +366,21 @@ if(!isset($layout)){
 				<?php foreach ($catQuestions as $_question) { ?>
 				<?php $blockId = rand() . time(); ?>
 				<?php 
-				$question_link = 'javascript:void(0);';
+				// $question_link = 'javascript:void(0);';
 				$question_url = $helper->getQuestionUrl($_question);
-				if($enable_question_link){
+				// if($enable_question_link){
 					$question_link = $question_url;
-				}
+				// }
 				?>
 				<div class="panel">
-					<div class="panel-heading collapsed" data-animated="<?php echo  'animated ' . $animation_class ?>" data-parent="#faqcat-questions<?php echo $_cat->getId() ?>" data-toggle="collapse" data-target="#question<?php echo $_question->getId() ?>-<?php echo $blockId ?>" id="question-<?php echo $blockId . $_question->getId() ?>" <?php echo $titleStyle; ?> <?php echo $titleAttr ?>>
+					<a class="panel-heading" href="<?= $question_link ?>">
 						<h4 class="panel-title">
 							<?php if($question_icon){ ?>
 							<i data-icon="<?php echo $question_icon ?>" data-icon-active="<?php echo $question_active_icon ?>" class="fa <?php echo $question_icon ?>" <?php if($title_color){ ?>style="color:<?php echo $title_color ?>"<?php } ?>></i>
 							<?php } ?>
 							<a <?php echo $titleAnchorStyle ?> href="<?php echo $question_link;?>"><?php echo $_question->getTitle() ?></a>
 						</h4>
-					</div>
-					<?php if(!$enable_question_link){ ?>
-					<div id="question<?php echo $_question->getId() ?>-<?php echo $blockId ?>" <?php if($animation_speed){ ?>style="animation-duration: <?php echo $animation_speed ?>s;-webkit-animation-duration: <?php echo $animation_speed ?>s;"<?php } ?>class="panel-collapse collapse">
-						<div class="panel-body" <?php echo $bodyStyle; ?>>
-							<?php $answer = $_question->getAnswer() ?>
-							<?php if($readMoreLink){ ?>
-							<?php if($readMoreChar){ ?>
-							<?php echo $helper->subString($answer, $readMoreChar); ?>
-							<?php if(strlen($answer)>$readMoreChar){ ?>
-							<a <?php echo $catTitleStyle ?> href="<?php echo $question_url ?>"><?php echo __('Read more') ?></a>
-							<?php } ?>	
-							<?php }else{ ?>
-							<?php echo $answer; ?>
-							<a <?php echo $catTitleStyle ?> href="<?php echo $question_url ?>"><?php echo __('Read more') ?></a>
-							<?php } ?>	
-							<?php }else{ ?>
-							<?php echo $answer ?>
-							<?php } ?>
-							<div class="question-meta">
-								<?php if( ($authorName = $_question->getAuthorName()) && $showAuthor ){ ?>
-								<?php echo __('Created by %1', $authorName); ?>
-								<?php } ?>
-								<?php if($showDate && ($_question->getCreationTime()!='')){ ?>
-								<?php echo __('on %1', $helper->getFormatDate($_question->getCreationTime(), 'medium')); ?>
-								<?php } ?>
-							</div>
-						</div>
-					</div>
-					<?php } ?>
+					</a>
 				</div>
 				<?php } ?>
 				<?php } ?>
@@ -431,7 +407,7 @@ if(!isset($layout)){
 			echo "<div class='row'>";
 		}
 		?>
-		<div id="faqcat-<?php echo $_cat->getId() ?>" class="faqcat-block col-md-<?php echo 12/$column; ?>">
+		<div id="faqcat-<?php echo $_cat->getId() ?>" style="display:none" class="faqcat-block col-md-<?php echo 12/$column; ?>">
 			<a href="<?php echo $helper->getCategoryUrl($_cat); ?>">
 			
 			<?php

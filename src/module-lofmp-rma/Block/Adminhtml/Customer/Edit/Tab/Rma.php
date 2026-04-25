@@ -23,6 +23,14 @@ namespace Lofmp\Rma\Block\Adminhtml\Customer\Edit\Tab;
 
 class Rma extends \Magento\Backend\Block\Widget\Grid\Extended
 {
+    protected $orderItemRepository;
+    protected $rmaHelper;
+    protected $statusFactory;
+    protected $dataHelper;
+    protected $itemRepository;
+    protected $itemCollectionFactory;
+
+
     /**
      * Core registry
      *

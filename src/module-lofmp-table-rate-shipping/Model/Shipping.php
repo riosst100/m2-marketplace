@@ -29,6 +29,10 @@ use Magento\Framework\Api\DataObjectHelper;
 
 class Shipping extends AbstractModel implements TableRateShippingInterface, IdentityInterface
 {
+    protected $dataObjectHelper;
+    protected $tableRateShippingInterfaceFactory;
+
+
     const CACHE_TAG = 'lofmptablerateshipping';
 
     /**

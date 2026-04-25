@@ -6,6 +6,9 @@ use Magento\Framework\View\Element\UiComponent\ContextInterface;
 
 class Thumbnail extends \Magento\Ui\Component\Listing\Columns\Column
 {
+    protected $urlBuilder;
+
+
     const NAME = 'thumbnail';
  
     const ALT_FIELD = 'name';

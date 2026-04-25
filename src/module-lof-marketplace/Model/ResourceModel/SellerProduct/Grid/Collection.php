@@ -27,6 +27,11 @@ use Lof\MarketPlace\Model\ResourceModel\SellerProduct\Collection as ProductColle
 
 class Collection extends ProductCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+    protected $_joinEavFlag;
+
+
     /**
      * @var \Magento\Framework\Api\Search\AggregationInterface
      */

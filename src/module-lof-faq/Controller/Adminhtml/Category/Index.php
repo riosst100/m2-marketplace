@@ -50,7 +50,7 @@ class Index extends \Lof\Faq\Controller\Adminhtml\Category
     {
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
-        $this->intQuestion($resultPage)->getConfig()->getTitle()->prepend(__('Categories'));
+        $this->intQuestion($resultPage)->getConfig()->getTitle()->prepend(__('Seller Help Center | Manage Category'));
         return $resultPage;
     }
 }

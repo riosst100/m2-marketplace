@@ -31,6 +31,9 @@ use Lof\Quickrfq\Helper\Data as HelperConfig;
  */
 class Uploader extends \Magento\Framework\Api\Uploader
 {
+    protected $_allowedExtensions;
+
+
 
     /**
      * @var HelperConfig

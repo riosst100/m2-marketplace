@@ -35,8 +35,8 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Order
         /**
          * Set active menu item
          */
-        $resultPage->setActiveMenu('Lof_MarketPlace::sales_order_manage');
-        $resultPage->getConfig()->getTitle()->prepend(__('Manage Orders'));
+        $resultPage->setActiveMenu('CoreMarketplace_MarketPlace::seller_orders');
+        $resultPage->getConfig()->getTitle()->prepend(__('Seller | Orders'));
 
         /**
          * Add breadcrumb item
@@ -51,6 +51,6 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Order
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Lof_MarketPlace::order');
+        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::seller_orders');
     }
 }

@@ -34,6 +34,10 @@
     <preference for="Lofmp\CouponCode\Api\RuleManagementInterface" type="Lofmp\CouponCode\Model\RuleManagement" />
     <preference for="Lofmp\CouponCode\Api\RuleRepositoryInterface" type="Lofmp\CouponCode\Model\RuleRepository" />
     <preference for="Lofmp\CouponCode\Api\CouponRepositoryInterface" type="Lofmp\CouponCode\Model\CouponRepository" />
+    <type name="Magento\Quote\Model\CouponManagement">
+        <plugin name="lofmp_couponcode_management_plugin"
+                type="Lofmp\CouponCode\Plugin\Model\CouponManagementPlugin" />
+    </type>
 
     <!-- <type name="Magento\Newsletter\Model\Subscriber" shared="true">
         <arguments>

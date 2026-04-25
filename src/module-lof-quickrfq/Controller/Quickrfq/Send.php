@@ -45,6 +45,9 @@ use Magento\Framework\UrlInterface;
  */
 class Send extends Action
 {
+    protected $productRepository;
+
+
     /**
      * @var Session
      */

@@ -27,6 +27,10 @@ use Lof\MarketPlace\Model\ResourceModel\Payment\Collection as SellerCollection;
 
 class Collection extends SellerCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var \Magento\Framework\Api\Search\AggregationInterface
      */

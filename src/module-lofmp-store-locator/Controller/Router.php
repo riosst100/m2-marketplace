@@ -70,6 +70,7 @@ class Router implements RouterInterface
      * @var \Lof\StoreLocator\Model\StoreLocator
      */
     protected $_storeLocator;
+    protected $_dataHelper;
 
     /**
      * @param ActionFactory

@@ -84,7 +84,7 @@ class MessageActions extends Column
                 if (isset($item['message_id'])) {
                     $item[$name]['view'] = [
                         'href' => $this->urlBuilder->getUrl($this->editUrl, ['id' => $item['message_id']]),
-                        'label' => __('View')
+                        'label' => __('View Messages')
                     ];
                 }
             }

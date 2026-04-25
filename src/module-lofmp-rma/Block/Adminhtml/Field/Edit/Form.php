@@ -31,6 +31,13 @@ use Lofmp\Rma\Model\Config\Source\Rma\Status;
 
 class Form extends WidgetForm
 {
+    protected $sourceFiledType;
+    protected $status;
+    protected $helper;
+    protected $formFactory;
+    protected $registry;
+
+
     public function __construct(
         FieldTypeSource $configSourceFieldType,
         Status $status,

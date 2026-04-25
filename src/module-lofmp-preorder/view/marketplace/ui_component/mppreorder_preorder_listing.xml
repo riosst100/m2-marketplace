@@ -78,7 +78,21 @@
                 </item>
             </argument>
         </columnsControls>
-
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsProvider" xsi:type="string">
+                        mppreorder_preorder_listing.mppreorder_preorder_listing.lofmppreorder_preorder_columns
+                    </item>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">
+                            mppreorder_preorder_listing.mppreorder_preorder_listing.listing_top.bookmarks
+                        </item>
+                        <item name="namespace" xsi:type="string">current.filters</item>
+                    </item>
+                </item>
+            </argument>
+        </filters>
         <massaction name="listing_massaction">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -158,29 +172,30 @@
                 </item>
             </argument>
         </selectionsColumn>
-        <column name="id">
+        <!-- <column name="id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">textRange</item>
                     <item name="sorting" xsi:type="string">desc</item>
                     <item name="label" xsi:type="string" translate="true">ID</item>
+                    <item name="visible" xsi:type="boolean">false</item>
                 </item>
             </argument>
-        </column>
+        </column> -->
         <column name="increment_id" class="Lofmp\PreOrder\Ui\Component\Listing\Column\Order">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">textRange</item>
                     <item name="sorting" xsi:type="string">desc</item>
-                    <item name="label" xsi:type="string" translate="true">Order #</item>
+                    <item name="label" xsi:type="string" translate="true">Order Number</item>
                 </item>
             </argument>
         </column>
         <column name="product_id" class="Lofmp\PreOrder\Ui\Component\Listing\Column\ProductName">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="component" xsi:type="string">Lofmp_PreOrder/js/grid/columns/link</item>
-                    <item name="filter" xsi:type="string">textRange</item>
+                    <!-- <item name="component" xsi:type="string">Lofmp_PreOrder/js/grid/columns/link</item> -->
+                    <item name="filter" xsi:type="string">text</item>
                     <item name="sorting" xsi:type="string">desc</item>
                     <item name="label" xsi:type="string" translate="true">Product Name</item>
                 </item>
@@ -189,7 +204,7 @@
         <column name="customer_id" class="Lofmp\PreOrder\Ui\Component\Listing\Column\CustomerName">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="filter" xsi:type="string">text</item>
                     <item name="sorting" xsi:type="string">desc</item>
                     <item name="label" xsi:type="string" translate="true">Customer Name</item>
                 </item>
@@ -198,7 +213,7 @@
         <column name="customer_email">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="filter" xsi:type="string">text</item>
                     <item name="sorting" xsi:type="string">desc</item>
                     <item name="label" xsi:type="string" translate="true">Customer Email</item>
                 </item>
@@ -225,17 +240,29 @@
         <column name="type" class="Lofmp\PreOrder\Ui\Component\Listing\Column\TypePreOrder">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="component" xsi:type="string">Lofmp_PreOrder/js/grid/columns/link</item>
-                    <item name="filter" xsi:type="string">textRange</item>
+                    <!-- <item name="component" xsi:type="string">Lofmp_PreOrder/js/grid/columns/link</item> -->
+                    <item name="filter" xsi:type="string">text</item>
                     <item name="sorting" xsi:type="string">desc</item>
                     <item name="label" xsi:type="string" translate="true">Type</item>
+                </item>
+            </argument>
+        </column>
+        <column name="preorder_percent">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                     <item name="component" xsi:type="string">
+                        Lofmp_PreOrder/js/grid/columns/percent
+                    </item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="sorting" xsi:type="string">desc</item>
+                    <item name="label" xsi:type="string" translate="true">Preorder Percent</item>
                 </item>
             </argument>
         </column>
         <column name="status" class="Lofmp\PreOrder\Ui\Component\Listing\Column\Status">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="filter" xsi:type="string">text</item>
                     <item name="sorting" xsi:type="string">desc</item>
                     <item name="label" xsi:type="string" translate="true">Status</item>
                 </item>
@@ -247,17 +274,25 @@
                     <item name="filter" xsi:type="string">dateRange</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
                     <item name="dataType" xsi:type="string">date</item>
-                    <item name="label" xsi:type="string" translate="true">Create At</item>
+                    <item name="label" xsi:type="string" translate="true">Date Created</item>
                 </item>
             </argument>
         </column>
-        <column name="actions" class="Lofmp\PreOrder\Ui\Component\Listing\Column\PreOrderActions">
+        <!-- <column name="actions" class="Lofmp\PreOrder\Ui\Component\Listing\Column\PreOrderActions">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="component" xsi:type="string">Lofmp_PreOrder/js/grid/columns/link</item>
                     <item name="label" xsi:type="string" translate="true">Action</item>
                 </item>
             </argument>
-        </column>
+        </column> -->
+        <actionsColumn name="actions" class="Lof\MarketPlace\Ui\Component\Listing\Columns\Seller\OrderActions">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">id</item>
+                    <item name="sortOrder" xsi:type="number">200</item>
+                </item>
+            </argument>
+        </actionsColumn>
     </columns>
 </listing>

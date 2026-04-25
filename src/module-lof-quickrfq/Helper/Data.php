@@ -38,6 +38,9 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
  */
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    protected $messageManager;
+
+
     /**
      *
      */

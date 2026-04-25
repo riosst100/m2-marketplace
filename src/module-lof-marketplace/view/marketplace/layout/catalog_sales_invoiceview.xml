@@ -20,6 +20,9 @@
   -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="vendor-1column"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <update handle="seller_store_switcher"/>
+    <head>
+      <css src="Lof_MarketPlace::css/styles.css" />
+    </head>
     <body>
 		<referenceContainer name="content">
             <block class="Lof\MarketPlace\Block\Sale\Invoice\View" name="invoice" template="Lof_MarketPlace::sale/invoice/view.phtml">

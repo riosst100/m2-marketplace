@@ -33,6 +33,9 @@ use Lofmp\StoreLocator\Model\StoreLocator;
 use Lofmp\StoreLocator\Helper\Data;
 
 class Details extends \Magento\Framework\App\Action\Action {
+    protected $_storeManager;
+
+
 
     protected $_resultPageFactory;
     protected $_resultForwardFactory;

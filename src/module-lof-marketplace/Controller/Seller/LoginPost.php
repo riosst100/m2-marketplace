@@ -32,6 +32,10 @@ use Magento\Framework\Data\Form\FormKey\Validator;
 
 class LoginPost extends \Magento\Customer\Controller\AbstractAccount
 {
+    protected $sellerFactory;
+    protected $helper;
+
+
     /**
      * @var AccountManagementInterface
      */
@@ -86,6 +90,10 @@ class LoginPost extends \Magento\Customer\Controller\AbstractAccount
      */
     public function execute()
     {
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->sellerFactory = $objectManager->get(\Lof\MarketPlace\Model\SellerFactory::class);
+        $this->helper = $objectManager->get(\CoreMarketplace\MarketPlace\Helper\Data::class);
+            
         if ($this->session->isLoggedIn()) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath('*/*/');
@@ -103,11 +111,19 @@ class LoginPost extends \Magento\Customer\Controller\AbstractAccount
                     if ($url = $this->session->getBeforeAuthUrl()) {
                         $resultRedirect->setPath($url);
                     } else {
-                        $resultRedirect->setPath('marketplace/catalog/dashboard');
+                        $seller = $this->sellerFactory->create()->load($customer->getId(), 'customer_id');
+                        $sellerCountryID = $seller->getDefaultWebsiteCode() ? strtolower($seller->getDefaultWebsiteCode()) : null;
+                        $newUrl = $this->helper->autoSelectWebsite($sellerCountryID, 'marketplace/catalog/dashboard');
+
+                        $resultRedirect->setPath($newUrl . '?cust_id=' . $customer->getId());
                     }
-                    $this->_cacheTypeList->cleanType('full_page');
-                    $this->_cacheTypeList->cleanType('block_html');
-                    $this->_cacheTypeList->cleanType('config');
+
+                    /* Start Line - THIS MAKE SELLER DASHBOARD LOADING VERY SLOW */
+                    // $this->_cacheTypeList->cleanType('full_page');
+                    // $this->_cacheTypeList->cleanType('block_html');
+                    // $this->_cacheTypeList->cleanType('config');
+                    /* End Line - THIS MAKE SELLER DASHBOARD LOADING VERY SLOW */
+
                     return $resultRedirect;
                 } catch (EmailNotConfirmedException $e) {
                     $value = $this->customerUrl->getEmailConfirmationUrl($login ['username']);

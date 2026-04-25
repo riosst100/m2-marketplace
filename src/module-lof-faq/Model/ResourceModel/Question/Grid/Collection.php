@@ -75,6 +75,13 @@ class Collection extends QuestionCollection implements SearchResultInterface
         $this->setMainTable($mainTable);
     }
 
+    protected function _initSelect()
+    {
+        parent::_initSelect();
+        $this->addFieldToFilter('main_table.question_type', 'supplier');
+        return $this;
+    }
+
     /**
      * @return AggregationInterface
      */

@@ -2,6 +2,7 @@
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
   <table name="lof_formbuilder_form" resource="default" engine="innodb" comment="lof_formbuilder_form">
     <column xsi:type="smallint" name="form_id" padding="6" unsigned="false" nullable="false" identity="true" comment="Form ID"/>
+    <column xsi:type="int" name="category_id" padding="10" unsigned="false" nullable="true" identity="false" comment="Category ID"/>
     <column xsi:type="varchar" name="title" nullable="false" length="255" comment="Title"/>
     <column xsi:type="varchar" name="identifier" nullable="false" length="255" comment="Identifier"/>
     <column xsi:type="varchar" name="email_receive" nullable="false" length="255" comment="Email Receive"/>

@@ -21,6 +21,10 @@
 
 namespace Lof\MarketPlace\Block\Account;
 
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
+use CoreMarketplace\MarketPlace\Model\ResourceModel\SellerNotifications\CollectionFactory as NotificationCollectionFactory;
+
 class Navigation extends \Magento\Framework\View\Element\Html\Link\Current
 {
     /**
@@ -54,6 +58,25 @@ class Navigation extends \Magento\Framework\View\Element\Html\Link\Current
     protected $currentSeller = null;
 
     /**
+     * Own page title to display on the page
+     *
+     * @var string
+     */
+    protected $pageTitle;
+
+    /**
+     * Config path to 'Translate Title' header settings
+     */
+    private const XML_PATH_HEADER_TRANSLATE_TITLE = 'design/header/translate_title';
+
+    /**
+     * @var ScopeConfigInterface
+     */
+    private $scopeConfig;
+
+    protected $notificationCollectionFactory;
+
+    /**
      * Navigation constructor.
      *
      * @param \Magento\Framework\View\Element\Template\Context $context
@@ -63,6 +86,7 @@ class Navigation extends \Magento\Framework\View\Element\Html\Link\Current
      * @param \Lof\MarketPlace\Model\Message $message
      * @param \Lof\MarketPlace\Model\MessageDetail $detail
      * @param \Lof\MarketPlace\Model\Seller $seller
+     * @param ScopeConfigInterface $scopeConfig
      * @param array $data
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
@@ -74,6 +98,8 @@ class Navigation extends \Magento\Framework\View\Element\Html\Link\Current
         \Lof\MarketPlace\Model\Message $message,
         \Lof\MarketPlace\Model\MessageDetail $detail,
         \Lof\MarketPlace\Model\Seller $seller,
+        ScopeConfigInterface $scopeConfig,
+        NotificationCollectionFactory $notificationCollectionFactory,
         array $data = []
     ) {
         $this->message = $message;
@@ -81,7 +107,38 @@ class Navigation extends \Magento\Framework\View\Element\Html\Link\Current
         $this->sellerFactory = $sellerFactory;
         $this->seller = $seller;
         $this->session = $customerSession;
+        $this->scopeConfig = $scopeConfig;
+        $this->notificationCollectionFactory = $notificationCollectionFactory;
         parent::__construct($context, $defaultPath);
+    }
+
+    /**
+     * Check if page title should be translated
+     *
+     * @return bool
+     */
+    private function shouldTranslateTitle(): bool
+    {
+        return $this->scopeConfig->isSetFlag(
+            self::XML_PATH_HEADER_TRANSLATE_TITLE,
+            ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    /**
+     * Provide own page content heading
+     *
+     * @return string
+     */
+    public function getPageHeading()
+    {
+        // dd(get_class_methods($this->pageConfig->getTitle()));
+        // dd($this->pageConfig->getTitle()->getShort());
+        // My Membership Plans
+
+        $pageTitle = !empty($this->pageTitle) ? $this->pageTitle : ($this->pageConfig->getTitle()->getShort() != 'My Membership Plans' ? $this->pageConfig->getTitle()->getShort() : '');
+
+        return $this->shouldTranslateTitle() ? __($pageTitle) : $pageTitle;
     }
 
     /**
@@ -161,7 +218,7 @@ class Navigation extends \Magento\Framework\View\Element\Html\Link\Current
      */
     public function getDetail()
     {
-        return $this->detail->getCollection()->addFieldToFilter('sender_id', $this->getSellerId());
+        return $this->detail->getCollection()->addFieldToFilter('receiver_id', $this->getSellerId());
     }
 
     /**
@@ -177,7 +234,7 @@ class Navigation extends \Magento\Framework\View\Element\Html\Link\Current
      */
     public function getDetailUnRead()
     {
-        return $this->getDetail()->addFieldToFilter('is_read', 0)->addFieldToFilter('seller_send', 0);
+        return $this->getDetail()->addFieldToFilter('is_read', 0)->addFieldToFilter('seller_send', 0)->addFieldToFilter('message_admin', 0);
     }
 
     /**
@@ -185,7 +242,7 @@ class Navigation extends \Magento\Framework\View\Element\Html\Link\Current
      */
     public function getDetailAdminUnRead()
     {
-        return $this->detail->getCollection()
+        return $this->getDetail()
             ->addFieldToFilter('is_read', 0)
             ->addFieldToFilter('seller_send', 0)
             ->addFieldToFilter('message_admin', 1);
@@ -279,5 +336,24 @@ class Navigation extends \Magento\Framework\View\Element\Html\Link\Current
         }
 
         return $html;
+    }
+
+    // Notification 
+    public function getNotification()
+    {
+        $collection = $this->notificationCollectionFactory->create();
+        $collection->addFieldToFilter('seller_id', $this->getSellerId());
+        $collection->setPageSize(4);
+        $collection->setOrder('created_at', 'DESC');
+        return $collection;
+    }
+
+    public function getUnreadCount()
+    {
+        $sellerId = $this->getSellerId();
+        return $this->notificationCollectionFactory->create()
+            ->addFieldToFilter('seller_id', $sellerId)
+            ->addFieldToFilter('is_read', 0)
+            ->count();
     }
 }

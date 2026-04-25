@@ -82,7 +82,7 @@
             <item name="config" xsi:type="array">
                 <item name="childDefaults" xsi:type="array">
                     <item name="fieldAction" xsi:type="array">
-                        <item name="provider" xsi:type="string">product_form.product_form.configurable_associated_product_modal.configurable_associated_product_listing</item>
+                        <item name="provider" xsi:type="string">product_form.product_form.configurableModal.configurable_associated_product_listing</item>
                         <item name="target" xsi:type="string">selectProduct</item>
                         <item name="params" xsi:type="array">
                             <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
@@ -99,7 +99,7 @@
                 </item>
             </argument>
         </selectionsColumn>
-        <column name="entity_id">
+        <!-- <column name="entity_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">textRange</item>
@@ -108,7 +108,7 @@
                     <item name="sortOrder" xsi:type="number">10</item>
                 </item>
             </argument>
-        </column>
+        </column> -->
         <column name="thumbnail" class="Magento\Catalog\Ui\Component\Listing\Columns\Thumbnail">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">

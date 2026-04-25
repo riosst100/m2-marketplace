@@ -81,7 +81,7 @@ class Edit extends \Lof\Faq\Controller\Adminhtml\Category
             $id ? __('Edit Category') : __('New Category')
         );
         $resultPage->getConfig()->getTitle()->prepend(__('Categories'));
-        $resultPage->getConfig()->getTitle()->prepend($model->getCategoryId() ? $model->getTitle() : __('New Category'));
+        $resultPage->getConfig()->getTitle()->prepend($model->getCategoryId() ? 'Seller Help Center Category | ' . $model->getTitle() : __('Seller Help Center | New Category'));
         return $resultPage;
     }
 }

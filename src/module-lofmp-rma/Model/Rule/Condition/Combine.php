@@ -25,6 +25,9 @@ namespace Lofmp\Rma\Model\Rule\Condition;
 
 class Combine extends \Magento\Rule\Model\Condition\Combine
 {
+    protected $_conditionRma;
+
+
     public function __construct(
         \Magento\Rule\Model\Condition\Context $context,
         \Lofmp\Rma\Model\Rule\Condition\Rma  $conditionRma,

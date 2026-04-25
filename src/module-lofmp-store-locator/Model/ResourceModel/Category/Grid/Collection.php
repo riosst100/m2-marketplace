@@ -26,6 +26,10 @@ use Lofmp\StoreLocator\Model\ResourceModel\Category\Collection as CategoryCollec
 
 class Collection extends CategoryCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var AggregationInterface
      */

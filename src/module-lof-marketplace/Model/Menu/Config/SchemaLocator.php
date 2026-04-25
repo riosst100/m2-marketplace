@@ -25,6 +25,9 @@ use Magento\Framework\Module\Dir;
 
 class SchemaLocator extends \Magento\Backend\Model\Menu\Config\SchemaLocator
 {
+    protected $_schema;
+
+
     /**
      * @param \Magento\Framework\Module\Dir\Reader $moduleReader
      */

@@ -31,6 +31,12 @@ use Lofmp\Rma\Model\ResourceModel\Status\CollectionFactory as StatusCollectionFa
 
 class Action extends Form
 {
+    protected $statusCollectionFactory;
+    protected $dataHelper;
+    protected $formFactory;
+    protected $registry;
+
+
     public function __construct(
         StatusCollectionFactory $statusCollectionFactory,
         DataHelper $dataHelper,

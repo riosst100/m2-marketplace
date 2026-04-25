@@ -30,6 +30,10 @@ use Lof\MarketPlace\Model\ResourceModel\Withdrawal\Collection as SellerCollectio
  */
 class Collection extends SellerCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var \Magento\Framework\Api\Search\AggregationInterface
      */

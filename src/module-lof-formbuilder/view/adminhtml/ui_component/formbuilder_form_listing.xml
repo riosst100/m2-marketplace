@@ -77,19 +77,6 @@
                 </item>
             </argument>
         </columnsControls>
-        <exportButton name="export_button"/>
-        <filterSearch name="fulltext">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="provider" xsi:type="string">formbuilder_form_listing.formbuilder_form_listing_data_source</item>
-                    <item name="chipsProvider" xsi:type="string">formbuilder_form_listing.formbuilder_form_listing.listing_top.listing_filters_chips</item>
-                    <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">formbuilder_form_listing.formbuilder_form_listing.listing_top.bookmarks</item>
-                        <item name="namespace" xsi:type="string">current.search</item>
-                    </item>
-                </item>
-            </argument>
-        </filterSearch>
         <filters name="listing_filters">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -114,19 +101,6 @@
                     </item>
                 </item>
             </argument>
-
-            <filterSelect name="store_id" provider="${ $.parentName }">
-                <settings>
-                    <options class="Magento\Store\Ui\Component\Listing\Column\Store\Options"/>
-                    <caption translate="true">All Store Views</caption>
-                    <label translate="true">Store View</label>
-                    <dataScope>store_id</dataScope>
-                    <imports>
-                        <link name="visible">ns = ${ $.ns }, componentType = column, index = ${ $.index }:visible</link>
-                    </imports>
-                </settings>
-            </filterSelect>
-
 
         </filters>
         <massaction name="listing_massaction">
@@ -193,15 +167,6 @@
                 </item>
             </argument>
         </selectionsColumn>
-        <column name="form_id">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">textRange</item>
-                    <item name="sorting" xsi:type="string">desc</item>
-                    <item name="label" xsi:type="string" translate="true">ID</item>
-                </item>
-            </argument>
-        </column>
         <column name="title">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -216,36 +181,20 @@
                 </item>
             </argument>
         </column>
-        <column name="identifier">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="editor" xsi:type="array">
-                        <item name="editorType" xsi:type="string">text</item>
-                        <item name="validation" xsi:type="array">
-                            <item name="validate-xml-identifier" xsi:type="boolean">true</item>
-                            <item name="required-entry" xsi:type="boolean">true</item>
-                        </item>
-                    </item>
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Identifier</item>
-                </item>
-            </argument>
+        <column name="website_id" class="CoreMarketplace\SellerMembership\Ui\Component\Listing\Column\MultipleWebsite">
+            <settings>
+                <label translate="true">Countries/Regions</label>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <options class="CoreMarketplace\SellerMembership\Ui\Component\Listing\Column\WebsiteOptions"/>
+            </settings>            
         </column>
-        <column name="store_id" class="Lof\Formbuilder\Ui\Component\Listing\Column\Store">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
-                    <item name="sortable" xsi:type="boolean">false</item>
-                    <item name="label" xsi:type="string" translate="true">Store View</item>
-                </item>
-            </argument>
-        </column>
-        <column name="creation_time" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" sortOrder="80">
+        <!-- <column name="creation_time" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" sortOrder="80">
             <settings>
                 <filter>dateRange</filter>
                 <dataType>date</dataType>
                 <dataType>date</dataType>
-                <label translate="true">Created</label>
+                <label translate="true">Date Created</label>
             </settings>
         </column>
         <column name="update_time" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" sortOrder="80">
@@ -253,9 +202,9 @@
                 <filter>dateRange</filter>
                 <dataType>date</dataType>
                 <dataType>date</dataType>
-                <label translate="true">Modified</label>
+                <label translate="true">Date Modified</label>
             </settings>
-        </column>
+        </column> -->
         <column name="status">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="array">

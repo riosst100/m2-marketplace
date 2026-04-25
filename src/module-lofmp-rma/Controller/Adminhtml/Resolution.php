@@ -26,6 +26,15 @@ use \Lofmp\Rma\Api\Repository\ResolutionRepositoryInterface;
 
 abstract class Resolution extends \Magento\Backend\App\Action
 {
+    protected $resolutionFactory;
+    protected $resolutionRepository;
+    protected $localeDate;
+    protected $registry;
+    protected $context;
+    protected $backendSession;
+    protected $resultFactory;
+
+
     public function __construct(
         \Lofmp\Rma\Model\ResolutionFactory $resolutionFactory,
         ResolutionRepositoryInterface $resolutionRepository,

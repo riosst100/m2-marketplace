@@ -23,6 +23,32 @@ namespace Lofmp\Rma\Helper;
 
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    protected $searchCriteriaBuilder;
+    protected $sortOrderBuilder;
+    protected $conditionRepository;
+    protected $reasonRepository;
+    protected $resolutionRepository;
+    protected $messageRepository;
+    protected $itemRepository;
+    protected $attachmentRepository;
+    protected $fieldRepository;
+    protected $customerFactory;
+    protected $userFactory;
+    protected $sellerFactory;
+    protected $statusRepository;
+    protected $historyCollectionFactory;
+    protected $rmaFactory;
+    protected $helper;
+    protected $localeDate;
+    protected $messageManager;
+    protected $_resource;
+    protected $context;
+    protected $filterBuilder;
+    protected $rmaAddress;
+    protected $rc_credit_memo_id;
+    protected $_exorderid;
+
+
     protected $_sellers = [];
     protected $_rma_products = [];
     protected $_countryFactory;

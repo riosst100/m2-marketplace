@@ -26,6 +26,10 @@ use Lof\MarketPlace\Model\ResourceModel\Rating\Collection as SellerCollection;
 
 class Collection extends SellerCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var
      */

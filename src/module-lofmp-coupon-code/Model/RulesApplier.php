@@ -20,17 +20,7 @@ class RulesApplier extends \Magento\SalesRule\Model\RulesApplier
     ) {
         parent::__construct($calculatorFactory, $eventManager, $utility);
     }
-
-    /**
-     * Apply rules to current order item
-     *
-     * @param \Magento\Quote\Model\Quote\Item\AbstractItem $item
-     * @param \Magento\SalesRule\Model\ResourceModel\Rule\Collection $rules
-     * @param bool $skipValidation
-     * @param mixed $couponCode
-     * @return array
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     */
+    
     public function applyRules($item, $rules, $skipValidation, $couponCode)
     {
         $address = $item->getAddress();

@@ -98,7 +98,13 @@ define([
             this.options.fileIsHide = false;
             this._removeErrors();
             if (data) {
-                this._validateFile(data);
+                if (this._validateFile(data) !== false) {
+                    $('#documents_list_' + this.options.typeUpload).show();
+                } else {
+                    $('html, body').animate({
+                        scrollTop: $('.messages').offset().top-20
+                    }, 600);
+                }
             }
         },
 

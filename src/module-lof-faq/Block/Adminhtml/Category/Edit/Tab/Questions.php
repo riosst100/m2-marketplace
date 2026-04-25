@@ -209,21 +209,21 @@ class Questions extends Extended
             );
         }
 
-        $this->addColumn(
-            'question_id',
-            [
-                'header' => __('ID'),
-                'sortable' => true,
-                'index' => 'question_id',
-                'header_css_class' => 'col-id',
-                'column_css_class' => 'col-id'
-            ]
-        );
+        // $this->addColumn(
+        //     'question_id',
+        //     [
+        //         'header' => __('ID'),
+        //         'sortable' => true,
+        //         'index' => 'question_id',
+        //         'header_css_class' => 'col-id',
+        //         'column_css_class' => 'col-id'
+        //     ]
+        // );
 
         $this->addColumn(
             'question_title',
             [
-                'header' => __('Title'),
+                'header' => __('Question Title'),
                 'index' => 'title',
                 'header_css_class' => 'col-name',
                 'column_css_class' => 'col-name'

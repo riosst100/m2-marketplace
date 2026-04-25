@@ -33,6 +33,10 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
  */
 class Approve extends \Magento\Backend\App\Action
 {
+    protected $dataProcessor;
+    protected $quickrfq;
+
+
     /**
      * @var Data
      */

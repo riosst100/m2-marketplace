@@ -31,6 +31,15 @@ namespace Lofmp\Rma\Model\ResourceModel\Message;
  */
 class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
 {
+    protected $entityFactory;
+    protected $logger;
+    protected $fetchStrategy;
+    protected $eventManager;
+    protected $storeManager;
+    protected $connection;
+    protected $resource;
+
+
     public function __construct(
         \Magento\Framework\Data\Collection\EntityFactoryInterface $entityFactory,
         \Psr\Log\LoggerInterface $logger,

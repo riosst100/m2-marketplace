@@ -28,6 +28,10 @@ use Magento\Framework\Registry;
 
 class Form extends WidgetForm
 {
+    protected $formFactory;
+    protected $registry;
+
+
     public function __construct(
         FormFactory $formFactory,
         Registry $registry,

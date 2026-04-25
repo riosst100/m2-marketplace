@@ -17,6 +17,72 @@
  * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
  * @license    https://landofcoder.com/terms
  */
+ 
+.admin__data-grid-filters-wrap .admin__form-field {
+  display: inline-block;
+  margin-bottom: 2em;
+  margin-left: 0;
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+  vertical-align: top;
+  width: calc(100% / 4 - 4px);
+}
+
+.custom-data-grid-filters-action-wrap {/* float: left; */padding-left: 2rem}
+
+.custom-data-grid-filters-action-wrap .action-default {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    padding-left: 1.7rem;
+    padding-right: 2.1rem;
+    padding-top: .7rem;
+    border-radius: 3px;
+    margin-left: 6px;
+}
+
+.custom-data-grid-filters-action-wrap .action-default._inactive {
+    display: inline-block;
+    background-color: #514943;
+    border-color: #2a3f54;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: white;
+    margin-right: 0px;
+    cursor:pointer;
+}
+
+.custom-data-grid-filters-action-wrap .action-default._inactive:hover {
+    background-color: #524d49;
+    border-color: #524d49;
+}
+
+.custom-data-grid-filters-action-wrap .action-default._active {
+    margin-left: 6px !important;
+    border-radius: 0px;
+    background-color: #ffffff;
+    border-bottom-color: #ffffff;
+    border-right-color: #ccc;
+    font-weight: 600;
+    margin: -0.1rem 0 0;
+    padding-bottom: 1.9rem;
+    padding-top: 1rem;
+    color:# eb5202;
+    position: relative;
+    z-index: 281;
+    font-weight:bold;
+}
+
+.data-grid-filters-actions-wrap,.admin__data-grid-actions-wrap {
+    display: none;
+}
+
+.custom-data-grid-filters-action-wrap .action-default._active:after {background-color: #373330;bottom: 100%;content: '';height: 3px;left: -1px;position: absolute;right: -1px}
+
+.custom-data-grid-filters-action-wrap .filters-active {
+display: none
+}
 
 .admin__menu .item-seller > a:before {
   content: '\e60d'!important;

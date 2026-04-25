@@ -30,6 +30,23 @@ namespace Lofmp\Rma\Model\ResourceModel\Item;
  */
 class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
 {
+    protected $entityFactory;
+    protected $logger;
+    protected $fetchStrategy;
+    protected $eventManager;
+    protected $storeManager;
+    protected $_localeDate;
+    protected $connection;
+    protected $resource;
+    protected $_date_column_filter;
+    protected $_from_date_filter;
+    protected $_to_date_filter;
+    protected $_period_type;
+    protected $periodFormat;
+    protected $selectedColumns;
+    protected $reportType;
+
+
     public function __construct(
         \Magento\Framework\Data\Collection\EntityFactoryInterface $entityFactory,
         \Psr\Log\LoggerInterface $logger,

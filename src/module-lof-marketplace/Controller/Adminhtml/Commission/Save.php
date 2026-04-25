@@ -84,6 +84,6 @@ class Save extends \Magento\Backend\App\Action
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Lof_MarketPlace::commission_save');
+        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::product_commission');
     }
 }

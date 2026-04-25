@@ -47,7 +47,7 @@
                 <item name="sticky" xsi:type="boolean">true</item>
             </item>
         </argument>
-        <bookmark name="bookmarks">
+        <!-- <bookmark name="bookmarks">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="storageConfig" xsi:type="array">
@@ -66,7 +66,7 @@
                     <item name="displayArea" xsi:type="string">dataGridActions</item>
                 </item>
             </argument>
-        </columnsControls>
+        </columnsControls> -->
 
         <paging name="listing_paging">
             <argument name="data" xsi:type="array">

@@ -25,6 +25,10 @@ use Magento\Framework\Event\ObserverInterface;
 
 class SalesOrderCreditmemoRegisterBefore implements ObserverInterface
 {
+    protected $request;
+    protected $backendSession;
+
+
     /**
      * SalesOrderCreditmemoRegisterBefore constructor.
      * @param \Magento\Framework\App\Request\Http $request

@@ -24,6 +24,15 @@ namespace Lofmp\Rma\Controller\Adminhtml;
 
 abstract class Address extends \Magento\Backend\App\Action
 {
+    protected $addressFactory;
+    protected $addressRepository;
+    protected $localeDate;
+    protected $registry;
+    protected $context;
+    protected $backendSession;
+    protected $resultFactory;
+
+
     public function __construct(
         \Lofmp\Rma\Model\AddressFactory $addressFactory,
         \Lofmp\Rma\Api\Repository\AddressRepositoryInterface $addressRepository,

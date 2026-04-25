@@ -30,6 +30,9 @@ use Magento\Ui\Component\Listing\Columns\Column;
  */
 class Seller extends Column
 {
+    protected $helper;
+
+
     /**
      * @var UrlInterface
      */

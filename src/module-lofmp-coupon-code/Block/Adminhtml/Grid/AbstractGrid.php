@@ -22,6 +22,10 @@ namespace Lofmp\CouponCode\Block\Adminhtml\Grid;
 
 class AbstractGrid extends \Magento\Backend\Block\Widget\Grid\Extended
 {
+    protected $_countTotals;
+    protected $_collection;
+
+
     protected $_resourceCollectionName  = '';
     protected $_currentCurrencyCode     = null;
     protected $_storeIds                = array();

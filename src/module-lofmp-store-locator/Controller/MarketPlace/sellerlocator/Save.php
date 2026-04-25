@@ -26,6 +26,9 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Store\Model\StoreManager;
 class Save extends \Magento\Customer\Controller\AbstractAccount  {
+    protected $storeLocatorFactory;
+
+
     /**
      *
      * @var Magento\Framework\App\Action\Session

@@ -84,19 +84,19 @@ class Social extends \Magento\Backend\Block\Widget\Form\Generic implements TabIn
         );
 
         if ($this->helper->isAllowedSocial('twitter')) {
-            $fieldset->addField(
-                'tw_active',
-                'checkbox',
-                [
-                    'name' => 'tw_active',
-                    'checked' => $model->getData('tw_active'),
-                    'label' => __('Twitter Active'),
-                    'title' => __('Twitter Active'),
-                    'data-form-part' => $this->getData('tw_active'),
-                    'onchange' => 'this.value = this.checked;',
-                    'disabled' => $isElementDisabled
-                ]
-            );
+            // $fieldset->addField(
+            //     'tw_active',
+            //     'checkbox',
+            //     [
+            //         'name' => 'tw_active',
+            //         'checked' => $model->getData('tw_active'),
+            //         'label' => __('Twitter Active'),
+            //         'title' => __('Twitter Active'),
+            //         'data-form-part' => $this->getData('tw_active'),
+            //         'onchange' => 'this.value = this.checked;',
+            //         'disabled' => $isElementDisabled
+            //     ]
+            // );
 
             $fieldset->addField(
                 'twitter_id',
@@ -112,19 +112,19 @@ class Social extends \Magento\Backend\Block\Widget\Form\Generic implements TabIn
         }
 
         if ($this->helper->isAllowedSocial('facebook')) {
-            $fieldset->addField(
-                'fb_active',
-                'checkbox',
-                [
-                    'name' => 'fb_active',
-                    'checked' => $model->getData('fb_active'),
-                    'label' => __('Facebook Active'),
-                    'title' => __('Facebook Active'),
-                    'data-form-part' => $this->getData('fb_active'),
-                    'onchange' => 'this.value = this.checked;',
-                    'disabled' => $isElementDisabled
-                ]
-            );
+            // $fieldset->addField(
+            //     'fb_active',
+            //     'checkbox',
+            //     [
+            //         'name' => 'fb_active',
+            //         'checked' => $model->getData('fb_active'),
+            //         'label' => __('Facebook Active'),
+            //         'title' => __('Facebook Active'),
+            //         'data-form-part' => $this->getData('fb_active'),
+            //         'onchange' => 'this.value = this.checked;',
+            //         'disabled' => $isElementDisabled
+            //     ]
+            // );
 
             $fieldset->addField(
                 'facebook_id',
@@ -140,19 +140,19 @@ class Social extends \Magento\Backend\Block\Widget\Form\Generic implements TabIn
         }
 
         if ($this->helper->isAllowedSocial('google')) {
-            $fieldset->addField(
-                'gplus_active',
-                'checkbox',
-                [
-                    'name' => 'gplus_active',
-                    'checked' => $model->getData('gplus_active'),
-                    'label' => __('Google Plus Active'),
-                    'title' => __('Google Plus Active'),
-                    'data-form-part' => $this->getData('gplus_active'),
-                    'onchange' => 'this.value = this.checked;',
-                    'disabled' => $isElementDisabled
-                ]
-            );
+            // $fieldset->addField(
+            //     'gplus_active',
+            //     'checkbox',
+            //     [
+            //         'name' => 'gplus_active',
+            //         'checked' => $model->getData('gplus_active'),
+            //         'label' => __('Google Plus Active'),
+            //         'title' => __('Google Plus Active'),
+            //         'data-form-part' => $this->getData('gplus_active'),
+            //         'onchange' => 'this.value = this.checked;',
+            //         'disabled' => $isElementDisabled
+            //     ]
+            // );
 
             $fieldset->addField(
                 'gplus_id',
@@ -168,19 +168,19 @@ class Social extends \Magento\Backend\Block\Widget\Form\Generic implements TabIn
         }
 
         if ($this->helper->isAllowedSocial('youtube')) {
-            $fieldset->addField(
-                'youtube_active',
-                'checkbox',
-                [
-                    'name' => 'youtube_active',
-                    'checked' => $model->getData('youtube_active'),
-                    'label' => __('Youtube Active'),
-                    'title' => __('Youtube Active'),
-                    'data-form-part' => $this->getData('youtube_active'),
-                    'onchange' => 'this.value = this.checked;',
-                    'disabled' => $isElementDisabled
-                ]
-            );
+            // $fieldset->addField(
+            //     'youtube_active',
+            //     'checkbox',
+            //     [
+            //         'name' => 'youtube_active',
+            //         'checked' => $model->getData('youtube_active'),
+            //         'label' => __('Youtube Active'),
+            //         'title' => __('Youtube Active'),
+            //         'data-form-part' => $this->getData('youtube_active'),
+            //         'onchange' => 'this.value = this.checked;',
+            //         'disabled' => $isElementDisabled
+            //     ]
+            // );
 
             $fieldset->addField(
                 'youtube_id',
@@ -196,19 +196,19 @@ class Social extends \Magento\Backend\Block\Widget\Form\Generic implements TabIn
         }
 
         if ($this->helper->isAllowedSocial('vimeo')) {
-            $fieldset->addField(
-                'vimeo_active',
-                'checkbox',
-                [
-                    'name' => 'vimeo_active',
-                    'checked' => $model->getData('vimeo_active'),
-                    'label' => __('Vimeo Active'),
-                    'title' => __('Vimeo Active'),
-                    'data-form-part' => $this->getData('vimeo_active'),
-                    'onchange' => 'this.value = this.checked;',
-                    'disabled' => $isElementDisabled
-                ]
-            );
+            // $fieldset->addField(
+            //     'vimeo_active',
+            //     'checkbox',
+            //     [
+            //         'name' => 'vimeo_active',
+            //         'checked' => $model->getData('vimeo_active'),
+            //         'label' => __('Vimeo Active'),
+            //         'title' => __('Vimeo Active'),
+            //         'data-form-part' => $this->getData('vimeo_active'),
+            //         'onchange' => 'this.value = this.checked;',
+            //         'disabled' => $isElementDisabled
+            //     ]
+            // );
 
             $fieldset->addField(
                 'vimeo_id',
@@ -224,19 +224,19 @@ class Social extends \Magento\Backend\Block\Widget\Form\Generic implements TabIn
         }
 
         if ($this->helper->isAllowedSocial('linkedin')) {
-            $fieldset->addField(
-                'linkedin_active',
-                'checkbox',
-                [
-                    'name' => 'linkedin_active',
-                    'checked' => $model->getData('linkedin_active'),
-                    'label' => __('Linkedin Active'),
-                    'title' => __('Linkedin Active'),
-                    'data-form-part' => $this->getData('linkedin_active'),
-                    'onchange' => 'this.value = this.checked;',
-                    'disabled' => $isElementDisabled
-                ]
-            );
+            // $fieldset->addField(
+            //     'linkedin_active',
+            //     'checkbox',
+            //     [
+            //         'name' => 'linkedin_active',
+            //         'checked' => $model->getData('linkedin_active'),
+            //         'label' => __('Linkedin Active'),
+            //         'title' => __('Linkedin Active'),
+            //         'data-form-part' => $this->getData('linkedin_active'),
+            //         'onchange' => 'this.value = this.checked;',
+            //         'disabled' => $isElementDisabled
+            //     ]
+            // );
 
             $fieldset->addField(
                 'linkedin_id',
@@ -252,19 +252,19 @@ class Social extends \Magento\Backend\Block\Widget\Form\Generic implements TabIn
         }
 
         if ($this->helper->isAllowedSocial('instagram')) {
-            $fieldset->addField(
-                'instagram_active',
-                'checkbox',
-                [
-                    'name' => 'instagram_active',
-                    'checked' => $model->getData('instagram_active'),
-                    'label' => __('Instagram Active'),
-                    'title' => __('Instagram Active'),
-                    'data-form-part' => $this->getData('instagram_active'),
-                    'onchange' => 'this.value = this.checked;',
-                    'disabled' => $isElementDisabled
-                ]
-            );
+            // $fieldset->addField(
+            //     'instagram_active',
+            //     'checkbox',
+            //     [
+            //         'name' => 'instagram_active',
+            //         'checked' => $model->getData('instagram_active'),
+            //         'label' => __('Instagram Active'),
+            //         'title' => __('Instagram Active'),
+            //         'data-form-part' => $this->getData('instagram_active'),
+            //         'onchange' => 'this.value = this.checked;',
+            //         'disabled' => $isElementDisabled
+            //     ]
+            // );
 
             $fieldset->addField(
                 'instagram_id',
@@ -280,19 +280,19 @@ class Social extends \Magento\Backend\Block\Widget\Form\Generic implements TabIn
         }
 
         if ($this->helper->isAllowedSocial('pinterest')) {
-            $fieldset->addField(
-                'pinterest_active',
-                'checkbox',
-                [
-                    'name' => 'pinterest_active',
-                    'checked' => $model->getData('pinterest_active'),
-                    'label' => __('Pinterest Active'),
-                    'title' => __('Pinterest Active'),
-                    'data-form-part' => $this->getData('pinterest_active'),
-                    'onchange' => 'this.value = this.checked;',
-                    'disabled' => $isElementDisabled
-                ]
-            );
+            // $fieldset->addField(
+            //     'pinterest_active',
+            //     'checkbox',
+            //     [
+            //         'name' => 'pinterest_active',
+            //         'checked' => $model->getData('pinterest_active'),
+            //         'label' => __('Pinterest Active'),
+            //         'title' => __('Pinterest Active'),
+            //         'data-form-part' => $this->getData('pinterest_active'),
+            //         'onchange' => 'this.value = this.checked;',
+            //         'disabled' => $isElementDisabled
+            //     ]
+            // );
 
             $fieldset->addField(
                 'pinterest_id',

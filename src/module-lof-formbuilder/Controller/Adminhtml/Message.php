@@ -54,9 +54,6 @@ abstract class Message extends Action
      */
     protected function initPage($resultPage)
     {
-        $resultPage->setActiveMenu('Lof_Formbuilder::form')
-            ->addBreadcrumb(__('FormBuilder'), __('FormBuilder'))
-            ->addBreadcrumb(__('Form'), __('Message'));
         return $resultPage;
     }
 }

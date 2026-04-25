@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/crontab.xsd">
+    <group id="default">
+        <job name="lofmp_gdprseller_delete_sellers" instance="Lofmp\GdprSeller\Cron\DeleteSellers" method="execute">
+            <schedule>0 1 * * *</schedule>
+        </job>
+    </group>
+</config>

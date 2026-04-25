@@ -30,6 +30,9 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
  */
 class Edit extends \Magento\Framework\App\Action\Action
 {
+    protected $_url;
+
+
     const FLAG_IS_URLS_CHECKED = 'check_url_settings';
 
     /**
@@ -156,7 +159,7 @@ class Edit extends \Magento\Framework\App\Action\Action
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function execute()
-    {
+    {        
         $customerSession = $this->session;
         if (!$customerSession->isLoggedIn()) {
             $this->messageManager->addNoticeMessage(__('You must have a seller account to access.'));
@@ -222,6 +225,11 @@ class Edit extends \Magento\Framework\App\Action\Action
         if ($block) {
             $block->setStoreId(0);
         }
+
+        // if ($product->getStatus() == 2) {
+            // $this->messageManager->addNoticeMessage(__($product->getStatus().'This product is currently in draft status. To make it available for listing, please enable it.'));
+        // }
+
         return $resultPage;
     }
 }

@@ -21,7 +21,7 @@
  */
 -->
 <form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
-    <fieldset name="age_verification" sortOrder="0">
+    <!-- <fieldset name="age_verification" sortOrder="0">
         <settings>
             <dataScope>data.product.age_verification</dataScope>
             <label translate="true">Age Verification Settings</label>
@@ -173,5 +173,5 @@
                 </validation>
             </settings>
         </field>
-    </fieldset>
+    </fieldset> -->
 </form>

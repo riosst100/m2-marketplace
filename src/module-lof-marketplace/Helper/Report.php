@@ -59,6 +59,9 @@ class Report extends \Magento\Framework\App\Helper\AbstractHelper
      * @var \Lof\MarketPlace\Model\Order
      */
     protected $_marketOrder;
+    protected $request;
+    protected $storeManager;
+    protected $productFactory;
 
     /**
      * Seller constructor.
@@ -77,7 +80,10 @@ class Report extends \Magento\Framework\App\Helper\AbstractHelper
         CustomerFactory $customerFactory,
         Data $sellerHelper,
         Session $customerSession,
-        \Lof\MarketPlace\Model\Order $marketOrder
+        \Lof\MarketPlace\Model\Order $marketOrder,
+        \Magento\Framework\App\RequestInterface $request,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Catalog\Model\ProductFactory $productFactory
     ) {
         parent::__construct($context);
         $this->sellerFactory = $sellerFactory;
@@ -85,6 +91,9 @@ class Report extends \Magento\Framework\App\Helper\AbstractHelper
         $this->customerFactory = $customerFactory;
         $this->customerSession = $customerSession;
         $this->_marketOrder = $marketOrder;
+        $this->request = $request;
+        $this->storeManager = $storeManager;
+        $this->productFactory = $productFactory;
     }
 
     /**
@@ -213,8 +222,9 @@ class Report extends \Magento\Framework\App\Helper\AbstractHelper
     public function getTotalOrders($sellerId)
     {
         $total = $this->_marketOrder->getCollection()
-            ->addFieldToFilter('seller_id', $sellerId)
-            ->getSize();
+            ->addFieldToFilter('main_table.seller_id', $sellerId);
+        $total = $this->filterByWebsiteCode($total);
+        $total = $total->getSize();
 
         return $total ?: 0;
     }
@@ -225,11 +235,148 @@ class Report extends \Magento\Framework\App\Helper\AbstractHelper
     public function getTotalCompletedOrder($sellerId)
     {
         $total = $this->_marketOrder->getCollection()
-            ->addFieldToFilter('seller_id', $sellerId)
-            ->addFieldToFilter('status', 'complete')
-            ->getSize();
+            ->addFieldToFilter('main_table.seller_id', $sellerId)
+            ->addFieldToFilter('main_table.status', 'complete');
+        $total = $this->filterByWebsiteCode($total);
+        $total = $total->getSize();
 
         return $total ?: 0;
+    }
+
+    public function filterByWebsiteCode($collection) 
+    {
+        $websiteCode = $this->getWebsiteCode();
+        if ($websiteCode) {
+            $collection->getSelect()
+            ->join(
+                ['so' => $collection->getTable('sales_order')],
+                'main_table.order_id = so.entity_id',
+                ['increment_id', 'created_at', 'store_id'] // field dari sales_order
+            )
+            ->join(
+                ['st' => $collection->getTable('store')],
+                'so.store_id = st.store_id',
+                ['store_code' => 'code', 'website_id']
+            )
+            ->join(
+                ['sw' => $collection->getTable('store_website')],
+                'st.website_id = sw.website_id',
+                ['website_code' => 'code']
+            )
+            ->where('sw.code = ?', $websiteCode); // ganti sesuai website_code
+        }
+
+        // $fromDate = '2025-09-01 00:00:00';
+        // $toDate   = '2025-09-30 23:59:59';
+
+        // $collection->getSelect()->where(
+        //     "so.created_at >= ?",
+        //     $fromDate
+        // )->where(
+        //     "so.created_at <= ?",
+        //     $toDate
+        // );
+
+        $categoryId = $this->request->getParam('category');
+        if ($categoryId) {
+            // dd($categoryId);
+            
+            $soiTable = $collection->getTable('sales_order_item');
+            $ccpTable = $collection->getTable('catalog_category_product');
+            $cceTable = $collection->getTable('catalog_category_entity');
+
+            $collection->getSelect()->where(
+                "EXISTS (
+                    SELECT 1
+                    FROM {$soiTable} AS soi
+                    INNER JOIN {$ccpTable} AS ccp ON soi.product_id = ccp.product_id
+                    INNER JOIN {$cceTable} AS cce ON ccp.category_id = cce.entity_id
+                    WHERE soi.order_id = main_table.order_id
+                    AND (cce.entity_id = {$categoryId} OR cce.parent_id = {$categoryId})
+                )"
+                // ,
+                // (int)$categoryId
+            );
+        }
+
+        return $collection;
+    }
+
+    public function filterTransactionByWebsiteCode($collection) 
+    {
+        $websiteCode = $this->getWebsiteCode();
+        if ($websiteCode) {
+            $select = $collection->getSelect();
+
+            // Tambahin kolom virtual "order_id" hasil extract dari description
+            $select->columns([
+                'order_id' => new \Zend_Db_Expr(
+                    "CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(main_table.description, 'order #', -1), ',', 1) AS UNSIGNED)"
+                )
+            ]);
+
+            // Join ke sales_order
+            $select->join(
+                ['so' => $collection->getTable('sales_order')],
+                'so.entity_id = CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(main_table.description, "order #", -1), ",", 1) AS UNSIGNED)',
+                ['increment_id', 'created_at', 'status', 'store_id']
+            );
+
+            // Join ke store & website
+            $select->join(
+                ['st' => $collection->getTable('store')],
+                'so.store_id = st.store_id',
+                ['store_code' => 'code', 'website_id']
+            )->join(
+                ['sw' => $collection->getTable('store_website')],
+                'st.website_id = sw.website_id',
+                ['website_code' => 'code']
+            );
+
+            // Filter by website code
+            $select->where('sw.code = ?', $websiteCode);
+        }
+
+        $categoryId = $this->request->getParam('category');
+        if ($categoryId) {
+            // dd($categoryId);
+
+            $select = $collection->getSelect();
+            
+            $soTable  = $collection->getTable('sales_order');
+            $soiTable = $collection->getTable('sales_order_item');
+            $ccpTable = $collection->getTable('catalog_category_product');
+            $cceTable = $collection->getTable('catalog_category_entity');
+
+            $select->where(
+                "EXISTS (
+                    SELECT 1
+                    FROM {$soiTable} AS soi
+                    INNER JOIN {$soTable} AS so ON so.entity_id = soi.order_id
+                    INNER JOIN {$ccpTable} AS ccp ON soi.product_id = ccp.product_id
+                    INNER JOIN {$cceTable} AS cce ON ccp.category_id = cce.entity_id
+                    WHERE soi.order_id = so.entity_id
+                    AND (cce.entity_id = {$categoryId} OR cce.parent_id = {$categoryId})
+                )"
+                // ,
+                // (int)$categoryId
+            );
+        }
+
+        return $collection;
+
+    }
+
+    public function getWebsiteCode() 
+    {
+        $websiteCode = $this->request->getParam('country');
+        // dd($websiteCode);
+        if ($websiteCode) {
+            return $websiteCode;
+        }
+
+        // return $this->storeManager->getStore()->getWebsite()->getCode();
+        return null;
     }
 
     /**
@@ -246,9 +393,58 @@ class Report extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getTotalProduct($sellerId)
     {
-        $total = $this->sellerProductFactory->create()->getCollection()
-            ->addFieldToFilter('seller_id', $sellerId)
-            ->getSize();
+       /** @var \Magento\Catalog\Model\ResourceModel\Product\Collection $collection */
+        $collection = $this->productFactory->create()->getCollection()
+        ->addFieldToFilter('publish_status', 1)
+            ->addAttributeToSelect('*'); // ambil atribut produk kalau perlu
+
+        $resource = $collection->getResource();
+
+        // join ke lof_marketplace_product (alias lmp)
+        $collection->getSelect()->join(
+            ['lmp' => $resource->getTable('lof_marketplace_product')],
+            'e.entity_id = lmp.product_id',
+            []
+        );
+
+        // join ke catalog_product_website
+        $collection->getSelect()->join(
+            ['cpw' => $resource->getTable('catalog_product_website')],
+            'e.entity_id = cpw.product_id',
+            []
+        );
+
+        // join ke store_website
+        $collection->getSelect()->join(
+            ['sw' => $resource->getTable('store_website')],
+            'cpw.website_id = sw.website_id',
+            []
+        );
+
+        // filter seller_id + publish_status + website code
+        $collection->getSelect()
+            ->where('lmp.seller_id = ?', $sellerId)
+            ->where('sw.code = ?', $this->getWebsiteCode());
+
+        $categoryId = $this->request->getParam('category');
+        if ($categoryId) {
+            $collection->getSelect()
+            ->join(
+                ['ccp' => $resource->getTable('catalog_category_product')],
+                'ccp.product_id = e.entity_id',
+                []
+            )
+            ->join(
+                ['cce' => $resource->getTable('catalog_category_entity')],
+                'cce.entity_id = ccp.category_id',
+                []
+            )
+            // ->where('cce.parent_id = ?', (int)$categoryId);
+            ->where("(cce.entity_id = {$categoryId} OR cce.parent_id = {$categoryId})");
+        }
+
+        $total = $collection->getSize();
+
 
         return $total ?: 0;
     }

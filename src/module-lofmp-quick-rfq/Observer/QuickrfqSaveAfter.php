@@ -75,10 +75,16 @@ class QuickrfqSaveAfter implements ObserverInterface
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/quickrfq.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        $logger->info('Observer');
+
         if ($this->_helper->getConfig('general/enabled')) {
             $data = $observer->getData()['data'];
             $productId = $data['product_id'];
             $product = $this->productFactory->create()->load($productId);
+            $logger->info($product->getSellerId());
             if ($product->getSellerId()) {
                 $model = $observer->getModel();
                 $seller = $this->sellerFactory->create()->load($product->getSellerId());

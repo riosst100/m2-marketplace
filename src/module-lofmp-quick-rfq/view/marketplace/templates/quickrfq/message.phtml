@@ -19,20 +19,33 @@ $msgLoader = $block->escapeHtmlAttr(__('Loading...'));
     <div class="admin__page-section-content">
         <div class="admin__page-section-item">
             <div class="product data items" data-mage-init='{"tabs":{}}'>
-
                 <div id="message">
-                    <div class="message-block-list">
-                        <div class="message-block-list">
-                            <?php foreach ($block->getMessageCollection() as $message) : ?>
-                                <div class="message-block-item">
-                                <span class="message-block-item-date-time">
-                                    <span>
-                                        <?= $block->formatDate($message->getCreatedAt(), \IntlDateFormatter::MEDIUM, true) ?>
-                                         (<?= ' ' . $block->escapeHtml($block->getSendertName($message)) ?>)
-                                    </span>
-                                </span>
-                                    <div
-                                        class="message-block"><?= $block->escapeHtml($message->getMessage()) ?>
+                    <div class="messages-container">
+                        <div class="messages-wrapper" id="messages-scroll">
+                            <?php foreach ($block->getMessageCollection() as $msg) :
+                                $senderName = $block->getSendertName($msg);
+                                $isSelf = (!$block->isCustomer($msg) && !$msg->getIsMain());
+                                $createdAt = $msg->getCreatedAt();
+                                $formattedTime = $createdAt ? date('m/d/y, h:i A', strtotime($createdAt)) : '';
+                            ?>
+                                <div class="message-row <?= $isSelf ? 'self' : 'other' ?>">
+                                    <div class="message-bubble <?= $isSelf ? 'self' : 'other' ?>">
+                                        <?php if ($isSelf): ?>
+                                            <div class="message-header self">
+                                                <?php if ($formattedTime) : ?>
+                                                    <span class="message-time"><?= $block->escapeHtml($formattedTime) ?></span>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="message-content"><?= $block->escapeHtml($msg->getMessage()) ?></div>
+                                        <?php else: ?>
+                                            <div class="message-header">
+                                                <span class="message-sender"><?= $block->escapeHtml($senderName) ?></span>
+                                                <?php if ($formattedTime) : ?>
+                                                    <span class="message-time"><?= $block->escapeHtml($formattedTime) ?></span>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="message-content"><?= $block->escapeHtml($msg->getMessage()) ?></div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
@@ -42,12 +55,12 @@ $msgLoader = $block->escapeHtmlAttr(__('Loading...'));
                     <div class="message-field field-row quote-message-block" data-role="attach-wrapper">
                         <form action="<?= $block->getSendMessageLink() ?>"
                               enctype='multipart/form-data' autocomplete="off"  data-action="message-form" method="post" id="manage-request-message-form">
-                            <label class="message-field-label" for="message">
+                            <label class="message-field-label" for="message" style="display:none;">
                                 <?= $block->escapeHtml(__('Add your message')) ?>
                             </label>
                             <textarea name="message" rows="5" id="manage-request-message-textarea"></textarea>
 
-                            <button id="message-send-button" type="submit" class="submit primary"><?= $block->escapeHtml(__('Send')) ?></button>
+                            <button id="message-send-button" type="submit" class="submit primary"><?= $block->escapeHtml(__('Submit')) ?></button>
                             <?= $block->getBlockHtml('formkey') ?>
                         </form>
                     </div>
@@ -60,12 +73,22 @@ $msgLoader = $block->escapeHtmlAttr(__('Loading...'));
     </div>
 </section>
 <script>
-
     require([
         'jquery'
     ], function ($) {
-        $('#message-send-button').on('click',function () {
+        function scrollToBottom() {
+            var $wrap = $('#messages-scroll');
+            if ($wrap.length) {
+                $wrap.scrollTop($wrap[0].scrollHeight);
+            }
+        }
+        $(function(){
+            scrollToBottom();
+        });
+
+        $('#message-send-button').on('click', function () {
             $(this).addClass('submitting');
-        })
-    })
+            scrollToBottom();
+        });
+    });
 </script>

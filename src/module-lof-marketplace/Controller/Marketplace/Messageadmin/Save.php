@@ -169,7 +169,7 @@ class Save extends \Magento\Framework\App\Action\Action
                         ['object' => $this, 'data' => $data, 'seller_id' => $sellerId, 'seller' => $sellerModel]
                     );
 
-                    $this->messageManager->addSuccessMessage('send contact success');
+                    $this->messageManager->addSuccessMessage('Message sent sucessfully.');
 
                     $this->_redirect($data['currUrl']);
                 } catch (\Magento\Framework\Exception\LocalizedException $e) {

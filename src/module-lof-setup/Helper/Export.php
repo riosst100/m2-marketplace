@@ -25,7 +25,8 @@ use \Magento\Framework\Module\Dir;
 class Export extends \Magento\Framework\App\Helper\AbstractHelper
 {
     protected $_resource;
-    
+
+
     /**
  * @var \Magento\Framework\Xml\Parser
 */

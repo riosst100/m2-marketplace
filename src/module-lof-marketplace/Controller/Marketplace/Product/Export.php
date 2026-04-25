@@ -104,6 +104,8 @@ class Export extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
+        $isCreateFromDb = $this->getRequest()->getParam('source') == "database" ? true : false;
+        
         $customerSession = $this->session;
         $customerId = $customerSession->getId();
         $status = $this->sellerFactory->create()->load($customerId, 'customer_id')->getStatus();
@@ -116,8 +118,15 @@ class Export extends \Magento\Framework\App\Action\Action
                 $this->messageManager->addErrorMessage(__('Permission denied.'));
                 return $this->_redirect('catalog/dashboard');
             }
-            $this->_view->loadLayout();
-            $this->_view->renderLayout();
+            // $this->_view->loadLayout();
+            // $this->_view->renderLayout();
+            $resultPage = $this->resultPageFactory->create();
+            if ($isCreateFromDb) {
+                $resultPage->getConfig()->getTitle()->set(__('Download Product Database'));
+            } else {
+                $resultPage->getConfig()->getTitle()->set(__('Download Product Catalog'));
+            }
+            return $resultPage;
         } elseif ($customerSession->isLoggedIn() && $status == 0) {
             $this->_redirectUrl($this->getFrontendUrl('lofmarketplace/seller/becomeseller'));
         } else {

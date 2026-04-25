@@ -22,6 +22,8 @@ namespace Lof\Faq\Block\Adminhtml\Question\Edit\Tab;
 
 class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magento\Backend\Block\Widget\Tab\TabInterface
 {
+    protected $questionType = 'user';
+
     /**
      * @var \Magento\Store\Model\System\Store
      */
@@ -79,6 +81,17 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
             $wysiwygConfig['plugins'] = [];
 
         }
+        
+        $wysiwygConfig['plugins'] = [];
+        $wysiwygConfig['hidden'] = false;
+        $wysiwygConfig['enabled'] = true;
+        $wysiwygConfig['add_variables'] = false;
+        $wysiwygConfig['add_widgets'] = false;
+        $wysiwygConfig['add_directives'] = false;
+        // $wysiwygConfig['add_images'] = false;
+
+        // dd($wysiwygConfig);
+
         /** @var \Magento\Framework\Data\Form $form */
         $form = $this->_formFactory->create();
 
@@ -93,21 +106,54 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
             $fieldset->addField('question_id', 'hidden', ['name' => 'question_id']);
         }
 
+        $fieldset->addField('question_type', 'hidden', ['name' => 'question_type']);
+
+        if (!$model || $model && !$model->getQuestionId()) {
+            $model->setQuestionType($this->getQuestionType());
+        }
+
         $fieldset->addField(
-            'title',
-            'text',
+            'is_active',
+            'select',
             [
-                'name'     => 'title',
-                'label'    => __('Question Title'),
-                'title'    => __('Question Title'),
-                'required' => true,
+                'label'    => __('Status'),
+                'title'    => __('Status'),
+                'name'     => 'is_active',
+                'options'  => ['1' => __('Enabled'), '0' => __('Disabled')],
                 'disabled' => $isElementDisabled
+            ]
+        );
+        if (!$model->getId()) {
+            $model->setData('is_active', '1');
+        }
+
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->storesHelper = $objectManager->create(\CoreMarketplace\MarketPlace\Helper\Stores::class);
+
+        $field = $fieldset->addField(
+            'websites',
+            'multiselect',
+            [
+                'name'   => 'websites[]',
+                'label'  => __('Countries/Regions'),
+                'title'  => __('Countries/Regions'),
+                'values' => $this->storesHelper->getStoresOptionsArray(),
+                'required' => true,
+                'note'   => __('Select one or multiple countries.'),
             ]
         );
 
         $categoryCollection = $this->_category->getCollection();
         $categories = [];
         foreach ($categoryCollection as $k => $v) {
+            if ($this->getQuestionType() == "supplier" && $v->getCategoryType() != "supplier") {
+                continue;
+            }
+
+            if ($this->getQuestionType() == "user" && $v->getCategoryType() != "user") {
+                continue;
+            }
+
             $categories[] = [
                 'label' => $v->getTitle(),
                 'value'=> $v->getCategoryId()
@@ -127,43 +173,89 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                     'style'    => 'width: 200px;'
                 ]
             );
+
+        // $fieldset->addField(
+        //     'title',
+        //     'text',
+        //     [
+        //         'name'     => 'title',
+        //         'label'    => __('Question Title'),
+        //         'title'    => __('Question Title'),
+        //         'required' => true,
+        //         'disabled' => $isElementDisabled
+        //     ]
+        // );
+
         $fieldset->addField(
-            'tag',
+            'title',
             'text',
             [
-                'name'     => 'tag',
-                'label'    => __('Tags'),
-                'title'    => __('Tags'),
-                'note'     => __('Comma-separated.'),
-                'disabled' => $isElementDisabled
+                'name' => 'title',
+                'label' => __('Question Title'),
+                'title' => __('Question Title'),
+                'required' => true,
+                'disabled' => $isElementDisabled,
+                'after_element_html' => '
+                <script>
+                require(["jquery"], function($){
+                    function slugify(text){
+                        return text.toString().toLowerCase()
+                            .replace(/\s+/g,"-")
+                            .replace(/[^\w\-]+/g,"")
+                            .replace(/\-\-+/g,"-")
+                            .replace(/^-+/,"")
+                            .replace(/-+$/,"");
+                    }
+
+                    $("#question_title").on("keyup change", function(){
+                        var name = $(this).val();
+                        var slug = slugify(name);
+                        $("#question_question_url").val(slug);
+                    });
+                });
+                </script>
+                '
             ]
         );
+
+        
+        // $fieldset->addField(
+        //     'tag',
+        //     'text',
+        //     [
+        //         'name'     => 'tag',
+        //         'label'    => __('Tags'),
+        //         'title'    => __('Tags'),
+        //         'note'     => __('Comma-separated.'),
+        //         'disabled' => $isElementDisabled
+        //     ]
+        // );
         /* Check is single store mode */
-        if (!$this->_storeManager->isSingleStoreMode()) {
-            $field = $fieldset->addField(
-                'store_id',
-                'multiselect',
-                [
-                    'name'     => 'stores[]',
-                    'label'    => __('Store View'),
-                    'title'    => __('Store View'),
-                    'required' => true,
-                    'values'   => $this->_systemStore->getStoreValuesForForm(false, true),
-                    'disabled' => $isElementDisabled
-                ]
-            );
-            $renderer = $this->getLayout()->createBlock(
-                'Magento\Backend\Block\Store\Switcher\Form\Renderer\Fieldset\Element'
-            );
-            $field->setRenderer($renderer);
-        } else {
-            $fieldset->addField(
-                'store_id',
-                'hidden',
-                ['name' => 'stores[]', 'value' => $this->_storeManager->getStore(true)->getId()]
-            );
-            $model->setStoreId($this->_storeManager->getStore(true)->getId());
-        }
+        // if (!$this->_storeManager->isSingleStoreMode()) {
+        //     $field = $fieldset->addField(
+        //         'store_id',
+        //         'multiselect',
+        //         [
+        //             'name'     => 'stores[]',
+        //             'label'    => __('Store View'),
+        //             'title'    => __('Store View'),
+        //             'required' => true,
+        //             'values'   => $this->_systemStore->getStoreValuesForForm(false, true),
+        //             'disabled' => $isElementDisabled
+        //         ]
+        //     );
+        //     $renderer = $this->getLayout()->createBlock(
+        //         'Magento\Backend\Block\Store\Switcher\Form\Renderer\Fieldset\Element'
+        //     );
+        //     $field->setRenderer($renderer);
+        // } else {
+        //     $fieldset->addField(
+        //         'store_id',
+        //         'hidden',
+        //         ['name' => 'stores[]', 'value' => $this->_storeManager->getStore(true)->getId()]
+        //     );
+        //     $model->setStoreId($this->_storeManager->getStore(true)->getId());
+        // }
 
         $fieldset->addField(
             'answer',
@@ -178,44 +270,30 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
             ]
         );
 
-        $dateFormat = $this->_localeDate->getDateFormat(\IntlDateFormatter::SHORT);
-        $fieldset->addField( 'creation_time', 
-            'date', 
-            [ 
-                'label'       => __('Creation Time'),
-                'title'       => __('Creation Time'),
-                'name'        => 'creation_time',
-                'date_format' => $dateFormat,
-                'disabled'    => $isElementDisabled
-            ]
-        );
+        // $dateFormat = $this->_localeDate->getDateFormat(\IntlDateFormatter::SHORT);
+        // $fieldset->addField( 'creation_time', 
+        //     'date', 
+        //     [ 
+        //         'label'       => __('Creation Time'),
+        //         'title'       => __('Creation Time'),
+        //         'name'        => 'creation_time',
+        //         'date_format' => $dateFormat,
+        //         'disabled'    => $isElementDisabled
+        //     ]
+        // );
 
         $fieldset->addField(
-            'is_featured',
-            'select',
+            'question_url',
+            'text',
             [
-                'label'    => __('Is Featured'),
-                'title'    => __('Is Featured'),
-                'name'     => 'is_featured',
-                'options'  => ['1' => __('Enabled'), '0' => __('Disabled')],
+                'name'     => 'question_url',
+                'label'    => __('URL Key'),
+                'title'    => __('URL Key'),
                 'disabled' => $isElementDisabled
             ]
         );
 
-        $fieldset->addField(
-            'is_active',
-            'select',
-            [
-                'label'    => __('Status'),
-                'title'    => __('Status'),
-                'name'     => 'is_active',
-                'options'  => ['1' => __('Enabled'), '0' => __('Disabled')],
-                'disabled' => $isElementDisabled
-            ]
-        );
-        if (!$model->getId()) {
-            $model->setData('is_active', '1');
-        }
+       
 
         $fieldset->addField(
             'question_position',
@@ -227,42 +305,25 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'disabled' => $isElementDisabled
             ]
         );
-        $fieldset->addField(
-            'like',
-            'text',
-            [
-                'name'     => 'like',
-                'label'    => __('Like'),
-                'title'    => __('Like'),
-                'disabled' => $isElementDisabled
-            ]
-        );
-        $fieldset->addField(
-            'disklike',
-            'text',
-            [
-                'name'     => 'disklike',
-                'label'    => __('Dislike'),
-                'title'    => __('Dislike'),
-                'disabled' => $isElementDisabled
-            ]
-        );
-
-        $fieldset->addField(
-            'question_url',
-            'text',
-            [
-                'name'     => 'question_url',
-                'label'    => __('Question URL'),
-                'title'    => __('Question URL'),
-                'disabled' => $isElementDisabled
-            ]
-        );
+        
 
         $form->setValues($model->getData());
         $this->setForm($form);
 
         return parent::_prepareForm();
+    }
+
+    public function getQuestionType() 
+    {
+        
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->urlBuilder = $objectManager->create(\Magento\Framework\UrlInterface::class);
+        $currentUrl = $this->urlBuilder->getCurrentUrl();
+        if (str_contains($currentUrl, "user")) {
+            return "user";
+        }
+
+        return "supplier";
     }
 
     /**

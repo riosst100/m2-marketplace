@@ -81,4 +81,9 @@
             </argument>
         </arguments>
     </virtualType>
+    <virtualType name="SellerQuestionGridDataProvider" type="Lofmp\Faq\Ui\DataProvider\Marketplace\FaqQuestionDataProvider">
+        <arguments>
+            <argument name="filterPool" xsi:type="object" shared="false">SellerGridFilterPool</argument>
+        </arguments>
+    </virtualType>
 </config>

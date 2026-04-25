@@ -1,27 +1,14 @@
 /**
- * Landofcoder
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Landofcoder.com license that is
- * available through the world-wide-web at this URL:
- * https://landofcoder.com/terms
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade this extension to newer
- * version in the future.
- *
- * @category   Landofcoder
- * @package    Lof_MarketPlace
- * @copyright  Copyright (c) 2021 Landofcoder (https://www.landofcoder.com/)
- * @license    https://landofcoder.com/terms
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 define([
     'underscore',
-    'Magento_Ui/js/dynamic-rows/dynamic-rows-grid'
-], function (_, dynamicRowsGrid) {
+    'Magento_Ui/js/dynamic-rows/dynamic-rows-grid',
+    'uiLayout',
+    'rjsResolver'
+], function (_, dynamicRowsGrid, layout, resolver) {
     'use strict';
 
     return dynamicRowsGrid.extend({
@@ -29,7 +16,121 @@ define([
             label: '',
             columnsHeader: false,
             columnsHeaderAfterRender: true,
-            addButton: false
+            addButton: false,
+            isDefaultFieldScope: 'is_default',
+            defaultRecords: {
+                use: [],
+                moreThanOne: false,
+                state: {}
+            },
+            listens: {
+                inputType: 'onInputTypeChange',
+                isDefaultValue: 'onIsDefaultValue',
+                pageSize: 'onPageSizeChange'
+            },
+            sizesConfig: {
+                component: 'Magento_Ui/js/grid/paging/sizes',
+                name: '${ $.name }_sizes',
+                options: {
+                    '20': {
+                        value: 20,
+                        label: 20
+                    },
+                    '30': {
+                        value: 30,
+                        label: 30
+                    },
+                    '50': {
+                        value: 50,
+                        label: 50
+                    },
+                    '100': {
+                        value: 100,
+                        label: 100
+                    },
+                    '200': {
+                        value: 200,
+                        label: 200
+                    }
+                },
+                storageConfig: {
+                    provider: '${ $.storageConfig.provider }',
+                    namespace: '${ $.storageConfig.namespace }'
+                },
+                enabled: false
+            },
+            links: {
+                options: '${ $.sizesConfig.name }:options',
+                pageSize: '${ $.sizesConfig.name }:value'
+            },
+            modules: {
+                sizes: '${ $.sizesConfig.name }'
+            }
+        },
+
+        /**
+         * Initializes paging component.
+         *
+         * @returns {Paging} Chainable.
+         */
+        initialize: function () {
+            this._super()
+                .initSizes();
+
+            return this;
+        },
+
+        /**
+         * Initializes sizes component.
+         *
+         * @returns {Paging} Chainable.
+         */
+        initSizes: function () {
+            if (this.sizesConfig.enabled) {
+                layout([this.sizesConfig]);
+            }
+
+            return this;
+        },
+
+        /**
+         * Handler for type select.
+         *
+         * @param {String} inputType - changed.
+         */
+        onInputTypeChange: function (inputType) {
+            if (this.defaultRecords.moreThanOne && (inputType === 'radio' || inputType === 'select')) {
+                _.each(this.defaultRecords.use, function (index, counter) {
+                    this.source.set(
+                        this.dataScope + '.bundle_selections.' + index + '.' + this.isDefaultFieldScope,
+                        counter ? '0' : '1'
+                    );
+                }.bind(this));
+            }
+        },
+
+        /**
+         * Handler for is_default field.
+         *
+         * @param {Object} data - changed data.
+         */
+        onIsDefaultValue: function (data) {
+            var cb,
+                use = 0;
+
+            this.defaultRecords.use = [];
+
+            cb = function (elem, key) {
+
+                if (~~elem) {
+                    this.defaultRecords.use.push(key);
+                    use++;
+                }
+
+                this.defaultRecords.moreThanOne = use > 1;
+            }.bind(this);
+
+            _.each(data, cb);
         },
 
         /**
@@ -44,7 +145,6 @@ define([
                 recordIndex;
 
             this.parsePagesData(data);
-            this.templates.record.bundleOptionsDataScope = this.dataScope;
 
             if (newData.length) {
                 if (this.insertData().length) {
@@ -70,6 +170,17 @@ define([
             }
 
             this._super();
+        },
+
+        /**
+         * Handles changes of the page size.
+         */
+        onPageSizeChange: function () {
+            resolver(function () {
+                if (this.elems().length) {
+                    this.reload();
+                }
+            }, this);
         }
     });
 });

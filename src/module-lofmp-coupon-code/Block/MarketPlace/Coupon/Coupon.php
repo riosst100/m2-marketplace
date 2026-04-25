@@ -22,6 +22,9 @@
 namespace Lofmp\CouponCode\Block\MarketPlace\Coupon;
 
 class Coupon extends \Magento\Framework\View\Element\Template {
+    protected $session;
+
+
 
     protected $_coreRegistry = null;
 
@@ -71,6 +74,24 @@ class Coupon extends \Magento\Framework\View\Element\Template {
         }
         $coupon = $this->coupon->getCollection()->getCouponCodeByConditions(["seller_id" => $this->_sellerhelper->getSellerId()]);
         return $coupon;
+    }
+
+    public function getAvailableCouponCode() {
+
+        if($this->getCurrentCoupon()) {
+            $coupon_id = $this->getCurrentCoupon()->getData('coupon_id');
+        } else {
+            $coupon_id = $this->getCouponId();
+        }
+        $coupons = $this->coupon->getCollection()->getCouponCodeByConditions(["seller_id" => $this->_sellerhelper->getSellerId()]);
+        foreach ($coupons as $coupon) {            
+            $dataCoupon = $this->coupon->getCollection()->getByCouponCode($coupon['code']);
+            if ($dataCoupon['is_active'] == 1) {
+                $couponData[] = $dataCoupon;
+            }            
+        }
+        
+        return $couponData;
     }
 
     public function _prepareLayout() {

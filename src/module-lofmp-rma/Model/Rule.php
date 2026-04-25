@@ -27,6 +27,10 @@ use Magento\Framework\DataObject\IdentityInterface;
 
 class Rule extends \Magento\Rule\Model\AbstractModel implements \Lofmp\Rma\Api\Data\RuleInterface, IdentityInterface
 {
+    protected $ruleConditionCombineFactory;
+    protected $ruleActionCollectionFactory;
+
+
     public function __construct(
         \Lofmp\Rma\Model\Rule\Condition\CombineFactory $ruleConditionCombineFactory,
         \Lofmp\Rma\Model\Rule\CombineFactory $ruleActionCollectionFactory,

@@ -164,7 +164,7 @@ class Router implements RouterInterface
                         );
                 }
 
-                $store = $this->storeManager->getStore();
+                $website = $this->storeManager->getWebsite();
                 $identifiers = explode('/',$urlKey);
                 if($route==''){
                     $url = $identifiers[0];
@@ -175,7 +175,7 @@ class Router implements RouterInterface
                 $cat = $this->_categoryFactory->getCollection()
                 ->addFieldToFilter('is_active', array('eq' => 1))
                 ->addFieldToFilter('identifier', array('eq' => $url))
-                ->addStoreFilter($store)->getFirstItem();
+                ->addWebsiteFilter($website)->getFirstItem();
 
                 if($cat && $cat->getId()){
                     $this->_coreRegistry->register("current_faq_category", $cat);

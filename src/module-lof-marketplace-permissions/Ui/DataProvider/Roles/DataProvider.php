@@ -31,6 +31,9 @@ use Magento\Framework\Api\SearchResultsInterface;
  */
 class DataProvider extends \Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider
 {
+    protected $searchCriteria;
+
+
     /**
      * @var \Lof\MarketPermissions\Model\RoleRepository
      */

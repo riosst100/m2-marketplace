@@ -131,10 +131,23 @@ function drawVisualization() {
     /* series: {5: {type: 'line'}}*/
   };
   var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+  google.visualization.events.addListener(chart, 'ready', function() {
+    try {
+      var imgUri = chart.getImageURI();
+      var exportLink = document.getElementById('export_link');
+      if (exportLink) {
+        exportLink.href = imgUri;
+        exportLink.setAttribute('download', 'rma-reason-report.png');
+      }
+    } catch (e) {
+      // leave link inactive if image export fails
+    }
+  });
   chart.draw(data, options);
 }
 </script>
-<div id="chart_div" style="widht: 100%; height: 400px;"></div>
+<a id="export_link" class="btn" target="_blank"><?= __("Save chart as an image");?></a>
+<div id="chart_div" style="width: 100%; height: 400px;"></div>
     <?php
 endif;
 ?>

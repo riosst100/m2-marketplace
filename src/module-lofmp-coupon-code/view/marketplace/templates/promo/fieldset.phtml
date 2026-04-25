@@ -1,10 +1,10 @@
 <?php
 /**
- * Copyright © Magento, Inc. All rights reserved.
+ * Copyright © Magento, Inc.
  * See COPYING.txt for license details.
  */
 
-/**@var \Magento\Backend\Block\Widget\Form\Renderer\Fieldset $block */
+/** @var \Magento\Backend\Block\Widget\Form\Renderer\Fieldset $block */
 /** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
 ?>
 <?php $_element = $block->getElement() ?>
@@ -12,8 +12,8 @@
 <div class="rule-tree">
 <fieldset id="<?= $block->escapeHtmlAttr($_jsObjectName) ?>" <?= /* @noEscape */ $_element->serialize(['class']) ?>
           class="fieldset">
-        <legend class="legend"><span><?= $block->escapeHtml($_element->getLegend()) ?></span></legend>
-        <br>
+    <legend class="legend"><span><?= $block->escapeHtml($_element->getLegend()) ?></span></legend>
+    <br>
     <?php if ($_element->getComment()): ?>
         <div class="messages">
             <div class="message message-notice"><?= $block->escapeHtml($_element->getComment()) ?></div>
@@ -22,23 +22,75 @@
     <div class="rule-tree-wrapper">
         <?= $_element->getChildrenHtml() ?>
     </div>
-    </fieldset>
+</fieldset>
 </div>
 
-<?php $scriptString = <<<script
-
+<?php
+// Original VarienRulesForm initialization
+$scriptString = <<<script
 require([
     'Magento_Rule/rules',
     'prototype'
-], function(VarienRulesForm){
-
+], function(VarienRulesForm) {
+    window.{$_jsObjectName} = new VarienRulesForm('$_jsObjectName', '{$block->getNewChildUrl()}');
 script;
-$scriptString .= 'window.' . /* @noEscape */ $_jsObjectName . ' = new VarienRulesForm(\'' .
-    /* @noEscape */ $_jsObjectName . '\', \'' .  /* @noEscape */ $block->getNewChildUrl() . '\');';
+
 if ($_element->getReadonly()):
-    $scriptString .= /* @noEscape */ $_element->getHtmlId() . '.setReadonly(true);' . PHP_EOL;
+    $scriptString .= $_element->getHtmlId() . '.setReadonly(true);' . PHP_EOL;
 endif;
 
 $scriptString .= '});' . PHP_EOL;
 ?>
+
 <?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+
+<script type="text/javascript">
+require(['jquery', 'mage/url'], function ($, urlBuilder) {
+    'use strict';
+
+    function patchRuleChoosers() {
+        $('.rule-chooser:not([data-chooser-patched])').each(function () {
+            var $el = $(this);
+            var originalUrl = $el.attr('url') || '';
+
+            if (!originalUrl) {
+                $el.attr('data-chooser-patched', '1');
+                return;
+            }
+
+            // Detect "chooser" part
+            var idx = originalUrl.indexOf('chooser');
+            if (idx === -1) {
+                $el.attr('data-chooser-patched', '1');
+                return;
+            }
+
+            // Extract the suffix after "chooser"
+            var suffix = originalUrl.substring(idx + 'chooser'.length);
+
+            // Ensure base URL starts from root (store-aware)
+            var baseUrl = window.BASE_URL || urlBuilder.build('/');
+            if (baseUrl.slice(-1) !== '/') baseUrl += '/';
+
+            var newUrl = baseUrl + 'marketplace/lofmpcouponcode/rule/chooser' + suffix;
+
+            console.log('[RuleChooserPatch] Replacing chooser URL:', originalUrl, '→', newUrl);
+
+            $el.attr('url', newUrl);
+            $el.attr('data-chooser-patched', '1');
+        });
+    }
+
+    // Run once DOM ready
+    $(function () {
+        patchRuleChoosers();
+
+        // Observe dynamically added chooser divs (when conditions are added)
+        var observer = new MutationObserver(function () {
+            patchRuleChoosers();
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+    });
+});
+</script>

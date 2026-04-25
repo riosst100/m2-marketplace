@@ -37,6 +37,9 @@ use Lof\MarketPlace\Helper\Seller;
 
 class SubscriptionRepository implements \Lofmp\FavoriteSeller\Api\SellerCustomerRepositoryInterface
 {
+    protected $searchResultsFactory;
+
+
 
     /**
      * @var \Lofmp\FavoriteSeller\Model\SubscriptionFactory
@@ -351,7 +354,7 @@ class SubscriptionRepository implements \Lofmp\FavoriteSeller\Api\SellerCustomer
         $sellerInfo['thumbnail'] = $sellerModel->getThumbnailUrl() ;
         $sellerInfo['name'] = $sellerModel->getName() ;
         $sellerInfo['description'] = $sellerModel->getDescription();
-        $sellerInfo['url'] = $sellerModel->getUrl();
+        $sellerInfo['url'] = $sellerModel->getUrlKey();
         $sellerInfo['rating'] = $this->sellerRatingRepo->getSummaryRatingsBySellerId($seller_id)->__toArray();
         return $sellerInfo;
     }

@@ -20,6 +20,9 @@
   -->
 
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="vendor-1column"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+  <head>
+    <css src="Lof_MarketPlace::css/message.css" />
+  </head>
 	<body>
 		<referenceContainer name="content">
             <block class="Lof\MarketPlace\Block\Seller\Message\AdminView" name="message" template="Lof_MarketPlace::seller/message/adminview.phtml">

@@ -12438,7 +12438,7 @@ input[type='checkbox'].banner-content-checkbox + .addafter {
 }
 
 .steps-wizard .attribute-entity.ui-sortable-helper {
-    border-color: #1979c3;
+    border-color: #f76b1c;
     cursor: -moz-grabbing;
     cursor: -webkit-grabbing
 }

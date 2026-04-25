@@ -23,6 +23,13 @@ namespace Lofmp\Rma\Block\Marketplace;
 
 class Grid extends \Magento\Framework\View\Element\Template
 {
+    protected $_ItemCollection;
+    protected $customerSession;
+    protected $_sellerFactory;
+    protected $helper;
+    protected $status;
+
+
     /**
      * @var \Lofmp\Rma\Model\ResourceModel\Rma\Collection
      */

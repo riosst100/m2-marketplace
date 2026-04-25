@@ -29,6 +29,11 @@ use Magento\Framework\View\Element\AbstractBlock;
 
 class Edit extends Container
 {
+    protected $_objectId;
+    protected $_blockGroup;
+    protected $_controller;
+
+
     /**
      * Core registry
      *

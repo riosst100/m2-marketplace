@@ -24,6 +24,10 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 
 class Save extends \Magento\Backend\App\Action
 {
+    protected $_resource;
+    protected $mediaConfig;
+
+
    /**
      * @var \Magento\Framework\Registry
      */

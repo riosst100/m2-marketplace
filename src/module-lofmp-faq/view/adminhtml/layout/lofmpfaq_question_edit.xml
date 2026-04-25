@@ -24,9 +24,6 @@
     </head>
     <update handle="editor"/>
     <body>
-        <referenceContainer name="page.main.actions">
-            <block class="Lofmp\Faq\Block\Adminhtml\Menu" name="lof_faq_menu" />
-        </referenceContainer>
         <referenceContainer name="content">
             <block class="Lofmp\Faq\Block\Adminhtml\Question\Edit" name="faq_question_edit"/>
         </referenceContainer>

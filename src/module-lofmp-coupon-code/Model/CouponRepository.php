@@ -36,6 +36,10 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class CouponRepository implements couponRepositoryInterface
 {
+    protected $_couponHelper;
+    protected $couponGenerator;
+
+
 
     protected $resource;
 

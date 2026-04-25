@@ -25,6 +25,14 @@ namespace Lofmp\Rma\Controller\Adminhtml;
 
 abstract class Field extends \Magento\Backend\App\Action
 {
+    protected $fieldFactory;
+    protected $localeDate;
+    protected $registry;
+    protected $context;
+    protected $backendSession;
+    protected $resultFactory;
+
+
     public function __construct(
         \Lofmp\Rma\Model\FieldFactory $fieldFactory,
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate,

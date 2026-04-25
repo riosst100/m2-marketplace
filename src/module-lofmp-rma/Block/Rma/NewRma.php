@@ -22,6 +22,16 @@ namespace Lofmp\Rma\Block\Rma;
 
 class NewRma extends \Magento\Framework\View\Element\Template
 {
+    protected $addressRenderer;
+    protected $groupRepository;
+    protected $rmaHelper;
+    protected $calculate;
+    protected $imageHelper;
+    protected $objectManager;
+    protected $request;
+    protected $context;
+
+
     protected $_orderFactory;
     protected $_productFactory;
     protected $_sellerFactory;
@@ -219,6 +229,7 @@ class NewRma extends \Magento\Framework\View\Element\Template
 
     public function getAttribute($item)
     {
+        return 'No';
         $product = $item->getProduct();
         $attribute = $product->getResource()->getAttribute('product_rma');
         $attribute_value = $attribute ->getFrontend()->getValue($product)->getText();

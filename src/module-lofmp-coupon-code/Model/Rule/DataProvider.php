@@ -84,12 +84,47 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
      */
     public function getData()
     {
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/coupon.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        $logger->info('getData DataProvider');
+
         if (isset($this->loadedData)) {
             return $this->loadedData;
         }
         $items = $this->collection->getItems();
         foreach ($items as $model) {
-            $this->loadedData[$model->getId()] = $model->getData();
+            $data = $model->getData();
+
+            // Unserialize rule conditions (Magento serializes them as JSON)
+            if (!empty($data['conditions_serialized'])) {
+                $conditions = json_decode($data['conditions_serialized'], true);
+                
+                if (is_array($conditions) && isset($conditions['conditions'])) {
+                    // Try to extract entity_id, category_id, or other rule-related data
+                    foreach ($conditions['conditions'] as $cond) {
+                        if (!empty($cond['attribute']) && $cond['attribute'] === 'entity_id') {
+                            // This is your selected product IDs condition
+                            $data['selected_product_ids'] = $cond['value'];
+                        }
+                        if (!empty($cond['attribute']) && $cond['attribute'] === 'category_ids') {
+                            // Category condition
+                            $data['select_category'] = $cond['value'];
+                            $data['category_condition'] = 'specific';
+                        }
+                    }
+                }
+            }
+
+            // Provide sensible defaults if missing
+            // $data['products_condition'] = $data['products_condition'] ?? 'specific';
+            $data['products_condition'] = 'specific';
+            // $data['category_condition'] = $data['category_condition'] ?? 'specific';
+            $data['category_condition'] = 'specific';
+            $data['selected_product_ids'] = $data['selected_product_ids'] ?? '';
+            $data['select_category'] = $data['select_category'] ?? '';
+            $logger->info('Data for model ID ' . $model->getId() . ': ' . print_r($data, true));
+            $this->loadedData[$model->getId()] = $data;
         }
 
         $currentModel = $this->coreRegistry->registry('current_model');
@@ -104,6 +139,7 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
             $this->loadedData[$model->getId()] = $model->getData();
             $this->dataPersistor->clear('lofmpcouponcode_rule');
         }
+        $logger->info('loadedData ' . print_r($this->loadedData, true));
         
         return $this->loadedData;
     }

@@ -22,6 +22,13 @@ namespace Lofmp\Rma\Block\Rma;
 
 class RmaList extends \Magento\Framework\View\Element\Template
 {
+    protected $rmaRepository;
+    protected $customerSession;
+    protected $searchCriteriaBuilder;
+    protected $sortOrderBuilder;
+    protected $status;
+
+
 
     public function __construct(
         \Magento\Customer\Model\Session $customerSession,

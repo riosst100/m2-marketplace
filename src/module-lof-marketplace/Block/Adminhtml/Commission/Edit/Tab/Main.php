@@ -91,7 +91,7 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
         /**
          * Checking if user have permission to save information
          */
-        if ($this->_isAllowedAction('Lof_MarketPlace::commission_edit')) {
+        if ($this->_isAllowedAction('CoreMarketplace_MarketPlace::product_commission')) {
             $isElementDisabled = false;
         } else {
             $isElementDisabled = true;
@@ -145,63 +145,63 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
             \IntlDateFormatter::SHORT
         );
 
-        $fieldset->addField(
-            'from_date',
-            'date',
-            [
-                'name' => 'from_date',
-                'label' => __('From'),
-                'title' => __('From'),
-                'input_format' => \Magento\Framework\Stdlib\DateTime::DATE_INTERNAL_FORMAT,
-                'date_format' => $dateFormat,
-                'disabled' => $isElementDisabled
-            ]
-        );
+        // $fieldset->addField(
+        //     'from_date',
+        //     'date',
+        //     [
+        //         'name' => 'from_date',
+        //         'label' => __('From'),
+        //         'title' => __('From'),
+        //         'input_format' => \Magento\Framework\Stdlib\DateTime::DATE_INTERNAL_FORMAT,
+        //         'date_format' => $dateFormat,
+        //         'disabled' => $isElementDisabled
+        //     ]
+        // );
 
-        $fieldset->addField(
-            'to_date',
-            'date',
-            [
-                'name' => 'to_date',
-                'label' => __('To'),
-                'title' => __('To'),
-                'input_format' => \Magento\Framework\Stdlib\DateTime::DATE_INTERNAL_FORMAT,
-                'date_format' => $dateFormat,
-                'disabled' => $isElementDisabled
-            ]
-        );
+        // $fieldset->addField(
+        //     'to_date',
+        //     'date',
+        //     [
+        //         'name' => 'to_date',
+        //         'label' => __('To'),
+        //         'title' => __('To'),
+        //         'input_format' => \Magento\Framework\Stdlib\DateTime::DATE_INTERNAL_FORMAT,
+        //         'date_format' => $dateFormat,
+        //         'disabled' => $isElementDisabled
+        //     ]
+        // );
 
-        $fieldset->addField(
-            'priority',
-            'text',
-            [
-                'name' => 'priority',
-                'label' => __('Priority'),
-                'title' => __('Priority'),
-                'disabled' => $isElementDisabled
-            ]
-        );
+        // $fieldset->addField(
+        //     'priority',
+        //     'text',
+        //     [
+        //         'name' => 'priority',
+        //         'label' => __('Priority'),
+        //         'title' => __('Priority'),
+        //         'disabled' => $isElementDisabled
+        //     ]
+        // );
 
-        $group = $this->group->getCollection();
-        $groups = [];
-        foreach ($group as $v) {
-            $groups[] = [
-                'label' => $v->getName(),
-                'value' => $v->getGroupId()
-            ];
-        }
+        // $group = $this->group->getCollection();
+        // $groups = [];
+        // foreach ($group as $v) {
+        //     $groups[] = [
+        //         'label' => $v->getName(),
+        //         'value' => $v->getGroupId()
+        //     ];
+        // }
 
-        $fieldset->addField(
-            'group_id',
-            'multiselect',
-            [
-                'label' => __('Seller Group'),
-                'title' => __('Seller Group'),
-                'name' => 'groups[]',
-                'values' => $groups,
-                'disabled' => $isElementDisabled
-            ]
-        );
+        // $fieldset->addField(
+        //     'group_id',
+        //     'multiselect',
+        //     [
+        //         'label' => __('Seller Group'),
+        //         'title' => __('Seller Group'),
+        //         'name' => 'groups[]',
+        //         'values' => $groups,
+        //         'disabled' => $isElementDisabled
+        //     ]
+        // );
 
         /**
          * Check is single store mode

@@ -29,6 +29,18 @@ use Magento\Framework\Exception\CouldNotSaveException;
 
 class Save extends \Lofmp\Rma\Controller\Guest
 {
+    protected $customerSession;
+    protected $datahelper;
+    protected $helper;
+    protected $rmaFactory;
+    protected $itemFactory;
+    protected $orderFactory;
+    protected $eventManager;
+    protected $registry;
+    protected $messageRepository;
+    protected $rmaRepository;
+
+
     public function __construct(
         \Lofmp\Rma\Helper\Data                                    $datahelper,
         \Lofmp\Rma\Helper\Help                                    $helper,

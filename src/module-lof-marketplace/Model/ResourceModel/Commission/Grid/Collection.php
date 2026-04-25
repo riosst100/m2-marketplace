@@ -27,6 +27,10 @@ use Lof\MarketPlace\Model\ResourceModel\Commission\Collection as CommissionColle
 
 class Collection extends CommissionCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var \Magento\Framework\Api\Search\AggregationInterface
      */

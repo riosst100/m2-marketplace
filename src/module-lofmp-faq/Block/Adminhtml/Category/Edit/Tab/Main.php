@@ -22,6 +22,9 @@ namespace Lofmp\Faq\Block\Adminhtml\Category\Edit\Tab;
 
 class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magento\Backend\Block\Widget\Tab\TabInterface
 {
+    protected $_wysiwygConfig;
+
+
     /**
      * @var \Magento\Store\Model\System\Store
      */

@@ -28,7 +28,7 @@ class Delete extends \Lof\MarketPlace\Controller\Adminhtml\Commission
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Lof_MarketPlace::commission_delete');
+        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::product_commission');
     }
 
     /**

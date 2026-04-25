@@ -33,7 +33,8 @@ class Data extends \Lof\PreOrder\Helper\Data
      */
     public function allowSellerManage($storeId = null)
     {
-        return (int)$this->getConfig("settings/allow_seller_manage");
+        return true;
+        // return (int)$this->getConfig("settings/allow_seller_manage");
     }
 
     /**

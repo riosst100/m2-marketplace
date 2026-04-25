@@ -33,6 +33,9 @@ use Magento\Framework\View\Result\PageFactory;
 
 class Edit extends Shipping
 {
+    protected $_session;
+
+
     const FLAG_IS_URLS_CHECKED = 'check_url_settings';
 
     /**

@@ -30,6 +30,10 @@ use Lof\PreOrder\Model\ResourceModel\Item\Collection as PreOrderCollection;
  */
 class Collection extends PreOrderCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var AggregationInterface
      */

@@ -109,7 +109,7 @@
                 </argument>
             </filterSelect>
         </filters>
-        <massaction name="listing_massaction">
+        <!-- <massaction name="listing_massaction">
             <action name="disable">
                 <argument name="data" xsi:type="array">
                     <item name="config" xsi:type="array">
@@ -128,7 +128,7 @@
                     </item>
                 </argument>
             </action>
-        </massaction>
+        </massaction> -->
         <paging name="listing_paging">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -174,16 +174,6 @@
 <!--                </item>-->
             </item>
         </argument>
-        <selectionsColumn name="ids">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="resizeEnabled" xsi:type="boolean">false</item>
-                    <item name="resizeDefaultWidth" xsi:type="string">55</item>
-                    <item name="indexField" xsi:type="string">seller_id</item>
-                    <item name="sortOrder" xsi:type="number">0</item>
-                </item>
-            </argument>
-        </selectionsColumn>
         <column name="seller_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -291,7 +281,7 @@
                     <item name="sortable" xsi:type="boolean">false</item>
                     <item name="altField" xsi:type="string">name</item>
                     <item name="has_preview" xsi:type="string">1</item>
-                    <item name="label" xsi:type="string" translate="true">Thumbnail</item>
+                    <item name="label" xsi:type="string" translate="true">Image</item>
                     <item name="sortOrder" xsi:type="number">30</item>
                 </item>
             </argument>
@@ -343,6 +333,14 @@
                     <item name="sortOrder" xsi:type="number">100</item>
                 </item>
             </argument>
+        </column>
+        <column name="store_id" class="CoreMarketplace\SellerMembership\Ui\Component\Listing\Column\Website">
+            <settings>
+                <label translate="true">Countries/Regions</label>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <options class="CoreMarketplace\SellerMembership\Ui\Component\Listing\Column\WebsiteOptions"/>
+            </settings>            
         </column>
         <column name="verify_status">
             <argument name="data" xsi:type="array">

@@ -44,6 +44,12 @@ use Magento\Framework\Mail\AddressConverter;
 
 class TransportBuilder extends CoreTransportBuilder
 {
+    protected $templateIdentifier;
+    protected $templateModel;
+    protected $templateVars;
+    protected $templateOptions;
+
+
 
     /** @var MimePart[] */
     private $parts = [];

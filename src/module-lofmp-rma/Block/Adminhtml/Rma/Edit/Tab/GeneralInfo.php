@@ -25,6 +25,20 @@ use Magento\Backend\Block\Widget\Form;
 
 class GeneralInfo extends Form
 {
+    protected $addressCollection;
+    protected $datahelper;
+    protected $helper;
+    protected $orderRepository;
+    protected $creditMemoRepository;
+    protected $formFactory;
+    protected $registry;
+    protected $request;
+    protected $backendUrlManager;
+    protected $convertDataObject;
+    protected $orderFactory;
+    protected $_rma_list;
+
+
     /**
      * @var \Lof\MarketPlace\Model\SellerFactory
      */
@@ -148,9 +162,9 @@ class GeneralInfo extends Form
         }
         $rma_text = __(" (Parent RMA)");
         $fieldset->addField('order_link', 'link', [
-            'label' => __('Order #'),
+            'label' => __('Order Number'),
             'name' => 'order_id',
-            'value' => '#' . $this->getOrder()->getIncrementId() . $rma_text,
+            'value' => '' . $this->getOrder()->getIncrementId(),
             //'href'  => $this->getUrl('sales/order/view', ['order_id' => $rma->getOrderId()]),
             'href' => $this->getUrl('sales/order/view', ['order_id' => $this->getOrder()->getId()]),
         ]);
@@ -167,7 +181,7 @@ class GeneralInfo extends Form
                     $rma_text = " - (" . __("Child RMA Id #%1", $_rma->getIncrementId()) . ")";
                 }
                 $fieldset->addField('order_link_' . $i, 'link', [
-                    'label' => __('Order #'),
+                    'label' => __('Order Number'),
                     'name' => 'child_order_id',
                     'value' => '#' . $_order->getIncrementId() . $rma_text,
                     'href' => $this->getUrl('sales/order/view', ['order_id' => $_order->getId()]),
@@ -176,13 +190,13 @@ class GeneralInfo extends Form
             }
         }
 
-        $fieldset->addField('user_id', 'select', [
-            'label' => __('Rma Manager'),
-            'name' => 'user_id',
-            'value' => $rma->getUserId(),
-            'values' => $this->datahelper->getAdminOptionArray(true),
-            'disabled' => $isElementDisabled
-        ]);
+        // $fieldset->addField('user_id', 'select', [
+        //     'label' => __('Rma Manager'),
+        //     'name' => 'user_id',
+        //     'value' => $rma->getUserId(),
+        //     'values' => $this->datahelper->getAdminOptionArray(true),
+        //     'disabled' => $isElementDisabled
+        // ]);
 
         $fieldset->addField('status_id', 'select', [
             'label' => __('Status'),
@@ -244,7 +258,7 @@ class GeneralInfo extends Form
         //     'disabled' => $isElementDisabled
         // ]);
 
-        $fieldset->addField('return_address', 'text', [
+        $fieldset->addField('return_address', 'textarea', [
             'label' => __('Return Address'),
             'name' => 'return_address',
             'value' => $rma->getReturnAddress(),

@@ -29,6 +29,17 @@ use Lofmp\Rma\Controller\Adminhtml\Rma;
 
 class Save extends Rma
 {
+    protected $rmaFactory;
+    protected $itemFactory;
+    protected $orderFactory;
+    protected $attachmentFactory;
+    protected $messageRepository;
+    protected $rmaRepository;
+    protected $eventManager;
+    protected $registry;
+    protected $dataHelper;
+
+
     public function __construct(
         \Lofmp\Rma\Helper\Data                                    $dataHelper,
         \Lofmp\Rma\Model\RmaFactory                               $rmaFactory,
@@ -125,30 +136,30 @@ class Save extends Rma
                     $itemModel->save();
                 }
                 $files = $this->getRequest()->getFiles();
-                if ((isset($data['reply']) && $data['reply'] != '') || count($files->toArray()) > 0) {
-                    $message = $this->messageRepository->create();
-                    $message->setRmaId($rma->getId())
-                        ->setText($data['reply'], false);
-                    if (isset($data['internalcheck'])) {
-                                $message->setInternal($data['internalcheck'])
-                                ->setIsCustomerNotified(false)
-                                ->setUserId($user->getId());
-                    } else {
-                            $message->setInternal(0)
-                                ->setIsCustomerNotified(true)
-                                ->setUserId($user->getId());
-                    }
-                        $this->messageRepository->save($message);
+                // if ((isset($data['reply']) && $data['reply'] != '') || count($files->toArray()) > 0) {
+                //     $message = $this->messageRepository->create();
+                //     $message->setRmaId($rma->getId())
+                //         ->setText($data['reply'], false);
+                //     if (isset($data['internalcheck'])) {
+                //                 $message->setInternal($data['internalcheck'])
+                //                 ->setIsCustomerNotified(false)
+                //                 ->setUserId($user->getId());
+                //     } else {
+                //             $message->setInternal(0)
+                //                 ->setIsCustomerNotified(true)
+                //                 ->setUserId($user->getId());
+                //     }
+                //         $this->messageRepository->save($message);
 
-                        $rma->setLastReplyName($user->getName())
-                            ->setIsAdminRead($user instanceof \Magento\User\Model\User);
-                        $this->rmaRepository->save($rma);
+                //         $rma->setLastReplyName($user->getName())
+                //             ->setIsAdminRead($user instanceof \Magento\User\Model\User);
+                //         $this->rmaRepository->save($rma);
 
-                        $this->eventManager->dispatch(
-                            'rma_add_message_after',
-                            ['rma'=> $rma, 'message' => $message, 'user' => $user, 'params' => $data]
-                        );
-                }
+                //         $this->eventManager->dispatch(
+                //             'rma_add_message_after',
+                //             ['rma'=> $rma, 'message' => $message, 'user' => $user, 'params' => $data]
+                //         );
+                // }
 
                 $this->eventManager->dispatch('rma_update_rma_after', ['rma' => $rma, 'user' => $user]);
                 $this->messageManager->addSuccessMessage(__('RMA was successfully saved'));

@@ -23,6 +23,10 @@ namespace Lofmp\Rma\Block\Adminhtml\Rma\Edit\Tab;
 
 class History extends \Magento\Backend\Block\Template
 {
+    protected $registry;
+    protected $context;
+
+
     /**
      * History constructor.
      * @param \Magento\Framework\Registry $registry

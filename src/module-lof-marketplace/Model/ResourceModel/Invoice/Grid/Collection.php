@@ -27,6 +27,10 @@ use Lof\MarketPlace\Model\ResourceModel\Invoice\Collection as SellerCollection;
 
 class Collection extends SellerCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var AggregationInterface
      */

@@ -23,6 +23,9 @@ namespace Lof\Quickrfq\Model\ResourceModel\Quickrfq\Grid;
 use Magento\Framework\Api\Search\SearchResultInterface;
 use Magento\Framework\Search\AggregationInterface;
 use Lof\Quickrfq\Model\ResourceModel\Quickrfq\Collection as QuoteCollection;
+use CoreMarketplace\MarketPlace\Helper\AdminWebsite;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\ObjectManager;
 
 /**
  * Class Collection
@@ -30,6 +33,18 @@ use Lof\Quickrfq\Model\ResourceModel\Quickrfq\Collection as QuoteCollection;
  */
 class Collection extends QuoteCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+        /**
+     * @var RequestInterface
+     */
+    protected $request;
+
+    /**
+     * @var AdminWebsite
+     */
+    protected $adminWebsite;
+
     /**
      * @var AggregationInterface
      */
@@ -41,7 +56,7 @@ class Collection extends QuoteCollection implements SearchResultInterface
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Data\Collection\Db\FetchStrategyInterface $fetchStrategy,
         \Magento\Framework\Event\ManagerInterface $eventManager,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,        
         $mainTable,
         $eventPrefix,
         $eventObject,
@@ -58,12 +73,51 @@ class Collection extends QuoteCollection implements SearchResultInterface
             $connection,
             $resource
         );
+        
+        $objectManager = ObjectManager::getInstance();
+        $this->adminWebsite = $objectManager->get(
+            \CoreMarketplace\MarketPlace\Helper\AdminWebsite::class
+        );
+
+        /** @var \Magento\Framework\App\RequestInterface $request */
+        $this->request = $objectManager->get(
+            \Magento\Framework\App\RequestInterface::class
+        );
+        
         $this->_eventPrefix = $eventPrefix;
         $this->_eventObject = $eventObject;
         $this->_init($model, $resourceModel);
         $this->setMainTable($mainTable);
     }
+    
+    protected function _renderFiltersBefore()
+    {        
+        parent::_renderFiltersBefore();        
 
+        // Super admin → no restriction
+        if ($this->adminWebsite->isAllWebsitesAllowed()) {
+            return;
+        }
+
+        $websiteId = (int) $this->request->getParam('website');
+        if (!$websiteId) {
+            return;
+        }
+
+        $allowedWebsiteIds = $this->adminWebsite->getAllowedWebsiteIds();
+
+        // Hard guard (URL tampering protection)
+        if (!in_array($websiteId, $allowedWebsiteIds, true)) {
+            $this->getSelect()->where('1 = 0');
+            return;
+        }
+
+        $this->getSelect()
+        ->where(
+            'main_table.website_id = ?',
+            $websiteId
+        );                        
+    }
 
     public function getAggregations()
     {

@@ -29,6 +29,10 @@ use Lofmp\FavoriteSeller\Model\ResourceModel\Subscription\Collection as Subscrip
 
 class Collection extends SubscriptionCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var AggregationInterface
      */

@@ -33,6 +33,9 @@ use Magento\Eav\Setup\EavSetupFactory;
  */
 class InstallData implements InstallDataInterface
 {
+    protected $eavSetupFactory;
+
+
     /**
      * @param ModuleDataSetupInterface $setup
      * @param ModuleContextInterface   $context

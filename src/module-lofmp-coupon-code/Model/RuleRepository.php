@@ -36,6 +36,9 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class RuleRepository implements RuleRepositoryInterface
 {
+    protected $rule;
+
+
 
     protected $resource;
 

@@ -26,10 +26,6 @@
             <item name="deps" xsi:type="string">sellerproductpending_listing.sellerproduct_listing_data_source</item>
         </item>
         <item name="spinner" xsi:type="string">sellerpendingproduct_columns</item>
-        <item name="buttons" xsi:type="array">
-            <item name="add" xsi:type="array">
-            </item>
-        </item>
     </argument>
     <dataSource name="sellerproduct_listing_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">

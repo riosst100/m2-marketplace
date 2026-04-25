@@ -29,6 +29,11 @@ use Magento\Framework\Registry;
 
 class Reason extends Action
 {
+    protected $registry;
+    protected $context;
+    protected $backendSession;
+
+
     public function __construct(
         Registry $registry,
         Context $context

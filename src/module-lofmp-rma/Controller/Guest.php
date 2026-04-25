@@ -29,6 +29,12 @@ use Magento\Framework\App\Action\Context;
 
 abstract class Guest extends Action
 {
+    protected $customerSession;
+    protected $sessionObj;
+    protected $context;
+    protected $resultFactory;
+
+
     /**
      * List of actions that are allowed for not authorized users.
      *

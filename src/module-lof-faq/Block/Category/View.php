@@ -173,6 +173,15 @@ class View extends \Magento\Framework\View\Element\Template {
         $cat = $this->getCategory();
 
         if ($show_breadcrumbs && $breadcrumbsBlock) {
+            // $breadcrumbsBlock->addCrumb(
+        	// 	'dashboard',
+        	// 	[
+            //         'label' => __('Seller Dashboard'),
+            //         'title' => __('Go to Seller Dashboard'),
+            //         'link'  => $baseUrl.'/marketplace/catalog/dashboard/'
+            //     ]
+            //     );
+                
             $breadcrumbsBlock->addCrumb(
                 'home',
                 [

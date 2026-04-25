@@ -137,32 +137,35 @@ define([
         /**
          * Update field value, if it's allowed
          */
-        updateValue: function () {
-            var str = this.mask,
-                nonEmptyValueFlag = false,
-                placeholder,
-                property,
-                tmpElement;
+        updateValue: function (placeholder, component) {
+            var string = this.mask || '',
+                nonEmptyValueFlag = false;
+
+            if (placeholder) {
+                this.values[placeholder] = component.getPreview() || '';
+            }
 
             if (!this.allowImport) {
                 return;
             }
 
-            for (property in this.values) {
-                if (this.values.hasOwnProperty(property)) {
-                    placeholder = '';
-                    placeholder = placeholder.concat('{{', property, '}}');
-                    str = str.replace(placeholder, this.values[property]);
-                    nonEmptyValueFlag = nonEmptyValueFlag || !!this.values[property];
-                }
-            }
-            // strip tags
-            tmpElement = document.createElement('div');
-            tmpElement.innerHTML = str;
-            str =  tmpElement.textContent || tmpElement.innerText || '';
+            _.each(this.values, function (propertyValue, propertyName) {
+                var formatted = propertyValue
+                    .replace(/[^a-zA-Z0-9\s]/g, '') // Hapus karakter khusus
+                    .replace(/\s+/g, '-')           // Ganti spasi dengan -
+                    .toUpperCase();                 // Kapital semua
+
+                string = string.replace('{{' + propertyName + '}}', formatted);
+                nonEmptyValueFlag = nonEmptyValueFlag || !!propertyValue;
+            });
 
             if (nonEmptyValueFlag) {
-                this.value(str);
+                string = string.replace(/(<([^>]+)>)/ig, ''); // Hapus tag HTML
+                string = string.substring(0, 50);             // 💥 Batasi setelah final
+                
+                this.value(string);
+            } else {
+                this.value('');
             }
         },
 
