@@ -19,11 +19,15 @@
  * @license   http://www.landofcoder.com/LICENSE-1.0.html
  */
 namespace Lof\Setup\Controller\Adminhtml\Import;
+
 use Magento\Framework\Json\EncoderInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
 
 class Save extends \Magento\Backend\App\Action
 {
+    protected $_resource;
+    protected $mediaConfig;
+
     /**
      * @var \Magento\Framework\Registry
      */
@@ -137,7 +141,7 @@ class Save extends \Magento\Backend\App\Action
             return $resultRedirect->setPath('*/*/');
         }
 
-        $importData = \Zend_Json::decode($fileContent);
+        $importData = \Laminas\Json\Json::decode($fileContent);
 
         $overwrite = false;
         if($data['overwrite_blocks']) {

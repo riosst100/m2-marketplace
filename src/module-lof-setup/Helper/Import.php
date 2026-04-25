@@ -24,6 +24,9 @@ use \Magento\Framework\Module\Dir;
 
 class Import extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    protected $_resource;
+    protected $_lofdata;
+    
     /**
      * @var \Lof\Setup\Helper\Data
      */

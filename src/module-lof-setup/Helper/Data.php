@@ -23,6 +23,9 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    protected $_coreRegistry;
+    protected $_themeModel;
+    
     /**
      * @var \Magento\Cms\Model\Template\FilterProvider
      */
