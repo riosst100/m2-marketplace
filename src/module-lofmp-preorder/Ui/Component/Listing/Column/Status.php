@@ -42,7 +42,7 @@ class Status extends Column
     /**
      * @var Data
      */
-    protected $hepler;
+    protected $helper;
 
     /**
      * Constructor.
