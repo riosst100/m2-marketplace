@@ -30,6 +30,7 @@
     },
     "autoload": {
       "files": [
+        "src/module-ves-all/registration.php",
         "src/module-ves-trackorder/registration.php",
         "src/module-lof-all/registration.php",
         "src/module-lof-setup/registration.php",
@@ -66,6 +67,7 @@
         "src/module-lofmp-gdpr-seller/registration.php"
       ],
       "psr-4": {
+        "Ves\\All\\": "src/module-ves-all",
         "Ves\\Trackorder\\": "src/module-ves-trackorder",
         "Lof\\All\\": "src/module-lof-all",
         "Lof\\Setup\\": "src/module-lof-setup",
