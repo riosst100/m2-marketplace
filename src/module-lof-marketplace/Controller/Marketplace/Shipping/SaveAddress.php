@@ -68,7 +68,7 @@ class SaveAddress extends \Magento\Framework\App\Action\Action
         \Lof\MarketPlace\Model\SellerFactory $sellerFactory,
         \Magento\Framework\Url $frontendUrl,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \TCGCollective\MarketPlace\Helper\Data $marketplaceHelper
+        \CoreMarketplace\MarketPlace\Helper\Data $marketplaceHelper
     ) {
         parent::__construct($context);
 
@@ -104,7 +104,7 @@ class SaveAddress extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
-        $this->shipFrom = $this->_objectManager->get(\TCGCollective\MarketPlace\Model\Config\Source\ShipFrom::class);
+        $this->shipFrom = $this->_objectManager->get(\CoreMarketplace\MarketPlace\Model\Config\Source\ShipFrom::class);
 
         // $this->countryCollectionFactory = $this->_objectManager->get(\Magento\Directory\Model\ResourceModel\Country\CollectionFactory::class);
         // $collection = $this->countryCollectionFactory->create();

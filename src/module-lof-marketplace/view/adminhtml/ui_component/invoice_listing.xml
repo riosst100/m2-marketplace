@@ -209,12 +209,12 @@
                 </item>
             </argument>
         </column>
-        <column name="store_id" class="TCGCollective\SellerMembership\Ui\Component\Listing\Column\Website">
+        <column name="store_id" class="CoreMarketplace\SellerMembership\Ui\Component\Listing\Column\Website">
             <settings>
                 <label translate="true">Countries/Regions</label>
                 <filter>select</filter>
                 <dataType>select</dataType>
-                <options class="TCGCollective\SellerMembership\Ui\Component\Listing\Column\WebsiteOptions"/>
+                <options class="CoreMarketplace\SellerMembership\Ui\Component\Listing\Column\WebsiteOptions"/>
             </settings>            
         </column>
         <!-- <column name="order_created_at" class="Magento\Ui\Component\Listing\Columns\Date">

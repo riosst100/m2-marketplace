@@ -7,6 +7,9 @@ use Magento\Customer\Api\CustomerRepositoryInterface as CustomerRepository;
 
 class InvoicePdf extends \Magento\Framework\View\Element\Template
 {
+    protected $_coreRegistry;
+
+
 
     protected $_objectManager = null;
     protected $_directoryData = null;

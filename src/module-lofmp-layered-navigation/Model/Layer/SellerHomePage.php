@@ -12,6 +12,9 @@ use Magento\Catalog\Model\Layer\StateFactory;
 
 class SellerHomePage extends \Magento\Catalog\Model\Layer
 {
+    protected $_stateKey;
+
+
     protected $vendorCategoryRepository;
 
     /**

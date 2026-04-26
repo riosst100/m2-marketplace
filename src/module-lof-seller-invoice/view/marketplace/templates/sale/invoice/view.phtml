@@ -31,11 +31,17 @@ $currentSellerId = $helper->getSellerId();
 	<div class="col-md-12">
 		<div class="x_panel">
 			<div class="x_title">
-            <h2><?= __('Invoice Design');?></h2>
+            <h2><?= __('Invoice Detail');?></h2>
             <div class="page-actions-buttons">
+                <div class="row no-print">
+                    <div class="col-xs-12">
+                      <?= $block->getChildHtml('invoice.print.button'); ?>
+                      <button class="btn btn-default print-button" onclick="window.print();"><i class="fa fa-print"></i> <?= __("Print");?></button>
+                    </div>
+                </div>
                 <div class="actions-split save primary" title="Order">
-                    <a href="javascript:" data-url="<?= $block->getUrl("sellerinvoice/invoice/downloadfile", ["id" => $invoice->getId()]); ?>" class="btn btn-primary lof_invoice" id="btnExport"><?= __('Export Pdf file'); ?></a>
-                    <!-- <button type="button" class="btn btn-primary lof_invoice" id="cmd"><?= __('Export Pdf file'); ?></button> -->
+                    <a href="javascript:" data-url="<?= $block->getUrl("sellerinvoice/invoice/downloadfile", ["id" => $invoice->getId()]); ?>" class="btn btn-primary lof_invoice" id="btnExport"><?= __('Export to PDF'); ?></a>
+                    <!-- <button type="button" class="btn btn-primary lof_invoice" id="cmd"><?= __('Export to PDF'); ?></button> -->
                 </div>
             </div>
           <div class="clearfix"></div>
@@ -44,10 +50,9 @@ $currentSellerId = $helper->getSellerId();
     		<div class="content invoice">
     			<div class="row">
     				<div class="col-xs-12 invoice-header">
-              <h1>
-                <i class="fa fa-globe"></i> <?= __('Invoice'); ?>
-                <small class="pull-right"><?= __('Create At');?>: <?= $invoice->getData('created_at');?></small>
-              </h1>
+              <h2>
+                <?= __('Invoice'); ?>
+              </h2>
             </div>
     			</div>
     			<div class="row invoice-info">
@@ -68,10 +73,10 @@ $currentSellerId = $helper->getSellerId();
             </div>
             <!-- /.col -->
             <div class="col-sm-3 invoice-col">
-              <?php /* @escapeNotVerified */ echo __('<b>Invoice</b> # %1', $invoice->getIncrementId()) ?>
+              <?php /* @escapeNotVerified */ echo __('<b>Invoice Number</b>: %1', $invoice->getIncrementId()) ?>
               <br>
 
-               <?php /* @escapeNotVerified */ echo __('<b>Order:</b> # <a href="%1">%2</a>', $orderEditLink, $orderObject->getRealOrderId()) ?>
+               <?php /* @escapeNotVerified */ echo __('<b>Order Number</b>: <a href="%1">%2</a>', $orderEditLink, $orderObject->getRealOrderId()) ?>
               <br>
               <b><?= __('Order Date');?>:</b> <?= $this->getOrderDate(); ?>
               <br>
@@ -81,14 +86,12 @@ $currentSellerId = $helper->getSellerId();
             </div>
              <!-- /.col -->
             <div class="col-sm-3 invoice-col">
-              	<b><?= __('Account Information '); ?></b>
+              	<b><?= __('Customer Information'); ?></b>
               	<br>
 
               	<b><?= __('Customer Name');?>:</b> <?= $orderObject->getCustomerName(); ?>
               <br>
-              <b><?= __('Email'); ?>:</b> <?= $orderObject->getCustomerEmail(); ?>
-              <br>
-              <b><?= __('Customer Group'); ?>:</b> <?= $this->getCustomerGroupName(); ?>
+              <b><?= __('Customer Email'); ?>:</b> <?= $orderObject->getCustomerEmail(); ?>
             </div>
           </div>
           <div class="row">
@@ -100,12 +103,10 @@ $currentSellerId = $helper->getSellerId();
                     	<th><?= __('Price'); ?></th>
                       <th><?= __('Qty'); ?></th>
                       <th><?= __('Subtotal');?></th>
-                      <th><?= __('Tax Amount');?></th>
                       <th><?= __('Discount Amount');?></th>
                        <th><?= __('Row Total');?></th>
                       <th><?= __('Admin Commission');?></th>
-                      <th><?= __('Seller Total');?></th>
-                      <th><?= __('Seller');?></th>
+                      <th><?= __('Total Amount');?></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -164,12 +165,10 @@ $currentSellerId = $helper->getSellerId();
                           <td><?= $helper->getPriceFomat($item->getData('price'), $orderCurrencyCode, 2);?></td>
                           <td><?= $item->getData('qty_invoiced');?></td>
                           <td><?= $helper->getPriceFomat($total, $orderCurrencyCode, 2);?></td>
-                          <td><?= $helper->getPriceFomat($tax_amount, $orderCurrencyCode, 2);?></td>
                           <td><?= $helper->getPriceFomat($discount_amount, $orderCurrencyCode, 2);?></td>
                           <td><?= $helper->getPriceFomat($row_total, $orderCurrencyCode, 2);?></td>
                           <td><?= $helper->getPriceFomat($admin_commission, $orderCurrencyCode, 2); ?></td>
                           <td><?= $helper->getPriceFomat($seller_commission, $orderCurrencyCode, 2); ?></td>
-                          <td><?= $seller_name; ?></td>
                         </tr>
    					      <?php }
                       }
@@ -181,23 +180,17 @@ $currentSellerId = $helper->getSellerId();
           </div>
           <div class="row">
               <!-- accepted payments column -->
-              <div class="col-xs-6">
+              <div class="col-xs-3">
                 <p class="lead"><?= __('Payment Methods');?>:</p>
-                <img src="<?= $block->getViewFileUrl('Lof_MarketPlace::images/visa.png') ?>" alt="Visa">
-                <img src="<?= $block->getViewFileUrl('Lof_MarketPlace::images/mastercard.png') ?>"
-                        alt="Mastercard">
-                <img src="<?= $block->getViewFileUrl('Lof_MarketPlace::images/american_express.png') ?>"
-                        alt="American Express">
-                <img src="<?= $block->getViewFileUrl('Lof_MarketPlace::images/paypal.png') ?>" alt="Paypal">
                 <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
                   <?= $this->getOrder()->getPayment()->getMethodInstance()->getTitle(); ?>
                 </p>
                 <p><?= __('The order was placed using');?> <?= $this->getOrder()->getData('order_currency_code');?>.</p>
               </div>
               <!-- /.col -->
-              <div class="col-xs-6">
+              <div class="col-xs-3 invoice-total">
                 <p class="lead"><?= __('Invoice Totals');?></p>
-                <div class="table-responsive">
+                <div class="table-responsive well well-sm no-shadow">
                   <table class="table">
                     <tbody>
                       <tr>
@@ -205,14 +198,10 @@ $currentSellerId = $helper->getSellerId();
                         <td><?= $helper->getPriceFomat($subtotal, $orderCurrencyCode, 2); ?></td>
                       </tr>
                       <tr>
-                        <th><?= __('Shipping & Handling');?></th>
+                        <th><?= __('Shipping Cost');?></th>
                         <td><?= $helper->getPriceFomat($this->getOrder()->getData('shipping_amount'), $orderCurrencyCode, 2); ?></td>
                       </tr>
                       <tr>
-                        <th><?= __('Tax');?></th>
-                        <td><?= $helper->getPriceFomat($tax, $orderCurrencyCode, 2); ?></td>
-                      </tr>
-                       <tr>
                         <th><?= __('Discount');?></th>
                         <td><?= $helper->getPriceFomat(-$discount, $orderCurrencyCode, 2); ?></td>
                       </tr>
@@ -221,7 +210,7 @@ $currentSellerId = $helper->getSellerId();
                         <td><?= $helper->getPriceFomat($grand_total, $orderCurrencyCode, 2); ?></td>
                       </tr>
                        <tr>
-                        <th><?= __('Seller Amount');?></th>
+                        <th><?= __('Total Amount');?></th>
                         <td><?= $helper->getPriceFomat($seller_total, $orderCurrencyCode, 2); ?></td>
                       </tr>
                     </tbody>
@@ -229,13 +218,6 @@ $currentSellerId = $helper->getSellerId();
                 </div>
               </div>
               <!-- /.col -->
-          </div>
-          <!-- this row will not appear when printing -->
-          <div class="row no-print">
-              <div class="col-xs-12">
-                <?= $block->getChildHtml('invoice.print.button'); ?>
-                <button class="btn btn-default print-button" onclick="window.print();"><i class="fa fa-print"></i> <?= __("Print");?></button>
-              </div>
           </div>
     		</div>
       </div>

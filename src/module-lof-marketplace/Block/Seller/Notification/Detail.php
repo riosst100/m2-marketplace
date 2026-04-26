@@ -11,9 +11,9 @@ class Detail extends Template
 
     public function __construct(
         Template\Context $context,
-        \TCGCollective\MarketPlace\Model\RabbitmqQueuesFactory $rabbitmqQueuesFactory,
+        \CoreMarketplace\MarketPlace\Model\RabbitmqQueuesFactory $rabbitmqQueuesFactory,
         \Lof\MarketPlace\Helper\Data $helper,
-        \TCGCollective\ProductAttributesLink\Helper\Data $mappingHelper,
+        \CoreMarketplace\ProductAttributesLink\Helper\Data $mappingHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);

@@ -13,6 +13,9 @@ use Lof\SocialLogin\lib\Psr\ResponseInterface;
  */
 class RetryMiddleware
 {
+    protected $delay;
+
+
     /** @var callable  */
     private $nextHandler;
 

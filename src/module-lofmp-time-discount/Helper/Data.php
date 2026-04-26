@@ -28,6 +28,10 @@ use Magento\Framework\Pricing\Helper\Data as PriceHelper;
 
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    protected $priceHelper;
+    protected $_customerSession;
+
+
     /**
      * @var Magento\Framework\Stdlib\DateTime\DateTime
      */

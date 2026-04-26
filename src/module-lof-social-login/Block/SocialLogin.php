@@ -30,6 +30,10 @@ use Magento\Customer\Model\SessionFactory as CustomerSession;
 
 class SocialLogin extends Template
 {
+    protected $objectManager;
+    protected $_customerSession;
+
+
     /**
      * @var Lof\SocialLogin\Helper\Data
      */

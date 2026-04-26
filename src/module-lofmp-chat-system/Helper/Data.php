@@ -40,6 +40,9 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class Data extends AbstractHelper
 {
+    protected $_localeDate;
+
+
     /**
      * @var StoreManagerInterface
      */

@@ -30,6 +30,10 @@ use Lofmp\PriceComparison\Model\ResourceModel\Quote\Collection as QuoteCollectio
  */
 class Collection extends QuoteCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var AggregationInterface
      */

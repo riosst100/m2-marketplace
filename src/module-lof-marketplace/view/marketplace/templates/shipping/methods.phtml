@@ -16,8 +16,8 @@ $originRegionIsset = $helper->getOriginRegion();
             <div class="panel-body">
 
                 <?= $this->getLayout()
-                    ->createBlock('TCGCollective\MarketPlace\Block\Steps')
-                    ->setTemplate('TCGCollective_MarketPlace::registration-step/step-guide.phtml')
+                    ->createBlock('CoreMarketplace\MarketPlace\Block\Steps')
+                    ->setTemplate('CoreMarketplace_MarketPlace::registration-step/step-guide.phtml')
                     ->toHtml();
                 ?>
 
@@ -35,11 +35,11 @@ $originRegionIsset = $helper->getOriginRegion();
                         <h2>Available Shipping Methods</h2>
 
                         <?= $this->getLayout()
-                            ->createBlock('TCGCollective\MarketPlace\Block\SellerInfo')
+                            ->createBlock('CoreMarketplace\MarketPlace\Block\SellerInfo')
                             ->setInstruction('Learn how to configure shipping on')
                             ->setDocsUrlPath('shipping')
                             ->setDocsLabel('Seller Help Center - Shipping')
-                            ->setTemplate('TCGCollective_MarketPlace::seller_info.phtml')
+                            ->setTemplate('CoreMarketplace_MarketPlace::seller_info.phtml')
                             ->toHtml();
                         ?>
 

@@ -30,6 +30,11 @@ use Magento\Framework\View\Result\PageFactory;
  */
 class Msglog extends \Magento\Framework\App\Action\Action
 {
+    protected $resultPageFactory;
+    protected $_coreRegistry;
+    protected $_customerSession;
+
+
     protected $_cacheTypeList;
     /**
      * @var \Magento\Framework\App\RequestInterface

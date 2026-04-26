@@ -42,6 +42,11 @@ use Hybridauth\HttpClient;
 
 class Callback extends Action
 {
+    protected $storeManager;
+    protected $customerRepository;
+    protected $visitor;
+
+
     const SOCIAL_TYPE = 'google';
     protected $resultPageFactory;
     protected $google;
@@ -99,7 +104,8 @@ class Callback extends Action
     public function execute()
     {
         $config = [
-            'callback' => $this->google->getBaseUrl(),
+            'callback' => $this->google->getPwaBaseUrl(),
+            // 'callback' => $this->google->getBaseUrl(),
             'providers' => [
                 'Google' => [
                     'enabled' => true,
@@ -109,6 +115,7 @@ class Callback extends Action
         ];
         $dataUser = null;
         try {
+            // dd($dataUser);
             $hybridauth = new Hybridauth( $config );
             $adapter = $hybridauth->authenticate( 'Google' );
             $tokens = $adapter->getAccessToken();
@@ -118,6 +125,7 @@ class Callback extends Action
         catch (\Exception $e) {
             echo $e->getMessage();
         }
+        // dd($dataUser);
         $redirect = $this->socialHelper->getConfig(('general/redirect_page'));
         if(empty($redirect)){
             $link_redirect = "window.opener.location.reload();";
@@ -157,6 +165,7 @@ class Callback extends Action
             $visitor->save();
             $this->_eventManager->dispatch('visitor_init', ['visitor' => $visitor]);
             $this->_eventManager->dispatch('visitor_activity_save', ['visitor' => $visitor]);
+            // dd($link_redirect);
             echo "<script type=\"text/javascript\">window.close();".$link_redirect."</script>";
             exit;
         }
@@ -198,6 +207,7 @@ class Callback extends Action
                 $this->messageManager->addSuccess(__('Login successful.'));
                 $this->session->regenerateId();
             }
+            // dd('last: '.$link_redirect);
             echo "<script type=\"text/javascript\">window.close();".$link_redirect."</script>";
         }
     }

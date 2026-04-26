@@ -31,6 +31,10 @@ use Lof\MarketPlace\Model\SellerProduct;
  */
 class Product extends \Magento\Framework\DataObject
 {
+    protected $productState;
+    protected $productFactory;
+
+
     /**
      * Page cache tag
      */

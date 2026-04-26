@@ -25,6 +25,9 @@ use \Magento\Backend\Block\Widget\Tab\TabInterface;
 
 class Main extends \Magento\Backend\Block\Widget\Form\Generic implements TabInterface
 {
+    protected $status;
+
+
     /**
      * @var \Magento\Store\Model\System\Store
      */

@@ -34,7 +34,7 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\SellerProduct
         /**
          * Set active menu item
          */
-        $resultPage->setActiveMenu("TCGCollective_MarketPlace::seller_products");
+        $resultPage->setActiveMenu("CoreMarketplace_MarketPlace::seller_products");
         $resultPage->getConfig()->getTitle()->prepend(__('Seller | Products'));
 
         /**
@@ -51,6 +51,6 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\SellerProduct
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('TCGCollective_MarketPlace::seller_products');
+        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::seller_products');
     }
 }

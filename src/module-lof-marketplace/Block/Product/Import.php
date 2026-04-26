@@ -89,7 +89,7 @@ class Import extends \Magento\Framework\View\Element\Template
     public function getImportHistory($currentPage = 1, $pageSize = 5) 
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->historyFactory = $objectManager->create(\TCGCollective\MarketPlace\Model\HistoryFactory::class);
+        $this->historyFactory = $objectManager->create(\CoreMarketplace\MarketPlace\Model\HistoryFactory::class);
 
         $collection = $this->historyFactory->create()
         ->getCollection()
@@ -108,7 +108,7 @@ class Import extends \Magento\Framework\View\Element\Template
     public function getTotalImportHistoryCount()
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->historyFactory = $objectManager->create(\TCGCollective\MarketPlace\Model\HistoryFactory::class);
+        $this->historyFactory = $objectManager->create(\CoreMarketplace\MarketPlace\Model\HistoryFactory::class);
 
         return $this->historyFactory->create()->getCollection()
         ->addFieldToFilter('seller_id', $this->getSeller()->getId())->getSize();

@@ -19,6 +19,11 @@ use Lof\SocialLogin\Model\Facebook\Facebook;
 
 class Callback extends Action
 {
+    protected $storeManager;
+    protected $customerRepository;
+    protected $visitor;
+
+
     const SOCIAL_TYPE = 'facebook';
     protected $facebook;
     protected $dataHelper;

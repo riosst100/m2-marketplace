@@ -9,6 +9,11 @@ use Magento\Framework\Controller\ResultFactory;
 
 class Invoice extends \Magento\Framework\DataObject
 {
+    protected $_file;
+    protected $_fileFactory;
+    protected $_pdf;
+
+
     protected $_layout;
     protected $layoutFactory;
     protected $_coreRegistry;

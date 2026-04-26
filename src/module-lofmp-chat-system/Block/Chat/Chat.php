@@ -34,6 +34,9 @@ use Magento\Store\Model\ScopeInterface;
 
 class Chat extends Template
 {
+    protected $_coreRegistry;
+
+
     /**
      * @var int
      */

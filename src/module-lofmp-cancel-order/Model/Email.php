@@ -23,6 +23,9 @@ namespace Lofmp\CancelOrder\Model;
 
 class Email extends \Magento\Framework\Model\AbstractModel
 {
+    protected $appState;
+
+
     const XML_PATH_ENABLED = 'lofmp_cancelorder/general/enable';
     const XML_PATH_EMAIL_TEMPLATE = 'lofmp_cancelorder/general/email_template';
     const XML_PATH_ENABLE_SEND_ADMIN_NOTIFY = 'lofmp_cancelorder/general/notify_admin';

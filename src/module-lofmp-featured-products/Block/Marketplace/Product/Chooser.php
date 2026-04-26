@@ -7,6 +7,9 @@ namespace Lofmp\FeaturedProducts\Block\Marketplace\Product;
 
 class Chooser extends \Magento\Backend\Block\Widget\Grid\Extended
 {
+    protected $_collectionFactory;
+
+
 
     /**
      * @var string

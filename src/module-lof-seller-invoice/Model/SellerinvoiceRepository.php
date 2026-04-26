@@ -27,6 +27,11 @@ use Lof\SellerInvoice\Api\Data\DataInvoiceInterfaceFactory;
 
 class SellerinvoiceRepository implements SellerinvoiceRepositoryInterface
 {
+    protected $_invoice;
+    protected $_pdf;
+    protected $_fileFactory;
+
+
 
     /**
      * @var ResourceSellerinvoice

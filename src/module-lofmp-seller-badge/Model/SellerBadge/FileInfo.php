@@ -31,6 +31,9 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class FileInfo
 {
+    protected $storeManager;
+
+
     /**
      * Path in /pub/media directory
      */

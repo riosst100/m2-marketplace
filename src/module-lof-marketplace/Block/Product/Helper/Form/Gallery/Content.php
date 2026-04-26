@@ -63,7 +63,7 @@ class Content extends \Magento\Catalog\Block\Adminhtml\Product\Helper\Form\Galle
         $this->storeManager = $objectManager->create(\Magento\Store\Model\StoreManagerInterface::class);
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->mainCategories = $objectManager->create(\TCGCollective\MarketplaceProductImportExport\Model\Source\MainCategories::class);
+        $this->mainCategories = $objectManager->create(\CoreMarketplace\MarketplaceProductImportExport\Model\Source\MainCategories::class);
         
         $categoriesData = $this->mainCategories->toOptionArray();
         if ($categoriesData) {

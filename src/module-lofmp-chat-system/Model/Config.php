@@ -26,6 +26,9 @@ namespace Lofmp\ChatSystem\Model;
  */
 class Config
 {
+    protected $configAdminCustom;
+
+
     /**
      * @var \Magento\Framework\Module\Manager
      */

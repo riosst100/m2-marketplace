@@ -29,6 +29,10 @@ use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 
 class CheckoutCartUpdateItemsAfter implements ObserverInterface
 {
+    protected $timediscount;
+    protected $_helperData;
+
+
  /**
      * @var \Magento\Customer\Model\Session
      */

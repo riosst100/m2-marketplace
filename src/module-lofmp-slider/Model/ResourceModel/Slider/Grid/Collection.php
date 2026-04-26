@@ -26,6 +26,10 @@ use Lofmp\Slider\Model\ResourceModel\Slider\Collection as SliderCollection;
 
 class Collection extends SliderCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var AggregationInterface
      */

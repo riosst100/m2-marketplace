@@ -71,7 +71,7 @@ class ProductDataProvider extends \Magento\Catalog\Ui\DataProvider\Product\Produ
 
         $objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
         $this->request = $objectManager->get('\Magento\Framework\App\RequestInterface');
-        $this->mappingHelper = $objectManager->get('\TCGCollective\ProductAttributesLink\Helper\Data');
+        $this->mappingHelper = $objectManager->get('\CoreMarketplace\ProductAttributesLink\Helper\Data');
 
         $filters_modifier = $this->request->getParam('filters_modifier');
         if (isset($filters_modifier['card_set'])) {

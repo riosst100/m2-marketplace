@@ -34,7 +34,7 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Refund
         /**
          * Set active menu item
          */
-        $resultPage->setActiveMenu("TCGCollective_MarketPlace::seller_refunds");
+        $resultPage->setActiveMenu("CoreMarketplace_MarketPlace::seller_refunds");
         $resultPage->getConfig()->getTitle()->prepend(__('Seller | Refunds'));
 
         /**
@@ -51,6 +51,6 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Refund
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('TCGCollective_MarketPlace::seller_refunds');
+        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::seller_refunds');
     }
 }

@@ -17,6 +17,9 @@ use Lof\SocialLogin\lib\Psr\RequestInterface;
  */
 class CurlMultiHandler
 {
+    protected $_mh;
+
+
     /** @var CurlFactoryInterface */
     private $factory;
     private $selectTimeout;

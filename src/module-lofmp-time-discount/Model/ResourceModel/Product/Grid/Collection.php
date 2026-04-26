@@ -31,6 +31,10 @@ use Lofmp\TimeDiscount\Model\ResourceModel\Product\Collection as ProductCollecti
  */
 class Collection extends ProductCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var AggregationInterface
      */

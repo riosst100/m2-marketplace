@@ -1,0 +1,17 @@
+type Query {
+    socialGoogleLoginUrl: SocialLoginUrl!
+        @resolver(class: "Lof\\SocialLogin\\Model\\Resolver\\Google\\LoginUrl")
+}
+
+type Mutation {
+    socialGoogleAuthenticate(jwt_token: String!): CustomerToken!
+        @resolver(class: "Lof\\SocialLogin\\Model\\Resolver\\Google\\Authenticate")
+}
+
+type SocialLoginUrl {    
+    redirect_uri: String!
+}
+
+type CustomerToken {
+    token: String!
+}

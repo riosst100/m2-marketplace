@@ -35,6 +35,10 @@ use Magento\Customer\Api\CustomerRepositoryInterface;
 
 class Data extends AbstractHelper
 {
+    protected $_customerSession;
+    protected $accountManagement;
+
+
     const XML_PATH_GENERAL_ENABLED                = 'sociallogin/general/is_enabled';
     const XML_PATH_GENERAL                        = 'sociallogin/general/';
     const XML_PATH_GENERAL_POPUP_LEFT             = 'sociallogin/general/left';
@@ -69,6 +73,7 @@ class Data extends AbstractHelper
     protected $objectManager;
     protected $_social;
     protected $customerRepositoryInterface;
+    protected $registry;
 
     /**
      * @param Context                $context
@@ -88,7 +93,8 @@ class Data extends AbstractHelper
         Social $social,
         AccountManagementInterface $accountManagement,
         StoreManagerInterface $storeManager,
-        CustomerRepositoryInterface $customerRepositoryInterface
+        CustomerRepositoryInterface $customerRepositoryInterface,
+        \Magento\Framework\Registry $registry
     ) {
         $this->objectManager     = $objectManager;
         $this->customerFactory   = $customerFactory;
@@ -96,6 +102,7 @@ class Data extends AbstractHelper
         $this->_customerSession  = $customerSession;
         $this->_social           = $social;
         $this->accountManagement = $accountManagement;
+        $this->registry = $registry;
         $this->customerRepositoryInterface = $customerRepositoryInterface;
         parent::__construct($context);
     }
@@ -234,6 +241,10 @@ class Data extends AbstractHelper
         ->setEmail($data['email'])
         ->setWebsiteId($website_id)
         ->setStoreId($store_id);
+
+        if (!$this->registry->registry("skip_confirmation_if_email")) {
+            $this->registry->register("skip_confirmation_if_email", $data['email']);
+        }
 
         $customer = $this->accountManagement->createAccount($customer, $data['password']);
 

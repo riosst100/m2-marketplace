@@ -21,7 +21,7 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="Lofmp_SplitOrder::splitorder" title="Split Orders" module="Lofmp_SplitOrder" sortOrder="10" resource="Lofmp_SplitOrder::config" parent="Lof_MarketPlace::marketplace"/>
-        <add id="Lofmp_SplitOrder::configuration" title="Configuration" module="Lofmp_SplitOrder" sortOrder="90" parent="Lofmp_SplitOrder::splitorder" action="adminhtml/system_config/edit/section/lofmp_split_order/" resource="Lofmp_SplitOrder::config"/>
+        <!-- <add id="Lofmp_SplitOrder::splitorder" title="Split Orders" module="Lofmp_SplitOrder" sortOrder="10" resource="Lofmp_SplitOrder::config" parent="Lof_MarketPlace::marketplace"/> -->
+        <!-- <add id="Lofmp_SplitOrder::configuration" title="Configuration" module="Lofmp_SplitOrder" sortOrder="90" parent="Lofmp_SplitOrder::splitorder" action="adminhtml/system_config/edit/section/lofmp_split_order/" resource="Lofmp_SplitOrder::config"/> -->
     </menu>
 </config>

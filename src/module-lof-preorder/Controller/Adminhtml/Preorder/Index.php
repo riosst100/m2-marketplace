@@ -51,7 +51,7 @@ class Index extends \Lof\PreOrder\Controller\Adminhtml\Preorder
     {
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->_resultPageFactory->create();
-        $resultPage->setActiveMenu('TCGCollective_MarketPlace::manage_seller_preorders');
+        $resultPage->setActiveMenu('CoreMarketplace_MarketPlace::manage_seller_preorders');
         $resultPage->getConfig()->getTitle()->prepend(__('Seller | Manage Pre Orders'));
 
         return $resultPage;
@@ -64,6 +64,6 @@ class Index extends \Lof\PreOrder\Controller\Adminhtml\Preorder
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('TCGCollective_MarketPlace::manage_seller_preorders');
+        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::manage_seller_preorders');
     }
 }

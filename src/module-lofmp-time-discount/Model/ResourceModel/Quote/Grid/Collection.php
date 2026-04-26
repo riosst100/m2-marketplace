@@ -31,6 +31,10 @@ use Lofmp\TimeDiscount\Model\ResourceModel\Quote\Collection as QuoteCollection;
  */
 class Collection extends QuoteCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var AggregationInterface
      */

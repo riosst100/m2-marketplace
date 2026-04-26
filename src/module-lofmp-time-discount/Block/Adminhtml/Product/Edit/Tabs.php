@@ -23,6 +23,9 @@ namespace Lofmp\TimeDiscount\Block\Adminhtml\Product\Edit;
 
 class Tabs extends \Magento\Backend\Block\Widget\Tabs
 {
+    protected $_coreRegistry;
+
+
     /**
      * @param \Magento\Backend\Block\Template\Context  $context
      * @param \Magento\Framework\Json\EncoderInterface $jsonEncoder,

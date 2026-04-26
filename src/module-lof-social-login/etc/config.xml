@@ -26,7 +26,7 @@
             <general>
                 <is_enabled>1</is_enabled>
                 <popup_effect>mfp-move-from-top</popup_effect>
-                <style_management>#1979c3</style_management>
+                <style_management>#f76b1c</style_management>
                 <social_position>[{"id":"facebook"},{"id":"github"},{"id":"stackoverflow"},{"id":"twitter"},{"id":"google"},{"id":"amazon"}]</social_position>
                 <popup_layout>lof-social-login-style4</popup_layout>
                 <lg_column_item>3</lg_column_item>

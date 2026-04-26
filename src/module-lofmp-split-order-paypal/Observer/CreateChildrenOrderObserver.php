@@ -37,6 +37,9 @@ use Lof\MarketPlace\Observer\OrderStatusChanged as MarketplaceOrderSubmitAfter;
 
 class CreateChildrenOrderObserver implements ObserverInterface
 {
+    protected $_order;
+
+
     /**
      * @var string
      */

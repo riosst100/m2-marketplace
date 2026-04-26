@@ -12,6 +12,12 @@ use Magento\Framework\Controller\ResultFactory;
 
 class Exportfiles extends \Magento\Backend\App\Action
 {
+    protected $invoiceRepository;
+    protected $_file;
+    protected $_fileFactory;
+    protected $_pdf;
+
+
 
     protected $_layout;
     protected $layoutFactory;

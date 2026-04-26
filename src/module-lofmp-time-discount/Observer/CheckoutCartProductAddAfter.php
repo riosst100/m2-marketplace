@@ -28,6 +28,10 @@ use Magento\CatalogInventory\Api\StockStateInterface;
 
 class CheckoutCartProductAddAfter implements ObserverInterface
 {
+    protected $_helperData;
+    protected $date;
+
+
     /**
      * @var \Magento\Customer\Model\Session
      */

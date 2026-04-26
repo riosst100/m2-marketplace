@@ -23,6 +23,11 @@ namespace Lofmp\TimeDiscount\Block\Seller\Product;
 
 class Edit extends \Lofmp\TimeDiscount\Block\Seller\Widget\Form\Container
 {
+    protected $_objectId;
+    protected $_blockGroup;
+    protected $_controller;
+
+
     /**
      * Core registry
      *

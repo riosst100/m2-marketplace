@@ -228,12 +228,12 @@
                 </item>
             </argument>
         </column>
-        <column name="website_id" class="TCGCollective\SellerMembership\Ui\Component\Listing\Column\MultipleWebsite">
+        <column name="website_id" class="CoreMarketplace\SellerMembership\Ui\Component\Listing\Column\MultipleWebsite">
             <settings>
                 <label translate="true">Countries/Regions</label>
                 <filter>select</filter>
                 <dataType>select</dataType>
-                <options class="TCGCollective\SellerMembership\Ui\Component\Listing\Column\WebsiteOptions"/>
+                <options class="CoreMarketplace\SellerMembership\Ui\Component\Listing\Column\WebsiteOptions"/>
             </settings>            
         </column>
         <actionsColumn name="actions" class="Lof\Faq\Ui\Component\Listing\Column\CategoryUserActions">

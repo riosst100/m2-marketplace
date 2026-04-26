@@ -341,9 +341,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function uploadZip($strtotime, $categories = null, $folder = null)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->mappingHelper = $objectManager->create(\TCGCollective\ProductAttributesLink\Helper\Data::class);
+        $this->mappingHelper = $objectManager->create(\CoreMarketplace\ProductAttributesLink\Helper\Data::class);
         $this->sellerHelper = $objectManager->create(\Lof\MarketPlace\Helper\Data::class);
-        $this->sellerImagesFactory = $objectManager->create(\TCGCollective\MarketplaceProductImportExport\Model\SellerImagesFactory::class);
+        $this->sellerImagesFactory = $objectManager->create(\CoreMarketplace\MarketplaceProductImportExport\Model\SellerImagesFactory::class);
 
         $sellerId = $this->sellerHelper->getSellerId();
 

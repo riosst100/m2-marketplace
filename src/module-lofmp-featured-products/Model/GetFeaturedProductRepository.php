@@ -33,6 +33,9 @@ use Lof\MarketPlace\Model\Seller;
  */
 class GetFeaturedProductRepository implements GetFeaturedProductRepositoryInterface
 {
+    protected $instances;
+
+
 
     /**
      * @var DataObjectProcessor

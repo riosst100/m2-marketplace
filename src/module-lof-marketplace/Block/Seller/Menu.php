@@ -168,7 +168,7 @@ class Menu extends \Magento\Backend\Block\Menu
             . '<span>' . $this->_getAnchorLabel($menuItem) . '</span>'
             . ($hasChildren ? '<span class="fa fa-chevron-down"></span>' : '')
             . '</a>';
-        if ($menuItem->getId() == "TCGCollective_MarketPlace::add_product_database") {
+        if ($menuItem->getId() == "CoreMarketplace_MarketPlace::add_product_database") {
             $output .= '<div class="menu-desc">
             Quickly create a product using existing data from the platform database.
             </div>';
@@ -293,7 +293,7 @@ class Menu extends \Magento\Backend\Block\Menu
         foreach ($this->_getMenuIterator($menu) as $menuItem) {
 
             $menuId = $menuItem->getId();
-            if ($menuItem->getId() == "TCGCollective_MarketPlace::catalog_add_products") {
+            if ($menuItem->getId() == "CoreMarketplace_MarketPlace::catalog_add_products") {
                 $limit = 7;
             } else {
                 $limit = 10;

@@ -39,6 +39,11 @@ use Magento\Customer\Model\Visitor;
 
 class Callback extends Action
 {
+    protected $storeManager;
+    protected $customerRepository;
+    protected $visitor;
+
+
     const SOCIAL_TYPE = 'paypal';
     protected $resultPageFactory;
     protected $paypal;

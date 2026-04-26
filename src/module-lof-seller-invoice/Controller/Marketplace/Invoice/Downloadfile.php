@@ -27,6 +27,11 @@ use Magento\Framework\View\LayoutFactory;
 
 class Downloadfile extends \Magento\Framework\App\Action\Action
 {
+    protected $_pdf;
+    protected $layoutFactory;
+    protected $_fileFactory;
+
+
     const FLAG_IS_URLS_CHECKED = 'check_url_settings';
 
     /**

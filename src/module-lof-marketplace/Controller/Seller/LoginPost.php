@@ -92,7 +92,7 @@ class LoginPost extends \Magento\Customer\Controller\AbstractAccount
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $this->sellerFactory = $objectManager->get(\Lof\MarketPlace\Model\SellerFactory::class);
-        $this->helper = $objectManager->get(\TCGCollective\MarketPlace\Helper\Data::class);
+        $this->helper = $objectManager->get(\CoreMarketplace\MarketPlace\Helper\Data::class);
             
         if ($this->session->isLoggedIn()) {
             $resultRedirect = $this->resultRedirectFactory->create();

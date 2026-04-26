@@ -8,7 +8,7 @@ class Save extends \Magento\Framework\App\Action\Action
 
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
-        \TCGCollective\MarketPlace\Helper\CreateProductHelper $createProductHelper
+        \CoreMarketplace\MarketPlace\Helper\CreateProductHelper $createProductHelper
     ) {
         parent::__construct($context);
         $this->createProductHelper = $createProductHelper;

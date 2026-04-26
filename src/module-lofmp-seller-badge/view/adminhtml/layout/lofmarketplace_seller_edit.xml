@@ -27,11 +27,11 @@
         <css src="Lofmp_SellerBadge::css/style.css"/>
     </head>
     <body>
-        <referenceBlock name="seller_edit_tabs">
+        <!-- <referenceBlock name="seller_edit_tabs">
             <action method="addTab">
                 <argument name="name" xsi:type="string">badge_tab</argument>
                 <argument name="block" xsi:type="string">Lofmp\SellerBadge\Block\Adminhtml\Seller\Edit\Tab\BadgeTab</argument>
             </action>
-        </referenceBlock>
+        </referenceBlock> -->
     </body>
 </page>

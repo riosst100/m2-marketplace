@@ -142,9 +142,9 @@ class Uploadimage extends \Magento\Framework\App\Helper\AbstractHelper
         // $logger->info('moveImageFromTmp called with file: ' . $file);
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->mappingHelper = $objectManager->create(\TCGCollective\ProductAttributesLink\Helper\Data::class);
+        $this->mappingHelper = $objectManager->create(\CoreMarketplace\ProductAttributesLink\Helper\Data::class);
         $this->sellerHelper = $objectManager->create(\Lof\MarketPlace\Helper\Data::class);
-        $this->sellerImagesFactory = $objectManager->create(\TCGCollective\MarketplaceProductImportExport\Model\SellerImagesFactory::class);
+        $this->sellerImagesFactory = $objectManager->create(\CoreMarketplace\MarketplaceProductImportExport\Model\SellerImagesFactory::class);
         $this->fileDriver = $objectManager->create(\Magento\Framework\Filesystem\Driver\File::class);
 
         if (strrpos($file, '.tmp') == strlen($file) - 4) {

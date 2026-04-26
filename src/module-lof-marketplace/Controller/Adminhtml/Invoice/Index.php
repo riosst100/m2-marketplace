@@ -35,7 +35,7 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Invoice
         /**
          * Set active menu item
          */
-        $resultPage->setActiveMenu("TCGCollective_MarketPlace::seller_invoices");
+        $resultPage->setActiveMenu("CoreMarketplace_MarketPlace::seller_invoices");
         $resultPage->getConfig()->getTitle()->prepend(__('Seller | Invoices'));
 
         /**
@@ -52,6 +52,6 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\Invoice
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('TCGCollective_MarketPlace::seller_invoices');
+        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::seller_invoices');
     }
 }

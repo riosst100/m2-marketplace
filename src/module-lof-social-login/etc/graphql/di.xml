@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <type name="Magento\StoreGraphQl\Model\Resolver\Store\StoreConfigDataProvider">
+        <arguments>
+            <argument name="extendedConfigData" xsi:type="array">
+                <item name="sociallogin_is_enabled" xsi:type="string">sociallogin/general/is_enabled</item>
+                <item name="sociallogin_social_position" xsi:type="string">sociallogin/general/social_position</item>                
+            </argument>
+        </arguments>
+    </type>
+</config>

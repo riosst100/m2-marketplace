@@ -12,11 +12,11 @@ use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Mail\Template\FactoryInterface;
 use Magento\Framework\Mail\Template\SenderResolverInterface;
 use Magento\Framework\Mail\Template\TransportBuilder;
-use Zend\Mime\Mime;
-use Zend\Mime\Part as MimePart;
-use Zend\Mime\PartFactory as MimePartFactory;
-use Zend\Mime\Message as MimeMessage;
-use Zend\Mime\MessageFactory as MimeMessageFactory;
+use Laminas\Mime\Mime;
+use Laminas\Mime\Part as MimePart;
+use Laminas\Mime\PartFactory as MimePartFactory;
+use Laminas\Mime\Message as MimeMessage;
+use Laminas\Mime\MessageFactory as MimeMessageFactory;
 use Magento\Framework\App\TemplateTypesInterface;
 use Magento\Framework\Mail\MimeInterface;
 use Magento\Framework\Mail\MimePartInterfaceFactory;
@@ -26,6 +26,12 @@ use Magento\Framework\Mail\EmailMessageInterfaceFactory;
 use Magento\Framework\Mail\AddressConverter;
 
 class UploadTransportBuilder extends TransportBuilder {
+    protected $templateIdentifier;
+    protected $templateModel;
+    protected $templateVars;
+    protected $templateOptions;
+
+
 
     /** @var MimePart[] */
     private $parts = [];

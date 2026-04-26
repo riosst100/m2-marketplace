@@ -25,6 +25,9 @@ use Magento\TestFramework\Inspection\Exception;
 
 class Sender
 {
+    protected $prefixSubject;
+
+
     /**
      * @var \Lofmp\ChatSystem\Helper\Data
      */

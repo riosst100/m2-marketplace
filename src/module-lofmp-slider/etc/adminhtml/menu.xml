@@ -23,7 +23,7 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="Lofmp_Slider::slider" title="Sliders" module="Lofmp_Slider" sortOrder="10" resource="Lofmp_Slider::question" parent="Lof_MarketPlace::marketplace"/>
-        <add id="LofmP_Slider::setting" title="Configuration" module="Lofmp_Slider" sortOrder="40" parent="Lofmp_Slider::slider" action="adminhtml/system_config/edit/section/lofmpslider/" resource="Lofmp_Slider::setting"/>
+        <!-- <add id="Lofmp_Slider::slider" title="Sliders" module="Lofmp_Slider" sortOrder="10" resource="Lofmp_Slider::question" parent="Lof_MarketPlace::marketplace"/>
+        <add id="LofmP_Slider::setting" title="Configuration" module="Lofmp_Slider" sortOrder="40" parent="Lofmp_Slider::slider" action="adminhtml/system_config/edit/section/lofmpslider/" resource="Lofmp_Slider::setting"/> -->
     </menu>
 </config>

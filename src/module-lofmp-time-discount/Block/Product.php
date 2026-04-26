@@ -26,6 +26,14 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 
 class Product extends \Magento\Framework\View\Element\Template
 {
+    protected $_coreRegistry;
+    protected $_product;
+    protected $_customerSession;
+    protected $_priceHelper;
+    protected $_helperData;
+    protected $productRepository;
+
+
     protected $timediscountFactory;
     /**
      * @param Magento\Catalog\Block\Product\Context   $context

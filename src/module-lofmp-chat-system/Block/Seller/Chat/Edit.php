@@ -23,6 +23,11 @@ namespace Lofmp\ChatSystem\Block\Seller\Chat;
 
 class Edit extends \Lofmp\ChatSystem\Block\Seller\Widget\Form\Container
 {
+    protected $_objectId;
+    protected $_blockGroup;
+    protected $_controller;
+
+
     /**
      * Core registry
      *

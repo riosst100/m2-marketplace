@@ -30,6 +30,10 @@ use Lofmp\PriceComparison\Model\ResourceModel\Product\Collection as ProductColle
  */
 class Collection extends ProductCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var AggregationInterface
      */

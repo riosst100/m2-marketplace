@@ -11,6 +11,11 @@ use Magento\Framework\Controller\ResultFactory;
 
 class Downloadfile extends \Lof\SellerInvoice\Controller\AbstractIndex
 {
+    protected $_pdf;
+    protected $layoutFactory;
+    protected $_fileFactory;
+
+
 
     protected $resultPageFactory;
     protected $_objectManager;

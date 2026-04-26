@@ -23,6 +23,9 @@ namespace Lofmp\Slider\Block\Marketplace\Slider;
 
 class Slider extends \Magento\Framework\View\Element\Template
 {
+    protected $session;
+
+
 
     /**
      * Core registry

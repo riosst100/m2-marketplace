@@ -23,6 +23,15 @@ namespace Lof\SellerInvoice\Helper;
 
 class Mail extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    protected $context;
+    protected $filterManager;
+    protected $inlineTranslation;
+    protected $dateTime;
+    protected $transportBuilder;
+    protected $_storeManager;
+    protected $_urlBuilder;
+
+
 
     protected $_currency;
 

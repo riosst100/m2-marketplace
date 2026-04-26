@@ -26,15 +26,19 @@ use Lof\SocialLogin\Helper\Github\Data as DataHelper;
 
 class Google
 {
+    protected $dataHelper;
+    protected $scopeConfig;
     protected $storeManagerInterface; 
     
     public function __construct(
         DataHelper $dataHelper,
-        \Magento\Store\Model\StoreManagerInterface $storeManagerInterface
+        \Magento\Store\Model\StoreManagerInterface $storeManagerInterface,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
     )
     {
         $this->dataHelper = $dataHelper;
         $this->storeManagerInterface = $storeManagerInterface;
+        $this->scopeConfig = $scopeConfig;
     }
 
     public function getBaseUrl()
@@ -44,5 +48,14 @@ class Google
             ->getBaseUrl();
 
         return $baseurl.'lofsociallogin/google/callback';
+    }
+
+    public function getPwaBaseUrl()
+    {
+        $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
+        $pwaBaseurl = $this->scopeConfig->getValue('pwa/pwa_settings/pwa_base_url', $storeScope);;
+        $websiteCode = $this->storeManagerInterface
+            ->getStore()->getWebsite()->getCode();
+        return $pwaBaseurl.'/lofsociallogin/google/callback';
     }
 }

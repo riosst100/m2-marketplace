@@ -35,6 +35,10 @@ use Psr\Log\LoggerInterface;
 
 class Collection extends ChatCollection implements SearchResultInterface
 {
+    protected $_eventPrefix;
+    protected $_eventObject;
+
+
     /**
      * @var AggregationInterface
      */

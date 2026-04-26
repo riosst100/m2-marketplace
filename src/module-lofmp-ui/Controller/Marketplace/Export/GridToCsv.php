@@ -18,7 +18,7 @@ use Magento\Framework\Url;
 use Lof\MarketPlace\Model\SellerFactory;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
-use TCGCollective\ProductAttributesLink\Helper\SetsReleaseHelper;
+use CoreMarketplace\ProductAttributesLink\Helper\SetsReleaseHelper;
 
 /**
  * Class Render

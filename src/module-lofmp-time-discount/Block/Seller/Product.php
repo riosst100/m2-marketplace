@@ -23,6 +23,12 @@ namespace Lofmp\TimeDiscount\Block\Seller;
 
 class Product extends  \Magento\Backend\Block\Widget\Container
 {
+    protected $_blockGroup;
+    protected $_controller;
+    protected $_headerText;
+    protected $_addButtonLabel;
+
+
     
     /**
      * @var \Magento\Catalog\Model\Product\TypeFactory

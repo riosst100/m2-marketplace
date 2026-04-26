@@ -77,6 +77,7 @@ class QuoteHandler implements QuoteHandlerInterface
         $priceComparison = $this->enabledOfferProduct();
         /** @var \Magento\Quote\Model\Quote\Item $item */
         foreach ($quote->getAllVisibleItems() as $item) {
+            $product = null;
             $attribute = $item->getLofSellerId();
             if (!$attribute) {
                 /** @var \Magento\Catalog\Model\Product $product */
@@ -86,7 +87,7 @@ class QuoteHandler implements QuoteHandlerInterface
             if (!$attribute) {
                 $attribute = "0";
             }
-            if ($priceComparison) {
+            if ($product && $priceComparison) {
                 // @phpstan-ignore-next-line
                 $priceComparisonQuote = $this->getOfferProduct($product->getId(), $item->getId());
                 if ($priceComparisonQuote) {

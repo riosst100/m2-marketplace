@@ -6,6 +6,9 @@ use Magento\Framework\UrlInterface;
 
 class Form extends \Lof\MarketPlace\Block\Seller\Widget\Form\Generic
 {
+    protected $urlBuilder;
+
+
     /**
      * @param \Magento\Backend\Block\Template\Context $context
      * @param \Magento\Framework\Registry $registry

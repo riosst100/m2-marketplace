@@ -23,6 +23,10 @@ namespace Lofmp\ChatSystem\Block\Seller;
 
 class Chat extends \Magento\Backend\Block\Widget\Container
 {
+    protected $_blockGroup;
+    protected $_controller;
+
+
     /**
      * @return void
      */

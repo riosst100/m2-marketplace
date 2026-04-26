@@ -24,6 +24,9 @@ use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Model\Product;
 
 class ListProduct extends \Lof\MarketPlace\Block\Seller\Product\ListProduct{
+    protected $_productCollection;
+
+
 
     /**
      * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory

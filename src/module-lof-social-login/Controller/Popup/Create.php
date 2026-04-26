@@ -48,6 +48,10 @@ use Magento\Framework\Json\Helper\Data as JsonHelper;
 
 class Create extends AbstractAccount
 {
+    protected $scopeConfig;
+    protected $storeManager;
+
+
     /** @var AccountManagementInterface */
     protected $accountManagement;
 

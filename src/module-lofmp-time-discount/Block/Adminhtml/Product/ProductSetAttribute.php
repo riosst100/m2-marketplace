@@ -22,6 +22,9 @@ namespace Lofmp\TimeDiscount\Block\Adminhtml\Product;
 
 class ProductSetAttribute extends \Magento\Backend\Block\Template
 {
+    protected $coreRegistry;
+
+
 
     /**
      * @param \Magento\Backend\Block\Template\Context   $context
