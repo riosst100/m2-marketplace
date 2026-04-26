@@ -264,7 +264,7 @@
                 <visible>false</visible>
             </settings>
         </column>
-        <column name="store_id" class="CoreMarketplace\SellerMembership\Ui\Component\Listing\Column\Website">
+        <column name="store_id" class="TCGCollective\SellerMembership\Ui\Component\Listing\Column\Website">
             <settings>
                 <label translate="true">Countries/Regions</label>
                 <bodyTmpl>ui/grid/cells/html</bodyTmpl>

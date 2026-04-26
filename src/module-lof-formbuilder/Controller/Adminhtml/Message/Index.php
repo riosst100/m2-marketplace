@@ -56,7 +56,7 @@ class Index extends Message
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::new_game_brand_request_messages');
+        return $this->_authorization->isAllowed('TCGCollective_MarketPlace::new_game_brand_request_messages');
     }
 
     /**
@@ -68,7 +68,7 @@ class Index extends Message
     {
         /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
-        $resultPage->setActiveMenu('CoreMarketplace_MarketPlace::new_game_brand_request_messages');
+        $resultPage->setActiveMenu('TCGCollective_MarketPlace::new_game_brand_request_messages');
         $resultPage->getConfig()->getTitle()->prepend(__('New Games/Brands Request | Manage Form Messages'));
         return $resultPage;
     }

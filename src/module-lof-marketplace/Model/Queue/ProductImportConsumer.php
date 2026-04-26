@@ -55,8 +55,8 @@ class ProductImportConsumer
         EventManager $eventManager,
         ImportModel $importModel,
         \Magento\Framework\Filesystem $filesystem,
-        \CoreMarketplace\MarketPlace\Model\SellerNotificationsFactory $notificationFactory,
-        \CoreMarketplace\MarketPlace\Model\ResourceModel\SellerNotificationsFactory $notificationResource,
+        \TCGCollective\MarketPlace\Model\SellerNotificationsFactory $notificationFactory,
+        \TCGCollective\MarketPlace\Model\ResourceModel\SellerNotificationsFactory $notificationResource,
         \Lof\MarketPlace\Model\RabbitmqImportDbNotificationDetailFactory $detailFactory,
         \Lof\MarketPlace\Model\ResourceModel\RabbitmqImportDbNotificationDetail $detailResource
     ) {

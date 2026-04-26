@@ -34,7 +34,7 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\SellerPending
         /**
          * Set active menu item
          */
-        $resultPage->setActiveMenu("CoreMarketplace_MarketPlace::seller_verification");
+        $resultPage->setActiveMenu("TCGCollective_MarketPlace::seller_verification");
         $resultPage->getConfig()->getTitle()->prepend(__('Seller Verification'));
 
         /**
@@ -51,6 +51,6 @@ class Index extends \Lof\MarketPlace\Controller\Adminhtml\SellerPending
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('CoreMarketplace_MarketPlace::seller_verification');
+        return $this->_authorization->isAllowed('TCGCollective_MarketPlace::seller_verification');
     }
 }

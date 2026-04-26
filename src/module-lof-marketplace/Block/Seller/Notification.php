@@ -3,7 +3,7 @@ namespace Lof\MarketPlace\Block\Seller;
 
 use Magento\Framework\View\Element\Template;
 use Lof\MarketPlace\Helper\Data as MarketplaceHelper;
-use CoreMarketplace\MarketPlace\Model\ResourceModel\SellerNotifications\CollectionFactory as NotificationCollectionFactory;
+use TCGCollective\MarketPlace\Model\ResourceModel\SellerNotifications\CollectionFactory as NotificationCollectionFactory;
 
 class Notification extends Template
 {

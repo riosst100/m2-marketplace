@@ -8,7 +8,7 @@ use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use CoreMarketplace\MarketplaceRajaOngkir\Helper\Data as ROHelper;
+use TCGCollective\MarketplaceRajaOngkir\Helper\Data as ROHelper;
 use Lof\TrackorderGraphQl\Model\Api\RajaOngkirService;
 use Magento\Sales\Model\OrderFactory;
 

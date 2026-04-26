@@ -62,7 +62,7 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
 
         parent::_construct();
 
-        if ($this->_isAllowedAction('CoreMarketplace_MarketPlace::product_commission')) {
+        if ($this->_isAllowedAction('TCGCollective_MarketPlace::product_commission')) {
             $this->buttonList->update('save', 'label', __('Save'));
             $this->buttonList->add(
                 'saveandcontinue',
@@ -81,7 +81,7 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
             $this->buttonList->remove('save');
         }
 
-        if ($this->_isAllowedAction('CoreMarketplace_MarketPlace::product_commission')) {
+        if ($this->_isAllowedAction('TCGCollective_MarketPlace::product_commission')) {
             $this->buttonList->update('delete', 'label', __('Delete Commission'));
         } else {
             $this->buttonList->remove('delete');

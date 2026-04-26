@@ -36,7 +36,7 @@ class Commission extends \Magento\Backend\Block\Widget\Grid\Container
 
         parent::_construct();
 
-        if ($this->_isAllowedAction('CoreMarketplace_MarketPlace::product_commission')) {
+        if ($this->_isAllowedAction('TCGCollective_MarketPlace::product_commission')) {
             $this->buttonList->update('add', 'label', __('Add New Commission'));
         } else {
             $this->buttonList->remove('add');

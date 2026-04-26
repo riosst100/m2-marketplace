@@ -225,7 +225,7 @@ class Dashboard extends \Magento\Framework\View\Element\Html\Link
         $this->categoryCollectionFactory = $objectManager->create(\Magento\Catalog\Model\ResourceModel\Category\CollectionFactory::class);
         $this->sellerHelper = $objectManager->create(\Lof\MarketPlace\Helper\Seller::class);
         $this->storeManager = $objectManager->create(\Magento\Store\Model\StoreManagerInterface::class);
-        $this->catalogHelper = $objectManager->create(\CoreMarketplace\MarketPlace\Helper\Catalog::class);
+        $this->catalogHelper = $objectManager->create(\TCGCollective\MarketPlace\Helper\Catalog::class);
 
         $seller = $this->sellerHelper->getSeller();
         // dd($seller);

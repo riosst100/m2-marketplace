@@ -7,7 +7,7 @@ class ProductImportDbConsumer
     protected $createProductHelper;
 
     public function __construct(
-        \CoreMarketplace\MarketPlace\Helper\CreateProductHelper $createProductHelper
+        \TCGCollective\MarketPlace\Helper\CreateProductHelper $createProductHelper
     ) {
         $this->createProductHelper = $createProductHelper;
     }

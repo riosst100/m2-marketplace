@@ -126,7 +126,7 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
         );
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->storesHelper = $objectManager->create(\CoreMarketplace\MarketPlace\Helper\Stores::class);
+        $this->storesHelper = $objectManager->create(\TCGCollective\MarketPlace\Helper\Stores::class);
 
         $field = $fieldset->addField(
             'websites',

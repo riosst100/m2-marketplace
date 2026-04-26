@@ -54,7 +54,7 @@ class Seller extends AbstractSellerQuery implements ResolverInterface
         $data = [];
         try {
             $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-            $this->sellerCache = $objectManager->create('\CoreMarketplace\MarketPlace\Model\SellerDataCache');
+            $this->sellerCache = $objectManager->create('\TCGCollective\MarketPlace\Model\SellerDataCache');
 
             $sellerData = $this->sellerCache->getSellerById($product->getSellerId());
             $data = $sellerData ?: [];

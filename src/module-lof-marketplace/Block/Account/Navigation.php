@@ -23,7 +23,7 @@ namespace Lof\MarketPlace\Block\Account;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
-use CoreMarketplace\MarketPlace\Model\ResourceModel\SellerNotifications\CollectionFactory as NotificationCollectionFactory;
+use TCGCollective\MarketPlace\Model\ResourceModel\SellerNotifications\CollectionFactory as NotificationCollectionFactory;
 
 class Navigation extends \Magento\Framework\View\Element\Html\Link\Current
 {

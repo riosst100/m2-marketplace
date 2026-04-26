@@ -73,8 +73,8 @@ class Grid extends GridExtended
         \Lofmp\Rma\Model\StatusFactory $statusFactory,
         \Lofmp\Rma\Helper\Help $Help,
         \Lofmp\Rma\Helper\Data $dataHelper,
-        \CoreMarketplace\MarketPlace\Helper\Seller $sellerHelper,
-        \CoreMarketplace\MarketPlace\Helper\Stores $storesHelper,
+        \TCGCollective\MarketPlace\Helper\Seller $sellerHelper,
+        \TCGCollective\MarketPlace\Helper\Stores $storesHelper,
         \Magento\Backend\Block\Widget\Context $context,
         \Magento\Backend\Helper\Data $backendHelper,
         array $data = []
